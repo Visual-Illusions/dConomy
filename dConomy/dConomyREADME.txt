@@ -225,4 +225,4 @@ Special Thanks:
 Download:
 dConomy http://bit.ly/uuWSrm
 dropbox backup - http://bit.ly/tHDxmO
-source (not yet availible outside of the jar file)
+source https://github.com/darkdiplomat/dConomy
