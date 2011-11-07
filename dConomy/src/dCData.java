@@ -1064,7 +1064,7 @@ public class dCData {
 	}
 	
 	public String getJointUsers(String name){
-		String Users = "";
+		String Users = "Users";
 		if (MySQL){
 			Connection conn = getSQLConn();
 			PreparedStatement ps = null;
@@ -1108,7 +1108,7 @@ public class dCData {
 				ps.setString(1, name);
 				rs = ps.executeQuery();
 				while (rs.next()){
-					Owners = rs.getString("Users");
+					Owners = rs.getString("Owners");
 				}
 			}catch (SQLException ex){
 				log.severe("[dConomy] - Unable to get 'Owners' for JointAccount: " + name + "!");

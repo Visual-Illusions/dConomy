@@ -40,22 +40,28 @@ public class dCActionHandler {
 	}
 	
 	public void PlayerMessage(String playernom, String message){
-		String[] messreline = dCD.decolormessage(message);
-		String mess1 = message.replace("§0", "");
-		String mess2 = null;
-		int linesplitat = Integer.valueOf(messreline[1]) + 60;
-		if (messreline[0].length() > 60){
-			mess1 = message.substring(0, linesplitat);
-			int charloc = mess1.lastIndexOf("§") + 1;
-			Character ch = mess1.charAt(charloc);
-			mess2 = "§" + ch + message.substring(linesplitat);
+		String Message1 = message;
+		String[] decolor = dCD.decolormessage(message);
+		String Message2 = null;
+		String sims = "§";
+		Character sim = sims.charAt(0);
+		if (decolor[0].length() > 60){
+			int sub1 = Integer.valueOf(decolor[1])+60;
+			Message1 = message.substring(0, sub1+1);
+			if(Message1.charAt(sub1) == sim){
+				Message2 = "§"+message.substring(sub1+1);
+			}else{
+				int c = Message1.lastIndexOf("§");
+				Character color = Message1.charAt(c+1);
+				Message2 = "§"+color+message.substring(sub1+1);
+			}
 		}
 		Player player = server.matchPlayer(playernom);
 		if(player != null){
 			if(player.isConnected()){
-				player.sendMessage(mess1);
-				if (mess2 != null){
-					player.sendMessage(mess2);
+				player.sendMessage(Message1);
+				if(Message2 != null){
+					player.sendMessage(Message2);
 				}
 			}
 		}
@@ -354,18 +360,20 @@ public class dCActionHandler {
 				return Error(122, player, user);
 			}
 		}
-		String users = dCD.getJointOwners(name);
-		String[] usersplit = users.split(",");
+		String users = dCD.getJointUsers(name);
 		StringBuffer n = new StringBuffer();
-		for (int i = 0; i < usersplit.length; i++){
-			if (usersplit[i].equals(user)){
-				if (player.equals(S)){
-					return ConsoleError(119, name);
+		if(users != null){
+			String[] usersplit = users.split(",");
+			for (int i = 0; i < usersplit.length; i++){
+				if (usersplit[i].equals(user)){
+					if (player.equals(S)){
+						return ConsoleError(119, user);
+					}else{
+						return Error(119, player, user);
+					}
 				}else{
-					return Error(119, player, name);
+					n.append(usersplit[i]+",");
 				}
-			}else{
-				n.append(usersplit[i]+",");
 			}
 		}
 		n.append(user);
@@ -408,12 +416,19 @@ public class dCActionHandler {
 				return Error(122, player, own);
 			}
 		}
-		if (JointAccountUserCheck(own, name)){ RemoveJointUser(player, own, name, admin); }
 		String owners = dCD.getJointOwners(name);
 		String[] ownsplit = owners.split(",");
 		StringBuffer n = new StringBuffer();
 		for (int i = 0; i < ownsplit.length; i++){
-			n.append(ownsplit[i]+",");
+			if (ownsplit[i].equals(own)){
+				if (player.equals(S)){
+					return ConsoleError(122, own);
+				}else{
+					return Error(122, player, own);
+				}
+			}else{
+				n.append(ownsplit[i]+",");
+			}
 		}
 		n.append(own);
 		dCD.updateJointOwners(name, n.toString());
@@ -463,9 +478,11 @@ public class dCActionHandler {
 		String owners = dCD.getJointOwners(name);
 		String[] ownsplit = owners.split(",");
 		StringBuffer n = new StringBuffer();
-		for (int i = 0; i < ownsplit.length; i++){
-			if (!ownsplit[i].equals(own)){
-				n.append(ownsplit[i]+",");
+		if(owners != null){
+			for (int i = 0; i < ownsplit.length; i++){
+				if (!ownsplit[i].equals(own)){
+					n.append(ownsplit[i]+",");
+				}
 			}
 		}
 		dCD.updateJointOwners(name, n.toString());
@@ -507,11 +524,13 @@ public class dCActionHandler {
 			}
 		}
 		String users = dCD.getJointUsers(name);
-		String[] usersplit = users.split(",");
 		StringBuffer n = new StringBuffer();
-		for (int i = 0; i < usersplit.length; i++){
-			if (!usersplit[i].equals(user)){
-				n.append(usersplit[i]+",");
+		if(users != null){
+			String[] usersplit = users.split(",");
+			for (int i = 0; i < usersplit.length; i++){
+				if (!usersplit[i].equals(user)){
+					n.append(usersplit[i]+",");
+				}
 			}
 		}
 		dCD.updateJointUsers(name, n.toString());
