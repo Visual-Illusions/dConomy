@@ -375,8 +375,8 @@ public class dCListener extends PluginListener{
 				return dCAH.ConsoleMoneyHelp();
 			}
 		}else if (cmd[0].equals("bank")){
-			if (cmd.length < 2){ dCD.log.info("ERROR");
-			
+			if (cmd.length < 2){ 
+				dCD.log.info("ERROR");
 			}else if (cmd[1].equals("reset")){
 				if (cmd.length < 3){
 					return dCAH.ConsoleError(120, "");
@@ -415,75 +415,77 @@ public class dCListener extends PluginListener{
 				if((cmd[1].equals("help")) || (cmd[1].equals("?"))){
 					return dCAH.ConsoleJointHelp();
 				}
+			}else if (cmd.length == 2){
+				return dCAH.DisplayBalance(S, 3, cmd[1], true);
 			}else if (cmd.length > 2){
-				//Balance Stuff TODO
-			}else if (cmd[2].equals("create") || cmd[2].equals("-c")){
-				return dCAH.CreateJointAccount(S, cmd[1]);
-			}else if (cmd[2].equals("delete") || cmd[2].equals("-del")){
-				return dCAH.DeleteJointAccount(S, cmd[1], true);
-			}else if (cmd[2].equals("withdraw") || cmd[2].equals("-w")){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.JointWithdraw(S, cmd[1], cmd[3], true);
-				}
-			}else if (cmd[2].equals("deposit") || cmd[2].equals("-d")){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.JointDeposit(S, cmd[1], cmd[3], true);
-				}
-			}else if (cmd[2].equals("addowner") || cmd[2].equals("-ao")){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(112, "");
-				}else{
-					return dCAH.AddJointOwner(S, cmd[3], cmd[1], true);
-				}
-			}else if (cmd[2].equals("removeowner") || cmd[2].equals("-ro")){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(112, "");
-				}else{
-					return dCAH.RemoveJointOwner(S, cmd[1], cmd[3], true);
-				}
-			}else if ((cmd[2].equals("adduser")) || (cmd[2].equals("-au"))){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(121, "");
-				}else{
-					return dCAH.AddJointUser(S, cmd[3], cmd[1], true);
-				}
-			}else if ((cmd[2].equals("removeuser")) || (cmd[2].equals("-ru"))){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(121, "");
-				}else{
-					return dCAH.RemoveJointUser(S, cmd[1], cmd[3], true);
-				}
-			}else if ((cmd[2].equals("setusermax")) || (cmd[2].equals("-sum"))){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.setJointUserMaxWithdraw(S, cmd[1], cmd[2], true);
-				}
-			}else if ((cmd[2].equals("usermax")) || (cmd[2].equals("-um"))){
-				return dCAH.checkJointUserMaxWithdraw(S, cmd[1], true);
-			}else if (cmd[2].equals("add") || cmd[2].equals("-a")){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.addJointBalance(S, cmd[1], cmd[3]);
-				}
-			}else if ((cmd[1].equals("remove")) || (cmd[1].equals("-r"))){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.removeJointBalance(S, cmd[1], cmd[3]);
-				}
-			}else if ((cmd[1].equals("reset")) || (cmd[1].equals("-r"))){
-				return dCAH.resetJointBalance(S, cmd[1]);
-			}else if ((cmd[1].equals("set")) || (cmd[1].equals("-s"))){
-				if (cmd.length < 4){
-					return dCAH.ConsoleError(106, "");
-				}else{
-					return dCAH.setJointBalance(S, cmd[1], cmd[3]);
+				if (cmd[2].equals("create") || cmd[2].equals("-c")){
+					return dCAH.CreateJointAccount(S, cmd[1]);
+				}else if (cmd[2].equals("delete") || cmd[2].equals("-del")){
+					return dCAH.DeleteJointAccount(S, cmd[1], true);
+				}else if (cmd[2].equals("withdraw") || cmd[2].equals("-w")){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.JointWithdraw(S, cmd[1], cmd[3], true);
+					}
+				}else if (cmd[2].equals("deposit") || cmd[2].equals("-d")){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.JointDeposit(S, cmd[1], cmd[3], true);
+					}
+				}else if (cmd[2].equals("addowner") || cmd[2].equals("-ao")){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(112, "");
+					}else{
+						return dCAH.AddJointOwner(S, cmd[3], cmd[1], true);
+					}
+				}else if (cmd[2].equals("removeowner") || cmd[2].equals("-ro")){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(112, "");
+					}else{
+						return dCAH.RemoveJointOwner(S, cmd[1], cmd[3], true);
+					}
+				}else if ((cmd[2].equals("adduser")) || (cmd[2].equals("-au"))){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(121, "");
+					}else{
+						return dCAH.AddJointUser(S, cmd[3], cmd[1], true);
+					}
+				}else if ((cmd[2].equals("removeuser")) || (cmd[2].equals("-ru"))){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(121, "");
+					}else{
+						return dCAH.RemoveJointUser(S, cmd[1], cmd[3], true);
+					}
+				}else if ((cmd[2].equals("setusermax")) || (cmd[2].equals("-sum"))){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.setJointUserMaxWithdraw(S, cmd[1], cmd[2], true);
+					}
+				}else if ((cmd[2].equals("usermax")) || (cmd[2].equals("-um"))){
+					return dCAH.checkJointUserMaxWithdraw(S, cmd[1], true);
+				}else if (cmd[2].equals("add") || cmd[2].equals("-a")){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.addJointBalance(S, cmd[1], cmd[3]);
+					}
+				}else if ((cmd[1].equals("remove")) || (cmd[1].equals("-r"))){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.removeJointBalance(S, cmd[1], cmd[3]);
+					}
+				}else if ((cmd[1].equals("reset")) || (cmd[1].equals("-r"))){
+					return dCAH.resetJointBalance(S, cmd[1]);
+				}else if ((cmd[1].equals("set")) || (cmd[1].equals("-s"))){
+					if (cmd.length < 4){
+						return dCAH.ConsoleError(106, "");
+					}else{
+						return dCAH.setJointBalance(S, cmd[1], cmd[3]);
+					}
 				}
 			}
 		}
@@ -492,7 +494,7 @@ public class dCListener extends PluginListener{
 	
 	public void onLogin(Player player){
 		if (player.canUseCommand("/money")){
-			if (!dCD.keyExists(player.getName(), "account")){
+			if (!dCD.keyExists(player.getName(), "Account")){
 				dCD.setInitialBalance(dCD.getStartingBalance(), player.getName());
 			}
 		}

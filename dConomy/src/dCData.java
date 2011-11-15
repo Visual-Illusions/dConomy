@@ -540,7 +540,7 @@ public class dCData {
 		JUMWA = dCSettings.getDouble("JointUserMaxWithdrawAmount");
 		aoc = dCSettings.getBoolean("AOCAPB");
 		
-		if (startingbalance < 0){
+		if (startingbalance < 0.01){
 			startingbalance = 0;
 		}
 		
@@ -831,8 +831,7 @@ public class dCData {
 	
 	//Return Starting Balance for new players
 	public double getStartingBalance(){
-		double startbal = Double.valueOf((String.valueOf(numform.format(startingbalance))));
-		return startbal;
+		return startingbalance;
 	}
 	
 	public boolean JointAccountUserCheck(String player, String name){
@@ -975,7 +974,7 @@ public class dCData {
     			rs = ps.executeQuery();
     			while (rs.next()){
     				bal = Double.parseDouble(rs.getString(column));
-  	    	 	 }
+    			}
 			}catch (SQLException ex){
 				log.severe("[dConomy] Unable to get '"+type+" Balance for " + player + "!");
 			}finally{
@@ -1801,23 +1800,54 @@ public class dCData {
 	}
 	
 	public Map<String, Double> returnMap(String type) throws Exception {
-		String file = getFile(type);
 		Map<String, Double> map = new HashMap<String, Double>();
-		BufferedReader reader = new BufferedReader(new FileReader(dire+file));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			if (line.trim().length() == 0) {
-				continue;
+		if(MySQL){
+			String Column = getMySQLColumn(type);
+			Connection conn = getSQLConn();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			try{
+				ps = conn.prepareStatement("SELECT Player,"+Column+" FROM dConomy");
+				rs = ps.executeQuery();
+				while(rs.next()){
+					map.put(rs.getString("Player"), rs.getDouble(Column));
+				}
+			} catch (SQLException ex) {
+				log.severe("[dConomy] - Unable to create balance map!");
+			}finally{
+				try{
+					if (ps != null){
+						ps.close();
+					}
+					if (rs != null){
+						rs.close();
+					}
+					if (conn != null){
+						conn.close();
+					}
+				}catch (SQLException sqle) {
+					log.severe("[dConomy] - Could not close connection to SQL");
+				}
 			}
-			if (line.charAt(0) == '#') {
-				continue;
-			}
-			int delimPosition = line.indexOf('=');
-			String key = line.substring(0, delimPosition).trim();
-			double value = Double.valueOf(line.substring(delimPosition + 1).trim());
-			map.put(key, value);
 		}
-		reader.close();
+		else{
+			String file = getFile(type);
+			BufferedReader reader = new BufferedReader(new FileReader(dire+file));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.trim().length() == 0) {
+					continue;
+				}
+				if (line.charAt(0) == '#') {
+					continue;
+				}
+				int delimPosition = line.indexOf('=');
+				String key = line.substring(0, delimPosition).trim();
+				double value = Double.valueOf(line.substring(delimPosition + 1).trim());
+				map.put(key, value);
+			}
+			reader.close();
+		}
 		return map;
 	}
 }

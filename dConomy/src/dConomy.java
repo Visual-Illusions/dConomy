@@ -40,9 +40,9 @@ import java.util.logging.Logger;
 */
 
 public class dConomy extends Plugin{
-	private String name = "[dConomy]";
-	private String codename = "Haruko";
-	//version = 1.1
+	String name = "[dConomy]";
+	String codename = "Excel";
+	//version = 1.2
 	Logger log = Logger.getLogger("Minecraft");
 	static dCData dCD;
 	static dCListener dCL;

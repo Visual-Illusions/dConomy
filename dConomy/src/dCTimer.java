@@ -67,14 +67,14 @@ public class dCTimer{
 			public void run(){
 				accounts = new HashMap<String, Double>();
 				try {
-					accounts = dCD.returnMap("bank");
+					accounts = dCD.returnMap("Bank");
 				} catch (Exception e) {
 					dCD.log.severe("[dConomy] - Unable to retrieve array of bank balances!");
 				}
 				for (String acc : accounts.keySet()){
 					double balance = accounts.get(acc);
 					double newbalance = balance + (balance*interest);
-					dCD.setBalance(newbalance, acc, "bank");
+					dCD.setBalance(newbalance, acc, "Bank");
 				}
 				dCD.log.info("[dConomy] - Bank Interest Paid!");
 				dCD.SetReset("BankTimerResetTo", System.currentTimeMillis()+bdelay);

@@ -1395,7 +1395,7 @@ public class dCActionHandler {
 	}
 	
 	public boolean ConsoleMoneyHelp(){
-		dCD.log.info(ConsoleDeColor(dCD.getHelpMessage(515)));
+		dCD.log.info(ConsoleDeColor(dCD.getHelpMessage(501)));
 		dCD.log.info(ConsoleDeColor(dCD.getHelpMessage(502)));
 		dCD.log.info(ConsoleDeColor(dCD.getHelpMessage(540)));
 		dCD.log.info(ConsoleDeColor(dCD.getHelpMessage(507)));
@@ -1527,7 +1527,7 @@ public class dCActionHandler {
 					player.sendMessage(dCD.getErrorMessage(127, name));
 					return true;
 				default: 
-					player.sendMessage("Unknown Error Code!"+errorcode);
+					player.sendMessage("Unknown Error Code:"+errorcode);
 					return true;
 				}
 			}
@@ -1647,7 +1647,7 @@ public class dCActionHandler {
 			dCD.log.info(decolored[0]);
 			return true;
 		default: 
-			dCD.log.info("Unknown Error Code!"+errorcode);
+			dCD.log.info("Unknown Error Code:"+errorcode);
 			return true;
 		}
 	}
