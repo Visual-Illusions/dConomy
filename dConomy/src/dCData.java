@@ -264,7 +264,6 @@ public class dCData {
 	String Message639 = "<p1> viewed <p2>'s rank";
 	
 	//Number Formating
-	NumberFormat numform = new DecimalFormat("0.00");
 	NumberFormat displayform = new DecimalFormat("#,##0.00");
 	
 	//Misc
@@ -993,12 +992,12 @@ public class dCData {
     	}else{
     		String file = getFile(type);
 			PropertiesFile acc = new PropertiesFile(dire+file);
-    		return Double.parseDouble(String.valueOf(numform.format(acc.getDouble(player))));
+    		return acc.getDouble(player);
 		}
 	}
 	
 	public void setBalance(double bal, String player, String type){
-		double newbal = Double.parseDouble(String.valueOf(numform.format(bal)));
+		double newbal = bal;
 		if (MySQL){
 			String column = getMySQLColumn(type);
 			Connection conn = getSQLConn();
@@ -1030,7 +1029,7 @@ public class dCData {
 	}
 	
 	public void setInitialBalance(double bal, String player){
-		double newbal = Double.parseDouble(String.valueOf(numform.format(bal)));
+		double newbal = bal;
 		if (MySQL){
 			Connection conn = getSQLConn();
 			PreparedStatement ps = null;
@@ -1160,7 +1159,7 @@ public class dCData {
 			return bal;
     	}else{
     		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		return Double.parseDouble(String.valueOf(numform.format(dCJointAccounts.getDouble("balance"))));
+    		return dCJointAccounts.getDouble("balance");
 		}
 	}
 	
@@ -1199,7 +1198,7 @@ public class dCData {
 	}
 	
 	public void setJointBalance(double bal, String accName){
-		double newbal = Double.parseDouble(String.valueOf(numform.format(bal)));
+		double newbal = bal;
 		if (MySQL){
 			Connection conn = getSQLConn();
 			PreparedStatement ps = null;
