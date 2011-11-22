@@ -41,8 +41,8 @@ import java.util.logging.Logger;
 
 public class dConomy extends Plugin{
 	String name = "[dConomy]";
-	String codename = "Excel";
-	//version = 1.2
+	String codename = "Yukina";
+	//version = 1.3
 	Logger log = Logger.getLogger("Minecraft");
 	static dCData dCD;
 	static dCListener dCL;
@@ -57,6 +57,9 @@ public class dConomy extends Plugin{
 	public void disable(){
 		dCBT.cancel();
 		dCJWDT.cancel();
+		etc.getInstance().removeCommand("/money");
+		etc.getInstance().removeCommand("/bank");
+		etc.getInstance().removeCommand("/joint");
 		log.info(name + " CodeName: "+codename+" Disabled!");
 	}
 
@@ -70,6 +73,9 @@ public class dConomy extends Plugin{
 		etc.getLoader().addListener(PluginLoader.Hook.LOGIN, dCL, this, PluginListener.Priority.MEDIUM);
 		etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dCL, this, PluginListener.Priority.MEDIUM);
 		etc.getLoader().addCustomListener(dCH.dCBalance);
+		etc.getInstance().addCommand("/money", "help (?) - display dConomy Money Help");
+		etc.getInstance().addCommand("/bank", "help (?) - display dConomy Bank Help");
+		etc.getInstance().addCommand("/joint","help (?) - display dConomy Joint Help");
 		log.info(name +" CodeName: "+codename+" Initialized!");
 	}
 }

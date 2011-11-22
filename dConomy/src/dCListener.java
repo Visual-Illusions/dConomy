@@ -213,21 +213,21 @@ public class dCListener extends PluginListener{
 				if (cmd.length == 1){
 					dCAH.PlayerMessage(player.getName(), dCD.getHelpMessage(514));
 					return true;
-				}else if (cmd.length < 3){
+				}else if (cmd.length == 2){
 					if ((cmd[1].equals("?")) || (cmd[1].equals("help"))){
-						if (cmd.length > 4){
-							if (cmd[3].equals("admin")){
-								if (player.canUseCommand("/dcadmin")){
-									return dCAH.JointAdminHelp(player.getName());
-								}
-							}
-						}
 						return dCAH.JointHelp(player.getName(), player.canUseCommand("/dcadmin"), player.canUseCommand("/dccreate"));
 					}else{
 						return dCAH.DisplayBalance(player.getName(), 3, cmd[1], player.isAdmin());
 					}
-				}else{
-					if (cmd[2].equals("create") || cmd[2].equals("-c")){
+				}else if (cmd.length > 2){
+					if ((cmd[1].equals("?")) || (cmd[1].equals("help"))){
+						if (cmd[2].equals("admin")){
+							if (player.canUseCommand("/dcadmin")){
+								return dCAH.JointAdminHelp(player.getName());
+							}
+						}
+					}
+					else if (cmd[2].equals("create") || cmd[2].equals("-c")){
 						if ((player.canUseCommand("/dccreate")) || (player.canUseCommand("/dcadmin"))){
 							return dCAH.CreateJointAccount(player.getName(), cmd[1]);
 						}else{

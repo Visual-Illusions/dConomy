@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -88,6 +89,7 @@ public class dCData {
 	boolean iConvert = false;
 	double JUMWA = 25;
 	boolean aoc = false;
+	boolean MBJ = false;
 	
 	//Error Messages (100 Series)
 	String ErrorMessage101 = "<rose>You do not have enough <m> to complete transaction!";
@@ -205,9 +207,9 @@ public class dCData {
 	String Message528 = "   <gold>create <yellow>(-c) <green>: create Account";
 	String Message529 = "   <gold>delete <yellow>(-del) <green>: deposit into Account";
 	String Message530 = "   <gold>addowner <yellow>(-ao) <rose><p><green>: add owner to Account";
-	String Message531 = "   <gold>removeowner <yellow>(-ro) <rose><p><green>: add owner to Account";
-	String Message532 = "   <gold>adduser <yellow>(-au) <rose><p><green>: add owner to Account";
-	String Message533 = "   <gold>removeuser <yellow>(-ru) <rose><p><green>: remove owner from Account";
+	String Message531 = "   <gold>removeowner <yellow>(-ro) <rose><p><green>: remove owner from Account";
+	String Message532 = "   <gold>adduser <yellow>(-au) <rose><p><green>: add user to Account";
+	String Message533 = "   <gold>removeuser <yellow>(-ru) <rose><p><green>: remove user from Account";
 	String Message534 = "   <gold>setusermax <yellow>(-su) <rose><a><green>: set UserMaxWithdraw per set period";
 	String Message535 = "   <gold>reset <yellow>(-rt) <rose><a><green>: reset Account to 0";
 	String Message536 = "   <gold>set <yellow>(-s) <rose><a><green>: set Account to amount";
@@ -538,6 +540,7 @@ public class dCData {
 		iConvert = dCSettings.getBoolean("Convert-iConomy");
 		JUMWA = dCSettings.getDouble("JointUserMaxWithdrawAmount");
 		aoc = dCSettings.getBoolean("AOCAPB");
+		MBJ = dCSettings.getBoolean("Prefix-MBJ");
 		
 		if (startingbalance < 0.01){
 			startingbalance = 0;
@@ -572,8 +575,6 @@ public class dCData {
 			dCJWDT.SetUpJWDT(this, JWDelay, jwreset);
 			log.info("[dConomy] - JointAccount User Withdraw Delay Timer Started!");
 		}
-		
-		
 		
 		DataBase = dCMySQLConn.getString("DataBase", DataBase);
 		UserName = dCMySQLConn.getString("UserName", UserName);
@@ -773,15 +774,18 @@ public class dCData {
 		
 		if (JWDelay > 0){
 			String filename= direJoint + JUWDLoc;
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(filename));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					JUWD.add(line);
+			File file = new File(filename);
+			if(file.exists()){
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(filename));
+					String line;
+					while ((line = reader.readLine()) != null) {
+						JUWD.add(line);
+					}
+					reader.close();
+				}catch (IOException e){
+					log.severe("[dConomy] - Unable to Load JUWD Users");
 				}
-				reader.close();
-			}catch (IOException e){
-				log.severe("[dConomy] - Unable to Load JUWD Users");
 			}
 		}
 		
@@ -797,7 +801,7 @@ public class dCData {
 	}
 	
 	public void JointUserWithdrawDelayAdd(String name){
-		if (JWDelay > 0);
+		if (JWDelay > 0){
 			JUWD.add(name);
 			String filename= direJoint + JUWDLoc;
 			File JUWDFile = new File(filename);
@@ -815,6 +819,7 @@ public class dCData {
 			} catch (IOException e) {
 				log.severe("[dConomy] - Unable to add user to JUWD Transaction!");
 			}
+		}
 	}
 	
 	public void JointUserWithdrawDelayReset(){
@@ -868,7 +873,7 @@ public class dCData {
 			try {
 				conn = DriverManager.getConnection(DataBase, UserName, Password);
 			} catch (SQLException e) {
-				log.severe("[dConomy] - Unable to set MySQL Connection");
+				log.log(Level.SEVERE, "[dConomy] - Unable to set MySQL Connection ", e);
 			}
 		}
 		return conn;
@@ -880,22 +885,13 @@ public class dCData {
 		String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
 		Connection conn = getSQLConn();
 		try{
-			if (conn != null){
-				conn.setAutoCommit(false);
-				Statement st = conn.createStatement();
-				st.executeUpdate(table1);
-				st.executeUpdate(table2);
-				st.executeUpdate(table3);
-			}
+			Statement st = conn.createStatement();
+			st.executeUpdate(table1);
+			st.executeUpdate(table2);
+			st.executeUpdate(table3);
+			conn.close();
 		}catch (SQLException sqle) {
-			log.severe("[dConomy] - Could not create the table");
-		} finally {
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException ex) {
-				log.severe("[dConomy] - Could not close connection to SQL");
-			}
+			log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.CreateTable() ", sqle);
 		}
 	}
 	
@@ -910,16 +906,9 @@ public class dCData {
     			if (rs.next()){
     				exists = true;
     			}
+    			conn.close();
     		} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to verify existance for " + key + "!");
-			}finally{
-				try{
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.keyExists() ", ex);
 			}
     		return exists;
 		}else{
@@ -930,34 +919,25 @@ public class dCData {
 	}
 	
 	public boolean JointkeyExists(String name){
+		boolean exists = false;
 		if (MySQL){
-			boolean exists = false;
 			Connection conn = null;
     		try{
     			conn = getSQLConn();
     			PreparedStatement ps = conn.prepareStatement("SELECT * FROM dConomyJoint WHERE Name = ?");
     			ps.setString(1, name);
     			ResultSet rs = ps.executeQuery();
-    			if (rs.next()){
-    				exists = true;
-    			}
+    			exists = rs.next();
+    			conn.close();
     		} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to verify existance for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.JointkeyExists() ", ex);
 			}
-    		return exists;
 		}else{
 			String jointloc = getJointFile(name);
 			File joint = new File(jointloc);
-			return joint.exists();
+			exists = joint.exists();
 		}
+		return exists;
 	}
 
 	public double getBalance(String player, String type){
@@ -971,22 +951,12 @@ public class dCData {
 				ps = conn.prepareStatement("SELECT "+column+" FROM dConomy WHERE Player = ?");
 				ps.setString(1, player);
     			rs = ps.executeQuery();
-    			while (rs.next()){
+    			if (rs.next()){
     				bal = Double.parseDouble(rs.getString(column));
     			}
+    			conn.close();
 			}catch (SQLException ex){
-				log.severe("[dConomy] Unable to get '"+type+" Balance for " + player + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getBalance() ", ex);
 			}
 			return bal;
     	}else{
@@ -1007,19 +977,9 @@ public class dCData {
 				ps.setDouble(1, newbal);
 				ps.setString(2, player);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to update '"+type+" Balance' for " + player + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setBalance() ", ex);
 			}
 		}else{
 			String file = getFile(type);
@@ -1039,19 +999,9 @@ public class dCData {
 				ps.setDouble(2, newbal);
 				ps.setDouble(3, 0);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to 'Create' new account for " + player + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setInitialBalance() ", ex);
 			}
 		}else{
 			PropertiesFile acc = new PropertiesFile(dire+"dCAccounts.txt");
@@ -1062,7 +1012,7 @@ public class dCData {
 	}
 	
 	public String getJointUsers(String name){
-		String Users = "Users";
+		String Users = "";
 		if (MySQL){
 			Connection conn = getSQLConn();
 			PreparedStatement ps = null;
@@ -1071,22 +1021,12 @@ public class dCData {
 				ps = conn.prepareStatement("SELECT Users FROM dConomyJoint WHERE Name = ?");
 				ps.setString(1, name);
 				rs = ps.executeQuery();
-				while (rs.next()){
+				if (rs.next()){
 					Users = rs.getString("Users");
 				}
+				conn.close();
 			}catch (SQLException ex){
-				log.severe("[dConomy] - Unable to get 'Users' for JointsAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointUsers() ", ex);
 			}
     	}else{
     		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1105,22 +1045,12 @@ public class dCData {
 				ps = conn.prepareStatement("SELECT Owners FROM dConomyJoint WHERE Name = ?");
 				ps.setString(1, name);
 				rs = ps.executeQuery();
-				while (rs.next()){
+				if (rs.next()){
 					Owners = rs.getString("Owners");
 				}
+				conn.close();
 			}catch (SQLException ex){
-				log.severe("[dConomy] - Unable to get 'Owners' for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointOwners() ", ex);
 			}
     	}else{
     		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1139,22 +1069,12 @@ public class dCData {
 				ps = conn.prepareStatement("SELECT Balance FROM dConomyJoint WHERE Name = ?");
 				ps.setString(1, name);
     			rs = ps.executeQuery();
-    			while (rs.next()){
+    			if (rs.next()){
     				bal = Double.parseDouble(rs.getString("Balance"));
   	    	 	 }
+    			conn.close();
 			}catch (SQLException ex){
-				log.severe("[dConomy] Unable to get Balance for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointBalance() ", ex);
 			}
 			return bal;
     	}else{
@@ -1173,22 +1093,12 @@ public class dCData {
 				ps = conn.prepareStatement("SELECT UserMaxWithdraw FROM dConomyJoint WHERE Name = ?");
 				ps.setString(1, name);
     			rs = ps.executeQuery();
-    			while (rs.next()){
+    			if(rs.next()){
     				bal = Double.parseDouble(rs.getString("UserMaxWithdraw"));
   	    	 	 }
+    			conn.close();
 			}catch (SQLException ex){
-				log.severe("[dConomy] Unable to get Balance for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointUserWithdrawMax() ", ex);
 			}
 			return bal;
     	}else{
@@ -1207,19 +1117,9 @@ public class dCData {
 				ps.setDouble(1, newbal);
 				ps.setString(2, accName);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to update 'Balance' for JointAccount: " + accName + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setJointlBalance() ", ex);
 			}
 		}else{
 			dCJointAccounts = new PropertiesFile(direJoint + accName + JointAcc);
@@ -1239,19 +1139,9 @@ public class dCData {
 				ps.setDouble(4, 0);
 				ps.setDouble(5, JUMWA);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to create new JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.createJointAccount() ", ex);
 			}
 		}else{
 			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1270,19 +1160,9 @@ public class dCData {
 				ps = conn.prepareStatement("DELETE FROM dConomyJoint WHERE Name = ?");
 				ps.setString(1, accName);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to delete JointAccount: " + accName + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.deleteJointAccount() ", ex);
 			}
 		}else{
 			File file = new File(direJoint + accName + JointAcc);
@@ -1299,19 +1179,9 @@ public class dCData {
 				ps.setString(1, newOwners);
 				ps.setString(2, name);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to update 'Owners' for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointOwners() ", ex);
 			}
 		}else{
 			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1328,19 +1198,9 @@ public class dCData {
 				ps.setString(1, newUsers);
 				ps.setString(2, name);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to update 'Users' for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointUsers() ", ex);
 			}
 		}else{
 			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1358,18 +1218,7 @@ public class dCData {
 				ps.setString(2, name);
 				ps.executeUpdate();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] Unable to update 'Users' for JointAccount: " + name + "!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointMaxUserWithdraw() ", ex);
 			}
 		}else{
 			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
@@ -1463,9 +1312,9 @@ public class dCData {
 		case 311: return parseMessage(Message311, player, type, amount);
 		case 312: return parseMessage(Message312, player, type, amount);
 		
-		case 401: return parseMessage(Message401, player, type, amount).replace("§2[§fdCo§2]§f", "");
-		case 402: return parseMessage(Message402, player, type, amount).replace("§2[§fdCo§2]§f", "");
-		case 403: return parseMessage(Message403, player, type, amount).replace("§2[§fdCo§2]§f", "");
+		case 401: return parseMessage(Message401, player, type, amount).replace("§2[§fdCo§2]§f ", "").replace("§2[§fMONEY§2]§f ", " ");
+		case 402: return parseMessage(Message402, player, type, amount).replace("§2[§fdCo§2]§f ", "").replace("§2[§fMONEY§2]§f ", " ");
+		case 403: return parseMessage(Message403, player, type, amount).replace("§2[§fdCo§2]§f ", "").replace("§2[§fMONEY§2]§f ", " ");
 		case 404: return parseMessage(Message404, player, type, amount);
 		case 405: return parseMessage(Message405, player, type, amount);
 		case 406: return parseMessage(Message406, player, type, amount);
@@ -1547,7 +1396,7 @@ public class dCData {
 		case 107: return parseMessage(ErrorMessage107, name, type, 0);
 		case 108: return parseMessage(ErrorMessage108, name, type, 0);
 		case 109: return parseMessage(ErrorMessage109, name, type, 0);
-		case 110: return parseMessage(ErrorMessage110, type,  name, 0);
+		case 110: return parseMessage(ErrorMessage110, type, name, 0);
 		case 111: return parseMessage(ErrorMessage111, type, name, 0);
 		case 112: return parseMessage(ErrorMessage112, name, type, 0);
 		case 113: return parseMessage(ErrorMessage113, name, type, 0);
@@ -1637,7 +1486,7 @@ public class dCData {
 		parsedMessage = parsedMessage.replace("<rank>", type);
 		parsedMessage = parsedMessage.replace("<min>", mins);
 		parsedMessage = parsedMessage.replace("<xmin>", String.valueOf(xm));
-		return "§2[§fdCo§2]§f "+parsedMessage;
+		return prefix()+parsedMessage;
 	}
 	
 	public String ColorCode(String codereplace){
@@ -1685,6 +1534,15 @@ public class dCData {
 		return messcheck;
 	}
 	
+	public String prefix(){
+		if(MBJ){
+			return "§2[§fMoney§2]§f ";
+		}
+		else{
+			return "§2[§fdCo§2]§f ";
+		}
+	}
+	
 	public void LogTrans(String Action){
 		date = new Date();
 		if (MySQL){
@@ -1696,19 +1554,9 @@ public class dCData {
 				ps.setString(2, dateFormatTime.format(date));
 				ps.setString(3, Action);
 				ps.executeUpdate();
+				conn.close();
 			} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to Log Transaction!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.LogTrans() ", ex);
 			}
 		}else{
 			String filename= direTrans + String.valueOf(dateFormat.format(date)) + TransLoc;
@@ -1755,21 +1603,9 @@ public class dCData {
 						while (rs.next()) {
 							iBalances.put(rs.getString("player"), Integer.valueOf(rs.getString("balance")));
 						}
-						} catch (SQLException ex) {
-							log.severe("[dConomy] - Unable to Read iBalances from database!");
-						} finally {
-							try {
-								if (ps != null) {
-									ps.close();
-								}
-
-								if (conn != null) {
-									conn.close();
-								}
-							} catch (SQLException ex) {
-								log.severe("[dConomy] - Could not close connection to SQL!");
-							}
-						}
+					} catch (SQLException ex) {
+						log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.iConvertion() ", ex);
+					}
 					for(String name : iBalances.keySet()){
 						setInitialBalance(iBalances.get(name), name);
 					}
@@ -1812,21 +1648,7 @@ public class dCData {
 					map.put(rs.getString("Player"), rs.getDouble(Column));
 				}
 			} catch (SQLException ex) {
-				log.severe("[dConomy] - Unable to create balance map!");
-			}finally{
-				try{
-					if (ps != null){
-						ps.close();
-					}
-					if (rs != null){
-						rs.close();
-					}
-					if (conn != null){
-						conn.close();
-					}
-				}catch (SQLException sqle) {
-					log.severe("[dConomy] - Could not close connection to SQL");
-				}
+				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.returnMap() ", ex);
 			}
 		}
 		else{
