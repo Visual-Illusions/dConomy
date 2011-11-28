@@ -149,9 +149,9 @@ public class dCActionHandler {
 		}catch(NumberFormatException nfe){
 			return Error(103, player, "");
 		}
-		if (withdraw < 0){ return Error(126, player, ""); }
+		if (withdraw < 0.01){ return Error(126, player, ""); }
 		double newBank = dCD.getBalance(player, B) - withdraw;
-		if (newBank < 0){ return Error(103, player, ""); }
+		if (newBank < 0.01){ return Error(103, player, ""); }
 		double newAcc = dCD.getBalance(player, A) + withdraw;
 		dCD.setBalance(newBank, player, B);
 		dCD.setBalance(newAcc, player, A);
@@ -180,11 +180,11 @@ public class dCActionHandler {
 		}catch(NumberFormatException nfe){
 			return Error(103, player, "");
 		}
-		if (withdraw < 0){ return Error(126, player, name); }
+		if (withdraw < 0.01){ return Error(126, player, name); }
 		if (((!owner)&&(!admin)) && (withdraw > dCD.getJointUserWithdrawMax(name))){ return Error(117, player, ""); }
 		if (dCD.JointUserWithDrawDelayCheck(name+":"+player)){ return Error(116, player, ""); }
 		double newJo = dCD.getJointBalance(name) - withdraw;
-		if (newJo < 0){ return Error(105, player, name);}
+		if (newJo < 0.01){ return Error(105, player, name);}
 		double newAcc = dCD.getBalance(player, A) + withdraw;
 		dCD.setJointBalance(newJo, name);
 		dCD.setBalance(newAcc, player, A);
@@ -213,9 +213,9 @@ public class dCActionHandler {
 		}catch(NumberFormatException nfe){
 			return Error(103, player, "");
 		}
-		if (deposit < 0){ return Error(126, player, "");}
+		if (deposit < 0.01){ return Error(126, player, "");}
 		double newAcc = dCD.getBalance(player, A) - deposit;
-		if (newAcc < 0){ return Error(101, player, "");}
+		if (newAcc < 0.01){ return Error(101, player, "");}
 		double newJo = dCD.getJointBalance(name) + deposit;
 		dCD.setJointBalance(newJo, name);
 		dCD.setBalance(newAcc, player, A);
@@ -245,7 +245,7 @@ public class dCActionHandler {
 		}catch (NumberFormatException nfe){
 			return Error(103, sender, "");
 		}
-		if (change < 0){ return Error(126, sender, ""); }
+		if (change < 0.01){ return Error(126, sender, ""); }
 		if (sender.equals(receiver)){ return Error(118, sender, ""); }
 		if (dCD.getPayForwardCheck(sender)){
 			if (dCD.getPayForwardCheck(receiver)){
@@ -552,7 +552,7 @@ public class dCActionHandler {
 		}catch (NumberFormatException nfe){
 			return Error(103, sender, "");
 		}
-		if (pay < 0){ return Error(126, sender, ""); }
+		if (pay < 0.01){ return Error(126, sender, ""); }
 		String other = NameMatcher(receiver);
 		if (other != null){
 			if (!dCD.keyExists(other, A)){
@@ -582,7 +582,7 @@ public class dCActionHandler {
 		double balanceJoint = dCD.getJointBalance(name);
 		double balancepayee = dCD.getBalance(receiver, A);
 		double deduct = balanceJoint - pay;
-		if (deduct < 0){ return Error(101, sender, "");}
+		if (deduct < 0.01){ return Error(101, sender, "");}
 		double deposit = balancepayee + pay;
 		dCD.setJointBalance(deduct, name);
 		dCD.setBalance(deposit, receiver, A);
@@ -601,13 +601,13 @@ public class dCActionHandler {
 		}catch (NumberFormatException nfe){
 			return Error(103, sender, "");
 		}
-		if (pay < 0){ return Error(126, sender, ""); }
+		if (pay < 0.01){ return Error(126, sender, ""); }
 		if (!dCD.JointkeyExists(name)){return Error(110, sender, name);}
 		if (dCD.getPayForwardCheck(sender)){ return PayForwardingJoint(sender, "", name, pay, true, admin); }
 		double balanceJoint = dCD.getJointBalance(name);
 		double balancepayer = dCD.getBalance(sender, A);
 		double deduct = balancepayer - pay;
-		if (deduct < 0){ return Error(101, sender, "");}
+		if (deduct < 0.01){ return Error(101, sender, "");}
 		double deposit = balanceJoint + pay;
 		dCD.setJointBalance(deposit, name);
 		dCD.setBalance(deduct, sender, A);
@@ -635,7 +635,7 @@ public class dCActionHandler {
 		double balanceSender = Double.valueOf(checkfrom[0]);
 		payfrom = checkfrom[1];
 		double deduct = balanceSender - amount;
-		if (deduct < 0){ return Error(101, sender, "");}
+		if (deduct < 0.01){ return Error(101, sender, "");}
 		if (!(payfrom.equals(A) || payfrom.equals(B))){
 			if ((!admin) && (deduct > dCD.getJointUserWithdrawMax(payfrom))){ return Error(117, sender, ""); }
 			if (dCD.JointUserWithDrawDelayCheck(senderaccount+":"+sender)){ return Error(116, sender, ""); }
@@ -687,7 +687,7 @@ public class dCActionHandler {
 		pacc = checkto[1];
 		if(tojoint){ //Pay Joint Account
 			double pdeduct = pbalance - amount;
-			if (pdeduct < 0){
+			if (pdeduct < 0.01){
 				if (!pacc.equals(A)){
 					if (!pacc.equals(B)){
 						return Error(105, player, "");
@@ -723,7 +723,7 @@ public class dCActionHandler {
 		}else{ //Pay Player With Joint
 			double pdeposit = pbalance + amount;
 			double jdeduct = jbalance - amount;
-			if(jdeduct < 0){
+			if(jdeduct < 0.01){
 				if (!pacc.equals(A)){
 					if (!pacc.equals(B)){
 						return Error(105, player, "");
@@ -1058,7 +1058,7 @@ public class dCActionHandler {
 				return Error(103, admin, ""); 
 			}
 		}
-		if (deposit < 0){
+		if (deposit < 0.01){
 			if (admin.equals(S)){
 				String[] decolor = dCD.decolormessage(dCD.getErrorMessage(126, ""));
 				dCD.log.info(decolor[0]);
@@ -1121,7 +1121,7 @@ public class dCActionHandler {
 				return Error(103, admin, "");
 			}
 		}
-		if (balance < 0){ 
+		if (balance < 0.01){ 
 			if(admin.equals(S)){
 				return ConsoleError(126, "");
 			}else{
@@ -1158,7 +1158,7 @@ public class dCActionHandler {
 				return Error(103, admin, "");
 			}
 		}
-		if (deposit < 0){
+		if (deposit < 0.01){
 			if(admin.equals(S)){
 				return ConsoleError(126, "");
 			}else{
@@ -1196,7 +1196,7 @@ public class dCActionHandler {
 				return Error(103, admin, "");
 			}
 		}
-		if (deduct < 0){
+		if (deduct < 0.01){
 			if(admin.equals(S)){
 				return ConsoleError(126, "");
 			}else{
@@ -1211,7 +1211,7 @@ public class dCActionHandler {
 			}
 		}
 		double newbal = dCD.getJointBalance(name) - deduct;
-		if (newbal < 0){
+		if (newbal < 0.01){
 			if(admin.equals(S)){
 				return ConsoleError(127, "");
 			}else{
@@ -1286,7 +1286,7 @@ public class dCActionHandler {
 				return Error(103, player, "");
 			}
 		}
-		if (newamount < 0){ return Error(127, player, ""); }
+		if (newamount < 0.01){ return Error(127, player, ""); }
 		dCD.updateJointMaxUserWithdraw(name, newamount);
 		if (player.equals(S)){
 			String[] decolor = dCD.decolormessage(dCD.getMessage(312, "", name, newamount));
