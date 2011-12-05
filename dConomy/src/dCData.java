@@ -76,7 +76,7 @@ public class dCData {
 	//Settings
 	PluginListener dCListener;
 	boolean MySQL = false, CMySQL = false, Log = false;
-	String DataBase = "jdbc:mysql://localhost:3306/minecraft", UserName = "root", Password= "root", MoneyName = "Voin$";
+	String DataBase = "jdbc:mysql://localhost:3306/minecraft", UserName = "root", Password= "root", Driver = "com.mysql.jdbc.Driver", MoneyName = "Voin$";
 	double startingbalance = 0d;
 	int Bankdelay = 60;
 	double interest = 0.02;
@@ -286,6 +286,7 @@ public class dCData {
 
 	//Make the Directory if not exist and Add some order to the Messages File
 	public void createDirectory(){
+		boolean firstRun = false;
 		File checkDir = new File(dire);
 		File checkDireJoint = new File(direJoint);
 		File checkDirLog = new File(direTrans);
@@ -293,50 +294,33 @@ public class dCData {
 		File PropsFile = new File(dire+propsLoc);
 		File MessFile = new File(direMessages+FormatLoc);
 		if (!checkDir.exists()){
+			log.info("[dConomy] - First Run Detected! Creating Directories and Files!");
+			firstRun = true;
 			checkDir.mkdirs();
+			log.info("[dConomy] - Main Directory created!");
 		}
 		if (!checkDireJoint.exists()){
+			if(!firstRun){ log.info("[dConomy] - JointAccounts Folder was missing! Recreating!"); }
 			checkDireJoint.mkdirs();
+			log.info("[dConomy] - JointAccounts Folder created!");
 		}
 		if (!checkDirLog.exists()){
+			if(!firstRun){ log.info("[dConomy] - TransactionLogs Folder was missing! Recreating!"); }
 			checkDirLog.mkdirs();
+			log.info("[dConomy] - TransactionLogs Folder created!");
 		}
 		if (!checkDirMess.exists()){
+			if(!firstRun){ log.info("[dConomy] - Messages Folder was missing! Recreating!"); }
 			checkDirMess.mkdirs();
+			log.info("[dConomy] - Messages Folder created!");
 		}
 		if(!PropsFile.exists()){
-			try {
-			    BufferedWriter out = new BufferedWriter(new FileWriter(PropsFile));
-			    out.write("###dConomy Settings###"); out.newLine();
-			    out.write("#New Account Starting Balance value in 0.00 format (if set to less than 0 will default to 0)#"); out.newLine();
-			    out.write("Starting-Balance="+startingbalance); out.newLine();
-			    out.write("#Name to call your currency#"); out.newLine();
-			    out.write("Money-Name="+MoneyName); out.newLine();
-			    out.write("#Set to true to use MySQL#"); out.newLine();
-			    out.write("Use-MySQL="+MySQL); out.newLine();
-			    out.write("#Set to true to use Canary's MySQL Connection (MySQL needs to be true)#"); out.newLine();
-			    out.write("Use-Canary-MySQLConn="+CMySQL); out.newLine();
-			    out.write("#Set to true to log transactions#"); out.newLine();
-			    out.write("LogPayments="+Log); out.newLine();
-			    out.write("#Bank Interest Percentage (0.02 = 0.02%) (if set to 0 or less will default to 0.02)#"); out.newLine();
-			    out.write("Bank-InterestRate="+interest); out.newLine();
-			    out.write("#Bank Interest Pay Delay (in minutes) - Set to 0 to disable"); out.newLine();
-			    out.write("Bank-InterestPayDelay="+Bankdelay); out.newLine();
-			    out.write("#Joint Account Users Withdraw delay(in minutes) - Set to 0 to disable#"); out.newLine();
-			    out.write("JointUserWithdrawDelay="+JWDelay); out.newLine();
-			    out.write("#Joint Account User Max Withdraw Default#"); out.newLine();
-			    out.write("JointUserMaxWithdrawAmount="+JUMWA); out.newLine();
-			    out.write("#Admin Only Check Another Players Balance - Set to false to allow all#"); out.newLine();
-			    out.write("AOCAPB="+aoc); out.newLine();
-			    out.write("#Set to true to convert iCo Balances to dCo Balances (reverts to false after convert runs)#"); out.newLine();
-			    out.write("Convert-iConomy="+iConvert); out.newLine();
-				out.write("###EOF###");
-				out.close();
-			} catch (IOException e) {
-				log.severe("[dConomy] - Unable to create Properties File");
-			}
+			if(!firstRun){ log.info("[dConomy] - dCSettings.ini was missing! Recreating!"); }
+			CreatePropsFile(false);
 		}
 		if (!MessFile.exists()){
+			if(!firstRun){ log.info("[dConomy] - dCMessageFormat.txt was missing! Recreating!"); }
+			boolean fail = false;
 			//Keeping the Messages File from becoming a mess
 			try {
 			    BufferedWriter out = new BufferedWriter(new FileWriter(MessFile));
@@ -520,8 +504,48 @@ public class dCData {
 			    out.close();
 			} catch (IOException e) {
 				log.severe("[dConomy] - Unable to create Messages File");
+				fail = true;
 			}
+			if(!fail){ log.info("[dConomy] - dCMessageFormat.txt created!"); }
 		}
+	}
+	//With iConvert needing to be switched off  need to make sure the Props File stays clean So we will recreate the file
+	//Also this will be used with first run
+	public void CreatePropsFile(boolean iConvertCalled){
+		File PropsFile = new File(dire+propsLoc);
+		boolean fail = false;
+		try {
+		    BufferedWriter out = new BufferedWriter(new FileWriter(PropsFile));
+		    out.write("###dConomy Settings###"); out.newLine();
+		    out.write("#New Account Starting Balance value in 0.00 format (if set to less than 0 will default to 0)#"); out.newLine();
+		    out.write("Starting-Balance="+startingbalance); out.newLine();
+		    out.write("#Name to call your currency#"); out.newLine();
+		    out.write("Money-Name="+MoneyName); out.newLine();
+		    out.write("#Set to true to use MySQL#"); out.newLine();
+		    out.write("Use-MySQL="+MySQL); out.newLine();
+		    out.write("#Set to true to use Canary's MySQL Connection (MySQL needs to be true)#"); out.newLine();
+		    out.write("Use-Canary-MySQLConn="+CMySQL); out.newLine();
+		    out.write("#Set to true to log transactions#"); out.newLine();
+		    out.write("LogPayments="+Log); out.newLine();
+		    out.write("#Bank Interest Percentage (0.02 = 0.02%) (if set to 0 or less will default to 0.02)#"); out.newLine();
+		    out.write("Bank-InterestRate="+interest); out.newLine();
+		    out.write("#Bank Interest Pay Delay (in minutes) - Set to 0 to disable"); out.newLine();
+		    out.write("Bank-InterestPayDelay="+Bankdelay); out.newLine();
+		    out.write("#Joint Account Users Withdraw delay(in minutes) - Set to 0 to disable#"); out.newLine();
+		    out.write("JointUserWithdrawDelay="+JWDelay); out.newLine();
+		    out.write("#Joint Account User Max Withdraw Default#"); out.newLine();
+		    out.write("JointUserMaxWithdrawAmount="+JUMWA); out.newLine();
+		    out.write("#Admin Only Check Another Players Balance - Set to false to allow all#"); out.newLine();
+		    out.write("AOCAPB="+aoc); out.newLine();
+		    out.write("#Set to true to convert iCo Balances to dCo Balances (reverts to false after convert runs)#"); out.newLine();
+		    out.write("Convert-iConomy="+iConvert); out.newLine();
+			out.write("###EOF###");
+			out.close();
+		} catch (IOException e) {
+			log.severe("[dConomy] - Unable to create Properties File");
+			fail = true;
+		}
+		if(!(fail && iConvertCalled)){ log.info("[dConomy] - dCSettings.ini created!"); }
 	}
 	
 	//Load settings
@@ -543,10 +567,33 @@ public class dCData {
 		MBJ = dCSettings.getBoolean("Prefix-MBJ");
 		
 		if (startingbalance < 0.01){
+			if(startingbalance < 0){
+				log.severe("[dConomy] - Starting balance was less than 0. Defaulting to 0.");
+			}
+			else{
+				log.severe("[dConomy] - Starting balance was less than 0.01 and greater than 0. Defaulting to 0.");
+			}
 			startingbalance = 0;
 		}
 		
 		log.info("[dConomy] - Settings loaded!");
+		
+		DataBase = dCMySQLConn.getString("DataBase", DataBase);
+		UserName = dCMySQLConn.getString("UserName", UserName);
+		Password = dCMySQLConn.getString("Password", Password);
+		Driver = dCMySQLConn.getString("Driver", Driver);
+		if((!CMySQL) && (MySQL)){
+			try {
+				Class.forName(Driver);
+			} catch (ClassNotFoundException cnfe) {
+				log.severe("[dConomy] - Unable to find driver class: " + Driver);
+				log.severe("[dConomy] - Disabling SQL!");
+				MySQL = false;
+			}
+		}
+		if(MySQL){
+			log.info("[dConomy] - MySQL Setting Loaded!");
+		}
 		
 		JUWD = new ArrayList<String>();
 		dCT = new dCTimer();
@@ -574,13 +621,6 @@ public class dCData {
 			dCJWDT = dCT.getdCJWDT();
 			dCJWDT.SetUpJWDT(this, JWDelay, jwreset);
 			log.info("[dConomy] - JointAccount User Withdraw Delay Timer Started!");
-		}
-		
-		DataBase = dCMySQLConn.getString("DataBase", DataBase);
-		UserName = dCMySQLConn.getString("UserName", UserName);
-		Password = dCMySQLConn.getString("Password", Password);
-		if(MySQL){
-			log.info("[dConomy] - MySQL Setting Loaded!");
 		}
 		
 		//Get/Set Error Messages
@@ -1631,7 +1671,8 @@ public class dCData {
 				}
 			}
 		}
-		dCSettings.setBoolean("Convert-iConomy", false);
+		iConvert = false;
+		CreatePropsFile(true);
 	}
 	
 	public Map<String, Double> returnMap(String type) throws Exception {
