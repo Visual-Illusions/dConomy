@@ -582,6 +582,7 @@ public class dCData {
 		UserName = dCMySQLConn.getString("UserName", UserName);
 		Password = dCMySQLConn.getString("Password", Password);
 		Driver = dCMySQLConn.getString("Driver", Driver);
+		
 		if((!CMySQL) && (MySQL)){
 			try {
 				Class.forName(Driver);
@@ -591,6 +592,7 @@ public class dCData {
 				MySQL = false;
 			}
 		}
+		
 		if(MySQL){
 			log.info("[dConomy] - MySQL Setting Loaded!");
 		}

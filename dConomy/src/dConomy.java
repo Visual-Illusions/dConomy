@@ -41,8 +41,8 @@ import java.util.logging.Logger;
 
 public class dConomy extends Plugin{
 	String name = "[dConomy]";
-	String codename = "Yukina";
-	//version = 1.3
+	String codename = "Yukina-san";
+	//version = 1.3.1
 	Logger log = Logger.getLogger("Minecraft");
 	static dCData dCD;
 	static dCListener dCL;

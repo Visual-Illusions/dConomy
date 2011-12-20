@@ -105,6 +105,7 @@ public class dCHook {
 				if (dCD.keyExists((String)os[1], "Account")){
 					if ((Double)os[2] > 0){
 						newamount = dCD.getBalance((String)os[1], "Account") + (Double)os[2];
+						if(newamount < 0){ newamount = 0; }
 						dCD.setBalance(newamount, (String)os[1], "Account");
 					}
 				}
@@ -124,6 +125,7 @@ public class dCHook {
 				if (dCD.keyExists((String)os[1], "Bank")){
 					if ((Double)os[2] > 0){
 						newamount = dCD.getBalance((String)os[1], "Bank") + (Double)os[2];
+						if(newamount < 0){ newamount = 0; }
 						dCD.setBalance(newamount, (String)os[1], "Bank");
 					}
 				}
@@ -143,6 +145,7 @@ public class dCHook {
 				if (dCD.keyExists((String)os[1], "Account")){
 					if ((Double)os[2] > 0){
 						newamount = dCD.getBalance((String)os[1], "Account") - (Double)os[2];
+						if(newamount < 0){ newamount = 0; }
 						dCD.setBalance(newamount, (String)os[1], "Account");
 					}
 				}
@@ -162,6 +165,7 @@ public class dCHook {
 				if (dCD.keyExists((String)os[1], "Bank")){
 					if ((Double)os[2] > 0){
 						newamount = dCD.getBalance((String)os[1], "Bank") - (Double)os[2];
+						if(newamount < 0){ newamount = 0; }
 						dCD.setBalance(newamount, (String)os[1], "Bank");
 					}
 				}
@@ -226,6 +230,7 @@ public class dCHook {
 				if (dCD.JointkeyExists((String)os[1])){
 					if ((Double)os[2] > 0){
 						newamount = dCD.getJointBalance((String)os[1]) + (Double)os[2];
+						if(newamount < 0){ newamount = 0; }
 						dCD.setJointBalance(newamount, (String)os[1]);
 					}
 				}
@@ -247,6 +252,7 @@ public class dCHook {
 					if ((Double)os[2] > 0){
 						if (proceedUser((String)os[1], (String)os[2])){
 							newamount = dCD.getJointBalance((String)os[1]) + (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setJointBalance(newamount, (String)os[3]);
 						}
 					}
@@ -289,6 +295,7 @@ public class dCHook {
 					if ((Double)os[2] > 0){
 						if (proceedUser((String)os[1], (String)os[2])){
 							newamount = dCD.getJointBalance((String)os[1]) - (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setJointBalance(newamount, (String)os[3]);
 						}
 					}
@@ -314,21 +321,25 @@ public class dCHook {
 							if(dCD.JointkeyExists(account)){
 								if (proceedUser((String)os[1], account)){
 									newamount = dCD.getJointBalance(account) + (Double)os[2];
+									if(newamount < 0){ newamount = 0; }
 									dCD.setJointBalance(newamount, account);
 								}else{
 									if (dCD.keyExists((String)os[1], "Account")){
 										newamount = dCD.getBalance((String)os[1], "Account") + (Double)os[2];
+										if(newamount < 0){ newamount = 0; }
 										dCD.setBalance(newamount, (String)os[1], "Account");
 									}
 								}
 							}	
 						}else{
 							newamount = dCD.getBalance((String)os[1], "Bank") + (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setBalance(newamount, (String)os[1], "Bank");
 						}
 					}else{
 						if (dCD.keyExists((String)os[1], "Account")){
 							newamount = dCD.getBalance((String)os[1], "Account") + (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setBalance(newamount, (String)os[1], "Account");
 						}
 					}
@@ -354,21 +365,25 @@ public class dCHook {
 							if(dCD.JointkeyExists(account)){
 								if (proceedUser((String)os[1], account)){
 									newamount = dCD.getJointBalance(account) - (Double)os[2];
+									if(newamount < 0){ newamount = 0; }
 									dCD.setJointBalance(newamount, account);
 								}else{
 									if (dCD.keyExists((String)os[1], "Account")){
 										newamount = dCD.getBalance((String)os[1], "Account") - (Double)os[2];
+										if(newamount < 0){ newamount = 0; }
 										dCD.setBalance(newamount, (String)os[1], "Account");
 									}
 								}
 							}	
 						}else{
 							newamount = dCD.getBalance((String)os[1], "Bank") - (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setBalance(newamount, (String)os[1], "Bank");
 						}
 					}else{
 						if (dCD.keyExists((String)os[1], "Account")){
 							newamount = dCD.getBalance((String)os[1], "Account") - (Double)os[2];
+							if(newamount < 0){ newamount = 0; }
 							dCD.setBalance(newamount, (String)os[1], "Account");
 						}
 					}
