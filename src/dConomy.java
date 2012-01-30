@@ -4,7 +4,9 @@ import java.util.logging.Logger;
 * dConomy v1.x
 * Copyright (C) 2011 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
-* 
+*
+* This file is part of dConomy.
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -16,27 +18,7 @@ import java.util.logging.Logger;
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
-* dConomy (main class file) v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
-* @author darkdiplomat <darkdiplomat@hotmail.com>
-*
-* This file is part of dConomy.
-*
-* dConomy is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* dConomy is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with dConomy.  If not, see <http://www.gnu.org/licenses/>.
+* along with this program.  If not, see http://www.gnu.org/licenses/gpl.html.
 */
 
 public class dConomy extends Plugin{
@@ -49,6 +31,9 @@ public class dConomy extends Plugin{
 	static dCHook dCH;
 	dCTimer.dCBankTimer dCBT;
 	dCTimer.dCJointWithdrawDelayTimer dCJWDT;
+	PropertiesFile props;
+	
+	static boolean Terminated = false;
 	
 	public void enable(){
 		log.info(name + " CodeName: "+codename+" Enabled!");
@@ -64,6 +49,7 @@ public class dConomy extends Plugin{
 	}
 
 	public void initialize(){
+		props = getPropertiesFile();
 		dCD = new dCData();
 		dCL = new dCListener();
 		dCH = new dCHook();

@@ -22,29 +22,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-* dCData v1.x
+* dConomy v1.x
 * Copyright (C) 2011 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.
 *
-* dConomy is free software: you can redistribute it and/or modify
+* This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* dConomy is distributed in the hope that it will be useful,
+* This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with dConomy.  If not, see <http://www.gnu.org/licenses/>.
+* along with this program.  If not, see http://www.gnu.org/licenses/gpl.html.
 */
 
 public class dCData {
 	//Misc Stuff
 	Logger log = Logger.getLogger("Minecraft");
+	Server server = etc.getServer();
 	
 	//PropertiesFiles
 	PropertiesFile dCSettings;
@@ -907,16 +908,12 @@ public class dCData {
 		return MoneyName;
 	}
 	
-	public Connection getSQLConn(){
+	public Connection getSQLConn() throws SQLException{
 		Connection conn = null;
 		if (CMySQL){
 			conn = etc.getSQLConnection();
 		}else{
-			try {
-				conn = DriverManager.getConnection(DataBase, UserName, Password);
-			} catch (SQLException e) {
-				log.log(Level.SEVERE, "[dConomy] - Unable to set MySQL Connection ", e);
-			}
+			conn = DriverManager.getConnection(DataBase, UserName, Password);
 		}
 		return conn;
 	}
@@ -925,59 +922,115 @@ public class dCData {
 		String table1 = ("CREATE TABLE IF NOT EXISTS `dConomy` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Player` varchar(16) NOT NULL, `Account` DECIMAL(64,2) NOT NULL, `Bank` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
 		String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
 		String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
-		Connection conn = getSQLConn();
+		Connection conn = null;
+		Statement st = null;
 		try{
-			Statement st = conn.createStatement();
-			st.executeUpdate(table1);
-			st.executeUpdate(table2);
-			st.executeUpdate(table3);
-			conn.close();
-		}catch (SQLException sqle) {
-			log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.CreateTable() ", sqle);
+			conn = getSQLConn();
+		}catch(SQLException SQLE){
+			SQLConnError(SQLE);
+		}
+		if(conn != null && !dConomy.Terminated){
+			try{
+				st = conn.createStatement();
+				st.executeUpdate(table1);
+				st.executeUpdate(table2);
+				st.executeUpdate(table3);
+			}catch (SQLException SQLE) {
+				SQLError(SQLE, "dCData.CreateTable()");
+			}finally{
+				try{
+					if(st != null && !st.isClosed()){ st.close(); }
+					if(conn != null && !conn.isClosed()){ conn.close(); }
+				}catch(SQLException SQLE){
+					SQLConnError(SQLE);
+				}
+			}
 		}
 	}
 	
 	public boolean keyExists(String key, String type){
+		boolean exists = false;
 		if (MySQL){
-			boolean exists = false;
-			Connection conn = getSQLConn();
-    		try{
-    			PreparedStatement ps = conn.prepareStatement("SELECT * FROM dConomy WHERE Player = ?");
-    			ps.setString(1, key);
-    			ResultSet rs = ps.executeQuery();
-    			if (rs.next()){
-    				exists = true;
-    			}
-    			conn.close();
-    		} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.keyExists() ", ex);
+			Connection conn = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			try{
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
-    		return exists;
+			if(conn != null && !dConomy.Terminated){
+				try{
+					ps = conn.prepareStatement("SELECT * FROM dConomy WHERE Player = ?");
+					ps.setString(1, key);
+					rs = ps.executeQuery();
+					if (rs.next()){ exists = true; }
+				} catch (SQLException ex) {
+					log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.keyExists() ", ex);
+					server.messageAll("§cAn error has occured in §2dConomy§c! §2dConomy§c will now terminate!");
+					dConomy.Terminated = true;
+					Terminate();
+				}finally{
+					try{
+						if(rs != null && !rs.isClosed()){ rs.close(); }
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+			}
 		}else{
-			String file = getFile(type);
-			PropertiesFile check = new PropertiesFile(dire+file);
-			return check.containsKey(key);
+			String file = "";
+			try{
+				file = getFile(type);
+				PropertiesFile check = new PropertiesFile(dire+file);
+				exists = check.containsKey(key);
+			}catch(Exception E){
+				FileLoadError(E, file);
+			}
 		}
+		return exists;
 	}
 	
 	public boolean JointkeyExists(String name){
 		boolean exists = false;
 		if (MySQL){
 			Connection conn = null;
-    		try{
-    			conn = getSQLConn();
-    			PreparedStatement ps = conn.prepareStatement("SELECT * FROM dConomyJoint WHERE Name = ?");
-    			ps.setString(1, name);
-    			ResultSet rs = ps.executeQuery();
-    			exists = rs.next();
-    			conn.close();
-    		} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.JointkeyExists() ", ex);
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			try{
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+			if(conn != null){
+				try{
+					ps = conn.prepareStatement("SELECT * FROM dConomyJoint WHERE Name = ?");
+					ps.setString(1, name);
+					rs = ps.executeQuery();
+					exists = rs.next();
+					conn.close();
+				} catch (SQLException SQLE) {
+					SQLError(SQLE, "dCData.JointKeyExists");
+				}finally{
+					try{
+						if(rs != null){ rs.close(); }
+						if(ps != null){ ps.close(); }
+						if(conn != null){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
 			}
 		}else{
 			String jointloc = getJointFile(name);
-			File joint = new File(jointloc);
-			exists = joint.exists();
+			try{
+				File joint = new File(jointloc);
+				exists = joint.exists();
+			}catch(Exception E){
+				FileLoadError(E, jointloc);
+			}
 		}
 		return exists;
 	}
@@ -986,9 +1039,14 @@ public class dCData {
 		if (MySQL){
 			String column = getMySQLColumn(type);
 			double bal = 0;
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
     		ResultSet rs = null;
+    		try{
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
 			try{
 				ps = conn.prepareStatement("SELECT "+column+" FROM dConomy WHERE Player = ?");
 				ps.setString(1, player);
@@ -996,83 +1054,150 @@ public class dCData {
     			if (rs.next()){
     				bal = Double.parseDouble(rs.getString(column));
     			}
-    			conn.close();
 			}catch (SQLException ex){
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getBalance() ", ex);
+				SQLError(ex, "dCData.getBalance");
+			}finally{
+				try{
+					if(rs != null){ rs.close(); }
+					if(ps != null){ ps.close(); }
+					if(conn != null){ conn.close(); }
+				}catch(SQLException SQLE){
+					SQLConnError(SQLE);
+				}
 			}
 			return bal;
     	}else{
     		String file = getFile(type);
-			PropertiesFile acc = new PropertiesFile(dire+file);
-    		return acc.getDouble(player);
+    		try{
+    			PropertiesFile acc = new PropertiesFile(dire+file);
+    			return acc.getDouble(player);
+    		}catch(Exception E){
+				FileLoadError(E, file);
+			}
 		}
+		return (Double) null;
 	}
 	
 	public void setBalance(double bal, String player, String type){
 		double newbal = bal;
 		if (MySQL){
 			String column = getMySQLColumn(type);
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("UPDATE dConomy SET "+column+" = ? WHERE Player = ? LIMIT 1");
-				ps.setDouble(1, newbal);
-				ps.setString(2, player);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setBalance() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+			if(conn != null){
+				try{
+					ps = conn.prepareStatement("UPDATE dConomy SET "+column+" = ? WHERE Player = ? LIMIT 1");
+					ps.setDouble(1, newbal);
+					ps.setString(2, player);
+					ps.executeUpdate();
+				}catch (SQLException SQLE) {
+					SQLError(SQLE, "dCData.setBalance");
+				}finally{
+					try{
+						if(ps != null){ ps.close(); }
+						if(conn != null){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
 			}
 		}else{
 			String file = getFile(type);
-			PropertiesFile acc = new PropertiesFile(dire+file);
-    		acc.setDouble(player, newbal);
+			try{
+				PropertiesFile acc = new PropertiesFile(dire+file);
+				acc.setDouble(player, newbal);
+			}catch(Exception E){
+				FileSaveError(E, file);
+			}
 		}
 	}
 	
 	public void setInitialBalance(double bal, String player){
 		double newbal = bal;
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("INSERT INTO dConomy (Player, Account, Bank) VALUES(?,?,?)");
-				ps.setString(1, player);
-				ps.setDouble(2, newbal);
-				ps.setDouble(3, 0);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setInitialBalance() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+			if(conn != null){
+				try{
+					ps = conn.prepareStatement("INSERT INTO dConomy (Player, Account, Bank) VALUES(?,?,?)");
+					ps.setString(1, player);
+					ps.setDouble(2, newbal);
+					ps.setDouble(3, 0);
+					ps.executeUpdate();
+				} catch (SQLException SQLE) {
+					SQLError(SQLE, "dCData.setInitialBalance");
+				}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
 			}
 		}else{
-			PropertiesFile acc = new PropertiesFile(dire+"dCAccounts.txt");
-			PropertiesFile bank = new PropertiesFile(dire+"dCBank.txt");
-    		acc.setDouble(player, newbal);
-    		bank.setDouble(player, 0);
+			try{
+				PropertiesFile acc = new PropertiesFile(dire+"dCAccounts.txt");
+				acc.setDouble(player, newbal);
+			}catch(Exception E){
+				FileSaveError(E, "dCAccounts.txt");
+			}
+			try{
+				PropertiesFile bank = new PropertiesFile(dire+"dCBank.txt");
+				bank.setDouble(player, 0);
+			}catch(Exception E){
+				FileSaveError(E, "dCBank.txt");
+			}
 		}
 	}
 	
 	public String getJointUsers(String name){
 		String Users = "";
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			try{
-				ps = conn.prepareStatement("SELECT Users FROM dConomyJoint WHERE Name = ?");
-				ps.setString(1, name);
-				rs = ps.executeQuery();
-				if (rs.next()){
-					Users = rs.getString("Users");
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+			if(conn != null){
+				try{
+					ps = conn.prepareStatement("SELECT Users FROM dConomyJoint WHERE Name = ?");
+					ps.setString(1, name);
+					rs = ps.executeQuery();
+					if (rs.next()){
+						Users = rs.getString("Users");
+					}
+				}catch (SQLException SQLE){
+					SQLError(SQLE, "dCData.getJointUsers");
+				}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
 				}
-				conn.close();
-			}catch (SQLException ex){
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointUsers() ", ex);
 			}
     	}else{
-    		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		Users = dCJointAccounts.getString("Users");
+    		try{
+    			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+    			Users = dCJointAccounts.getString("Users");
+    		}catch(Exception E){
+				FileLoadError(E, (name + JointAcc));
+			}
 		}
 		return Users;
 	}
@@ -1080,191 +1205,345 @@ public class dCData {
 	public String getJointOwners(String name){
 		String Owners = "";
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			try{
-				ps = conn.prepareStatement("SELECT Owners FROM dConomyJoint WHERE Name = ?");
-				ps.setString(1, name);
-				rs = ps.executeQuery();
-				if (rs.next()){
-					Owners = rs.getString("Owners");
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+			if(conn != null){
+				try{
+					ps = conn.prepareStatement("SELECT Owners FROM dConomyJoint WHERE Name = ?");
+					ps.setString(1, name);
+					rs = ps.executeQuery();
+					if (rs.next()){
+						Owners = rs.getString("Owners");
+					}
+				}catch (SQLException SQLE){
+					SQLError(SQLE, "dCData.getJointOwners");
+				}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
 				}
-				conn.close();
-			}catch (SQLException ex){
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointOwners() ", ex);
 			}
     	}else{
-    		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		Owners = dCJointAccounts.getString("Owners");
+    		try{
+    			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+    			Owners = dCJointAccounts.getString("Owners");
+    		}catch(Exception E){
+				FileLoadError(E, (name + JointAcc));
+			}
 		}
 		return Owners;
 	}
 	
 	public double getJointBalance(String name){
+		double bal = 0;
 		if (MySQL){
-			double bal = 0;
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
     		ResultSet rs = null;
-			try{
-				ps = conn.prepareStatement("SELECT Balance FROM dConomyJoint WHERE Name = ?");
-				ps.setString(1, name);
-    			rs = ps.executeQuery();
-    			if (rs.next()){
-    				bal = Double.parseDouble(rs.getString("Balance"));
-  	    	 	 }
-    			conn.close();
-			}catch (SQLException ex){
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointBalance() ", ex);
+    		try{
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
-			return bal;
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("SELECT Balance FROM dConomyJoint WHERE Name = ?");
+					ps.setString(1, name);
+					rs = ps.executeQuery();
+					if (rs.next()){
+						bal = Double.parseDouble(rs.getString("Balance"));
+					}
+    			}catch (SQLException SQLE){
+    				SQLError(SQLE, "dCData.getJointBalance");
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
     	}else{
-    		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		return dCJointAccounts.getDouble("balance");
-		}
+    		try{
+    			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+    			bal = dCJointAccounts.getDouble("balance");
+    		}catch(Exception E){
+				FileLoadError(E, (name + JointAcc));
+			}
+		}	
+		return bal;
 	}
 	
 	public double getJointUserWithdrawMax(String name){
+		double bal = 0;
 		if (MySQL){
-			double bal = 0;
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
     		ResultSet rs = null;
-			try{
-				ps = conn.prepareStatement("SELECT UserMaxWithdraw FROM dConomyJoint WHERE Name = ?");
-				ps.setString(1, name);
-    			rs = ps.executeQuery();
-    			if(rs.next()){
-    				bal = Double.parseDouble(rs.getString("UserMaxWithdraw"));
-  	    	 	 }
-    			conn.close();
-			}catch (SQLException ex){
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointUserWithdrawMax() ", ex);
+    		try{
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
-			return bal;
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("SELECT UserMaxWithdraw FROM dConomyJoint WHERE Name = ?");
+    				ps.setString(1, name);
+    				rs = ps.executeQuery();
+    				if(rs.next()){
+    					bal = Double.parseDouble(rs.getString("UserMaxWithdraw"));
+    				}
+    			}catch (SQLException ex){
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.getJointUserWithdrawMax() ", ex);
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
     	}else{
-    		dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		return dCJointAccounts.getDouble("UserMaxWithdraw");
+    		try{
+    			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+    			bal = dCJointAccounts.getDouble("UserMaxWithdraw");
+    		}catch(Exception E){
+				FileLoadError(E, (name + JointAcc));
+			}
     	}
+		return bal;
 	}
 	
 	public void setJointBalance(double bal, String accName){
 		double newbal = bal;
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("UPDATE dConomyJoint SET Balance = ? WHERE Name = ? LIMIT 1");
-				ps.setDouble(1, newbal);
-				ps.setString(2, accName);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setJointlBalance() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("UPDATE dConomyJoint SET Balance = ? WHERE Name = ? LIMIT 1");
+    				ps.setDouble(1, newbal);
+    				ps.setString(2, accName);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.setJointlBalance() ", ex);
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
 		}else{
-			dCJointAccounts = new PropertiesFile(direJoint + accName + JointAcc);
-    		dCJointAccounts.setDouble("balance", newbal);
+			try{
+				dCJointAccounts = new PropertiesFile(direJoint + accName + JointAcc);
+				dCJointAccounts.setDouble("balance", newbal);
+			}catch(Exception E){
+				FileSaveError(E, (accName + JointAcc));
+			}
 		}
 	}
 	
 	public void createJointAccount(String name, String owner){
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw)VALUES (?,?,?,?,?)", 1);
-				ps.setString(1, name);
-				ps.setString(2, owner);
-				ps.setString(3, ",");
-				ps.setDouble(4, 0);
-				ps.setDouble(5, JUMWA);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.createJointAccount() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw)VALUES (?,?,?,?,?)", 1);
+    				ps.setString(1, name);
+    				ps.setString(2, owner);
+    				ps.setString(3, ",");
+    				ps.setDouble(4, 0);
+    				ps.setDouble(5, JUMWA);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.createJointAccount() ", ex);
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
 		}else{
-			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-			dCJointAccounts.setString("Owners", owner);
-			dCJointAccounts.setString("Users", "");
-    		dCJointAccounts.setDouble("balance", 0);
-    		dCJointAccounts.setDouble("UserMaxWithdraw", 25);
+			try{
+				dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+				dCJointAccounts.setString("Owners", owner);
+				dCJointAccounts.setString("Users", "");
+	    		dCJointAccounts.setDouble("balance", 0);
+	    		dCJointAccounts.setDouble("UserMaxWithdraw", 25);
+			}catch(Exception E){
+				FileSaveError(E, (name + JointAcc));
+			}
 		}
 	}
 	
 	public void deleteJointAccount(String accName){
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("DELETE FROM dConomyJoint WHERE Name = ?");
-				ps.setString(1, accName);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.deleteJointAccount() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("DELETE FROM dConomyJoint WHERE Name = ?");
+    				ps.setString(1, accName);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.deleteJointAccount() ", ex);
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
 		}else{
-			File file = new File(direJoint + accName + JointAcc);
-			file.delete();
+			try{
+				File file = new File(direJoint + accName + JointAcc);
+				file.delete();
+			}catch(Exception E){
+				FileSaveError(E, (accName + JointAcc));
+			}
 		}
 	}
 	
 	public void updateJointOwners(String name, String newOwners){
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ? WHERE Name = ? LIMIT 1");
-				ps.setString(1, newOwners);
-				ps.setString(2, name);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointOwners() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
 			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ? WHERE Name = ? LIMIT 1");
+    				ps.setString(1, newOwners);
+    				ps.setString(2, name);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointOwners() ", ex);
+    			}finally{
+					try{
+						if(ps != null && !ps.isClosed()){ ps.close(); }
+						if(conn != null && !conn.isClosed()){ conn.close(); }
+					}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+					}
+				}
+    		}
 		}else{
-			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		dCJointAccounts.setString("Owners", newOwners);
+			try{
+				dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+				dCJointAccounts.setString("Owners", newOwners);
+			}catch(Exception E){
+				FileSaveError(E, (name + JointAcc));
+			}
 		}
 	}
 	
 	public void updateJointUsers(String name, String newUsers){
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("UPDATE dConomyJoint SET Users = ? WHERE Name = ? LIMIT 1");
-				ps.setString(1, newUsers);
-				ps.setString(2, name);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointUsers() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("UPDATE dConomyJoint SET Users = ? WHERE Name = ? LIMIT 1");
+    				ps.setString(1, newUsers);
+    				ps.setString(2, name);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointUsers() ", ex);
+    			}finally{
+    				try{
+    					if(ps != null && !ps.isClosed()){ ps.close(); }
+    					if(conn != null && !conn.isClosed()){ conn.close(); }
+    				}catch(SQLException SQLE){
+						SQLConnError(SQLE);
+    				}
+    			}
 			}
 		}else{
-			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		dCJointAccounts.setString("Users", newUsers);
+			try{
+				dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+				dCJointAccounts.setString("Users", newUsers);
+			}catch(Exception E){
+				FileSaveError(E, (name + JointAcc));
+			}
 		}
 	}
 	
 	public void updateJointMaxUserWithdraw(String name, double maxamount){
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("UPDATE dConomyJoint SET UserMaxWithdraw = ? WHERE Name = ? LIMIT 1");
-				ps.setDouble(1, maxamount);
-				ps.setString(2, name);
-				ps.executeUpdate();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointMaxUserWithdraw() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("UPDATE dConomyJoint SET UserMaxWithdraw = ? WHERE Name = ? LIMIT 1");
+    				ps.setDouble(1, maxamount);
+    				ps.setString(2, name);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.updateJointMaxUserWithdraw() ", ex);
+    			}finally{
+    				try{
+    					if(ps != null && !ps.isClosed()){ ps.close(); }
+    					if(conn != null && !conn.isClosed()){ conn.close(); }
+    				}catch(SQLException SQLE){
+    					SQLConnError(SQLE);
+					}
+    			}
 			}
 		}else{
-			dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
-    		dCJointAccounts.setDouble("MaxUserWithdraw", maxamount);
+			try{
+				dCJointAccounts = new PropertiesFile(direJoint + name + JointAcc);
+	    		dCJointAccounts.setDouble("MaxUserWithdraw", maxamount);
+			}catch(Exception E){
+				FileSaveError(E, (name + JointAcc));
+			}
 		}
 	}
 	
@@ -1588,17 +1867,30 @@ public class dCData {
 	public void LogTrans(String Action){
 		date = new Date();
 		if (MySQL){
-			Connection conn = getSQLConn();
+			Connection conn = null;
 			PreparedStatement ps = null;
 			try{
-				ps = conn.prepareStatement("INSERT INTO dConomyLog (Date,Time,Transaction) VALUES(?,?,?)", 1);
-				ps.setString(1, dateFormat.format(date));
-				ps.setString(2, dateFormatTime.format(date));
-				ps.setString(3, Action);
-				ps.executeUpdate();
-				conn.close();
-			} catch (SQLException ex) {
-				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.LogTrans() ", ex);
+				conn = getSQLConn();
+			}catch(SQLException SQLE){
+				SQLConnError(SQLE);
+			}
+    		if(conn != null){
+    			try{
+    				ps = conn.prepareStatement("INSERT INTO dConomyLog (Date,Time,Transaction) VALUES(?,?,?)", 1);
+    				ps.setString(1, dateFormat.format(date));
+    				ps.setString(2, dateFormatTime.format(date));
+    				ps.setString(3, Action);
+    				ps.executeUpdate();
+    			} catch (SQLException ex) {
+    				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.LogTrans() ", ex);
+    			}finally{
+    				try{
+    					if(ps != null && !ps.isClosed()){ ps.close(); }
+    					if(conn != null && !conn.isClosed()){ conn.close(); }
+    				}catch(SQLException SQLE){
+    					SQLConnError(SQLE);
+    				}
+    			}
 			}
 		}else{
 			String filename= direTrans + String.valueOf(dateFormat.format(date)) + TransLoc;
@@ -1608,7 +1900,7 @@ public class dCData {
 					LogFile.createNewFile();
 				} catch (IOException e) {
 					log.severe("[dConomy] - Unable to create new Log File!");
-				} 
+				}
 			}
 			try {
 				FileWriter fw = new FileWriter(filename,true);
@@ -1647,6 +1939,14 @@ public class dCData {
 						}
 					} catch (SQLException ex) {
 						log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.iConvertion() ", ex);
+					}finally{
+						try{
+							if(rs != null && !rs.isClosed()){ rs.close(); }
+							if(ps != null && !ps.isClosed()){ ps.close(); }
+							if(conn != null && !conn.isClosed()){ conn.close(); }
+						}catch(SQLException SQLE){
+							SQLConnError(SQLE);
+						}
 					}
 					for(String name : iBalances.keySet()){
 						setInitialBalance(iBalances.get(name), name);
@@ -1692,6 +1992,14 @@ public class dCData {
 				}
 			} catch (SQLException ex) {
 				log.log(Level.SEVERE, "[dConomy] MySQL exception in dCData.returnMap() ", ex);
+			}finally{
+				try{
+					if(rs != null && !rs.isClosed()){ rs.close(); }
+					if(ps != null && !ps.isClosed()){ ps.close(); }
+					if(conn != null && !conn.isClosed()){ conn.close(); }
+				}catch(SQLException SQLE){
+					SQLConnError(SQLE);
+				}
 			}
 		}
 		else{
@@ -1713,5 +2021,37 @@ public class dCData {
 			reader.close();
 		}
 		return map;
+	}
+	
+	private void Terminate(){
+		etc.getLoader().getPlugin("dConomy").disable();
+	}
+	
+	private void SQLConnError(SQLException SQLE){
+		log.log(Level.SEVERE, "[dConomy] - Unable to set MySQL Connection ", SQLE);
+		server.messageAll("§cAn error has occured in §2dConomy§c! §2dConomy§c will now terminate!");
+		dConomy.Terminated = true;
+		Terminate();
+	}
+	
+	private void SQLError(SQLException SQLE, String Method){
+		log.log(Level.SEVERE, "[dConomy] MySQL exception in: "+Method, SQLE);
+		server.messageAll("§cAn error has occured in §2dConomy§c! §2dConomy§c will now terminate!");
+		dConomy.Terminated = true;
+		Terminate();
+	}
+	
+	private void FileLoadError(Exception E, String File){
+		log.log(Level.SEVERE, "[dConomy] - Unable to Load from File "+File, E);
+		server.messageAll("§cAn error has occured in §2dConomy§c! §2dConomy§c will now terminate!");
+		dConomy.Terminated = true;
+		Terminate();
+	}
+	
+	private void FileSaveError(Exception E, String File){
+		log.log(Level.SEVERE, "[dConomy] - Unable to Save to File "+File, E);
+		server.messageAll("§cAn error has occured in §2dConomy§c! §2dConomy§c will now terminate!");
+		dConomy.Terminated = true;
+		Terminate();
 	}
 }
