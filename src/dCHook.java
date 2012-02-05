@@ -1,7 +1,7 @@
 
 /**
 * dConomy v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
+* Copyright (C) 2011-2012 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.

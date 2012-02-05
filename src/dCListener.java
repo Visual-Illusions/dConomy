@@ -1,7 +1,7 @@
 
 /**
 * dConomy v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
+* Copyright (C) 2011-2012 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.
@@ -29,9 +29,9 @@ public class dCListener extends PluginListener{
 	
 	public boolean onCommand(Player player, String[] cmd){
 		if (cmd[0].equalsIgnoreCase("/money")){
-			if ((player.canUseCommand("/money")) || (player.canUseCommand("/dcadmin"))){
+			if (player.canUseCommand("/money")){
 				if (cmd.length == 1){
-					return dCAH.DisplayBalance(player.getName(), 1, "", player.isAdmin());
+					return dCAH.DisplayBalance(player.getName(), 1, "", (player.canUseCommand("/dcadmin")));
 				}else if ((cmd[1].equals("pay")) || (cmd[1].equals("-p"))){
 					if (cmd.length < 3){
 						return dCAH.Error(120, player.getName(), "");
@@ -132,6 +132,15 @@ public class dCListener extends PluginListener{
 						return dCAH.CheckPayForwarding(player.getName());
 					}else{
 						return dCAH.Error(104, player.getName(), "");
+					}
+				}else if(cmd[1].equals("ca")){
+					if(player.canUseCommand("/dcadmin")){
+						if(cmd.length > 2){
+							return dCAH.CreateAccount(player, cmd[2]);
+						}
+						else{
+							return dCAH.Error(114, player.getName(), "");
+						}
 					}
 				}else{
 					return dCAH.DisplayBalance(player.getName(), 4, cmd[1], player.isAdmin());
@@ -493,10 +502,11 @@ public class dCListener extends PluginListener{
 	}
 	
 	public void onLogin(Player player){
-		if (player.canUseCommand("/money")){
-			if (!dCD.keyExists(player.getName(), "Account")){
-				dCD.setInitialBalance(dCD.getStartingBalance(), player.getName());
-			}
+		if(!player.canUseCommand("/money") && !dCD.CAA){
+			return;
+		}
+		if (!dCD.keyExists(player.getName(), "Account")){
+			dCD.setInitialBalance(dCD.getStartingBalance(), player.getName());
 		}
 	}
 }

@@ -2,7 +2,7 @@ import java.util.logging.Logger;
 
 /**
 * dConomy v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
+* Copyright (C) 2011-2012 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.
@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 
 public class dConomy extends Plugin{
 	String name = "[dConomy]";
-	String codename = "Yukina-san";
-	//version = 1.3.1
+	String codename = "Mizuho";
+	//version = 1.4
 	Logger log = Logger.getLogger("Minecraft");
 	static dCData dCD;
 	static dCListener dCL;

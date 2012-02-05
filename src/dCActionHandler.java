@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 /**
 * dConomy v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
+* Copyright (C) 2011-2012 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.
@@ -1851,4 +1851,15 @@ public class dCActionHandler {
     	}
 		return true;
     }
+	
+	public boolean CreateAccount(Player player, String pname){
+		if (!dCD.keyExists(pname, "Account")){
+			dCD.setInitialBalance(dCD.getStartingBalance(), pname);
+			player.sendMessage("Account Created for "+pname);
+		}
+		else{
+			player.notify(pname+" already has an account");
+		}
+		return true;
+	}
 }

@@ -1,5 +1,5 @@
 dConomy - because you need to be bloody rich too
-Copyrighted (c) 2011 Visual Illusions Entertainment
+Copyrighted (c) 2011-2012 Visual Illusions Entertainment
 Authored by: darkdiplomat
 
 Features:
@@ -223,6 +223,5 @@ Special Thanks:
 	damagefilter - For making the sweet dConomy logo
 
 Download:
-dConomy http://bit.ly/uuWSrm
-dropbox backup - http://bit.ly/tHDxmO
+dConomy - http://bit.ly/tHDxmO
 source https://github.com/darkdiplomat/dConomy

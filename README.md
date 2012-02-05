@@ -5,14 +5,14 @@ Economy Base with Bank/Shared Accounts
 
 dConomy is a plugin for the CanaryMod Minecraft Server Modification.
 
-(C) 2012 Visual Illusions Entertainment
+(C) 2011-2012 Visual Illusions Entertainment
 
 Licensed under the GNU General Public License v3
 
 License
 ---------
 dConomy v1.x
-Copyright (C) 2012 Visual Illusions Entertainment
+Copyright (C) 2011-2012 Visual Illusions Entertainment
 
 Author: Jason Jones (darkdiplomat) <darkdiplomat@visualillusionsent.net>
 

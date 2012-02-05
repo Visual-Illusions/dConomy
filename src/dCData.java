@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 /**
 * dConomy v1.x
-* Copyright (C) 2011 Visual Illusions Entertainment
+* Copyright (C) 2011-2012 Visual Illusions Entertainment
 * @author darkdiplomat <darkdiplomat@hotmail.com>
 *
 * This file is part of dConomy.
@@ -91,6 +91,7 @@ public class dCData {
 	double JUMWA = 25;
 	boolean aoc = false;
 	boolean MBJ = false;
+	boolean CAA = false;
 	
 	//Error Messages (100 Series)
 	String ErrorMessage101 = "<rose>You do not have enough <m> to complete transaction!";
@@ -538,6 +539,8 @@ public class dCData {
 		    out.write("JointUserMaxWithdrawAmount="+JUMWA); out.newLine();
 		    out.write("#Admin Only Check Another Players Balance - Set to false to allow all#"); out.newLine();
 		    out.write("AOCAPB="+aoc); out.newLine();
+		    out.write("#Allows Accounts to be created always (no checking of /money permissions)"); out.newLine();
+		    out.write("CreateAccountsAlways="+CAA); out.newLine();
 		    out.write("#Set to true to convert iCo Balances to dCo Balances (reverts to false after convert runs)#"); out.newLine();
 		    out.write("Convert-iConomy="+iConvert); out.newLine();
 			out.write("###EOF###");
@@ -566,6 +569,7 @@ public class dCData {
 		JUMWA = dCSettings.getDouble("JointUserMaxWithdrawAmount");
 		aoc = dCSettings.getBoolean("AOCAPB");
 		MBJ = dCSettings.getBoolean("Prefix-MBJ");
+		CAA = dCSettings.getBoolean("CreateAccountsAlways");
 		
 		if (startingbalance < 0.01){
 			if(startingbalance < 0){
@@ -831,7 +835,6 @@ public class dCData {
 				}
 			}
 		}
-		
 	}
 	
 	public void SetReset(String type, long time){
