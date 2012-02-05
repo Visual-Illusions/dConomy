@@ -3,7 +3,7 @@ import java.util.logging.Logger;
 /**
 * dConomy v1.x
 * Copyright (C) 2011-2012 Visual Illusions Entertainment
-* @author darkdiplomat <darkdiplomat@hotmail.com>
+* @author darkdiplomat <darkdiplomat@visualillusionsent.net>
 *
 * This file is part of dConomy.
 *
@@ -31,7 +31,6 @@ public class dConomy extends Plugin{
 	static dCHook dCH;
 	dCTimer.dCBankTimer dCBT;
 	dCTimer.dCJointWithdrawDelayTimer dCJWDT;
-	PropertiesFile props;
 	
 	static boolean Terminated = false;
 	
@@ -49,7 +48,6 @@ public class dConomy extends Plugin{
 	}
 
 	public void initialize(){
-		props = getPropertiesFile();
 		dCD = new dCData();
 		dCL = new dCListener();
 		dCH = new dCHook();

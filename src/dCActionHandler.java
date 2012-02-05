@@ -8,7 +8,7 @@ import java.util.TreeMap;
 /**
 * dConomy v1.x
 * Copyright (C) 2011-2012 Visual Illusions Entertainment
-* @author darkdiplomat <darkdiplomat@hotmail.com>
+* @author darkdiplomat <darkdiplomat@visualillusionsent.net>
 *
 * This file is part of dConomy.
 *
