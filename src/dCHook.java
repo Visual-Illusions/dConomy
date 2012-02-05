@@ -22,9 +22,15 @@
 
 public class dCHook {
 	PluginInterface dCBalance = new dCHook.dCBalance();
-	dCData dCD = dConomy.dCD;
-	dCListener dCL = dConomy.dCL;
-	dCActionHandler dCAH = dCL.dCAH;
+	dCData dCD;
+	dCListener dCL;
+	dCActionHandler dCAH;
+	
+	public dCHook(dConomy dCo){
+		dCD = dCo.dCD;
+		dCL = dCo.dCL;
+		dCAH = dCL.dCAH;
+	}
 
 	public class dCBalance implements PluginInterface{
 		public String getName(){

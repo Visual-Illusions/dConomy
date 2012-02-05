@@ -25,91 +25,63 @@ import java.util.TimerTask;
 */
 
 public class dCTimer{
-	public dCTimer(){
+	dCData dCD;
+	int bdelay, jdelay;
+	double binterest;
+	Timer banktime;
+	Timer JWDtime;
+	Map<String, Double> accounts;
+	
+	public dCTimer(dCData dCD){
+		this.dCD = dCD;
 	}
 	
-	dCBankTimer dCBT = new dCBankTimer(this);
-	dCJointWithdrawDelayTimer dCWDT = new dCJointWithdrawDelayTimer(this);
-	
-	public dCBankTimer getdCBT(){
-		return dCBT;
+	public void SetUpBT(int delay, double interest, long timerrest){
+		bdelay = delay*60*1000;
+		binterest = interest;
+		banktime = new Timer();
+		banktime.schedule(new dCTimerExpire(), timerrest);
 	}
 	
-	public dCJointWithdrawDelayTimer getdCJWDT(){
-		return dCWDT;
+	public void SetUpJWDT(int delay, long timerrest){
+		JWDtime = new Timer();
+		jdelay = delay*60*1000;
+		JWDtime.schedule(new dCJWDTimerExpire(), timerrest);
 	}
- 	
-	public class dCBankTimer{
-		Map<String, Double> accounts;
-		int bdelay;
-		double interest;
-		dCData dCD;
-		Timer banktime;
-		
-		public dCBankTimer(dCTimer dct){ }
-		
-		public void SetUpBT(dCData dCD, int delay, double interest, long timerrest){
-			this.bdelay = delay*60*1000;
-			this.interest = interest;
-			this.dCD = dCD;
-			banktime = new Timer();
-			banktime.schedule(new dCTimerExpire(), timerrest);
-		}
 	
-		public void cancel(){
-			banktime.cancel();
-			banktime.purge();
-		}
+	public void cancel(){
+		banktime.cancel();
+		JWDtime.cancel();
+	}
 
-		public class dCTimerExpire extends TimerTask {
-			public void run(){
-				accounts = new HashMap<String, Double>();
-				try {
-					accounts = dCD.returnMap("Bank");
-				} catch (Exception e) {
-					dCD.log.severe("[dConomy] - Unable to retrieve array of bank balances!");
-				}
-				for (String acc : accounts.keySet()){
-					double balance = accounts.get(acc);
-					double newbalance = balance + (balance*interest);
-					dCD.setBalance(newbalance, acc, "Bank");
-				}
-				dCD.log.info("[dConomy] - Bank Interest Paid!");
-				dCD.SetReset("BankTimerResetTo", System.currentTimeMillis()+bdelay);
-				if (etc.getLoader().getPlugin("dConomy").isEnabled()){
-					banktime.schedule(new dCTimerExpire(), bdelay);
-				}
+	public class dCTimerExpire extends TimerTask {
+		public void run(){
+			accounts = new HashMap<String, Double>();
+			try {
+				accounts = dCD.returnMap("Bank");
+			} catch (Exception e) {
+				dCD.log.severe("[dConomy] - Unable to retrieve array of bank balances!");
+			}
+			for (String acc : accounts.keySet()){
+				double balance = accounts.get(acc);
+				double newbalance = balance + (balance*binterest);
+				dCD.setBalance(newbalance, acc, "Bank");
+			}
+			dCD.log.info("[dConomy] - Bank Interest Paid!");
+			dCD.SetReset("BankTimerResetTo", System.currentTimeMillis()+bdelay);
+			if (etc.getLoader().getPlugin("dConomy").isEnabled()){
+				banktime.schedule(new dCTimerExpire(), bdelay);
 			}
 		}
 	}
-	
-	public class dCJointWithdrawDelayTimer{
-		Timer JWDtime;
-		int jdelay;
-		dCData dCD;
-		
-		public dCJointWithdrawDelayTimer(dCTimer dCT){ }
-		
-		public void SetUpJWDT(dCData dCD, int delay, long timerrest){
-			this.dCD = dCD;
-			JWDtime = new Timer();
-			this.jdelay = delay*60*1000;
-			JWDtime.schedule(new dCJWDTimerExpire(), timerrest);
-		}
-	
-		public void cancel(){
-			JWDtime.cancel();
-			JWDtime.purge();
-		}
 
-		public class dCJWDTimerExpire extends TimerTask {
-			public void run(){
-				dCD.JointUserWithdrawDelayReset();
-				dCD.log.info("[dConomy] - Joint User Withdraw Delay Reset!");
-				dCD.SetReset("JointWithdrawTimerResetTo", System.currentTimeMillis()+jdelay);
-				if (etc.getLoader().getPlugin("dConomy").isEnabled()){
-					JWDtime.schedule(new dCJWDTimerExpire(), jdelay);
-				}
+	public class dCJWDTimerExpire extends TimerTask {
+		public void run(){
+			dCD.JointUserWithdrawDelayReset();
+			dCD.log.info("[dConomy] - Joint User Withdraw Delay Reset!");
+			dCD.SetReset("JointWithdrawTimerResetTo", System.currentTimeMillis()+jdelay);
+			if (etc.getLoader().getPlugin("dConomy").isEnabled()){
+				JWDtime.schedule(new dCJWDTimerExpire(), jdelay);
 			}
 		}
 	}

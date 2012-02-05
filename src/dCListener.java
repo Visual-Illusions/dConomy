@@ -21,11 +21,18 @@
 */
 
 public class dCListener extends PluginListener{
-	dCData dCD = dConomy.dCD;
-	dCActionHandler dCAH = new dCActionHandler();
+	dCData dCD;
+	dConomy dCo;
+	dCActionHandler dCAH;
 	String S = "SERVER";
 	String A = "Account";
 	String B = "Bank";
+	
+	public dCListener(dConomy dCo, dCData dCD){
+		this.dCo = dCo;
+		this.dCD = dCD;
+		this.dCAH = new dCActionHandler(dCo);
+	}
 	
 	public boolean onCommand(Player player, String[] cmd){
 		if (cmd[0].equalsIgnoreCase("/money")){
@@ -341,6 +348,14 @@ public class dCListener extends PluginListener{
 					}
 				}
 			}
+		}
+		else if(cmd[0].equalsIgnoreCase("/dConomy") || cmd[0].equalsIgnoreCase("/dCo")){
+			player.sendMessage("§7-----§2dConomy by §aDarkDiplomat§7-----");
+			player.sendMessage("§7-----§6"+dCo.codename+" Installed§7-----");
+			if(!dCo.isLatest()){
+				player.sendMessage("§7-----§6An update is availible! Latest = §2"+dCo.CurrVer+"§7-----");
+			}
+			return true;
 		}
 		return false;
 	}

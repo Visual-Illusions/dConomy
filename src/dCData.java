@@ -77,23 +77,13 @@ public class dCData {
 	
 	//Settings
 	PluginListener dCListener;
-	boolean MySQL = false, CMySQL = false, Log = false;
+	boolean MySQL = false, CMySQL = false, Log = false, MBJ = false, iConvert = false, aoc = false, CAA = false;
 	String DataBase = "jdbc:mysql://localhost:3306/minecraft", UserName = "root", Password= "root", Driver = "com.mysql.jdbc.Driver", MoneyName = "Voin$";
-	double startingbalance = 0d;
-	int Bankdelay = 60;
-	double interest = 0.02;
-	int JWDelay = 60;
-	long breset = System.currentTimeMillis()+(Bankdelay*60*1000);
-	long jwreset = System.currentTimeMillis()+(JWDelay*60*1000);
+	double startingbalance = 100.00, JUMWA = 25, interest = 0.02;
+	int Bankdelay = 60, JWDelay = 60;
+	long breset = System.currentTimeMillis()+(Bankdelay*60*1000), jwreset = System.currentTimeMillis()+(JWDelay*60*1000);
 	dCTimer dCT;
-	dCTimer.dCBankTimer dCBT;
-	dCTimer.dCJointWithdrawDelayTimer dCJWDT;
 	dCMessages dCM;
-	boolean iConvert = false;
-	double JUMWA = 25;
-	boolean aoc = false;
-	boolean MBJ = false;
-	boolean CAA = false;
 	
 	//Number Formating
 	NumberFormat displayform = new DecimalFormat("#,##0.00");
@@ -170,13 +160,13 @@ public class dCData {
 	}
 	//With iConvert needing to be switched off  need to make sure the Props File stays clean So we will recreate the file
 	//Also this will be used with first run
-	public void CreatePropsFile(boolean iConvertCalled){
+	private void CreatePropsFile(boolean iConvertCalled){
 		File PropsFile = new File(dire+propsLoc);
 		boolean fail = false;
 		try {
 		    BufferedWriter out = new BufferedWriter(new FileWriter(PropsFile));
 		    out.write("###dConomy Settings###"); out.newLine();
-		    out.write("#New Account Starting Balance value in 0.00 format (if set to less than 0 will default to 0)#"); out.newLine();
+		    out.write("#New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0)#"); out.newLine();
 		    out.write("Starting-Balance="+startingbalance); out.newLine();
 		    out.write("#Name to call your currency#"); out.newLine();
 		    out.write("Money-Name="+MoneyName); out.newLine();
@@ -210,7 +200,7 @@ public class dCData {
 	}
 	
 	//Load settings
-	public void loadSettings(){
+	private void loadSettings(){
 		//Get/Set Settings
 		startingbalance = dCSettings.getDouble("Starting-Balance");
 		MoneyName = dCSettings.getString("Money-Name");
@@ -229,12 +219,7 @@ public class dCData {
 		CAA = dCSettings.getBoolean("CreateAccountsAlways");
 		
 		if (startingbalance < 0.01){
-			if(startingbalance < 0){
-				log.severe("[dConomy] - Starting balance was less than 0. Defaulting to 0.");
-			}
-			else{
-				log.severe("[dConomy] - Starting balance was less than 0.01 and greater than 0. Defaulting to 0.");
-			}
+			log.warning("[dConomy] - Starting balance was less than 0.01 and greater than 0. Defaulting to 0.");
 			startingbalance = 0;
 		}
 		
@@ -249,8 +234,8 @@ public class dCData {
 			try {
 				Class.forName(Driver);
 			} catch (ClassNotFoundException cnfe) {
-				log.severe("[dConomy] - Unable to find driver class: " + Driver);
-				log.severe("[dConomy] - Disabling SQL!");
+				log.warning("[dConomy] - Unable to find driver class: " + Driver);
+				log.warning("[dConomy] - Disabling SQL!");
 				MySQL = false;
 			}
 		}
@@ -260,7 +245,7 @@ public class dCData {
 		}
 		
 		JUWD = new ArrayList<String>();
-		dCT = new dCTimer();
+		dCT = new dCTimer(this);
 		//Start Bank Interest Timer if Enabled
 		if (interest > 0){
 			interest = interest/100; //pull it down to correct %
@@ -268,12 +253,11 @@ public class dCData {
 			interest = 0.02/100;
 		}
 		if (Bankdelay > 0){
-			dCBT = dCT.getdCBT();
 			breset = breset - System.currentTimeMillis();
 			if (breset < 0){
 				breset = 1000;
 			}
-			dCBT.SetUpBT(this, Bankdelay, interest, breset);
+			dCT.SetUpBT(Bankdelay, interest, breset);
 			log.info("[dConomy] - Bank Interest Timer Started!");
 		}
 		//Start JointAccount User Withdraw Delay if Enabled
@@ -282,12 +266,10 @@ public class dCData {
 			if (jwreset < 0){
 				jwreset = 1000;
 			}
-			dCJWDT = dCT.getdCJWDT();
-			dCJWDT.SetUpJWDT(this, JWDelay, jwreset);
+			dCT.SetUpJWDT(JWDelay, jwreset);
 			log.info("[dConomy] - JointAccount User Withdraw Delay Timer Started!");
 		}
 		
-		//TODO Load Messages
 		dCM = new dCMessages(this, dCMessage);
 		dCM.loadMessages();
 		
@@ -415,9 +397,10 @@ public class dCData {
 		if(conn != null && !dConomy.Terminated){
 			try{
 				st = conn.createStatement();
-				st.executeUpdate(table1);
-				st.executeUpdate(table2);
-				st.executeUpdate(table3);
+				st.addBatch(table1);
+				st.addBatch(table2);
+				st.addBatch(table3);
+				st.executeBatch();
 			}catch (SQLException SQLE) {
 				SQLError(SQLE, "dCData.CreateTable()");
 			}finally{

@@ -33,9 +33,9 @@ public class dCActionHandler {
 	String B = "Bank";
 	String S = "SERVER";
 	
-	public dCActionHandler(){
+	public dCActionHandler(dConomy dCo){
 		server = etc.getServer();
-		dCD = dConomy.dCD;
+		dCD = dCo.dCD;
 	}
 	
 	public void PlayerMessage(String playernom, String message){
