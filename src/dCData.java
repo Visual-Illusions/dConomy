@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 public class dCData {
 	//Misc Stuff
 	Logger log = Logger.getLogger("Minecraft");
-	Server server = etc.getServer();
+	private final Server server = etc.getServer();
 	
 	//PropertiesFiles
 	PropertiesFile dCSettings;
@@ -57,18 +57,19 @@ public class dCData {
 	PropertiesFile dCTimerreset;
 	
 	//Properties File Locations/Directories
-	String dire = "plugins/config/dConomy/";
-	String direJoint = "plugins/config/dConomy/JointAccounts/";
-	String direTrans = "plugins/config/dConomy/TransactionLogs/";
-	String direMessages = "plugins/config/dConomy/Messages/";
-	String propsLoc = "dCSettings.ini";
-	String MySQLLoc = "dCMySQLConn.ini";
-	String FormatLoc = "dCMessageFormat.txt";
-	String JointAcc = /*AccountName*/".txt";
-	String TransLoc = /*date(day/month/year)*/".txt";
-	String JUWDLoc = "JUWD.txt";
-	String dCPF = "PayForwarding.txt";
-	String timerresetloc = "dCTimerReser.DONOTEDIT";
+	private final String dire = "plugins/config/dConomy/";
+	private final String direJoint = "plugins/config/dConomy/JointAccounts/";
+	private final String direTrans = "plugins/config/dConomy/TransactionLogs/";
+	private final String direMessages = "plugins/config/dConomy/Messages/";
+	private final String propsLoc = "dCSettings.ini";
+	private final String MySQLLoc = "dCMySQLConn.ini";
+	private final String FormatLoc = "dCMessageFormat.txt";
+	private final String JointAcc = /*AccountName*/".txt";
+	private final String TransLoc = /*date(day/month/year)*/".txt";
+	private final String JUWDLoc = "JUWD.txt";
+	private final String dCPF = "PayForwarding.txt";
+	private final String timerresetloc = "dCTimerReser.DONOTEDIT";
+	private final String NL = System.getProperty("line.separator");
 	
 	//Date stuff for logs
 	Date date;
@@ -105,7 +106,7 @@ public class dCData {
 	}
 
 	//Make the Directory if not exist and Add some order to the Messages File
-	public void createDirectory(){
+	private void createDirectory(){
 		boolean firstRun = false;
 		File checkDir = new File(dire);
 		File checkDireJoint = new File(direJoint);
@@ -202,21 +203,21 @@ public class dCData {
 	//Load settings
 	private void loadSettings(){
 		//Get/Set Settings
-		startingbalance = dCSettings.getDouble("Starting-Balance");
-		MoneyName = dCSettings.getString("Money-Name");
-		MySQL = dCSettings.getBoolean("Use-MySQL");
-		CMySQL = dCSettings.getBoolean("Use-Canary-MySQLConn");
-		Log = dCSettings.getBoolean("LogPayments");
-		interest = dCSettings.getDouble("Bank-InterestRate");
-		Bankdelay = dCSettings.getInt("Bank-InterestPayDelay");
-		JWDelay = dCSettings.getInt("JointUserWithdrawDelay");
+		startingbalance = parseDouble(startingbalance, "Starting-Balance");
+		MoneyName = parseString(MoneyName, "Money-Name");
+		MySQL = parseBoolean(MySQL, "Use-MySQL");
+		CMySQL = parseBoolean(CMySQL, "Use-Canary-MySQLConn");
+		Log = parseBoolean(Log, "LogPayments");
+		interest = parseDouble(interest, "Bank-InterestRate");
+		Bankdelay = parseInt(Bankdelay, "Bank-InterestPayDelay");
+		JWDelay = parseInt(JWDelay, "JointUserWithdrawDelay");
 		breset = dCTimerreset.getLong("BankTimerResetTo");
 		jwreset = dCTimerreset.getLong("JointWithdrawTimerResetTo");
-		iConvert = dCSettings.getBoolean("Convert-iConomy");
-		JUMWA = dCSettings.getDouble("JointUserMaxWithdrawAmount");
-		aoc = dCSettings.getBoolean("AOCAPB");
-		MBJ = dCSettings.getBoolean("Prefix-MBJ");
-		CAA = dCSettings.getBoolean("CreateAccountsAlways");
+		iConvert = parseBoolean(iConvert, "Convert-iConomy");
+		JUMWA = parseDouble(JUMWA, "JointUserMaxWithdrawAmount");
+		aoc = parseBoolean(aoc, "AOCAPB");
+		MBJ = parseBoolean(MBJ, "Prefix-MBJ");
+		CAA = parseBoolean(CAA, "CreateAccountsAlways");
 		
 		if (startingbalance < 0.01){
 			log.warning("[dConomy] - Starting balance was less than 0.01 and greater than 0. Defaulting to 0.");
@@ -297,6 +298,74 @@ public class dCData {
 				}
 			}
 		}
+	}
+	
+	private Boolean parseBoolean(boolean def, String key){
+		boolean value = def;
+		if(dCSettings.containsKey(key)){
+			try{
+				value = dCSettings.getBoolean(key);
+			}catch(Exception e){
+				value = def;
+				log.warning("[dConomy] - Invaild Value for "+key+NL+" Using default of "+def);
+			}
+		}
+		else{
+			log.warning("[dConomy] - Key: '"+key+"' not found."+NL+" Using default of "+def);
+		}
+		return value;
+	}
+	
+	private String parseString(String def, String key){
+		String value = def;
+		if(dCSettings.containsKey(key)){
+			value = dCSettings.getString(key);
+			if(value.equals("") || value.equals(" ")){
+				value = def;
+				log.warning("[dConomy] - Invaild Value for "+key+NL+" Using default of "+def);
+			}
+		}
+		else{
+			log.warning("[dConomy] - Key: '"+key+"' not found."+NL+" Using default of "+def);
+		}
+		return value;
+	}
+	
+	private Integer parseInt(int def, String key){
+		int value = def;
+		if(dCSettings.containsKey(key)){
+			try{
+				value = dCSettings.getInt(key);
+			}catch(NumberFormatException NFE){
+				value = def;
+				log.warning("[dConomy] - Value was invaild for "+key+NL+" Using default of "+def);
+			}
+		}
+		else{
+			log.warning("[dConomy] - Key: '"+key+"' not found."+NL+" Using default of "+def);
+		}
+		return value;
+	}
+	
+	private Double parseDouble(double def, String key){
+		double value = def;
+		if(dCSettings.containsKey(key)){
+			try{
+				value = dCSettings.getDouble(key);
+			}catch(NumberFormatException NFE){
+				String checkval  = dCSettings.getString(key).replace(",", ".");
+				try{
+					value = Double.parseDouble(checkval);
+				}catch(NumberFormatException NFE2){
+					value = def;
+					log.warning("[dConomy] - Value was invaild for "+key+NL+" Using default of "+def);
+				}
+			}
+		}
+		else{
+			log.warning("[dConomy] - Key: '"+key+"' not found."+NL+" Using default of "+def);
+		}
+		return value;
 	}
 	
 	public void SetReset(String type, long time){
@@ -383,7 +452,7 @@ public class dCData {
 		return conn;
 	}
 	
-	public void CreateTable(){
+	private void CreateTable(){
 		String table1 = ("CREATE TABLE IF NOT EXISTS `dConomy` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Player` varchar(16) NOT NULL, `Account` DECIMAL(64,2) NOT NULL, `Bank` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
 		String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
 		String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
