@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 
 public class dConomy extends Plugin{
 	public final String name = "[dConomy]";
-	public final String codename = "Mizuho (1.4)";
-	String CurrVer = "Mizuho (1.4)";
+	public final String codename = "Mizuho (1.4.1)";
+	String CurrVer = "Mizuho (1.4.1)";
 	public final Logger log = Logger.getLogger("Minecraft");
 	dCData dCD;
 	dCListener dCL;

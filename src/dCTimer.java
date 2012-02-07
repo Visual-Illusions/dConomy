@@ -50,8 +50,12 @@ public class dCTimer{
 	}
 	
 	public void cancel(){
-		banktime.cancel();
-		JWDtime.cancel();
+		if(banktime != null){
+			banktime.cancel();
+		}
+		if(JWDtime != null){
+			JWDtime.cancel();
+		}
 	}
 
 	public class dCTimerExpire extends TimerTask {
