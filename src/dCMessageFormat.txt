@@ -1,0 +1,177 @@
+#########################################
+############dConomy Messages#############
+#########################################
+####Error Messages (100 Series)####
+101-Player-NotEnoughMoney=<rose>You do not have enough <m> to complete transaction!
+102-Bank-NotEnoughMoney=<rose>Your bank does not have enough <m> to complete transaction!
+103-NumberFormatError=<rose>You did not enter a proper number!
+104-Command-NoPermission=<rose>You do not have permission to use that command!
+105-Joint-NotEnoughMoney=<rose><acc> does not have the funds for this transaction!
+106-AmountNotSpecified=<rose>You didn't specify an amount!
+107-Joint-NoAccess=<rose>You do not have access to <acc>!
+108-PlayerNotFound=<rose>Player not found!
+109-NegativeEntered=<rose>Could not find account for <p>!
+110-JointNotFound=<rose><acc> does not exist!
+111-JointNameTaken=<rose><acc> is already in use!
+112-Joint-OwnerNotSpecified=<rose>You didn't specify an owner!
+113-InvalidCommand=<rose>Invaild dConomy Command!
+114-Joint-PlayerNotSpecified=<rose>You didn't specify a player!
+115-JointNameTooLong=<rose>Account names cannot be longer than 32 Characters!
+116-Joint-User-CannotWithdrawAgainYet=<rose>You cannot make another withdraw for <xmin> Minutes!
+117-Joint-User-WithdrawTooMuch=<rose>You cannot withdraw that amount at one time!
+118-Player-CannotPaySelf=<rose>You cannot pay yourself!
+119-Player-AlreadyJointUser=<rose><p> is already a User!
+120-PlayerNotSpecified=<rose>Player Not Specified!
+121-Joint-UserNotSpecified=<rose>Joint Account User not specified!
+122-Joint-PlayerAlreadyOwner=<rose><p> is already a Owner!
+123-Joint-OwnerNotSpecified=<rose>Joint Account Owner not specified!
+124-Joint-PlayerAlreadyNotUser=<rose><p> wasn't a User!
+125-Joint-PlayerAlreadyNotOwner=<rose><p> wasn't a Owner!
+126-NegativeNumber=<rose>Amount cannot be a negative!
+127-BalanceNegative=<rose>Balance cannot become negative!
+#########################################
+####Player Messages (200 Series)####
+201-Player-AccountBalance=<lightgreen>Your <lightblue>Account Balance<lightgreen> is <yellow><a> <m><lightgreen>.
+202-Player-BankBalance=<lightgreen>Your <lightblue>Bank Balance<lightgreen> is <yellow><a> <m><lightgreen>.
+203-Player-BankWithdraw=<lightgreen>Your have withdrawn <yellow><a> <m><lightgreen> from your <lightblue>Bank Account<lightgreen>.
+204-Player-BankDeposit=<lightgreen>Your have deposited <yellow><a> <m><lightgreen> into your <lightblue>Bank Account<lightgreen>.
+205-Player-BankNewBalance=<lightgreen>Your new bank balance is <yellow><a> <m><lightgreen>.
+206-Player-AccountNewBalance=<lightgreen>Your new balance is <yellow><a> <m><lightgreen>.
+207-Player-SentPaymentTo=<lightgreen>You have sent <yellow><a> <m> to <gold><p><lightgreen>.
+208-Player-ReceivedPaymentFrom=<lightgreen>You have received <yellow><a> <m><lightgreen> from <gold><p><lightgreen>.
+209-Player-RankSelf=<lightgreen>You are ranked <yellow><rank><lightgreen>.
+210-Player-RankOther=<gold><p><lightgreen> is ranked <yellow><rank><lightgreen>.
+211-Player-PayForwardJoint=<lightgreen>Your pay has been forwarded to JointAccount: <lightblue><acc><lightgreen>.
+212-Player-PaymentSentFromJoint=<lightgreen>Payment has been sent from Joint Account: <lightblue><acc><lightgreen>.
+213-Player-PayForwardBank=<lightgreen>Your pay has been forwarded to your <lightblue>Bank Account<lightgreen>.
+214-Player-PaymentSentFromBank=<lightgreen>Payment has been sent from your <lightblue>Bank Account<lightgreen>.
+215-Player-PayForwardSetJoint=<lightgreen>You have set up Pay Forwarding to Joint Account: <lightblue><acc><lightgreen>.
+216-Player-PayForwardSetBank=<lightgreen>You have set up Pay Forwarding to your <lightblue>Bank Account<lightgreen>.
+217-Player-PaymentSentToJoint=<lightgreen>You have paid <amount> to Joint Account: <lightblue><acc><lightgreen>.
+218-Player-PayForwardTurnedOff=<lightgreen>You have turned Pay Forwarding <rose>OFF<lightgreen>.
+219-Player-PayForwardingIsSetJoint=<lightgreen>You have Pay Forwarding set to Joint Account: <lightblue><acc><lightgreen>.
+220-Player-PayForwardingIsSetBank=<lightgreen>You have Pay Forwarding set to your <lightblue> Bank Account<lightgreen>.
+221-Player-PayForwardingNotActive=<lightgreen>Pay Forwarding is not active.
+222-Player-AccountCheck=<gold><p>'s<lightgreen> Account Balance is <yellow><a> <m><lightgreen>.
+223-Player-BankCheck=<gold><p>'s<lightgreen> Bank Balance is <yellow><a> <m><lightgreen>.
+#########################################
+####Joint Account Messages (300 Series)####
+301-Joint-AccountBalance=<lightblue><acc><lightgreen> balance is <yellow><a> <m><lightgreen>.
+302-Joint-NewBalance=<lightblue><acc><lightgreen> new balance is <yellow><a> <m><lightgreen>.
+303-Joint-Withdraw=<lightgreen>You have withdrawn <yellow><a> <m> <lightgreen> from <lightblue><acc><lightgreen>.
+304-Joint-Deposit=<lightgreen>You have deposited <yellow><a> <m> into <lightblue><acc><lightgreen>.
+305-Joint-Created=<lightgreen>Created JointAccount <lightblue><acc><lightgreen>.
+306-Joint-OwnerAdded=<lightgreen>Added <gold><p><lightgreen> as Owner to Joint Account: <lightblue><acc><lightgreen>.
+307-Joint-OwnerRemoved=<lightgreen>Removed <gold><p><lightgreen> as Owner from  Joint Account: <lightblue><acc><lightgreen>.
+308-Joint-AccountDeleted=<lightgreen>Deleted Joint Account: <lightblue><acc><lightgreen>.
+309-Joint-UserAdded=<lightgreen>Added <gold><p><lightgreen> as User to Joint Account: <lightblue><acc><lightgreen>.
+310-Joint-UserRemoved=<lightgreen>Removed <gold><p><lightgreen> as User from Joint Account: <lightblue><acc><lightgreen>.
+311-Joint-MaxUserWithdrawCheck=<lightgreen>Max User Withdraw is <yellow><a> <m><lightgreen> per <purple><min> Minutes<lightgreen>.
+312-Joint-MaxUserWithdrawSet=<lightgreen>You have set Max User Withdraw to <yellow><a> <m><lightgreen>.
+#########################################
+####Admin/Misc Account Messages (400 Series)####
+401-Rank-Top=<green>-----Top <yellow><rank> <green>Richest Players-----
+402-Rank-Sorting=<green>   <rank>. <gold><p> <green>[<yellow><a> <m><green>]
+403-Rank-NoTop=<rose>   No Top Players Yet!
+404-Admin-Player-Reset=<gold><p>'s Account<lightgreen> has been reset to default balance.
+405-Admin-Player-Set=<gold><p>'s Account<lightgreen> has been set to <a> <m><lightgreen>.
+406-Admin-Player-Remove=<lightgreen>You have deducted <yellow><a> <m><lightgreen> from <gold><p>' Account<lightgreen>.
+407-Admin-Player-Add=<yellow><a> <m><lightgreen> has been added to <gold><p>'s Account<lightgreen>.
+408-Admin-Bank-Reset=<gold><p>'s Bank<lightgreen> has been reset to 0.
+409-Admin-Bank-Set=<gold><p>'s Bank<lightgreen> has been set to <a> <m><lightgreen>.
+410-Admin-Bank-Remove=<lightgreen>You have removed <yellow><a> <m><lightgreen> from <gold><p>' Bank<lightgreen>.
+411-Admin-Bank-Add=<yellow><a> <m><lightgreen> has been added to <gold><p>'s Bank<lightgreen>.
+412-Admin-Joint-Reset=<lightgreen> Joint Account: <lightblue><a>'s Balance<lightgreen> has been reset to 0.
+413-Admin-Joint-Set=<lightgreen> Joint Account: <lightblue><acc>'s Balance<lightgreen> has been set to <yellow><a> <m><lightgreen>.
+414-Admin-Joint-Add=<yellow><a> <m><lightgreen> has been added to Joint Account: <lightblue><acc>'s Balance<lightgreen>.
+415-Admin-Joint-Remove=<yellow><a> <m><lightgreen> has been removed from Joint Account: <lightblue><acc>'s Balance<lightgreen>.
+#########################################
+####Help Display Messages (500 Series)####
+501-Money-HelpOpen=<green>|--------------<gold>dConomy /money Help<green>--------------|
+502-RequiredOptionalAlias=<green>|----<rose><REQUIRED><green>----<lightblue>[Optional]<green>----<yellow>(Alias)<green>-|
+503-Money-Base=   <gold>/money<green>: Basic Command/Display account balance
+504-Money-Pay=   <gold>pay <yellow>(-p) <rose><p> <a><green>: Pay Player Amount
+505-Money-Rank=   <gold>rank <yellow>(-r) <lightblue>[p]<green>: Display Rank Position
+506-Money-Top=   <gold>top <yellow>(-t) <lightblue>[a]<green>: Display Richest Players
+507-Money-Set=   <gold>set <yellow>(-s) <rose><p> <a><green>: Set player's account to amount
+508-Money-Reset=   <gold>reset <yellow>(-rt) <rose><p><green>: Reset players account to default
+509-Money-Add=   <gold>add <yellow>(-a) <rose><p> <a><green>: Add amount to player's account
+510-Money-Remove=   <gold>remove <yellow>(-rm) <rose><p> <a><green>: Remove amount from player's account
+511-Money-Auto=   <gold>auto <yellow>(-au) <green>: checks autodep account settings
+512-Money-SetAuto=   <gold>setauto <yellow>(-sa) <rose><acc|OFF><green>: Changes or sets autodep account
+513-Money-UseJointHelp=   <green>Use <gold>/bank ? <green>for help with Bank commands
+514-Money-UseBankHelp=   <green>Use <gold>/joint ? <green>for help with Joint Accounts
+515-Bank-HelpOpen=<green>|--------------<gold>dConomy /bank Help<green>--------------|
+516-Bank-Base=   <gold>/bank<green>: Basic Command/Display bank balance
+517-Bank-Withdraw=   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from bank account
+518-Bank-Deposit=   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into bank account
+519-Bank-Reset=   <gold>reset <yellow>(-rt) <rose><p><green>: reset player's bank to 0
+520-Bank-Set=   <gold>set <yellow>(-s) <rose><p> <amount><green>: set player's bank to amount
+521-Bank-Add=   <gold>add <yellow>(-a) <rose><p><green>: add amount to player's bank
+522-Bank-Remove=   <gold>remove <yellow>(-rm) <rose><p> <a><green>: remove amount from player's bank
+523-Joint-HelpOpen=<green>|--------------<gold>dConomy /joint Help<green>--------------|
+524-Joint-Base=   <gold>/joint <account><green>: Basic Command/Display JointAccount balance
+525-Joint-Withdraw=   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from Account
+526-Joint-Deposit=   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into Account
+527-Joint-Pay=   <gold>pay <yellow>(-p) <rose><p><green>: pay Account
+528-Joint-Create=   <gold>create <yellow>(-c) <green>: create Account
+529-Joint-Delete=   <gold>delete <yellow>(-del) <green>: deposit into Account
+530-Joint-AddOwner=   <gold>addowner <yellow>(-ao) <rose><p><green>: add owner to Account
+531-Joint-RemoveOwner=   <gold>removeowner <yellow>(-ro) <rose><p><green>: remove owner from Account
+532-Joint-AddUser=   <gold>adduser <yellow>(-au) <rose><p><green>: add user to Account
+533-Joint-RemoveUser=   <gold>removeuser <yellow>(-ru) <rose><p><green>: remove user from Account
+534-Joint-UserMax=   <gold>setusermax <yellow>(-su) <rose><a><green>: set UserMaxWithdraw per set period
+535-Joint-Reset=   <gold>reset <yellow>(-rt) <rose><a><green>: reset Account to 0
+536-Joint-Set=   <gold>set <yellow>(-s) <rose><a><green>: set Account to amount
+537-Joint-Add=   <gold>add <yellow>(-a) <rose><a><green>: add amount to Account
+538-Joint-Remove=   <gold>remove <yellow>(-rm) <rose><a><green>: remove amount to Account
+539-Joint-UserMaxCheck=   <gold>usermax <yellow>(-um) <rose><a><green>: checks UserMaxWithdraw per set period
+540-Help-PlayerAmountAccount=<green>|---- <p> = Player <a> = Amount <acc> = Account ----|
+541-Help-UseMoneyAdmin=   <green>Use <gold>/money ? admin <green>for help with Money Admin commands
+542-Help-UseBankAdmin=   <green>Use <gold>/bank ? admin <green>for help with Bank Admin commands
+543-Help-UseJointAdmin=   <green>Use <gold>/joint ? <green>for help with Joint Admin commands
+544-Help-MoneyAdminOpen=<green>|------------<gold>dConomy /money Admin Help<green>------------|
+545-Help-BankAdminOpen=<green>|------------<gold>dConomy /bank Admin Help<green>------------|
+546-Help-JointAdminOpen=<green>|------------<gold>dConomy /joint Admin Help<green>------------|
+#########################################
+####Logging Messages (600 Series)####
+601-PlayerPayPlayer=<p1> paid <p2> <a>
+602-PlayerDepositBank=<p1> deposited <a> into their Bank
+603-PlayerWithdrawBank=<p1> withdrew <a> from their Bank Account
+604-PlayerWithdrawJoint=<p1> withdrew <a> from Joint Account: <acc>
+605-PlayerDepositJoint=<p1> deposited <a> from Joint Account: <acc>
+606-PaidJoint=<p1> paid <a> to Joint Account: <acc>
+607-PlayerPaidWithJoint=<p1> paid <p2> using Join Account: <acc>
+608-PlayerPFBank=<p1> used PayForwarding to deposit <acc> directly into their Bank
+609-PlayerPFPayWithBank=<p1> used PayForwarding connected to their Bank to pay <a> to <p2> 
+610-PlayerPFPayWithJoint=<p1> used PayForwarding connected to 'Joint Account: <acc>' to pay <p2>
+611-CreateJoint=<p1> created Joint Account: <acc>
+612-DeleteJoint=<p1> deleted Joint Account: <acc>
+613-Joint-AddOwner=<p1> added <p2> as 'Owner' to Joint Account: <acc>
+614-ViewTop=<p1> veiwed Top <a> Richest Players
+615-Joint-AddUser=<p1> added <p2> as 'User' to Joint Account: <acc>
+616-Joint-RemoveOwner=<p1> removed <p2> as 'Owner' to Joint Account: <acc>
+617-Joint-RemoveUser=<p1> removed <p2> as 'User' to Joint Account: <acc>
+618-PAccount-Reset=<p1> reset <p2> Account to default balance
+619-PAccount-Set=<p1> set <p2>'s Account to <a>
+620-PAccount-Add=<p1> added <a> to <p2>'s Account
+621-PAccount-Remove=<p1> removed <a> from <p2>'s Account
+622-Bank-Reset=<p1> reset <p2>'s Bank to default balance
+623-Bank-Set=<p1> set <p2>'s Bank Balance to <a>
+624-Bank-Add=<p1> added <a> to <p2>'s Bank
+625-Bank-Remove=<p1> removed <a> from <p2>'s Bank
+626-Joint-Reset=<p1> reset 'Joint Account: <acc>' to default settings
+627-Joint-Set=<p1> set 'Joint Account: <acc>' balance to <a>
+628-Joint-Add=<p1> added <a> to Joint Account: <acc>
+629-Joint-Remove=<p1> remove <a> from Joint Account: <acc>
+630-Joint-UserAdded=<p1> added <p2> as Owner to Joint Account: <acc>
+631-Player-PayForwardDepositJoint=<p1> used Pay Forwarding to deposit <a> into Joint Account: <acc>
+632-Player-UsedPFtoPayJointUsingJoint=<p1> used Pay Forwarding to pay <a> to Joint Account: <acc> using Joint Account: <acc>
+633-Player-UsedPFtoPayJointUsingBank=<p1> used Pay Forwarding to pay <a> to Joint Account: <acc> using their Bank
+634-PlayerSetPFtoJoint=<p1> set Pay Forwarding to Joint Account: <acc>
+635-PlayerSetPFtoBank=<p1> set Pay Forwarding to their Bank Account
+636-Player-TurnPFOff=<p1> turned off Pay Forwarding
+637-Player-SetJointMaxUserWithdraw=<p1> set UserMaxWithdraw to <a> for Joint Account: <acc>
+638-Player-ViewedOwnRank=<p1> viewed own rank
+639-Player-ViewedAnothersRank=<p1> viewed <p2>'s rank
+######EOF######
