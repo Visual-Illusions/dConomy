@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import net.visualillusionsent.dconomy.AccountType;
 
@@ -15,7 +16,7 @@ import net.visualillusionsent.dconomy.AccountType;
  * @version 2.0
  */
 public class DataSource {
-    
+    Logger logger = Logger.getLogger("Minecraft");
     HashMap<String, Double> accmap = new HashMap<String, Double>();
     HashMap<String, Double> bankmap = new HashMap<String, Double>();
     HashMap<String, JointAccount> jointmap = new HashMap<String, JointAccount>();
@@ -175,7 +176,7 @@ public class DataSource {
      * @since dConomy v2.0
      */
     public void createJointAccount(String accname, String owner){
-        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, 0));
+        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw()));
     }
     
     /**

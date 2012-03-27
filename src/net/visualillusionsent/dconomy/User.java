@@ -1,9 +1,27 @@
 package net.visualillusionsent.dconomy;
 
+/**
+ * User.java - dConomy User handling class
+ * 
+ * @author darkdiplomat
+ * @version 2.0
+ */
 public class User {
     private String name;
     private boolean money, bank, joint, rank, create, auto, admin;
     
+    /**
+     * Class Constructor
+     * 
+     * @param name Name of the user
+     * @param money Boolean for if user can use money commands
+     * @param bank Boolean for if user can use bank commands
+     * @param joint Boolean for if user can use joint commands
+     * @param rank Boolean for if user can use rank commands
+     * @param create Boolean for if user can create joint accounts
+     * @param auto Boolean for if user can use pay forwarding
+     * @param admin Boolean for if user is a dConomy Admin
+     */
     public User(String name, boolean money, boolean bank, boolean joint, boolean rank, boolean create, boolean auto, boolean admin){
         this.name = name;
         this.money = money;

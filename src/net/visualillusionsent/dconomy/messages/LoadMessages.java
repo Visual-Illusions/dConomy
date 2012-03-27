@@ -1,5 +1,9 @@
 package net.visualillusionsent.dconomy.messages;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -7,9 +11,22 @@ import net.visualillusionsent.dconomy.data.DCoProperties;
 
 public class LoadMessages {
     private Logger logger = Logger.getLogger("Minecraft");
-    private Properties dCMess;
+    private Properties dCoMess;
+    private static NumberFormat displayform = new DecimalFormat("#,##0.00");
     
     void LoadMessage(){
+        dCoMess = new Properties();
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream("plugins/config/dConomy/Messages/dCMessageFormat.txt");
+            dCoMess.load(stream);
+            stream.close();
+        } 
+        catch (IOException ex) {
+            logger.warning("[dConomy] - Unable to load Messages... Using defaults...");
+            return;
+        }
+        
         //Get/Set ErrorMessages (100 Series)
         ErrorMessages.E101.setMess(parseMess(ErrorMessages.E101.plainMess(), "101-Player-NotEnoughMoney"));
         ErrorMessages.E102.setMess(parseMess(ErrorMessages.E102.plainMess(), "102-Bank-NotEnoughMoney"));
@@ -195,8 +212,8 @@ public class LoadMessages {
     
     private String parseMess(String def, String key){
         String value = def;
-        if(dCMess.containsKey(key)){
-            value = dCMess.getProperty(key);
+        if(dCoMess.containsKey(key)){
+            value = dCoMess.getProperty(key);
             if(value.equals("")){
                 logger.warning("[dConomy] - Value not found for '"+key+"' Using default of '"+def+"'");
                 value = def;
@@ -245,7 +262,7 @@ public class LoadMessages {
         //String mins = String.valueOf(JWDelay);
         
         parsedMessage = parsedMessage.replace("<m>", DCoProperties.getMoneyName());
-        //parsedMessage = parsedMessage.replace("<a>", String.valueOf(displayform.format(amount)));
+        parsedMessage = parsedMessage.replace("<a>", String.valueOf(displayform.format(amount)));
         //parsedMessage = parsedMessage.replace("<min>", mins);
         //parsedMessage = parsedMessage.replace("<xmin>", String.valueOf(xm));
         

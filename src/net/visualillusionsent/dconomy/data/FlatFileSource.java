@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * FlatFileSource.java FlatFile data handler
@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  * @see DataSource
  */
 public class FlatFileSource extends DataSource{
-    private Logger logger = Logger.getLogger("Minecraft");
     private String jds = DCoProperties.getDir()+"JointAccounts/";
     private String TransLoc = DCoProperties.getDir()+/*date(day/month/year)*/"%s.txt";
     private File accFile = new File(DCoProperties.getDir()+"dCAccounts.txt");
@@ -153,21 +152,24 @@ public class FlatFileSource extends DataSource{
     }
     
     public void logTrans(String action){
-        String filename= String.format(TransLoc, String.valueOf(dateFormat.format(date)));
-        File LogFile = new File(filename);
-        if (!LogFile.exists()){ 
-            try {
-                LogFile.createNewFile();
-            } catch (IOException e) {
-                logger.warning("[dConomy] - Unable to create new Log File!");
+        if(DCoProperties.isLogging()){
+            date = new Date();
+            String filename= String.format(TransLoc, String.valueOf(dateFormat.format(date)));
+            File LogFile = new File(filename);
+            if (!LogFile.exists()){ 
+                try {
+                    LogFile.createNewFile();
+                } catch (IOException e) {
+                    logger.warning("[dConomy] - Unable to create new Log File!");
+                }
             }
-        }
-        try {
-            FileWriter fw = new FileWriter(filename,true);
-            fw.write("["+dateFormatTime.format(date)+"] "+action+ System.getProperty("line.separator"));
-            fw.close();  
-        } catch (IOException e) {
-            logger.warning("[dConomy] - Unable to Log Transaction!");
+            try {
+                FileWriter fw = new FileWriter(filename,true);
+                fw.write("["+dateFormatTime.format(date)+"] "+action+ System.getProperty("line.separator"));
+                fw.close();  
+            } catch (IOException e) {
+                logger.warning("[dConomy] - Unable to Log Transaction!");
+            }
         }
     }
 }
