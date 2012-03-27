@@ -423,10 +423,11 @@ public class dCData {
         return MoneyName;
     }
     
+    @SuppressWarnings("deprecation")
     public Connection getSQLConn() throws SQLException{
         Connection conn = null;
         if (CMySQL){
-            conn = etc.getSQLConnection();
+            conn = etc.getSQLConnection(); //Will come back and update this at a later time
         }else{
             conn = DriverManager.getConnection(DataBase, UserName, Password);
         }
