@@ -9,10 +9,10 @@ import net.visualillusionsent.dconomy.User;
 import net.visualillusionsent.dconomy.messages.ErrorMessages;
 
 /**
- * CommandExecuter.java dConomy Command handling class
+ * dConomy command handling class
  * 
- * @author darkdiplomat
- * @version 2.0
+ * @since   2.0
+ * @author  darkdiplomat
  */
 public class CommandExecuter {
     private static ActionResult defres = new ActionResult();
@@ -21,37 +21,85 @@ public class CommandExecuter {
     public static float currver = version;
     
     /**
-     * dConomy Command execution handler
+     * dConomy Command execution handler.
      * 
-     * @param user User calling the command
-     * @param args Command arguments
-     * @return defres ActionResult containing any messages to be sent to the player
-     * 
-     * @since dConomy v2.0
-     * 
-     * @see ActionResult
-     * @see User
-     * @see MoneyCommands
+     * @param   user    User calling the command.
+     * @param   args    The command arguments.
+     * @return  defres  ActionResult containing any messages to be sent to the player.
+     * @since   2.0
+     * @see     ActionResult
+     * @see     User
+     * @see     MoneyCommands
+     * @see     BankCommands
+     * @see     JointCommands
      */
     public static ActionResult execute(User user, String[] args){
         try{
+            String[] newArgs;
+            
+            if(args.length > 2){
+                newArgs = new String[args.length-2];
+            }
+            else{
+                newArgs = new String[]{ "" };
+            }
+            
+            for (int i = 2; i < args.length; i++) {
+                newArgs[i-2] = args[i];
+            }
+            
             if(args[0].equals("/money")){
                 if(!user.useMoney()){
                     defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
                     return defres;
                 }
-                MoneyCommands theCommand = MoneyCommands.valueOf(args[1].toUpperCase());
-                String[] newArgs;
                 
-                if(args.length > 2){
-                    newArgs = new String[args.length-2];
+                if(args.length == 1){
+                    return MoneyCommands.BASE.execute(user, newArgs);
+                }
+                
+                boolean isBase = true;
+                for(MoneyCommands cmd : MoneyCommands.values()){
+                    if(args[1].toUpperCase().matches(cmd.name())){
+                        isBase = false;
+                    }
+                }
+                
+                if(isBase){
+                    return MoneyCommands.BASE.execute(user, new String[]{ args[1] });
+                }
+                
+                MoneyCommands theCommand = MoneyCommands.valueOf(args[1].toUpperCase());
+                
+                
+                return theCommand.execute(user, newArgs);
+            }
+            else if(args[0].equalsIgnoreCase("/bank")){
+                if(!user.useBank()){
+                    defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
+                    return defres;
+                }
+                BankCommands theCommand = BankCommands.valueOf(args[1].toUpperCase());
+                
+                return theCommand.execute(user, newArgs);
+            }
+            else if(args[0].equalsIgnoreCase("/joint")){
+                if(!user.useJoint()){
+                    defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
+                    return defres;
+                }
+                //TODO verify args[1] is joint account ???
+                JointCommands theCommand = JointCommands.valueOf(args[1].toUpperCase());
+                
+                if(args.length > 3){
+                    newArgs = new String[args.length-3];
                 }
                 else{
                     newArgs = new String[]{ "" };
                 }
                 
-                for (int i = 2; i < args.length; i++) {
-                    newArgs[i-2] = args[i];
+                for (int i = 3; i < args.length; i++) {
+                    newArgs[i-3] = args[i];
                 }
                 
                 return theCommand.execute(user, newArgs);
@@ -67,7 +115,7 @@ public class CommandExecuter {
      * Checks is dConomy is the latest version
      * 
      * @return true if it is
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public static final boolean isLatest(){
         try{

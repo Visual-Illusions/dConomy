@@ -10,11 +10,15 @@ import java.util.logging.Logger;
 import net.visualillusionsent.dconomy.data.DCoProperties;
 
 public class LoadMessages {
-    private Logger logger = Logger.getLogger("Minecraft");
-    private Properties dCoMess;
+    private static Logger logger = Logger.getLogger("Minecraft");
+    private static Properties dCoMess;
     private static NumberFormat displayform = new DecimalFormat("#,##0.00");
     
-    void LoadMessage(){
+    public static void LoadMessage(){
+        logger.info("[dConomy] Attempting to Load Messages...");
+        
+        //TODO Check if Messages File exists...
+        
         dCoMess = new Properties();
         FileInputStream stream = null;
         try {
@@ -23,10 +27,11 @@ public class LoadMessages {
             stream.close();
         } 
         catch (IOException ex) {
-            logger.warning("[dConomy] - Unable to load Messages... Using defaults...");
+            logger.warning("[dConomy] Unable to load Messages... Using defaults...");
             return;
         }
         
+        logger.info("[dConomy] Loading Error Messages...");
         //Get/Set ErrorMessages (100 Series)
         ErrorMessages.E101.setMess(parseMess(ErrorMessages.E101.plainMess(), "101-Player-NotEnoughMoney"));
         ErrorMessages.E102.setMess(parseMess(ErrorMessages.E102.plainMess(), "102-Bank-NotEnoughMoney"));
@@ -36,7 +41,7 @@ public class LoadMessages {
         ErrorMessages.E106.setMess(parseMess(ErrorMessages.E106.plainMess(), "106-AmountNotSpecified"));
         ErrorMessages.E107.setMess(parseMess(ErrorMessages.E107.plainMess(), "107-Joint-NoAccess"));
         ErrorMessages.E108.setMess(parseMess(ErrorMessages.E108.plainMess(), "108-PlayerNotFound"));
-        ErrorMessages.E109.setMess(parseMess(ErrorMessages.E109.plainMess(), "109-NegativeEntered"));
+        ErrorMessages.E109.setMess(parseMess(ErrorMessages.E109.plainMess(), "109-AccountNotFound"));
         ErrorMessages.E110.setMess(parseMess(ErrorMessages.E110.plainMess(), "110-JointNotFound"));
         ErrorMessages.E111.setMess(parseMess(ErrorMessages.E111.plainMess(), "111-JointNameTaken"));
         ErrorMessages.E112.setMess(parseMess(ErrorMessages.E112.plainMess(), "112-Joint-OwnerNotSpecified"));
@@ -55,8 +60,8 @@ public class LoadMessages {
         ErrorMessages.E125.setMess(parseMess(ErrorMessages.E125.plainMess(), "125-Joint-PlayerAlreadyNotOwner"));
         ErrorMessages.E126.setMess(parseMess(ErrorMessages.E126.plainMess(), "126-NegativeNumber"));
         ErrorMessages.E127.setMess(parseMess(ErrorMessages.E127.plainMess(), "127-BalanceNegative"));
-        logger.info("[dConomy] - ErrorMessages Loaded!");
-        
+        logger.info("[dConomy] ErrorMessages Loaded!");
+        logger.info("[dConomy] Loading Player Messages...");
         //Get/Set PlayerMessages (200 Series)
         PlayerMessages.P201.setMess(parseMess(PlayerMessages.P201.plainMess(), "201-Player-AccountBalance"));
         PlayerMessages.P202.setMess(parseMess(PlayerMessages.P202.plainMess(), "202-Player-BankBalance"));
@@ -81,8 +86,8 @@ public class LoadMessages {
         PlayerMessages.P221.setMess(parseMess(PlayerMessages.P221.plainMess(), "221-Player-PayForwardingNotActive"));
         PlayerMessages.P222.setMess(parseMess(PlayerMessages.P222.plainMess(), "222-Player-AccountCheck"));
         PlayerMessages.P223.setMess(parseMess(PlayerMessages.P223.plainMess(), "223-Player-BankCheck"));
-        logger.info("[dConomy] - Player Messages Loaded!");
-        
+        logger.info("[dConomy] Player Messages Loaded!");
+        logger.info("[dConomy] Loading Joint Messages...");
         //Get/Set JointMessages (300 Series)
         JointMessages.J301.setMess(parseMess(JointMessages.J301.plainMess(), "301-Joint-AccountBalance"));
         JointMessages.J302.setMess(parseMess(JointMessages.J302.plainMess(), "302-Joint-NewBalance"));
@@ -96,8 +101,8 @@ public class LoadMessages {
         JointMessages.J310.setMess(parseMess(JointMessages.J310.plainMess(), "310-Joint-UserRemoved"));
         JointMessages.J311.setMess(parseMess(JointMessages.J311.plainMess(), "311-Joint-MaxUserWithdrawCheck"));
         JointMessages.J312.setMess(parseMess(JointMessages.J312.plainMess(), "312-Joint-MaxUserWithdrawSet"));
-        logger.info("[dConomy] - Joint Account Messages Loaded!");
-        
+        logger.info("[dConomy] Joint Account Messages Loaded!");
+        logger.info("[dConomy] Loading Admin Messages...");
         //Get/Set AdminMessages (400 Series)
         AdminMessages.A401.setMess(parseMess(AdminMessages.A401.plainMess(), "401-Rank-Top"));
         AdminMessages.A402.setMess(parseMess(AdminMessages.A402.plainMess(), "402-Rank-Sorting"));
@@ -114,7 +119,7 @@ public class LoadMessages {
         AdminMessages.A413.setMess(parseMess(AdminMessages.A413.plainMess(), "413-Admin-Joint-Set"));
         AdminMessages.A414.setMess(parseMess(AdminMessages.A414.plainMess(), "414-Admin-Joint-Add"));
         AdminMessages.A415.setMess(parseMess(AdminMessages.A415.plainMess(), "415-Admin-Joint-Remove"));
-        logger.info("[dConomy] - Admin/Misc Messages Loaded!");
+        logger.info("[dConomy] Admin/Misc Messages Loaded!");
         
         /*
         //Help Display (500 Series)
@@ -165,57 +170,58 @@ public class LoadMessages {
         H545 = parseString(H545, "545-Help-BankAdminOpen");
         H546 = parseString(H546, "546-Help-JointAdminOpen");
         dCD.log.info("[dConomy] - Help Display Messages Loaded!");
-        
-        /*
-        //Logging (600 Series)
-        L601 = parseString(L601, "601-PlayerPayPlayer");
-        L602 = parseString(L602, "602-PlayerDepositBank");
-        L603 = parseString(L603, "603-PlayerWithdrawBank");
-        L604 = parseString(L604, "604-PlayerWithdrawJoint");
-        L605 = parseString(L605, "605-PlayerDepositJoint");
-        L606 = parseString(L606, "606-PaidJoint");
-        L607 = parseString(L607, "607-PlayerPaidWithJoint");
-        L608 = parseString(L608, "608-PlayerPFBank");
-        L609 = parseString(L609, "609-PlayerPFPayWithBank");
-        L610 = parseString(L610, "610-PlayerPFPayWithJoint");
-        L611 = parseString(L611, "611-CreateJoint");
-        L612 = parseString(L612, "612-DeleteJoint");
-        L613 = parseString(L613, "613-Joint-AddOwner");
-        L614 = parseString(L614, "614-ViewTop");
-        L615 = parseString(L615, "615-Joint-AddUser");
-        L616 = parseString(L616, "616-Joint-RemoveOwner");
-        L617 = parseString(L617, "617-Joint-RemoveUser");
-        L618 = parseString(L618, "618-PAccount-Reset");
-        L619 = parseString(L619, "619-PAccount-Set");
-        L620 = parseString(L620, "620-PAccount-Add");
-        L621 = parseString(L621, "621-PAccount-Remove");
-        L622 = parseString(L622, "622-Bank-Reset");
-        L623 = parseString(L623, "623-Bank-Set");
-        L624 = parseString(L624, "624-Bank-Add");
-        L625 = parseString(L625, "625-Bank-Remove");
-        L626 = parseString(L626, "626-Joint-Reset");
-        L627 = parseString(L627, "627-Joint-Set");
-        L628 = parseString(L628, "628-Joint-Add");
-        L629 = parseString(L629, "629-Joint-Remove");
-        L630 = parseString(L630, "630-Joint-UserAdded");
-        L631 = parseString(L631, "631-Player-PayForwardDepositJoint");
-        L632 = parseString(L632, "632-Player-UsedPFtoPayJointUsingJoint");
-        L633 = parseString(L633, "633-Player-UsedPFtoPayJointUsingBank");
-        L634 = parseString(L634, "634-PlayerSetPFtoJoint");
-        L635 = parseString(L635, "635-PlayerSetPFtoBank");
-        L636 = parseString(L636, "636-Player-TurnPFOff");
-        L637 = parseString(L637, "637-Player-SetJointMaxUserWithdraw");
-        L638 = parseString(L638, "638-Player-ViewedOwnRank");
-        L639 = parseString(L639, "639-Player-ViewedAnothersRank");
-        dCD.log.info("[dConomy] - Logging Messages Loaded!"); */
+        */
+        logger.info("[dConomy] Loading Logging Messages...");
+        //Get/Set Logging (600 Series)
+        LoggingMessages.L601.setMess(parseMess(LoggingMessages.L601.plainMess(), "601-PlayerPayPlayer"));
+        LoggingMessages.L602.setMess(parseMess(LoggingMessages.L602.plainMess(), "602-PlayerDepositBank"));
+        LoggingMessages.L603.setMess(parseMess(LoggingMessages.L603.plainMess(), "603-PlayerWithdrawBank"));
+        LoggingMessages.L604.setMess(parseMess(LoggingMessages.L604.plainMess(), "604-PlayerWithdrawJoint"));
+        LoggingMessages.L605.setMess(parseMess(LoggingMessages.L605.plainMess(), "605-PlayerDepositJoint"));
+        LoggingMessages.L606.setMess(parseMess(LoggingMessages.L606.plainMess(), "606-PaidJoint"));
+        LoggingMessages.L607.setMess(parseMess(LoggingMessages.L607.plainMess(), "607-PlayerPaidWithJoint"));
+        LoggingMessages.L608.setMess(parseMess(LoggingMessages.L608.plainMess(), "608-PlayerPFBank"));
+        LoggingMessages.L609.setMess(parseMess(LoggingMessages.L609.plainMess(), "609-PlayerPFPayWithBank"));
+        LoggingMessages.L610.setMess(parseMess(LoggingMessages.L610.plainMess(), "610-PlayerPFPayWithJoint"));
+        LoggingMessages.L611.setMess(parseMess(LoggingMessages.L611.plainMess(), "611-CreateJoint"));
+        LoggingMessages.L612.setMess(parseMess(LoggingMessages.L612.plainMess(), "612-DeleteJoint"));
+        LoggingMessages.L613.setMess(parseMess(LoggingMessages.L613.plainMess(), "613-Joint-AddOwner"));
+        LoggingMessages.L614.setMess(parseMess(LoggingMessages.L614.plainMess(), "614-ViewTop"));
+        LoggingMessages.L615.setMess(parseMess(LoggingMessages.L615.plainMess(), "615-Joint-AddUser"));
+        LoggingMessages.L616.setMess(parseMess(LoggingMessages.L616.plainMess(), "616-Joint-RemoveOwner"));
+        LoggingMessages.L617.setMess(parseMess(LoggingMessages.L617.plainMess(), "617-Joint-RemoveUser"));
+        LoggingMessages.L618.setMess(parseMess(LoggingMessages.L618.plainMess(), "618-PAccount-Reset"));
+        LoggingMessages.L619.setMess(parseMess(LoggingMessages.L619.plainMess(), "619-PAccount-Set"));
+        LoggingMessages.L620.setMess(parseMess(LoggingMessages.L620.plainMess(), "620-PAccount-Add"));
+        LoggingMessages.L621.setMess(parseMess(LoggingMessages.L621.plainMess(), "621-PAccount-Remove"));
+        LoggingMessages.L622.setMess(parseMess(LoggingMessages.L622.plainMess(), "622-Bank-Reset"));
+        LoggingMessages.L623.setMess(parseMess(LoggingMessages.L623.plainMess(), "623-Bank-Set"));
+        LoggingMessages.L624.setMess(parseMess(LoggingMessages.L624.plainMess(), "624-Bank-Add"));
+        LoggingMessages.L625.setMess(parseMess(LoggingMessages.L625.plainMess(), "625-Bank-Remove"));
+        LoggingMessages.L626.setMess(parseMess(LoggingMessages.L626.plainMess(), "626-Joint-Reset"));
+        LoggingMessages.L627.setMess(parseMess(LoggingMessages.L627.plainMess(), "627-Joint-Set"));
+        LoggingMessages.L628.setMess(parseMess(LoggingMessages.L628.plainMess(), "628-Joint-Add"));
+        LoggingMessages.L629.setMess(parseMess(LoggingMessages.L629.plainMess(), "629-Joint-Remove"));
+        LoggingMessages.L630.setMess(parseMess(LoggingMessages.L630.plainMess(), "630-Joint-UserAdded"));
+        LoggingMessages.L631.setMess(parseMess(LoggingMessages.L631.plainMess(), "631-Player-PayForwardDepositJoint"));
+        LoggingMessages.L632.setMess(parseMess(LoggingMessages.L632.plainMess(), "632-Player-UsedPFtoPayJointUsingJoint"));
+        LoggingMessages.L633.setMess(parseMess(LoggingMessages.L633.plainMess(), "633-Player-UsedPFtoPayJointUsingBank"));
+        LoggingMessages.L634.setMess(parseMess(LoggingMessages.L634.plainMess(), "634-PlayerSetPFtoJoint"));
+        LoggingMessages.L635.setMess(parseMess(LoggingMessages.L635.plainMess(), "635-PlayerSetPFtoBank"));
+        LoggingMessages.L636.setMess(parseMess(LoggingMessages.L636.plainMess(), "636-Player-TurnPFOff"));
+        LoggingMessages.L637.setMess(parseMess(LoggingMessages.L637.plainMess(), "637-Player-SetJointMaxUserWithdraw"));
+        LoggingMessages.L638.setMess(parseMess(LoggingMessages.L638.plainMess(), "638-Player-ViewedOwnRank"));
+        LoggingMessages.L639.setMess(parseMess(LoggingMessages.L639.plainMess(), "639-Player-ViewedAnothersRank"));
+        logger.info("[dConomy] Logging Messages Loaded!");
+        logger.info("[dConomy] Messages Loaded!");
     }
     
-    private String parseMess(String def, String key){
+    private static String parseMess(String def, String key){
         String value = def;
         if(dCoMess.containsKey(key)){
             value = dCoMess.getProperty(key);
             if(value.equals("")){
-                logger.warning("[dConomy] - Value not found for '"+key+"' Using default of '"+def+"'");
+                logger.warning("[dConomy] Value not found for '"+key+"' Using default of '"+def+"'");
                 value = def;
             }
             else{
@@ -223,12 +229,12 @@ public class LoadMessages {
             }
         }
         else{
-            logger.warning("[dConomy] - Key: '"+key+"' not found. Using default of '"+def+"'");
+            logger.warning("[dConomy] Key: '"+key+"' not found. Using default of '"+def+"'");
         }
         return value;
     }
     
-    private String parseColors(String mess){
+    private static String parseColors(String mess){
         String newmess = mess;
         newmess = newmess.replace("<black>", "\u00A70");
         newmess = newmess.replace("<navy>", "\u00A71");
@@ -283,6 +289,22 @@ public class LoadMessages {
         if(arg != null){
             message = message.replace("<p>", arg);
             message = message.replace("<acc>", arg);
+        }
+        return message;
+    }
+    
+    protected static final String parseLog(String message, String p1, String p2, String amount, String account){
+        if(p1 != null){
+            message = message.replace("<p1>", p1);
+        }
+        if(p2 != null){
+            message = message.replace("<p2>", p2);
+        }
+        if(amount != null){
+            message = message.replace("<a>", amount);
+        }
+        if(account != null){
+            message = message.replace("<acc>", account);
         }
         return message;
     }

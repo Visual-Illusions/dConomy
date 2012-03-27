@@ -4,36 +4,49 @@ import net.visualillusionsent.dconomy.*;
 import net.visualillusionsent.dconomy.messages.*;
 import net.visualillusionsent.dconomy.data.DCoProperties;
 
+/**
+ * dConomy money commands
+ * 
+ * @since   2.0
+ * @author  darkdiplomat
+ *         <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
+ */
 public enum MoneyCommands {
     
     /**
-     * Pays specified player specified amount
+     * base money command
+     */
+    BASE{
+        
+    },
+    
+    /**
+     * money pay command
      */
     PAY{
         /**
-         * Pay Command - Pays specified user specified amount
+         * Pays specified user specified amount.
          * 
-         * @param user User calling command
-         * @param args Command arguments
+         * @param user  The user calling the command.
+         * @param args  The command arguments.
          * 
-         * @return res ActionResult containing messages to be sent
-         * 
-         * @since dConomy v2.0
+         * @return res  ActionResult containing messages to be sent.
+         * @since   2.0
          */
         public ActionResult execute(User user, String[] args){
-            String pre = DCoProperties.getMBJ() ? "\u00A72[\u00A7fMoney\u00A72]\u00A7f " : "\u00A72[\u00A7fdCo\u00A72]\u00A7f ";
+            ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{pre+ErrorMessages.E106.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E120.Mess(null)});
                 return res;
             }
             
             if (args[0].equals(user.getName())){
-                res.setMess(new String[]{pre+ErrorMessages.E118.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E118.Mess(args[0])});
                 return res;
             }
             
             if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{pre+ErrorMessages.E109.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E109.Mess(args[0])});
                 return res;
             }
             
@@ -42,12 +55,12 @@ public enum MoneyCommands {
             try{
                 change = Double.parseDouble(args[1]);
             }catch (NumberFormatException nfe){
-                res.setMess(new String[]{pre+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
                 return res;
             }
             
             if (change < 0.01){
-                res.setMess(new String[]{pre+ErrorMessages.E126.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E126.Mess(null)});
                 return res;
             }
             
@@ -102,7 +115,7 @@ public enum MoneyCommands {
             double deposit = balanceReceiver + change;
                 
             if (deduct < 0){
-                res.setMess(new String[]{pre+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
                 return res;
             }
               
@@ -110,30 +123,39 @@ public enum MoneyCommands {
             DCoProperties.getDS().setBalance(recAT, recAcc, deposit);
             
             if(sendAT.equals(AccountType.ACCOUNT)){
-                res.setMess(new String[]{pre+PlayerMessages.P207.Mess(args[0], null, change), pre+PlayerMessages.P206.Mess(null, null, deduct)});
+                res.setMess(new String[]{prefix+PlayerMessages.P207.Mess(args[0], null, change),
+                                         prefix+PlayerMessages.P206.Mess(null, null, deduct)});
+                log(LoggingMessages.L601.Mess(user.getName(), args[0], change, null));
             }
             else if(sendAT.equals(AccountType.BANK)){
-                res.setMess(new String[]{pre+PlayerMessages.P214.Mess(null, null, change), pre+PlayerMessages.P207.Mess(args[0], null, change), PlayerMessages.P205.Mess(null, null, deduct)});
-                //dCD.Logging(609, sender, receiver, String.valueOf(amount), ""); TODO
+                res.setMess(new String[]{prefix+PlayerMessages.P214.Mess(null, null, change),
+                                         prefix+PlayerMessages.P207.Mess(args[0], null, change),
+                                         prefix+PlayerMessages.P205.Mess(null, null, deduct)});
+                log(LoggingMessages.L609.Mess(user.getName(), args[0], change, null));
             }
             else{
-                res.setMess(new String[]{pre+PlayerMessages.P212.Mess(null, sendAcc, change), pre+PlayerMessages.P207.Mess(args[0], null, change), JointMessages.J302.Mess(null, sendAcc, deduct)});
-                //dCD.Logging(610, sender, receiver, String.valueOf(amount), payfrom); TODO
+                res.setMess(new String[]{prefix+PlayerMessages.P212.Mess(null, sendAcc, change),
+                                         prefix+PlayerMessages.P207.Mess(args[0], null, change),
+                                         prefix+JointMessages.J302.Mess(null, sendAcc, deduct)});
+                log(LoggingMessages.L610.Mess(user.getName(), args[0], change, sendAcc));
             }
             
             if(recAT.equals(AccountType.ACCOUNT)){
-                res.setOtherMess(args[0], new String[]{pre+PlayerMessages.P208.Mess(user.getName(), null, change), pre+PlayerMessages.P206.Mess(null, null, deposit)});
-                //dCD.Logging(601, sender, receiver, amount, ""); TODO
+                res.setOtherMess(args[0], new String[]{prefix+PlayerMessages.P208.Mess(user.getName(), null, change),
+                                                       prefix+PlayerMessages.P206.Mess(null, null, deposit)});
             }
             else if(recAT.equals(AccountType.BANK)){
-                res.setOtherMess(args[0], new String[]{pre+PlayerMessages.P208.Mess(user.getName(), null, change), pre+PlayerMessages.P213.Mess(null, null, deposit), PlayerMessages.P205.Mess(null, null, deposit)});
-                //dCD.Logging(608, sender, receiver, String.valueOf(amount), payto); TODO
+                res.setOtherMess(args[0], new String[]{prefix+PlayerMessages.P208.Mess(user.getName(), null, change),
+                                                       prefix+PlayerMessages.P213.Mess(null, null, deposit), 
+                                                       prefix+PlayerMessages.P205.Mess(null, null, deposit)});
+                log(LoggingMessages.L608.Mess(args[0], null, change, recAcc));
             }
             else{
-                res.setOtherMess(args[0], new String[]{pre+PlayerMessages.P208.Mess(user.getName(), null, change), pre+PlayerMessages.P211.Mess(null, recAcc, deposit), PlayerMessages.P205.Mess(null, recAcc, deposit)});
-                //dCD.Logging(631, sender, receiver, String.valueOf(amount), payto); TODO
+                res.setOtherMess(args[0], new String[]{prefix+PlayerMessages.P208.Mess(user.getName(), null, change),
+                                                       prefix+PlayerMessages.P211.Mess(null, recAcc, deposit), 
+                                                       prefix+JointMessages.J302.Mess(null, recAcc, deposit)});
+                log(LoggingMessages.L631.Mess(args[0], null, change, recAcc));
             }
-            
             return res;
         }
     },
@@ -147,11 +169,55 @@ public enum MoneyCommands {
     },
     
     SET{
-        
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            if(!user.isAdmin()){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                return res;
+            }
+            if(!argcheck(2, args)){
+                res.setMess(new String[]{prefix+ErrorMessages.E106.Mess(null)});
+                return res;
+            }
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
+                res.setMess(new String[]{prefix+ErrorMessages.E109.Mess(null)});
+                return res;
+            }
+            double balance = 0;
+            try{
+                balance = Double.parseDouble(args[1]);
+            }catch (NumberFormatException nfe){
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                return res;
+            }
+            if (balance < 0){
+                res.setMess(new String[]{prefix+ErrorMessages.E126.Mess(null)});
+                return res;
+            }
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], balance);
+            res.setMess(new String[]{prefix+AdminMessages.A405.Mess(args[0], null, balance)});
+            log(LoggingMessages.L619.Mess(user.getName(), args[0], balance, null));
+            return res;
+        }
     },
     
     RESET{
-        
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            if(!user.isAdmin()){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                return res;
+            }
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
+                res.setMess(new String[]{prefix+ErrorMessages.E109.Mess(null)});
+                return res;
+            }
+            double reset = DCoProperties.getInitialBalance();
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], reset);
+            res.setMess(new String[]{prefix+AdminMessages.A404.Mess(args[0], null, reset)});
+            log(LoggingMessages.L618.Mess(user.getName(), args[0], reset, null));
+            return res;
+        }
     },
     
     ADD{
@@ -168,14 +234,22 @@ public enum MoneyCommands {
     
     SETAUTO{
         
+    },
+    
+    HELP{
+        
     };
     
-    private static ActionResult res = new ActionResult();
+    private static final String prefix = "\u00A72[\u00A7fdCo-Money\u00A72] ";
     
     private MoneyCommands(){ }
     
     private static boolean argcheck(int length, String[] args){
         return args.length >= length;
+    }
+    
+    private static void log(String message){
+        DCoProperties.getDS().logTrans(message);
     }
     
     public ActionResult execute(User user, String[] args){

@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import net.visualillusionsent.dconomy.AccountType;
@@ -13,7 +15,7 @@ import net.visualillusionsent.dconomy.AccountType;
  * 
  * @author darkdiplomat
  *          <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
- * @version 2.0
+ * @since   2.0
  */
 public class DataSource {
     Logger logger = Logger.getLogger("Minecraft");
@@ -26,21 +28,35 @@ public class DataSource {
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
     
-    /**
-     * Loads Account data
-     * 
-     * @since dConomy v2.0
-     */
-    void loadMaps(){ }
+    private ScheduledThreadPoolExecutor stpe;
+    
+    void Scheduler(){
+        stpe = new ScheduledThreadPoolExecutor(1);
+        stpe.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+        stpe.schedule(new SaveCaller(), 15, TimeUnit.MINUTES);
+        stpe.schedule(new BankInterestCaller(), DCoProperties.getBankDelay(), TimeUnit.MINUTES);
+        stpe.schedule(new JointWithdrawReset(), DCoProperties.getJointDelay(), TimeUnit.MINUTES);
+    }
+    
+    public void terminateThreads(){
+        stpe.shutdownNow();
+    }
     
     /**
-     * Saves Account data
+     * loads account data
      * 
-     * @since dConomy v2.0
+     * @since   2.0
+     */
+    boolean loadMaps(){
+        return true;
+    }
+    
+    /**
+     * saves account data
+     * 
+     * @since   2.0
      */
     public void saveMaps(){ }
-    
-    void ScheduleForUpdate(){ }
     
     public void logTrans(String action){ }
     
@@ -51,7 +67,7 @@ public class DataSource {
      * @param accname The name/user of the account
      * @return true if exists, false otherwise
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public boolean AccountExists(AccountType type, String accname){
         if(type.equals(AccountType.ACCOUNT)){
@@ -73,7 +89,7 @@ public class DataSource {
      * @param username Name of the user
      * @return true is user, false otherwise
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public boolean isJointUser(String accname, String username){
         return jointmap.get(accname).isUser(username);
@@ -86,7 +102,7 @@ public class DataSource {
      * @param ownername Name of the user
      * @return true if owner, false otherwise
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public boolean isJointOwner(String accname, String ownername){
         return jointmap.get(accname).isOwner(ownername);
@@ -99,7 +115,7 @@ public class DataSource {
      * @param accname The account name/user
      * @return balance
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public double getBalance(AccountType type, String accname){
         if(type.equals(AccountType.ACCOUNT)){
@@ -120,7 +136,7 @@ public class DataSource {
      * @param accname The name of the joint account
      * @return the amount of the maximum withdraw
      * 
-     * @since dConomy v2.0
+     *@since   2.0
      */
     public double getJointUserWithdrawMax(String accname){
         return jointmap.get(accname).getMaxUserWithdraw();
@@ -133,7 +149,7 @@ public class DataSource {
      * @param accname The account name/user
      * @param bal The new balance amount
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public void setBalance(AccountType type, String accname, double bal){
         if(type.equals(AccountType.ACCOUNT)){
@@ -153,7 +169,7 @@ public class DataSource {
      * @param type The type of account
      * @param accname The account name/user
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public void setInitialBalance(AccountType type, String accname){
         if(type.equals(AccountType.ACCOUNT)){
@@ -173,7 +189,7 @@ public class DataSource {
      * @param accname The name of the account to create
      * @param owner The name of the owner for the account
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public void createJointAccount(String accname, String owner){
         jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw()));
@@ -184,7 +200,7 @@ public class DataSource {
      * 
      * @param accname The name of the Joint account
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public void deleteJointAccount(String accname){
         jointmap.remove(accname);
@@ -196,7 +212,7 @@ public class DataSource {
      * @param accname The name of the Joint account
      * @param owner The name of the owner
      * 
-     * @since dConomy v2.0
+     * @since   2.0
      */
     public void addJointOwner(String accname, String owner){
         jointmap.get(accname).addOwner(owner);
@@ -230,5 +246,13 @@ public class DataSource {
     
     public boolean canWithdraw(String username, String accname, double amount){
         return jointmap.get(accname).canWithdraw(username, amount);
+    }
+    
+    String combine(String[] args){
+        StringBuilder sb = new StringBuilder();
+        for(String s : args){
+            sb.append(s+",");
+        }
+        return sb.toString();
     }
 }

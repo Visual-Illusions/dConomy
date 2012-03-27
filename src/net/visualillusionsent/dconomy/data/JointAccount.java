@@ -38,6 +38,17 @@ public class JointAccount {
         }
     }
     
+    protected String getOwners(){
+        synchronized(owners){
+            StringBuilder sb = new StringBuilder();
+            for(String own : owners){
+                sb.append(own);
+                sb.append(",");
+            }
+            return sb.toString();
+        }
+    }
+    
     protected boolean isUser(String name){
         return users.contains(name) || owners.contains(name);
     }
@@ -51,6 +62,17 @@ public class JointAccount {
     protected void removeUser(String name){
         if(users.contains(name)){
             users.remove(name);
+        }
+    }
+    
+    protected String getUsers(){
+        synchronized(users){
+            StringBuilder sb = new StringBuilder();
+            for(String user : users){
+                sb.append(user);
+                sb.append(",");
+            }
+            return sb.toString();
         }
     }
     

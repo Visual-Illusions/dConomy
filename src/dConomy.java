@@ -4,9 +4,10 @@ import net.visualillusionsent.dconomy.commands.CommandExecuter;
 import net.visualillusionsent.dconomy.data.DCoProperties;
 
 /**
- * dConomy.java - dConomy main plugin class
+ * dConomy main plugin class
  * 
- * @author darkdiplomat
+ * @author  darkdiplomat
+ *          <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
  * @version 2.0
  */
 public class dConomy extends Plugin{
@@ -15,7 +16,7 @@ public class dConomy extends Plugin{
     private boolean isLoaded = false;
 
     /**
-     * Run upon disabling dConomy
+     * Runs upon disabling dConomy
      */
     public void disable() {
         if(isLoaded){
@@ -23,6 +24,8 @@ public class dConomy extends Plugin{
             etc.getInstance().removeCommand("/bank");
             etc.getInstance().removeCommand("/joint");
             etc.getInstance().removeCommand("/dConomy");
+            DCoProperties.getDS().terminateThreads();
+            DCoProperties.getDS().saveMaps();
         }
         logger.info("dConomy disabled...");
     }
@@ -39,13 +42,15 @@ public class dConomy extends Plugin{
     
     /**
      * Runs upon initialization of dConomy
+     * 
+     * @see DCoProperties#load()
      */
     public void initialize(){
         if( DCoProperties.load() ){
             dcl = new dCoListener();
             etc.getLoader().addListener(PluginLoader.Hook.COMMAND, dcl, this, PluginListener.Priority.MEDIUM);
             etc.getLoader().addListener(PluginLoader.Hook.LOGIN, dcl, this, PluginListener.Priority.MEDIUM);
-            etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dcl, this, PluginListener.Priority.MEDIUM);
+            //etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dcl, this, PluginListener.Priority.MEDIUM);
             etc.getInstance().addCommand("/dConomy", "- displays information about dConomy");
             etc.getInstance().addCommand("/money", "help (?) - display dConomy Money Help");
             etc.getInstance().addCommand("/bank", "help (?) - display dConomy Bank Help");

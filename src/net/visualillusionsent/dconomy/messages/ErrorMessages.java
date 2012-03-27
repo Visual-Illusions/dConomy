@@ -43,7 +43,7 @@ public enum ErrorMessages {
     E108("\u00A7cPlayer not found!"),
     
     /**
-     * Error109: NegativeEntered
+     * Error109: AccountNotFound
      */
     E109("\u00A7cCould not find account for <p>!"),
     

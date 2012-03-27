@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * FlatFileSource.java FlatFile data handler
@@ -28,38 +30,55 @@ public class FlatFileSource extends DataSource{
     
     FlatFileSource(){ }
     
-    void loadMaps() {
+    boolean loadMaps() {
         if(accFile.exists()){
-            loadAccounts();
+            logger.info("[dConomy] Attempting to Accounts...");
+            if(!loadAccounts()){
+                return false;
+            }
+            logger.info("[dConomy] Accounts loaded!");
         }
         else{
+            logger.info("[dConomy] File: 'dCAccounts.txt' not found! Attempting to create...");
             try {
                 accFile.createNewFile();
+                logger.info("[dConomy] File: 'dCAccounts.txt' created!");
             } 
             catch (IOException ioe) {
-                logger.severe("Failed to create File: dCAccounts.txt");
+                logger.severe("Failed to create File: dCAccounts.txt... dConomy will now be disabled...");
+                return false;
             }
         }
         if(bankFile.exists()){
-            loadBanks();
+            logger.info("[dConomy] Attempting to load Bank Accounts...");
+            if(!loadBanks()){
+                return false;
+            }
+            logger.info("[dConomy] Bank Accounts loaded!");
         }
         else{
+            logger.info("[dConomy] File: 'dCBanks.txt' not found! Attempting to create...");
             try{
                 bankFile.createNewFile();
+                logger.info("[dConomy] File: 'dCBanks.txt' created!");
             } 
             catch(IOException ioe){
-                logger.severe("Failed to create File: dCBanks.txt");
+                logger.severe("Failed to create File: dCBanks.txt... dConomy will now be disabled...");
+                return false;
             }
         }
         if(jointdir.isDirectory()){
             loadJointAccounts();
         }
-        else{
-            jointdir.mkdir();
+        else if(!jointdir.mkdir()){
+            logger.severe("Failed to create Directory: dConomy/JointAccounts/... dConomy will now be disabled...");
+            return false;
         }
+        Scheduler();
+        return true;
     }
     
-    private void loadAccounts(){
+    private boolean loadAccounts(){
         synchronized(accmap){
             try{
                 BufferedReader in = new BufferedReader(new FileReader(accFile));
@@ -83,12 +102,15 @@ public class FlatFileSource extends DataSource{
                 }
             }
             catch(IOException ioe){
-                logger.severe("Error reading File: dCAccounts.txt");
+                logger.log(Level.SEVERE, "Error reading File: dCAccounts.txt", ioe);
+                logger.severe("dConomy will now be disabled");
+                return false;
             }
         }
+        return true;
     }
     
-    private void loadBanks(){
+    private boolean loadBanks(){
         synchronized(bankmap){
             try{
                 BufferedReader in = new BufferedReader(new FileReader(bankFile));
@@ -112,9 +134,12 @@ public class FlatFileSource extends DataSource{
                 }
             }
             catch(IOException ioe){
-                logger.severe("Error reading File: dCBanks.txt");
+                logger.log(Level.SEVERE, "Error reading File: dCBanks.txt", ioe);
+                logger.severe("dConomy will now be disabled");
+                return false;
             }
         }
+        return true;
     }
     
     private void loadJointAccounts(){
@@ -134,13 +159,16 @@ public class FlatFileSource extends DataSource{
                         jointmap.put(name, joint);
                     }
                     catch (NumberFormatException nfe){
-                        
+                        logger.warning("Error reading file for JointAccount: "+acc);
+                        continue;
                     } 
                     catch (FileNotFoundException fnfe) {
-                        
+                        logger.warning("Error reading file for JointAccount: "+acc);
+                        continue;
                     }
                     catch (IOException ioe) {
-                        
+                        logger.warning("Error reading file for JointAccount: "+acc);
+                        continue;
                     }
                 }
             }
@@ -148,7 +176,70 @@ public class FlatFileSource extends DataSource{
     }
     
     public void saveMaps(){
-        
+        FileInputStream in;
+        FileOutputStream out;
+        logger.info("[dConomy] Saving accounts...");
+        synchronized(accmap){
+            try{
+                in = new FileInputStream(accFile);
+                Properties account = new Properties();
+                account.load(in);
+                in.close();
+                for(String acc : accmap.keySet()){
+                    account.setProperty(acc, String.valueOf(accmap.get(acc)));
+                }
+                out = new FileOutputStream(accFile);
+                account.store(out, null);
+                out.close();
+            }
+            catch (IOException ioe) {
+                logger.warning("Error saving to dCAccounts.txt");
+            }
+        }
+        synchronized(bankmap){
+            try{
+                in = new FileInputStream(bankFile);
+                Properties account = new Properties();
+                account.load(in);
+                in.close();
+                for(String acc : bankmap.keySet()){
+                    account.setProperty(acc, String.valueOf(accmap.get(acc)));
+                }
+                out = new FileOutputStream(bankFile);
+                account.store(out, null);
+                out.close();
+            }
+            catch (IOException ioe) {
+                logger.warning("Error saving to dCBanks.txt");
+            }
+        }
+        synchronized(jointmap){
+            for(String acc : jointmap.keySet()){
+                try{
+                    in = new FileInputStream(new File(jds+acc+".txt"));
+                    Properties account = new Properties();
+                    account.load(in);
+                    in.close();
+                      
+                    JointAccount joint = jointmap.get(acc);
+                    String owners = joint.getOwners();
+                    String users = joint.getUsers();
+                    String balance = String.valueOf(joint.getBalance());
+                    String muw = String.valueOf(joint.getMaxUserWithdraw());
+                    account.setProperty("owners", owners);
+                    account.setProperty("users", users);
+                    account.setProperty("balance", balance);
+                    account.setProperty("UserMaxWithdraw", muw);
+                    out = new FileOutputStream(bankFile);
+                    account.store(out, null);
+                    out.close();
+                }
+                catch (IOException ioe) {
+                    logger.warning("Error saving to Joint Account File: "+acc+".txt");
+                }
+            }
+        }
+        logger.info("[dConomy] Saving complete.");
     }
     
     public void logTrans(String action){
@@ -160,7 +251,7 @@ public class FlatFileSource extends DataSource{
                 try {
                     LogFile.createNewFile();
                 } catch (IOException e) {
-                    logger.warning("[dConomy] - Unable to create new Log File!");
+                    logger.warning("[dConomy] Unable to create new Log File!");
                 }
             }
             try {
@@ -168,7 +259,7 @@ public class FlatFileSource extends DataSource{
                 fw.write("["+dateFormatTime.format(date)+"] "+action+ System.getProperty("line.separator"));
                 fw.close();  
             } catch (IOException e) {
-                logger.warning("[dConomy] - Unable to Log Transaction!");
+                logger.warning("[dConomy] Unable to Log Transaction: "+action);
             }
         }
     }
