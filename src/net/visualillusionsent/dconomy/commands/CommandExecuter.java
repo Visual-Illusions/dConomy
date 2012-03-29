@@ -79,6 +79,22 @@ public class CommandExecuter {
                     defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
                     return defres;
                 }
+                
+                if(args.length == 1){
+                    return BankCommands.BASE.execute(user, newArgs);
+                }
+                
+                boolean isBase = true;
+                for(BankCommands cmd : BankCommands.values()){
+                    if(args[1].toUpperCase().matches(cmd.name())){
+                        isBase = false;
+                    }
+                }
+                
+                if(isBase){
+                    return BankCommands.BASE.execute(user, new String[]{ args[1] });
+                }
+                
                 BankCommands theCommand = BankCommands.valueOf(args[1].toUpperCase());
                 
                 return theCommand.execute(user, newArgs);

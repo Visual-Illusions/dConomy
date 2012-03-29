@@ -1,9 +1,15 @@
 package net.visualillusionsent.dconomy.data;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -28,18 +34,57 @@ public class DataSource {
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
     
+    long jreset = 0L, breset = 0L;
+    
     private ScheduledThreadPoolExecutor stpe;
+    Properties reseter = new Properties();
+    private final File resetFile = new File("plugins/config/dConomy/dCTimerReser.DONOTEDIT");
     
     void Scheduler(){
+        long btemp = 0;
+        if(DCoProperties.getBankDelay() > 0){
+            if(resetFile.exists()){
+                try {
+                    FileInputStream in = new FileInputStream(resetFile);
+                    reseter.load(in);
+                    in.close();
+                } 
+                catch (IOException e) { }
+                if(reseter.containsKey("BankTimerResetTo")){
+                    breset = Long.valueOf(reseter.getProperty("BankTimerResetTo")) - System.currentTimeMillis();
+                }
+                else{
+                    breset = DCoProperties.getBankDelay();
+                }
+            }
+            else{
+                try {
+                    resetFile.createNewFile();
+                }
+                catch (IOException e) { }
+                breset = DCoProperties.getBankDelay();
+            }
+            if(breset > 0){
+                btemp = (long)(breset / 60 / 1000);
+            }
+        }
+        
         stpe = new ScheduledThreadPoolExecutor(1);
         stpe.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-        stpe.schedule(new SaveCaller(), 15, TimeUnit.MINUTES);
-        stpe.schedule(new BankInterestCaller(), DCoProperties.getBankDelay(), TimeUnit.MINUTES);
-        stpe.schedule(new JointWithdrawReset(), DCoProperties.getJointDelay(), TimeUnit.MINUTES);
+        stpe.scheduleAtFixedRate(new SaveCaller(), 15L, 15L, TimeUnit.MINUTES);
+        
+        if(btemp > 0){
+            stpe.scheduleAtFixedRate(new BankInterestCaller(), btemp, (long)DCoProperties.getBankDelay(), TimeUnit.MINUTES);
+        }
     }
     
     public void terminateThreads(){
         stpe.shutdownNow();
+        synchronized(jointmap){
+            for(JointAccount joint : jointmap.values()){
+                joint.cancelDelay();
+            }
+        }
     }
     
     /**
@@ -192,7 +237,7 @@ public class DataSource {
      * @since   2.0
      */
     public void createJointAccount(String accname, String owner){
-        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw()));
+        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw(), DCoProperties.getJointDelay(), DCoProperties.getJointDelay()));
     }
     
     /**
@@ -254,5 +299,27 @@ public class DataSource {
             sb.append(s+",");
         }
         return sb.toString();
+    }
+    
+    public Map<String, Double> getRankMap(AccountType type){
+        TreeMap<String, Double> sortedAccounts = null;
+        dCValueComparator bvc = null;
+
+        try {
+            if(type.equals(AccountType.ACCOUNT)){
+                bvc = new dCValueComparator(accmap);
+                sortedAccounts = new TreeMap<String, Double>(bvc);
+                sortedAccounts.putAll(accmap);
+            }
+            else if (type.equals(AccountType.BANK)){
+                bvc = new dCValueComparator(bankmap);
+                sortedAccounts = new TreeMap<String, Double>(bvc);
+                sortedAccounts.putAll(bankmap);
+            }
+        } catch (Exception ex) {
+            logger.warning("[dConomy] Unable to retrieve array of balances!");
+            return null;
+        }
+        return sortedAccounts;
     }
 }

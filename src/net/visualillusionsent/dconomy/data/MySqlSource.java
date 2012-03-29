@@ -46,9 +46,10 @@ public class MySqlSource extends DataSource{
     
     private boolean CreateTable(){
         String table1 = ("CREATE TABLE IF NOT EXISTS `dConomy` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Player` varchar(16) NOT NULL, `Account` DECIMAL(64,2) NOT NULL, `Bank` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
-        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
+        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` INT(255) NOT NULL, PRIMARY KEY (`ID`))");
         String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
         
+        String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` INT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` ;");
         boolean toRet = true;
         try{
             conn = getSQLConn();
@@ -65,6 +66,12 @@ public class MySqlSource extends DataSource{
                 st.addBatch(table2);
                 st.addBatch(table3);
                 st.executeBatch();
+                try{
+                    st.execute(update1);
+                }
+                catch(SQLException SQLE){
+                    //Probably already updated
+                }
             }catch (SQLException SQLE) {
                 logger.log(Level.SEVERE, "[dConomy] Failed to create Tables ", SQLE);
                 logger.severe("dConomy will now be disabled");
@@ -96,9 +103,16 @@ public class MySqlSource extends DataSource{
                     ps = conn.prepareStatement("SELECT * FROM dConomy");
                     rs = ps.executeQuery();
                     while (rs.next()){
-                        String username = rs.getString("Player");
-                        accmap.put(username, rs.getDouble("Account"));
-                        bankmap.put(username, rs.getDouble("Bank"));
+                        String username = "Unknown(null?)";
+                        try{
+                            username = rs.getString("Player");
+                            accmap.put(username, rs.getDouble("Account"));
+                            bankmap.put(username, rs.getDouble("Bank"));
+                        }
+                        catch(Exception e){
+                            logger.warning("[dConomy] There was an issue getting data for User: "+username+" Skipping...");
+                            continue;
+                        }
                     }
                     logger.info("[dConomy] Accounts & Bank Accounts loaded!");
                 } 
@@ -137,13 +151,24 @@ public class MySqlSource extends DataSource{
                     ps = conn.prepareStatement("SELECT * FROM dConomyJoint");
                     rs = ps.executeQuery();
                     while (rs.next()){
-                        String accname = rs.getString("Name");
-                        String[] owners = rs.getString("Owners").split(",");
-                        String[] users = rs.getString("Users").split(",");
-                        double bal = rs.getDouble("Balance");
-                        double max = rs.getDouble("UserMaxWithdraw");
-                        JointAccount joint = new JointAccount(owners, users, bal, max);
-                        jointmap.put(accname, joint);
+                        String accname = "Unknown(null?)";
+                        try{
+                            accname = rs.getString("Name");
+                            String[] owners = rs.getString("Owners").split(",");
+                            String[] users = rs.getString("Users").split(",");
+                            double bal = rs.getDouble("Balance");
+                            double max = rs.getDouble("UserMaxWithdraw");
+                            int delay = DCoProperties.getJointDelay();
+                            long reset = DCoProperties.getJointDelay();
+                            delay = rs.getInt("WithdrawDelay");
+                            reset = rs.getLong("DelayReset");
+                            JointAccount joint = new JointAccount(owners, users, bal, max, delay, reset);
+                            jointmap.put(accname, joint);
+                        }
+                        catch(Exception e){
+                            logger.warning("[dConomy] There was an issue getting data for JointAccount: "+accname+" Skipping...");
+                            continue;
+                        }
                     }
                     logger.info("[dConomy] Joint Accounts loaded!");
                 } 
@@ -234,19 +259,21 @@ public class MySqlSource extends DataSource{
                     }
                 }
                 
-                ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ?, Users = ?, Balance = ?, UserMaxWithdraw = ? WHERE Name = ?");
+                ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ?, Users = ?, Balance = ?, UserMaxWithdraw = ?, WithdrawDelay = ?, DelayReset = ? WHERE Name = ?");
                 for(String up : update){
                     JointAccount joint = jointmap.get(up);
                     ps.setString(1, joint.getOwners());
                     ps.setString(2, joint.getUsers());
                     ps.setDouble(3, joint.getBalance());
                     ps.setDouble(4, joint.getMaxUserWithdraw());
-                    ps.setString(5, up);
+                    ps.setInt(5, joint.getDelay());
+                    ps.setLong(6, joint.getReset());
+                    ps.setString(7, up);
                     ps.addBatch();
                 }
                 ps.executeBatch();
                 
-                ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw)VALUES (?,?,?,?,?)");
+                ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw, WithdrawDelay, DelayReset)VALUES (?,?,?,?,?,?,?)");
                 for(String in : insert){
                     JointAccount joint = jointmap.get(in);
                     ps.setString(1, in);
@@ -254,6 +281,8 @@ public class MySqlSource extends DataSource{
                     ps.setString(3, joint.getUsers());
                     ps.setDouble(4, joint.getBalance());
                     ps.setDouble(5, joint.getMaxUserWithdraw());
+                    ps.setInt(6, joint.getDelay());
+                    ps.setLong(7, joint.getReset());
                     ps.addBatch();
                 }
                 ps.executeBatch();

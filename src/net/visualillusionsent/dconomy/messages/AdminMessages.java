@@ -3,80 +3,44 @@ package net.visualillusionsent.dconomy.messages;
 public enum AdminMessages {
     
     /**
-     * AdminMessage401: RankTop");
+     * AdminMessage301: AccountReset
      */
-    A401("\u00A72-----Top \u00A7e<rank> \u00A72Richest Players-----"),
+    A301("\u00A76\u00A7l<p>'s \u00A7b\u00A7l<acc>\u00A7a has been reset to \u00A7e<a> <m>\u00A7a."),
     
     /**
-     * AdminMessage402: RankSorting
+     * AdminMessage302: AccountSet
      */
-    A402("\u00A72   <rank>. \u00A76<p> \u00A72[\u00A7e<a> <m>\u00A72]"),
+    A302("\u00A76\u00A7l<p>'s \u00A7b\u00A7l<acc>\u00A7a has been set to <a> <m>\u00A7a."),
     
     /**
-     * AdminMessage403: RankNoTop
+     * AdminMessage303: AccountRemove
      */
-    A403("\u00A7c   No Top Players Yet!"),
+    A303("\u00A7aYou have deducted \u00A7e<a> <m>\u00A7a from \u00A76\u00A7l<p>' \u00A7b\u00A7l<acc>\u00A7a."),
     
     /**
-     * AdminMessage404: PlayerReset
+     * AdminMessage304: AccountAdd
      */
-    A404("\u00A76<p>'s Account\u00A7a has been reset to default balance."),
+    A304("\u00A7e<a> <m>\u00A7a has been added to \u00A76\u00A7l<p>'s \u00A7b\u00A7l<acc>\u00A7a."),
     
     /**
-     * AdminMessage405: PlayerSet
+     * AdminMessage305: JointReset
      */
-    A405("\u00A76<p>'s Account\u00A7a has been set to <a> <m>\u00A7a."),
+    A305("\u00A7a Joint Account: \u00A7b<a>'s Balance\u00A7a has been reset to 0."),
     
     /**
-     * AdminMessage406: PlayerRemove
+     * AdminMessage306: JointSet
      */
-    A406("\u00A7aYou have deducted \u00A7e<a> <m>\u00A7a from \u00A76<p>' Account\u00A7a."),
+    A306("\u00A7a Joint Account: \u00A7b<acc>'s Balance\u00A7a has been set to \u00A7e<a> <m>\u00A7a."),
     
     /**
-     * AdminMessage407: PlayerAdd
+     * AdminMessage307: JointAdd
      */
-    A407("\u00A7e<a> <m>\u00A7a has been added to \u00A76<p>'s Account\u00A7a."),
-    
-    /**
-     * AdminMessage408: BankReset
-     */
-    A408("\u00A76<p>'s Bank\u00A7a has been reset to 0."),
-    
-    /**
-     * AdminMessage409: BankSet
-     */
-    A409("\u00A76<p>'s Bank\u00A7a has been set to <a> <m>\u00A7a."),
-    
-    /**
-     * AdminMessage410: BankRemove
-     */
-    A410("\u00A7aYou have removed \u00A7e<a> <m>\u00A7a from \u00A76<p>' Bank\u00A7a."),
-    
-    /**
-     * AdminMessage411: BankAdd
-     */
-    A411("\u00A7e<a> <m>\u00A7a has been added to \u00A76<p>'s Bank\u00A7a."),
-    
-    /**
-     * AdminMessage412: JointReset
-     */
-    A412("\u00A7a Joint Account: \u00A7b<a>'s Balance\u00A7a has been reset to 0."),
-    
-    /**
-     * AdminMessage413: JointSet
-     */
-    A413("\u00A7a Joint Account: \u00A7b<acc>'s Balance\u00A7a has been set to \u00A7e<a> <m>\u00A7a."),
-    
-    
-    /**
-     * AdminMessage414: Joint-Add
-     */
-    A414("\u00A7e<a> <m>\u00A7a has been added to Joint Account: \u00A7b<acc>'s Balance\u00A7a."),
+    A307("\u00A7e<a> <m>\u00A7a has been added to Joint Account: \u00A7b<acc>'s Balance\u00A7a."),
     
     /*
-     *AdminMessage415: JointRemove
+     *AdminMessage308: JointRemove
      */
-    A415("\u00A7e<a> <m>\u00A7a has been removed from Joint Account: \u00A7b<acc>'s Balance\u00A7a.");
+    A308("\u00A7e<a> <m>\u00A7a has been removed from Joint Account: \u00A7b<acc>'s Balance\u00A7a.");
     
     private String mess;
     
@@ -93,6 +57,6 @@ public enum AdminMessages {
     }
     
     public final String Mess(String username, String type, double amount){
-        return LoadMessages.parseMessage(mess, username, type, amount);
+        return LoadMessages.parseAdminMessage(mess, username, type, amount);
     }
 }

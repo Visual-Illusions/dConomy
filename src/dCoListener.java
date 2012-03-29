@@ -63,20 +63,24 @@ public class dCoListener extends PluginListener{
                                  can(player, "/dcrank"), can(player, "/dccreate"), can(player, "/dcauto"), can(player, "/dcadmin"));
                 ActionResult res = CommandExecuter.execute(user, args);
                 for(String message : res.getMess()){
-                    player.sendMessage(message);
+                    if(message != null){
+                        player.sendMessage(message);
+                    }
                 }
                 if(res.getOtherReceiver() != null){
                     Player other = etc.getServer().getPlayer(res.getOtherReceiver());
                     if(other != null && other.isConnected()){
                         for(String message : res.getOtherMess()){
-                            other.sendMessage(message);
+                            if(message != null){
+                                other.sendMessage(message);
+                            }
                         }
                     }
                 }
             }
             catch(Exception E){
                 player.sendMessage("\u00A72[\u00A7fdCo\u00A72]\u00A7c An exception has occured in dConomy...");
-                logger.log(Level.SEVERE, "[dConomy] An unknown exception has occured!", E);
+                logger.log(Level.SEVERE, "[dConomy] An uncaught exception has occured!", E);
             }
             return true;
         }

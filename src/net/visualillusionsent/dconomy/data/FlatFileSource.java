@@ -83,7 +83,7 @@ public class FlatFileSource extends DataSource{
             try{
                 BufferedReader in = new BufferedReader(new FileReader(accFile));
                 String line;
-                String[] acc = new String[]{ "" };
+                String[] acc = new String[]{ "Unknown(null?)" };
                 while((line = in.readLine()) != null){
                     if(line.startsWith("#")) continue;
                     try{
@@ -155,7 +155,15 @@ public class FlatFileSource extends DataSource{
                         String[] users = account.getProperty("users").split(",");
                         double balance = Double.parseDouble(account.getProperty("balance"));
                         double muw = Double.parseDouble(account.getProperty("UserMaxWithdraw"));
-                        JointAccount joint = new JointAccount(users, owners, balance, muw);
+                        int delay = DCoProperties.getJointDelay();
+                        long reset = DCoProperties.getJointDelay();
+                        if(account.containsKey("JointWithdrawDelay")){
+                            delay = Integer.parseInt(account.getProperty("JointWithdrawDelay"));
+                        }
+                        if(account.containsKey("DelayReset")){
+                            reset = Long.parseLong(account.getProperty("DelayReset"));
+                        }
+                        JointAccount joint = new JointAccount(users, owners, balance, muw, delay, reset);
                         jointmap.put(name, joint);
                     }
                     catch (NumberFormatException nfe){
@@ -226,10 +234,14 @@ public class FlatFileSource extends DataSource{
                     String users = joint.getUsers();
                     String balance = String.valueOf(joint.getBalance());
                     String muw = String.valueOf(joint.getMaxUserWithdraw());
+                    String delay = String.valueOf(joint.getDelay());
+                    String reset = String.valueOf(joint.getReset());
                     account.setProperty("owners", owners);
                     account.setProperty("users", users);
                     account.setProperty("balance", balance);
                     account.setProperty("UserMaxWithdraw", muw);
+                    account.setProperty("WithdrawDelay", delay);
+                    account.setProperty("DelayReset", reset);
                     out = new FileOutputStream(bankFile);
                     account.store(out, null);
                     out.close();

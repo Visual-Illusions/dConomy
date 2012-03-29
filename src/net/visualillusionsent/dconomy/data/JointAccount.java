@@ -2,14 +2,19 @@ package net.visualillusionsent.dconomy.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class JointAccount {
     private ArrayList<String> users = new ArrayList<String>();
     private ArrayList<String> owners = new ArrayList<String>();
     private HashMap<String, Double> juwd = new HashMap<String, Double>();
     private double balance, muw;
+    private int delay;
+    private long reset;
+    private Timer juwdt = new Timer();
     
-    JointAccount(String[] users, String[] owners, double balance, double muw){
+    JointAccount(String[] users, String[] owners, double balance, double muw, int delay, long reset){
         if(users != null){
             for(String user : users){
                 this.users.add(user);
@@ -20,6 +25,17 @@ public class JointAccount {
         }
         this.balance = balance;
         this.muw = muw;
+        if(DCoProperties.getJointDelay() > 0){
+            this.delay = delay*1000*60;
+            this.reset = reset - System.currentTimeMillis();
+            if(this.reset <= 0){
+                this.reset = this.delay;
+            }
+            else{
+                //TODO load juwdmap
+            }
+            juwdt.scheduleAtFixedRate(new Reset(), reset, delay);
+        }
     }
     
     protected boolean isOwner(String name){
@@ -89,11 +105,11 @@ public class JointAccount {
     }
     
     protected void addJUWD(String username, double amount){
-        
+        juwd.put(username, amount);
     }
     
-    protected void clearJUWD(){
-        juwd.clear();
+    protected void cancelDelay(){
+        juwdt.cancel();
     }
     
     protected boolean canWithdraw(String username, double amount){
@@ -106,5 +122,20 @@ public class JointAccount {
             }
         }
         return true;
+    }
+    
+    protected int getDelay(){
+        return delay;
+    }
+    
+    protected long getReset(){
+        return reset;
+    }
+    
+    private class Reset extends TimerTask{
+        public void run(){
+            juwd.clear();
+            reset = System.currentTimeMillis() + (delay * 1000 * 60);
+        }
     }
 }

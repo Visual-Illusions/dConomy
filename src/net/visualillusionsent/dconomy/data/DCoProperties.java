@@ -178,6 +178,7 @@ public class DCoProperties {
             return false;
         }
         
+        new LoadMessages();
         LoadMessages.LoadMessage();
         
         return true;

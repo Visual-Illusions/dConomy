@@ -14,6 +14,8 @@ public class BankInterestCaller implements Runnable {
             }
         }
         catch(Exception e){}
+        ds.breset = (System.currentTimeMillis() + (DCoProperties.getBankDelay() * 60 * 1000));
+        ds.reseter.setProperty("BankTimerResetTo", String.valueOf(ds.breset));
         ds.logger.info("[dConomy] - Bank Interest Paid!");
     }
 }

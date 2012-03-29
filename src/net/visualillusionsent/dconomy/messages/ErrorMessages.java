@@ -2,140 +2,96 @@ package net.visualillusionsent.dconomy.messages;
 
 public enum ErrorMessages {
     
-    /**
-     * Error101: Player-NotEnoughMoney
-     */
-    E101("\u00A7cYou do not have enough <m> to complete transaction!"),
     
     /**
-     * Error102: Bank-NotEnoughMoney
+     * Error101: NoPermission
      */
-    E102("\u00A7cYour bank does not have enough <m> to complete transaction!"),
+    E101("\u00A7cYou do not have permission to use that command!"),
     
     /**
-     * Error103: NumberFormatError
+     * Error102: NumberFormatError
      */
-    E103("\u00A7cYou did not enter a proper number!"),
+    E102("\u00A7cYou did not enter a proper number!"),
     
     /**
-     * Error104: Command-NoPermission
+     * Error103: NotEnoughArguments
      */
-    E104("\u00A7cYou do not have permission to use that command!"),
+    E103("\u00A7cYou didn't give enough arguments!"),
     
     /**
-     * Error105: Joint-NotEnoughMoney
+     * Error104: AccountNotFound
      */
-    E105("\u00A7c<acc> does not have the funds for this transaction!"),
+    E104("\u00A7cCould not find account for <p>!"),
     
     /**
-     * Error106: AmountNotSpecified
+     * Error105: JointAccountNotFound
      */
-    E106("\u00A7cYou didn't specify an amount!"),
+    E105("\u00A7c<acc> does not exist!"),
     
     /**
-     * Error107: Joint-NoAccess
+     * Error106: JointAccountNameTaken
      */
-    E107("\u00A7cYou do not have access to <acc>!"),
+    E106("\u00A7c<acc> is already in use!"),
     
     /**
-     * Error108: PlayerNotFound
+     * Error107: JointAccountNameInvalid
      */
-    E108("\u00A7cPlayer not found!"),
+    E107("\u00A7cYou have entered illegal characters for an account name!"),
     
     /**
-     * Error109: AccountNotFound
+     * Error108: JointAccountNoPermission
      */
-    E109("\u00A7cCould not find account for <p>!"),
+    E108("\u00A7cYou do not have access to <acc>!"),
     
     /**
-     * Error110: JointNotFound
+     * Error109: JointAccountUserCannotWithdraw
      */
-    E110("\u00A7c<acc> does not exist!"),
+    E109("\u00A7cYou cannot make another withdraw for <xmin> Minutes!"),
     
     /**
-     * Error111: JointNameTaken
+     * Error110: JointAccountUserWithdrawTooMuch
      */
-    E111("\u00A7c<acc> is already in use!"),
+    E110("\u00A7cYou cannot withdraw that amount at one time!"),
     
     /**
-     * Error112: JointOwnerNotSpecified
+     * Error111: JointAccountAlreadyUser
      */
-    E112("\u00A7cYou didn't specify an owner!"),
+    E111("\u00A7c<p> is already a User!"),
     
     /**
-     * Error113: InvalidCommand
+     * Error122: JointAccountAlreadyOwner
      */
-    E113("\u00A7cInvaild dConomy Command!"),
+    E112("\u00A7c<p> is already a Owner!"),
     
     /**
-     * Error114: Joint-PlayerNotSpecified
+     * Error113: JointAccountAlreadyNotUser
      */
-    E114("\u00A7cYou didn't specify a player!"),
+    E113("\u00A7c<p> wasn't a User!"),
     
     /**
-     * Error115: JointNameTooLong
+     * Error114: JointAccountAlreadyNotOwner
      */
-    E115("\u00A7cAccount names cannot be longer than 32 Characters!"),
+    E114("\u00A7c<p> wasn't a Owner!"),
     
     /**
-     * Error116: Joint-User-CannotWithdrawAgainYet
+     * Error115: AccountNotEnoughMoney
      */
-    E116("\u00A7cYou cannot make another withdraw for <xmin> Minutes!"),
+    E115("\u00A7cYou do not have enough <m> to complete transaction!"),
     
     /**
-     * Error117: Joint-User-WithdrawTooMuch
+     * Error116: BankNotEnoughMoney
      */
-    E117("\u00A7cYou cannot withdraw that amount at one time!"),
+    E116("\u00A7cYour bank does not have enough <m> to complete transaction!"),
     
     /**
-     * Error118: Player-CannotPaySelf
+     * Error117: JointNotEnoughMoney
      */
-    E118("\u00A7cYou cannot pay yourself!"),
+    E117("\u00A7c<acc> does not have the funds for this transaction!"),
     
     /**
-     * Error119: Player-AlreadyJointUser
+     * Error118: PlayerCannotPaySelf
      */
-    E119("\u00A7c<p> is already a User!"),
-    
-    /**
-     * Error120: PlayerNotSpecified
-     */
-    E120("\u00A7cPlayer Not Specified!"),
-    
-    /**
-     * Error121: Joint-UserNotSpecified
-     */
-    E121("\u00A7cJoint Account User not specified!"),
-    
-    /**
-     * Error122: Joint-PlayerAlreadyOwner
-     */
-    E122("\u00A7c<p> is already a Owner!"),
-    
-    /**
-     * Error123: Joint-OwnerNotSpecified
-     */
-    E123("\u00A7cJoint Account Owner not specified!"),
-    
-    /**
-     * Error124: Joint-PlayerAlreadyNotUser
-     */
-    E124("\u00A7c<p> wasn't a User!"),
-    
-    /**
-     * Error125: Joint-PlayerAlreadyNotOwner
-     */
-    E125("\u00A7c<p> wasn't a Owner!"),
-    
-    /**
-     * Error126: NegativeNumber
-     */
-    E126("\u00A7cAmount cannot be a negative!"),
-    
-    /**
-     * Error127: BalanceNegative
-     */
-    E127("\u00A7cBalance cannot become negative!");
+    E118("\u00A7cYou cannot pay yourself!");
     
     private String mess;
     
