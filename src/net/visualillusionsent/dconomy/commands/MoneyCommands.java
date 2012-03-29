@@ -8,15 +8,23 @@ import net.visualillusionsent.dconomy.data.DCoProperties;
 
 /**
  * dConomy money commands
+ * <p>
+ * This file is part of {@link dConomy}
  * 
  * @since   2.0
  * @author  darkdiplomat
- *         <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
  */
 public enum MoneyCommands {
     
     /**
-     * base money command
+     * Checks account balance of user or another user if allowed.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * The command arguments: Either the user's name to check account for or "" to check own account
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     BASE{
         public ActionResult execute(User user, String[] args){
@@ -37,18 +45,16 @@ public enum MoneyCommands {
     },
     
     /**
-     * money pay command
+     * Pays specified user specified amount.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The user's name of the account to pay and amount to pay.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     PAY{
-        /**
-         * Pays specified user specified amount.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of user to pay and amount to pay.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
@@ -87,7 +93,7 @@ public enum MoneyCommands {
                 if(sendAcc.matches("Bank")){
                     sendAT = AccountType.BANK;
                 }
-                else if(DCoProperties.getDS().isJointOwner(sendAcc, user.getName())){
+                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, sendAcc) && DCoProperties.getDS().isJointOwner(sendAcc, user.getName())){
                     sendAT = AccountType.JOINT;
                 }
             }
@@ -97,7 +103,7 @@ public enum MoneyCommands {
                 if(recAcc.equals("Bank")){
                     recAT = AccountType.BANK;
                 }
-                else if(DCoProperties.getDS().isJointUser(recAcc, args[0])){
+                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, recAcc) && DCoProperties.getDS().isJointUser(recAcc, args[0])){
                     recAT = AccountType.JOINT;
                 }
             }
@@ -153,6 +159,16 @@ public enum MoneyCommands {
         }
     },
     
+    /**
+     * Checks user ranking.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The user's name to check rank of if applicable.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     RANK{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -177,13 +193,13 @@ public enum MoneyCommands {
                     if (self) {
                         if (name.equalsIgnoreCase(user.getName())) {
                             ranked = AccountMessages.A222.Mess(null, null, 0, rank);
-                            //dCD.Logging(638, player, "", "", "");
+                            log(LoggingMessages.L638.Mess(user.getName(), null, 0, null));
                             break;
                         }
                     } else {
                         if (name.equalsIgnoreCase(args[0])) {
                             ranked = AccountMessages.A221.Mess(args[0], null, 0, rank);
-                            //dCD.Logging(638, player, Other, "", "");
+                            log(LoggingMessages.L638.Mess(user.getName(), args[0], 0, null));
                             break;
                         }
                     }
@@ -196,6 +212,16 @@ public enum MoneyCommands {
         }
     },
     
+    /**
+     * Checks the top accounts.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to check if applicable.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     TOP{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -240,13 +266,23 @@ public enum MoneyCommands {
                 rank++;
             }
             
-            //dCD.Logging(614, player, "", String.valueOf(amount), "");
+            log(LoggingMessages.L614.Mess(user.getName(), null, amount, null));
             
             res.setMess(ranking);
             return res;
         }
     },
     
+    /**
+     * Sets specified user's account to specified amount if user calling command is admin.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to set and user's name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     SET{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -280,6 +316,16 @@ public enum MoneyCommands {
         }
     },
     
+    /**
+     * Resets specified user's account is user calling command is admin.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The user's name of the account to reset.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     RESET{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -299,6 +345,16 @@ public enum MoneyCommands {
         }
     },
     
+    /**
+     * Adds specified amount to specified user's account
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to add and user's name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     ADD{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -330,6 +386,16 @@ public enum MoneyCommands {
         } 
     },
     
+    /**
+     * Removes specified amount to specified user's account
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to remove and the user's name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     REMOVE{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -365,29 +431,127 @@ public enum MoneyCommands {
         }
     },
     
+    /**
+     * Checks if user has Pay Forwarding set up
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: none needed
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     AUTO{
-        
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            
+            if(!user.canForward()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
+            }
+            
+            if (user.canForward() && DCoProperties.getDS().isPayForwarding(user.getName())){
+                String account = DCoProperties.getDS().getPayForwardingAcc(user.getName());
+                if (account.equals("Bank")){
+                    res.setMess(new String[]{prefix+AccountMessages.A219.Mess(null, null, 0, -1)});
+                }else{
+                    res.setMess(new String[]{prefix+AccountMessages.A220.Mess(null, account, 0, -1)});
+                }
+            }
+            else{
+                res.setMess(new String[]{prefix+AccountMessages.A218.Mess(null, null, 0, -1)});
+            }
+            
+            return res;
+        }
     },
     
+    /**
+     * Sets up or turns of a user's Pay Forwarding
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The account to set forwarding to or OFF to turn off Pay Forwarding
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     SETAUTO{
-        
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            
+            if(!user.canForward()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
+            }
+            
+            if(!argcheck(1, args)){
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                return res;
+            }
+            
+            String account = "Account";
+            
+            if(!args[0].equalsIgnoreCase("OFF")){
+                if(!args[0].equalsIgnoreCase("Bank")){
+                    if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
+                        res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                        return res;
+                    }
+                    account = args[0];
+                }
+                else{
+                    account = "Bank";
+                }
+            }
+            
+            DCoProperties.getDS().setPayForwarding(user.getName(), account);
+            
+            if(account.equals("Bank")){
+                res.setMess(new String[]{prefix+AccountMessages.A215.Mess(null, null, 0, -1)});
+                log(LoggingMessages.L635.Mess(user.getName(), null, 0, null));
+            }
+            else if(account.equalsIgnoreCase("Account")){
+                res.setMess(new String[]{prefix+AccountMessages.A217.Mess(null, null, 0, -1)});
+                log(LoggingMessages.L636.Mess(user.getName(), null, 0, null));
+            }else{
+                res.setMess(new String[]{prefix+AccountMessages.A216.Mess(null, account, 0, -1)});
+                log(LoggingMessages.L634.Mess(user.getName(), account, 0, null));
+            }
+            
+            return res;
+        }
     },
     
+    /**
+     * Displays help information.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: none needed
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     HELP{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            res.setMess(new String[]{HelpMessages.H501.Mess(),
-                                     HelpMessages.H502.Mess(),
-                                     HelpMessages.H540.Mess(),
-                                     HelpMessages.H503.Mess(),
-                                     HelpMessages.H504.Mess(),
-                                     (user.canRank() ? HelpMessages.H505.Mess() : null),
-                                     (user.canRank() ? HelpMessages.H506.Mess() : null),
-                                     (user.canForward() ? HelpMessages.H511.Mess() : null),
-                                     (user.canForward() ? HelpMessages.H512.Mess() : null),
-                                     (user.useBank() ? HelpMessages.H513.Mess() : null),
-                                     (user.useJoint() ? HelpMessages.H514.Mess() : null),
-                                     (user.isAdmin() ? HelpMessages.H541.Mess() : null)});
+            res.setMess(new String[]{HelpMessages.H401.Mess(),
+                                     HelpMessages.H404.Mess(),
+                                     HelpMessages.H405.Mess(),
+                                     HelpMessages.H409.Mess(),
+                                     HelpMessages.H414.Mess(),
+                                     (user.canRank() ? HelpMessages.H412.Mess() : null),
+                                     (user.canRank() ? HelpMessages.H413.Mess() : null),
+                                     (user.canForward() ? HelpMessages.H415.Mess() : null),
+                                     (user.canForward() ? HelpMessages.H416.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H431.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H432.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H433.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H434.Mess() : null),
+                                     (user.useBank() ? HelpMessages.H407.Mess() : null),
+                                     (user.useJoint() ? HelpMessages.H408.Mess() : null)
+                                     });
             return res;
         }
     };
@@ -396,14 +560,35 @@ public enum MoneyCommands {
     
     private MoneyCommands(){ }
     
+    /**
+     * Checks if proper amount of arguments were given
+     * 
+     * @param length
+     * @param args
+     * @return true if enough arguments are present.
+     * @since 2.0
+     */
     private static boolean argcheck(int length, String[] args){
         return args.length >= length;
     }
     
+    /**
+     * Used to log transactions if logging is enabled
+     * 
+     * @param message The logging message.
+     * @since 2.0
+     */
     private static void log(String message){
         DCoProperties.getDS().logTrans(message);
     }
     
+    /**
+     * Method for executing commands (overridden by the command enum)
+     * 
+     * @param user The user calling the command.
+     * @param args The arguments for the command.
+     * @return The ActionResult containing the messages to be sent.
+     */
     public ActionResult execute(User user, String[] args){
         return new ActionResult();
     }

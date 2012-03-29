@@ -8,27 +8,25 @@ import net.visualillusionsent.dconomy.messages.*;
 
 /**
  * dConomy bank commands
+ * <p>
+ * This file is part of {@link dConomy}
  * 
  * @since   2.0
  * @author  darkdiplomat
- *          <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
  */
 public enum BankCommands {
     
     /**
-     * base bank command    
-     *      Displays bank balances.
+     * Checks account balance of user or another user if allowed.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * The command arguments: Either the user name to check account for or "" to check own account
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     BASE{
-        /**
-         * Checks account balance of user or another user if allowed.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments. Either the user name to check account for or "" to check own account
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!args[0].equals("") && !DCoProperties.getAOC()){
@@ -47,19 +45,16 @@ public enum BankCommands {
     },
     
     /**
-     * bank withdraw command    
-     *      Allows user to withdraw money from bank account.
+     * Withdraw specified amount from user's bank account.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The amount to be withdrawn.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     WITHDRAW{
-        /**
-         * Withdraw specified amount from user's bank account.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of the amount to be withdrawn.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(1, args)){
@@ -72,13 +67,16 @@ public enum BankCommands {
             }
             catch(NumberFormatException nfe){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
             }
-            if (withdraw < 0.01 && withdraw != 0){ 
+            if (withdraw < 0.01){ 
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
             }
             double newBank = DCoProperties.getDS().getBalance(AccountType.BANK, user.getName()) - withdraw;
-            if (newBank < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+            if (newBank < 0){
+                res.setMess(new String[]{prefix+ErrorMessages.E116.Mess(null)});
+                return res;
             }
             double newAcc = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) + withdraw;
             DCoProperties.getDS().setBalance(AccountType.BANK, user.getName(), newBank);
@@ -92,19 +90,15 @@ public enum BankCommands {
     },
     
     /**
-     * bank deposit command     
-     *      Allows user to deposit money into bank account.
+     * Deposits specified amount into user's bank account.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * Command Arguments: The amount to be deposited.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     DEPOSIT{
-        /**
-         * Deposits specified amount into user's bank account.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of the amount to be deposited.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(1, args)){
@@ -119,13 +113,13 @@ public enum BankCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
                 return res;
             }
-            if (deposit < 0.01 && deposit != 0){
+            if (deposit < 0.01){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
                 return res;
             }
             double newAcc = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) - deposit;
             if (newAcc < 0){ 
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null)});
                 return res;
             }
             double newBank = DCoProperties.getDS().getBalance(AccountType.BANK, user.getName()) + deposit;
@@ -140,19 +134,16 @@ public enum BankCommands {
     },
     
     /**
-     * bank reset command
-     *      Allows a dConomy admin to reset a user's bank account.
+     * Resets specified user's bank account is user calling command is admin.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The user to reset.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     RESET{
-        /**
-         * Resets specified user's bank account is user calling command is admin.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of user to reset.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
@@ -171,19 +162,16 @@ public enum BankCommands {
     },
     
     /**
-     * bank set command
-     *      Allows a dConomy admin to set a user's bank account to a specified amount.
+     * Sets specified user's bank account to specified amount if user calling command is admin.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The amount to set and user of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     SET{
-        /**
-         * Sets specified user's bank account to specified amount if user calling command is admin.
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of the amount and user.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
@@ -206,7 +194,7 @@ public enum BankCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
                 return res;
             }
-            if (balance < 0){
+            if (balance < 0.01 && balance != 0){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
                 return res;
             }
@@ -218,19 +206,16 @@ public enum BankCommands {
     },
     
     /**
-     * bank add command
-     *      Allows a dConomy admin to add a specified amount to a user's bank account.
+     * Adds specified amount to specified user's bank account
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The amount to add and user of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     ADD{
-        /**
-         * Adds specified amount to specified user's bank account
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of the amount and user.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
@@ -266,19 +251,16 @@ public enum BankCommands {
     },
     
     /**
-     * bank remove command
-     *      Allows a dConomy admin to remove a specified amount to a user's bank account.
+     * Removes specified amount to specified user's bank account
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The amount to remove and user of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     REMOVE{
-        /**
-         * Removes specified amount to specified user's bank account
-         * 
-         * @param user  The user calling the command.
-         * @param args  The command arguments of the amount and user.
-         * 
-         * @return res  ActionResult containing messages to be sent.
-         * @since   2.0
-         */
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
@@ -306,6 +288,10 @@ public enum BankCommands {
                 return res;
             }
             double newbal = DCoProperties.getDS().getBalance(AccountType.BANK, user.getName()) - deduct;
+            if(newbal < 0){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
             DCoProperties.getDS().setBalance(AccountType.BANK, user.getName(), newbal);
             res.setMess(new String[]{prefix+AdminMessages.A303.Mess(args[0], "Bank", newbal)});
             log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
@@ -313,6 +299,16 @@ public enum BankCommands {
         }
     },
     
+    /**
+     * Checks user ranking.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: The user to check rank of if applicable.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     RANK{
         public ActionResult execute(User user, String[] args){
             int rank = -1;
@@ -337,13 +333,13 @@ public enum BankCommands {
                     if (self) {
                         if (name.equalsIgnoreCase(user.getName())) {
                             ranked = AccountMessages.A222.Mess(null, null, 0, rank);
-                            //dCD.Logging(638, player, "", "", "");
+                            log(LoggingMessages.L638.Mess(user.getName(), null, 0, null));
                             break;
                         }
                     } else {
                         if (name.equalsIgnoreCase(args[0])) {
                             ranked = AccountMessages.A221.Mess(args[0], null, 0, rank);
-                            //dCD.Logging(638, player, Other, "", "");
+                            log(LoggingMessages.L638.Mess(user.getName(), args[0], 0, null));
                             break;
                         }
                     }
@@ -356,6 +352,16 @@ public enum BankCommands {
         }
     },
     
+    /**
+     * Checks the top accounts.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: Amount to check if applicable.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     TOP{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -402,7 +408,7 @@ public enum BankCommands {
                 rank++;
             }
             
-            //dCD.Logging(614, player, "", String.valueOf(amount), "");
+            log(LoggingMessages.L614.Mess(user.getName(), null, amount, null));
             
             res.setMess(ranking);
             return res;
@@ -410,18 +416,33 @@ public enum BankCommands {
     },
     
     /**
-     * bank help command
-     *      Displays the help for bank commands.
+     * Displays help information.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link BankCommands}
+     * <p>
+     * Command Arguments: none needed
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     HELP{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            res.setMess(new String[]{HelpMessages.H515.Mess(),
-                                     HelpMessages.H540.Mess(),
-                                     HelpMessages.H516.Mess(),
-                                     HelpMessages.H517.Mess(),
-                                     HelpMessages.H518.Mess(),
-                                     (user.isAdmin() ? HelpMessages.H542.Mess() : null) });
+            res.setMess(new String[]{HelpMessages.H402.Mess(),
+                                     HelpMessages.H404.Mess(),
+                                     HelpMessages.H405.Mess(),
+                                     HelpMessages.H410.Mess(),
+                                     HelpMessages.H417.Mess(),
+                                     HelpMessages.H418.Mess(),
+                                     (user.canRank() ? HelpMessages.H412.Mess() : null),
+                                     (user.canRank() ? HelpMessages.H413.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H431.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H432.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H433.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H434.Mess() : null),
+                                     (user.useMoney() ? HelpMessages.H406.Mess() : null),
+                                     (user.useJoint() ? HelpMessages.H408.Mess() : null)
+                                     });
             return res;
         }
     };
@@ -430,37 +451,37 @@ public enum BankCommands {
     
     private static final String prefix = "\u00A72[\u00A7adCo \u00A7fBank\u00A72] ";
     
+    /**
+     * Checks if proper amount of arguments were given
+     * 
+     * @param length
+     * @param args
+     * @return true if enough arguments are present.
+     * @since 2.0
+     */
     private static boolean argcheck(int length, String[] args){
         return args.length >= length;
     }
     
+    /**
+     * Used to log transactions if logging is enabled
+     * 
+     * @param message The logging message.
+     * @since 2.0
+     */
     private static void log(String message){
         DCoProperties.getDS().logTrans(message);
     }
     
+    /**
+     * Method for executing commands (overridden by the command enum)
+     * 
+     * @param user The user calling the command.
+     * @param args The arguments for the command.
+     * @return The ActionResult containing the messages to be sent.
+     * @since 2.0
+     */
     public ActionResult execute(User user, String[] args){
         return new ActionResult();
     }
-
 }
-
-/*******************************************************************************\
-* dConomy                                                                       *
-* Copyright (C) 2011-2012 Visual Illusions Entertainment                        *
-* Author: darkdiplomat <darkdiplomat@visualillusionsent.net>                    *
-*                                                                               *
-* This file is part of dConomy.                                                 *                       
-*                                                                               *
-* This program is free software: you can redistribute it and/or modify          *
-* it under the terms of the GNU General Public License as published by          *
-* the Free Software Foundation, either version 3 of the License, or             *
-* (at your option) any later version.                                           *
-*                                                                               *
-* This program is distributed in the hope that it will be useful,               *
-* but WITHOUT ANY WARRANTY; without even the implied warranty of                *
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                 *
-* GNU General Public License for more details.                                  *
-*                                                                               *
-* You should have received a copy of the GNU General Public License             *
-* along with this program.  If not, see http://www.gnu.org/licenses/gpl.html.   *
-\*******************************************************************************/

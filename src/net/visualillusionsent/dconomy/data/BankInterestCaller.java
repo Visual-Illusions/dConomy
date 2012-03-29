@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.data;
 
+/**
+ * Runs to pay user's bank interest (if enabled)
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since   2.0
+ * @author  darkdiplomat
+ */
 public class BankInterestCaller implements Runnable {
 
     public void run() {

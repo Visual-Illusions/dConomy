@@ -10,6 +10,8 @@ import net.visualillusionsent.dconomy.messages.ErrorMessages;
 
 /**
  * dConomy command handling class
+ * <p>
+ * This file is part of {@link dConomy}
  * 
  * @since   2.0
  * @author  darkdiplomat
@@ -50,7 +52,7 @@ public class CommandExecuter {
             
             if(args[0].equals("/money")){
                 if(!user.useMoney()){
-                    defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
                 }
                 
@@ -76,7 +78,7 @@ public class CommandExecuter {
             }
             else if(args[0].equalsIgnoreCase("/bank")){
                 if(!user.useBank()){
-                    defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
                 }
                 
@@ -101,7 +103,7 @@ public class CommandExecuter {
             }
             else if(args[0].equalsIgnoreCase("/joint")){
                 if(!user.useJoint()){
-                    defres.setMess(new String[]{ErrorMessages.E104.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
                 }
                 //TODO verify args[1] is joint account ???
@@ -122,7 +124,7 @@ public class CommandExecuter {
             }
         }
         catch(IllegalArgumentException IAE){
-           defres.setMess(new String[]{"\u00A72[\u00A7fdCo\u00A72]\u00A7f "+ErrorMessages.E113.Mess(null)});
+           defres.setMess(new String[]{"\u00A72[\u00A7fdCo\u00A72]\u00A7f Invaild dConomy Command!"});
         }
         return defres;
     }

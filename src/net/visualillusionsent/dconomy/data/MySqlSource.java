@@ -10,6 +10,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 
+/**
+ * MySqlSource - class for handling MySQL Data
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since   2.0
+ * @author  darkdiplomat
+ *
+ * @see DataSource
+ */
 public class MySqlSource extends DataSource{
     private Connection conn;
     private Statement st;
@@ -29,6 +39,7 @@ public class MySqlSource extends DataSource{
     }
     
     boolean loadMaps() {
+        super.loadMaps();
         if(!CreateTable()){
             return false;
         }
@@ -193,6 +204,7 @@ public class MySqlSource extends DataSource{
     }
     
     public void saveMaps(){
+        super.saveMaps();
         logger.info("[dConomy] Saving accounts...");
         ArrayList<String> update = new ArrayList<String>();
         ArrayList<String> insert = new ArrayList<String>();

@@ -13,11 +13,13 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 /**
- * FlatFileSource.java FlatFile data handler
+ * FlatFileSource - Class for handling FlatFile data
+ * <p>
+ * This file is part of {@link dConomy}
  * 
+ * @since 2.0
  * @author darkdiplomat
- *          <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
- * @version 2.0
+ * 
  * @see DataSource
  */
 public class FlatFileSource extends DataSource{
@@ -31,6 +33,7 @@ public class FlatFileSource extends DataSource{
     FlatFileSource(){ }
     
     boolean loadMaps() {
+        super.loadMaps();
         if(accFile.exists()){
             logger.info("[dConomy] Attempting to Accounts...");
             if(!loadAccounts()){
@@ -184,6 +187,7 @@ public class FlatFileSource extends DataSource{
     }
     
     public void saveMaps(){
+        super.saveMaps();
         FileInputStream in;
         FileOutputStream out;
         logger.info("[dConomy] Saving accounts...");

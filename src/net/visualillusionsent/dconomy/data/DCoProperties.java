@@ -12,9 +12,11 @@ import net.visualillusionsent.dconomy.messages.LoadMessages;
 
 /**
  * dCoProperties.java - dConomy Properties handler class
+ * <p>
+ * This file is part of {@link dConomy}
  * 
- * @author darkdiplomat
- * @version 2.0
+ * @since   2.0
+ * @author  darkdiplomat
  */
 public class DCoProperties {
     static Logger logger = Logger.getLogger("Minecraft");
@@ -29,6 +31,13 @@ public class DCoProperties {
     private static final File dCoPropsFile = new File("plugins/config/dConomy/dCSettings.ini");
     private static Properties dCoProps = new Properties();
     
+    /**
+     * Load dConomy Properties
+     * 
+     * @return true if succefully loaded
+     * 
+     * @since 2.0
+     */
     public static boolean load(){
         File dire = new File(dir);
         if(!dire.exists()){
@@ -254,50 +263,111 @@ public class DCoProperties {
     }
     
     /**
-     * Returns user account's starting balance
+     * Returns user account's starting balance.
      * 
      * @return the starting balance for user account
+     * @since 2.0
      */
     public static double getInitialBalance(){
         return accinitial;
     }
     
+    /**
+     * Returns the dConomy Directory
+     * 
+     * @return dir
+     * @since 2.0
+     */
     public static String getDir(){
         return dir;
     }
     
+    /**
+     * Returns the name of the currency.
+     * 
+     * @return moneyname
+     * @since 2.0
+     */
     public static String getMoneyName(){
         return moneyname;
     }
     
+    /**
+     * Returns the DataSource.
+     * 
+     * @return ds
+     * @since 2.0
+     */
     public static DataSource getDS(){
         return ds;
     }
     
+    /**
+     * Checks if logging is enabled.
+     * 
+     * @return true if it is
+     * @since 2.0
+     */
     public static boolean isLogging(){
         return log;
     }
     
+    /**
+     * Checks if only admins can check other user's accounts.
+     * 
+     * @return true if only admins can check
+     * @since 2.0
+     */
     public static boolean getAOC(){
         return aoc;
     }
     
+    /**
+     * Checks if accounts should always be created.
+     * 
+     * @return true if accounts should be
+     * @since 2.0
+     */
     public static boolean getCAA(){
         return caa;
     }
     
+    /**
+     * Gets the default Joint User Max Withdraw.
+     * 
+     * @return jmaxdraw
+     * @since 2.0
+     */
     public static double getJointMaxDraw(){
         return jmaxdraw;
     }
     
+    /**
+     * Gets the Bank Interest rate.
+     * 
+     * @return binterest
+     * @since 2.0
+     */
     public static double getBankInterest(){
         return binterest;
     }
     
+    /**
+     * Gets the delay to pay Bank Interest
+     * 
+     * @return bdelay
+     * @since 2.0
+     */
     public static int getBankDelay(){
         return bdelay;
     }
     
+    /**
+     * Gets the default delay of Joint User Max Withdraw
+     * 
+     * @return jdelay
+     * @since 2.0
+     */
     public static int getJointDelay(){
         return jdelay;
     }

@@ -2,6 +2,7 @@ package net.visualillusionsent.dconomy.data;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,17 +19,18 @@ import net.visualillusionsent.dconomy.AccountType;
 
 /**
  * DataSouce.java - account data handling class
+ * <p>
+ * This file is part of {@link dConomy}
  * 
- * @author darkdiplomat
- *          <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
  * @since   2.0
+ * @author  darkdiplomat
  */
 public class DataSource {
     Logger logger = Logger.getLogger("Minecraft");
     HashMap<String, Double> accmap = new HashMap<String, Double>();
     HashMap<String, Double> bankmap = new HashMap<String, Double>();
     HashMap<String, JointAccount> jointmap = new HashMap<String, JointAccount>();
-    HashMap<String, String> payforwardmap = new HashMap<String, String>();
+    Properties payforwardmap = new Properties();
     
     Date date;
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -40,6 +42,11 @@ public class DataSource {
     Properties reseter = new Properties();
     private final File resetFile = new File("plugins/config/dConomy/dCTimerReser.DONOTEDIT");
     
+    /**
+     * Sets up Saving and Bank Interest
+     * 
+     * @since 2.0
+     */
     void Scheduler(){
         long btemp = 0;
         if(DCoProperties.getBankDelay() > 0){
@@ -78,6 +85,11 @@ public class DataSource {
         }
     }
     
+    /**
+     * Calls the termination of threads
+     * 
+     * @since 2.0
+     */
     public void terminateThreads(){
         stpe.shutdownNow();
         synchronized(jointmap){
@@ -93,6 +105,12 @@ public class DataSource {
      * @since   2.0
      */
     boolean loadMaps(){
+        try {
+            FileInputStream in = new FileInputStream("plugins/config/dConomy/PayForwarding.txt");
+            payforwardmap.load(in);
+            in.close();
+        } 
+        catch (IOException e) { }
         return true;
     }
     
@@ -101,8 +119,26 @@ public class DataSource {
      * 
      * @since   2.0
      */
-    public void saveMaps(){ }
+    public void saveMaps(){
+        try {
+            FileOutputStream out = new FileOutputStream("plugins/config/dConomy/PayForwarding.txt");
+            payforwardmap.store(out, null);
+            out.close();
+            
+            out = new FileOutputStream(resetFile);
+            reseter.store(out, null);
+            out.close();
+        }
+        catch (IOException e) { }
+    }
     
+    /**
+     * Logs a transaction
+     * 
+     * @param action The action to be logged
+     * 
+     * @since 2.0
+     */
     public void logTrans(String action){ }
     
     /**
@@ -181,7 +217,7 @@ public class DataSource {
      * @param accname The name of the joint account
      * @return the amount of the maximum withdraw
      * 
-     *@since   2.0
+     * @since   2.0
      */
     public double getJointUserWithdrawMax(String accname){
         return jointmap.get(accname).getMaxUserWithdraw();
@@ -263,44 +299,93 @@ public class DataSource {
         jointmap.get(accname).addOwner(owner);
     }
     
+    /**
+     * Removes a Owner to the Joint Account
+     * 
+     * @param accname The name of the Joint account
+     * @param owner The name of the owner
+     * 
+     * @since   2.0
+     */
     public void removeJointOwner(String accname, String owner){
         jointmap.get(accname).removeOwner(owner);
     }
+    
     
     public void setJointMaxUserWithdraw(String accname, double maxamount){
         
     }
     
-    public void LogTransaction(String action){ }
-    
     public String getJointUsers(String accname){
         return null;
     }
     
+    /**
+     * Gets the owners for a Joint Account
+     * 
+     * @param name The name of the Joint Account to get owners for
+     * @return the names of the owners
+     * 
+     * @since 2.0
+     */
     public String getJointOwners(String name){
-        return null;
+        return jointmap.get(name).getOwners();
     }
     
+    /**
+     * Checks is a user has Pay Forwarding active
+     * 
+     * @param username The name of the user to check
+     * @return true if user has Pay Forwarding active
+     * 
+     * @since 2.0
+     */
     public boolean isPayForwarding(String username){
-        return payforwardmap.containsKey(username);
+        if(payforwardmap.containsKey(username)){
+            String acc = payforwardmap.getProperty(username);
+            return !acc.equalsIgnoreCase("Account");
+        }
+        return false;
     }
     
+    /**
+     * Gets the account the user is forwarding to
+     * 
+     * @param username The name of the user to get account for
+     * @return the account name
+     * 
+     * @since 2.0
+     */
     public String getPayForwardingAcc(String username){
-        return payforwardmap.get(username);
+        return payforwardmap.getProperty(username);
     }
     
+    public void setPayForwarding(String username, String account){
+        payforwardmap.setProperty(username, account);
+    }
+    
+    /**
+     * Checks if a user can withdraw from the Joint Account
+     * 
+     * @param username The name of the user to check.
+     * @param accname The name of the account to check.
+     * @param amount  The amount of the withdraw amount to check.
+     * @return true if user can
+     * 
+     * @since 2.0
+     */
     public boolean canWithdraw(String username, String accname, double amount){
         return jointmap.get(accname).canWithdraw(username, amount);
     }
     
-    String combine(String[] args){
-        StringBuilder sb = new StringBuilder();
-        for(String s : args){
-            sb.append(s+",");
-        }
-        return sb.toString();
-    }
-    
+    /**
+     * Gets a TreeMap of specified accounts in order of richest to not rich
+     * 
+     * @param type The account type to get a map for
+     * @return the map of ordered accounts
+     * 
+     * @since 2.0
+     */
     public Map<String, Double> getRankMap(AccountType type){
         TreeMap<String, Double> sortedAccounts = null;
         dCValueComparator bvc = null;

@@ -2,7 +2,6 @@ package net.visualillusionsent.dconomy.messages;
 
 public enum ErrorMessages {
     
-    
     /**
      * Error101: NoPermission
      */
@@ -26,7 +25,7 @@ public enum ErrorMessages {
     /**
      * Error105: JointAccountNotFound
      */
-    E105("\u00A7c<acc> does not exist!"),
+    E105("\u00A7cCould not find Joint Account: <acc>!"),
     
     /**
      * Error106: JointAccountNameTaken
@@ -41,7 +40,7 @@ public enum ErrorMessages {
     /**
      * Error108: JointAccountNoPermission
      */
-    E108("\u00A7cYou do not have access to <acc>!"),
+    E108("\u00A7cYou do not have access to Joint Account: <acc>!"),
     
     /**
      * Error109: JointAccountUserCannotWithdraw
@@ -86,7 +85,7 @@ public enum ErrorMessages {
     /**
      * Error117: JointNotEnoughMoney
      */
-    E117("\u00A7c<acc> does not have the funds for this transaction!"),
+    E117("\u00A7cJoint Account: <acc> does not have the funds for this transaction!"),
     
     /**
      * Error118: PlayerCannotPaySelf

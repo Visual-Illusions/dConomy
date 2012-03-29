@@ -3,152 +3,175 @@ package net.visualillusionsent.dconomy.messages;
 public enum HelpMessages {
     
     /**
-     *  HelpMessage501: Money-HelpOpen
+     *  HelpMessage401: MoneyHelpOpen
      */
-    H501("<green>|--------------<gold>dConomy /money Help<green>--------------|"),
+    H401("\u00A72|--------------\u00A76dConomy \u00A7l/money\u00A72 Help\u00A72--------------|"),
+    
+    /**
+     * HelpMessage402: BankHelpOpen
+     */
+    H402("\u00A72|--------------\u00A76dConomy \u00A7l/bank\u00A72 Help\u00A72--------------|"),
+    
+    /**
+     * HelpMessage403: JointHelpOpen
+     */
+    H403("\u00A72|--------------\u00A76dConomy \u00A7l/joint\u00A72 Help\u00A72--------------|"),
     
     /**  
-     *  HelpMessage502: RequiredOptionalAlias
+     *  HelpMessage404: RequiredOptionalAlias
      */
-    H502("<green>|----<rose><REQUIRED><green>----<lightblue>[Optional]<green>----<yellow>(Alias)<green>-|"),
+    H404("\u00A72|------\u00A7c<REQUIRED>\u00A72----\u00A7b[Optional]\u00A72------|"),
+    
+    /**
+     * HelpMessage405: PlayerAmountAccount
+     */
+    H405("\u00A72|----\u00A76 p = Player \u00A7ea = Amount \u00A7bacc = Account \u00A72----|"),
+    
+    /**
+     * HelpMessage406: UseMoneyHelp
+     */
+    H406("   \u00A72Use \u00A76/money help \u00A72for help with Money commands"),
+    
+    /**
+     * HelpMessage407: UseBankHelp
+     */
+    H407("   \u00A72Use \u00A76/bank help \u00A72for help with Bank commands"),
+    
+    /**
+     * HelpMessage408: UseJointHelp
+     */
+    H408("   \u00A72Use \u00A76/joint help \u00A72for help with Joint Accounts"),
     
     /**  
-     *  HelpMessage503: Money-Base
+     *  HelpMessage409: MoneyBase
      */
-    H503("   <gold>/money<green>: Basic Command/Display account balance"),
+    H409("   \u00A76\u00A7l/money\u00A72: Base Command + Display account balance"),
     
     /**
-     * HelpMessage504: Money-Pay
+     * HelpMessage410: BankBase
      */
-    H504("   <gold>pay <yellow>(-p) <rose><p> <a><green>: Pay Player Amount"),
+    H410("   \u00A76\u00A7l/bank\u00A72: Base Command + Display bank balance"),
     
     /**
-     * HelpMessage505: Money-Rank
+     * HelpMessage411: JointBase
      */
-    H505("   <gold>rank <yellow>(-r) <lightblue>[p]<green>: Display Rank Position"),
+    H411("   \u00A76\u00A7l/joint\u00A72: Base Command + Display JointAccount balance"),
     
     /**
-     * HelpMessage506: Money-Top
+     * HelpMessage412: RankCommand
      */
-    H506("   <gold>top <yellow>(-t) <lightblue>[a]<green>: Display Richest Players"),
+    H412("   \u00A76\u00A7lrank \u00A7b[p/acc]\u00A72: Display Rank Position"),
     
     /**
-     * HelpMessage507: Money-Set
+     * HelpMessage413: RankTopCommand
      */
-    H507("   <gold>set <yellow>(-s) <rose><p> <a><green>: Set player's account to amount"),
+    H413("   \u00A76\u00A7ltop \u00A7b[a]\u00A72: Display Richest Accounts"),
     
     /**
-     * HelpMessage508: Money-Reset
+     * HelpMessage414: MoneyPayCommand
      */
-    H508("   <gold>reset <yellow>(-rt) <rose><p><green>: Reset players account to default"),
+    H414("   \u00A76\u00A7lpay \u00A7c<p> <a>\u00A72: Pay account Amount"),
     
     /**
-     * HelpMessage509: Money-Add
+     * HelpMessage415: MoneyAuto
      */
-    H509("   <gold>add <yellow>(-a) <rose><p> <a><green>: Add amount to player's account"),
+    H415("   \u00A76\u00A7lauto \u00A72: checks PayForwarding account settings"),
     
     /**
-     * HelpMessage510: Money-Remove
+     * HelpMessage416: MoneySetAuto
      */
-    H510("   <gold>remove <yellow>(-rm) <rose><p> <a><green>: Remove amount from player's account"),
+    H416("   \u00A76\u00A7lsetauto \u00A7c<acc|OFF>\u00A72: Changes or sets PayForwarding account"),
     
     /**
-     * HelpMessage511: Money-Auto
+     * HelpMessage417: BankWithdraw
      */
-    H511("   <gold>auto <yellow>(-au) <green>: checks autodep account settings"),
+    H417("   \u00A76\u00A7lwithdraw \u00A7c<a>\u00A72: withdraw from account"),
     
     /**
-     * HelpMessage512: Money-SetAuto
+     * HelpMessage418: BankDeposit
      */
-    H512("   <gold>setauto <yellow>(-sa) <rose><acc|OFF><green>: Changes or sets autodep account"),
+    H418("   \u00A76\u00A7ldeposit \u00A7c<a>\u00A72: deposit into account"),
     
     /**
-     * HelpMessage513: Money-UseJointHelp
+     * HelpMessage419: JointWithdraw
      */
-    H513("   <green>Use <gold>/bank ? <green>for help with Bank commands"),
+    H419("   \u00A76\u00A7lwithdraw \u00A7c<acc> <a>\u00A72: withdraw from Account"),
+   
+    /**
+     * HelpMessage420: JointDeposit
+     */
+    H420("   \u00A76\u00A7ldeposit \u00A7c<acc> <a>\u00A72: deposit into Account"),
     
     /**
-     * HelpMessage514: Money-UseBankHelp
+     * HelpMessage421: JointPay
      */
-    H514("   <green>Use <gold>/joint ? <green>for help with Joint Accounts"),
+    H421("   \u00A76\u00A7lpay \u00A7c<acc> <a>\u00A72: pay Account"),
     
     /**
-     * HelpMessage515: Bank-HelpOpen
+     * HelpMessage422: JointCreate
      */
-    H515("<green>|--------------<gold>dConomy /bank Help<green>--------------|"),
+    H422("   \u00A76\u00A7lcreate \u00A7c<acc>\u00A72: create Account"),
     
     /**
-     * HelpMessage516: Bank-Base
+     * HelpMessage423: JointDelete
      */
-    H516("   <gold>/bank<green>: Basic Command/Display bank balance"),
+    H423("   \u00A76\u00A7ldelete \u00A7c<acc>\u00A72: deletes Account"),
     
     /**
-     * HelpMessage517: Bank-Withdraw
+     * HelpMessage424: JointAddOwner
      */
-    H517("   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from bank account"),
-    H518("   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into bank account"),
-    H519("   <gold>reset <yellow>(-rt) <rose><p><green>: reset player's bank to 0"),
-    H520("   <gold>set <yellow>(-s) <rose><p> <amount><green>: set player's bank to amount"),
-    H521("   <gold>add <yellow>(-a) <rose><p><green>: add amount to player's bank"),
-    H522("   <gold>remove <yellow>(-rm) <rose><p> <a><green>: remove amount from player's bank"),
-    H523("<green>|--------------<gold>dConomy /joint Help<green>--------------|"),
-    H524("   <gold>/joint <account><green>: Basic Command/Display JointAccount balance"),
-    H525("   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from Account"),
-    H526("   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into Account"),
-    H527("   <gold>pay <yellow>(-p) <rose><p><green>: pay Account"),
-    H528("   <gold>create <yellow>(-c) <green>: create Account"),
-    H529("   <gold>delete <yellow>(-del) <green>: deposit into Account"),
-    H530("   <gold>addowner <yellow>(-ao) <rose><p><green>: add owner to Account"),
-    H531("   <gold>removeowner <yellow>(-ro) <rose><p><green>: remove owner from Account"),
-    H532("   <gold>adduser <yellow>(-au) <rose><p><green>: add user to Account"),
-    H533("   <gold>removeuser <yellow>(-ru) <rose><p><green>: remove user from Account"),
-    H534("   <gold>setusermax <yellow>(-su) <rose><a><green>: set UserMaxWithdraw per set period"),
-    H535("   <gold>reset <yellow>(-rt) <rose><a><green>: reset Account to 0"),
-    H536("   <gold>set <yellow>(-s) <rose><a><green>: set Account to amount"),
-    H537("   <gold>add <yellow>(-a) <rose><a><green>: add amount to Account"),
-    H538("   <gold>remove <yellow>(-rm) <rose><a><green>: remove amount to Account"),
-    H539("   <gold>usermax <yellow>(-um) <rose><a><green>: checks UserMaxWithdraw per set period"),
-    H540("<green>|---- <p> = Player <a> = Amount <acc> = Account ----|"),
-    H541("   <green>Use <gold>/money ? admin <green>for help with Money Admin commands"),
-    H542("   <green>Use <gold>/bank ? admin <green>for help with Bank Admin commands"),
-    H543("   <green>Use <gold>/joint ? <green>for help with Joint Admin commands"),
-    H544("<green>|------------<gold>dConomy /money Admin Help<green>------------|"),
-    H545("<green>|------------<gold>dConomy /bank Admin Help<green>------------|"),
-    H546("<green>|------------<gold>dConomy /joint Admin Help<green>------------|");
-    
+    H424("   \u00A76\u00A7laddowner \u00A7c<acc> <p>\u00A72: add owner to Account"),
     
     /**
-    *H517 = parseString(H517, "517-");
-    *H518 = parseString(H518, "518-Bank-Deposit");
-    *H519 = parseString(H519, "519-Bank-Reset");
-    *H520 = parseString(H520, "520-Bank-Set");
-    *H521 = parseString(H521, "521-Bank-Add");
-    *H522 = parseString(H522, "522-Bank-Remove");
-    *H523 = parseString(H523, "523-Joint-HelpOpen");
-    *H524 = parseString(H524, "524-Joint-Base");
-    *H525 = parseString(H525, "525-Joint-Withdraw");
-    *H526 = parseString(H526, "526-Joint-Deposit");
-    *H527 = parseString(H527, "527-Joint-Pay");
-*    H528 = parseString(H528, "528-Joint-Create");
- *   H529 = parseString(H529, "529-Joint-Delete");
-    *H530 = parseString(H530, "530-Joint-AddOwner");
-    *H531 = parseString(H531, "531-Joint-RemoveOwner");
-    *H532 = parseString(H532, "532-Joint-AddUser");
-    *H533 = parseString(H533, "533-Joint-RemoveUser");
-*    H534 = parseString(H534, "534-Joint-UserMax");
-    *H535 = parseString(H535, "535-Joint-Reset");
-   *H536 = parseString(H536, "536-Joint-Set");
-    *H537 = parseString(H537, "537-Joint-Add");
-    *H538 = parseString(H538, "538-Joint-Remove");
-    *H539 = parseString(H539, "539-Joint-UserMaxCheck");
-    *H540 = parseString(H540, "540-Help-PlayerAmountAccount");
-    *H541 = parseString(H541, "541-Help-UseMoneyAdmin");
-   * H542 = parseString(H542, "542-Help-UseBankAdmin");
-   * H543 = parseString(H543, "543-Help-UseJointAdmin");
-   * H544 = parseString(H544, "544-Help-MoneyAdminOpen");
-   * H545 = parseString(H545, "545-Help-BankAdminOpen");
-   * H546 = parseString(H546, "546-Help-JointAdminOpen");
-    */
+     * HelpMessage425: JointRemoveOwner
+     */
+    H425("   \u00A76\u00A7lremoveowner \u00A7c<acc> <p>\u00A72: remove owner from Account"),
+    
+    /**
+     * HelpMessage426: JointAddUser
+     */
+    H426("   \u00A76\u00A7ladduser \u00A7c<acc> <p>\u00A72: add user to Account"),
+    
+    /**
+     * HelpMessage427: JointRemoveUser
+     */
+    H427("   \u00A76\u00A7lremoveuser \u00A7c<acc> <p>\u00A72: remove user from Account"),
+    
+    /**
+     * HelpMessage428: JointSetUserMax
+     */
+    H428("   \u00A76\u00A7lsetusermax \u00A7c<a>\u00A72: set user's Max Withdraw Amount per set delay"),
+    
+    /**
+     * HelpMessage429: JointUserMaxCheck
+     */
+    H429("   \u00A76\u00A7lusermax \u00A7c<acc> <a>\u00A72: checks UserMaxWithdraw per set delay"),
+    
+    /**
+     * HelpMessage430: JointSetUserWithdrawDelay
+     */
+    H430("   \u00A76\u00A7lsetdelay \u00A7c<acc> <a>\u00A72: sets User Max Withdraw delay"),
+    
+    /**
+     * HelpMessage431: AccountSet
+     */
+    H431("   \u00A76\u00A7lset \u00A7c<acc/p> <a>\u00A72: Set account balance to amount"),
+    
+    /**
+     * HelpMessage408: AccountReset
+     */
+    H432("   \u00A76\u00A7lreset \u00A7c<acc/p>\u00A72: Reset account balance to default"),
+    
+    /**
+     * HelpMessage409: AccountAdd
+     */
+    H433("   \u00A76\u00A7ladd \u00A7c<acc/p> <a>\u00A72: Add amount to account"),
+    
+    /**
+     * HelpMessage410: AccountRemove
+     */
+    H434("   \u00A76\u00A7lremove \u00A7c<acc/p> <a>\u00A72: Remove amount from account");
+    
     private String mess;
                     
     private HelpMessages(String defmess){

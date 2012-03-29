@@ -2,24 +2,24 @@
 ########### dConomy Messages ############
 #########################################
 ###### Error Messages (100 Series) ######
-101-
-102-
-103-
-104-
-105-
-106-
-107-
-108-
-109-
-110-
-111-
-112-
-113-
-114-
-115-
-116-
-117-
-118-
+101-NoPermission=<rose>You do not have permission to use that command!
+102-NumberFormatError=<rose>You did not enter a proper number!
+103-NotEnoughArguments=<rose>You did not give enough arguments!
+104-AccountNotFound=<rose>Could not find <acc> for <p>!
+105-JointAccountNotFound=<rose>Count not find Joint Account: <acc>!
+106-JointAccountNameTaken=<rose><acc> is already in user!
+107-JointAccountNameInvalid=<rose>You have entered illegal characters for an account name!
+108-JointAccountNoPermission=<rose>You do not have access to Joint Account: <acc>!
+109-JointAccuntUserCannotWithdraw=<rose>You cannot make another withdraw for <xmin> Minutes!
+110-JointAccountUserWithdrawTooMuch=<rose>You cannot withdraw that amount at one time!
+111-JointAccountAlreadyUser=<rose><p> is already a User!
+112-JointAccountAlreadyOwner=<rose><p> is already a Owner!
+113-JointAccountAlreadyNotUser=<rose><p> was not a User!
+114-JointAccountAlreadyNotOwner=<rose><p> was not a Owner!
+115-AccountNotEnoughMoney=<rose>You do not have enough <m> to complete this transaction!
+116-BankNotEnoughMoney=<rose>Your Bank does not have enough <m> to complete this transaction!
+117-JointNotEnoughMoney=<rose>Joint Account: <acc> does not have enough <m> to complete this transaction!
+118-PlayerCannotPaySelf=<rose>You cannot pay yourself!
 #########################################
 ##### Account Messages (200 Series) #####
 201-AccountBalance=<lightgreen>Your <lightblue><bold><acc><lightgreen> balance is <yellow><a> <m><lightgreen>.
@@ -68,53 +68,41 @@
 311-JointAdd=<yellow><a> <m><lightgreen> has been added to Joint Account: <lightblue><bold><acc>'s Balance<lightgreen>.
 312-JointRemove=<yellow><a> <m><lightgreen> has been removed from Joint Account: <lightblue><bold><acc>'s Balance<lightgreen>.
 #########################################
-### Help Display Messages (500 Series) ##
-501-Money-HelpOpen=<green>|--------------<gold>dConomy /money Help<green>--------------|
-502-RequiredOptionalAlias=<green>|----<rose><REQUIRED><green>----<lightblue>[Optional]<green>----<yellow>(Alias)<green>-|
-503-Money-Base=   <gold>/money<green>: Basic Command/Display account balance
-504-Money-Pay=   <gold>pay <yellow>(-p) <rose><p> <a><green>: Pay Player Amount
-505-Money-Rank=   <gold>rank <yellow>(-r) <lightblue>[p]<green>: Display Rank Position
-506-Money-Top=   <gold>top <yellow>(-t) <lightblue>[a]<green>: Display Richest Players
-507-Money-Set=   <gold>set <yellow>(-s) <rose><p> <a><green>: Set player's account to amount
-508-Money-Reset=   <gold>reset <yellow>(-rt) <rose><p><green>: Reset players account to default
-509-Money-Add=   <gold>add <yellow>(-a) <rose><p> <a><green>: Add amount to player's account
-510-Money-Remove=   <gold>remove <yellow>(-rm) <rose><p> <a><green>: Remove amount from player's account
-511-Money-Auto=   <gold>auto <yellow>(-au) <green>: checks autodep account settings
-512-Money-SetAuto=   <gold>setauto <yellow>(-sa) <rose><acc|OFF><green>: Changes or sets autodep account
-513-Money-UseJointHelp=   <green>Use <gold>/bank ? <green>for help with Bank commands
-514-Money-UseBankHelp=   <green>Use <gold>/joint ? <green>for help with Joint Accounts
-515-Bank-HelpOpen=<green>|--------------<gold>dConomy /bank Help<green>--------------|
-516-Bank-Base=   <gold>/bank<green>: Basic Command/Display bank balance
-517-Bank-Withdraw=   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from bank account
-518-Bank-Deposit=   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into bank account
-519-Bank-Reset=   <gold>reset <yellow>(-rt) <rose><p><green>: reset player's bank to 0
-520-Bank-Set=   <gold>set <yellow>(-s) <rose><p> <amount><green>: set player's bank to amount
-521-Bank-Add=   <gold>add <yellow>(-a) <rose><p><green>: add amount to player's bank
-522-Bank-Remove=   <gold>remove <yellow>(-rm) <rose><p> <a><green>: remove amount from player's bank
-523-Joint-HelpOpen=<green>|--------------<gold>dConomy /joint Help<green>--------------|
-524-Joint-Base=   <gold>/joint <account><green>: Basic Command/Display JointAccount balance
-525-Joint-Withdraw=   <gold>withdraw <yellow>(-w) <rose><a><green>: withdraw from Account
-526-Joint-Deposit=   <gold>deposit <yellow>(-d) <rose><a><green>: deposit into Account
-527-Joint-Pay=   <gold>pay <yellow>(-p) <rose><p><green>: pay Account
-528-Joint-Create=   <gold>create <yellow>(-c) <green>: create Account
-529-Joint-Delete=   <gold>delete <yellow>(-del) <green>: deposit into Account
-530-Joint-AddOwner=   <gold>addowner <yellow>(-ao) <rose><p><green>: add owner to Account
-531-Joint-RemoveOwner=   <gold>removeowner <yellow>(-ro) <rose><p><green>: remove owner from Account
-532-Joint-AddUser=   <gold>adduser <yellow>(-au) <rose><p><green>: add user to Account
-533-Joint-RemoveUser=   <gold>removeuser <yellow>(-ru) <rose><p><green>: remove user from Account
-534-Joint-UserMax=   <gold>setusermax <yellow>(-su) <rose><a><green>: set UserMaxWithdraw per set period
-535-Joint-Reset=   <gold>reset <yellow>(-rt) <rose><a><green>: reset Account to 0
-536-Joint-Set=   <gold>set <yellow>(-s) <rose><a><green>: set Account to amount
-537-Joint-Add=   <gold>add <yellow>(-a) <rose><a><green>: add amount to Account
-538-Joint-Remove=   <gold>remove <yellow>(-rm) <rose><a><green>: remove amount to Account
-539-Joint-UserMaxCheck=   <gold>usermax <yellow>(-um) <rose><a><green>: checks UserMaxWithdraw per set period
-540-Help-PlayerAmountAccount=<green>|---- <p> = Player <a> = Amount <acc> = Account ----|
-541-Help-UseMoneyAdmin=   <green>Use <gold>/money ? admin <green>for help with Money Admin commands
-542-Help-UseBankAdmin=   <green>Use <gold>/bank ? admin <green>for help with Bank Admin commands
-543-Help-UseJointAdmin=   <green>Use <gold>/joint ? <green>for help with Joint Admin commands
-544-Help-MoneyAdminOpen=<green>|------------<gold>dConomy /money Admin Help<green>------------|
-545-Help-BankAdminOpen=<green>|------------<gold>dConomy /bank Admin Help<green>------------|
-546-Help-JointAdminOpen=<green>|------------<gold>dConomy /joint Admin Help<green>------------|
+### Help Display Messages (400 Series) ##
+401-MoneyHelpOpen=<green>|--------------<gold>dConomy <bold>/money<gold> Help<green>--------------|
+402-BankHelpOpen=<green>|--------------<gold>dConomy <bold>/bank<gold> Help<green>--------------|
+403-JointHelpOpen=<green>|--------------<gold>dConomy <bold>/joint<gold> Help<green>--------------|
+404-RequiredOptionalAlias=<green>|------<rose><REQUIRED><green>----<lightblue>[Optional]<green>------|
+405-PlayerAmountAccount=<green>|----<gold> p = Player <yellow>a = Amount <lightblue>acc = Account <green>----|
+406-UseMoneyHelp=   <green>Use <gold>/money help <green>for help with Money commands
+407-UseBankHelp=   <green>Use <gold>/bank help <green>for help with Bank commands
+408-UseJointHelp=   <green>Use <gold>/joint help <green>for help with Joint Accounts
+409-MoneyBase=   <gold><bold>/money<green>: Base Command + Display account balance
+410-BankBase=   <gold><bold>/bank<green>: Base Command + Display bank balance
+411-JointBase=   <gold><bold>/joint<green>: Base Command + Display JointAccount balance
+412-RankCommand=   <gold><bold>rank <lightblue>[p/acc]<green>: Display Rank Position
+413-RankTopCommand=   <gold><bold>top <lightblue>[a]<green>: Display Richest Accounts
+414-MoneyPayCommand=   <gold><bold>pay <rose><p> <a><green>: Pay account Amount
+415-MoneyAuto=   <gold><bold>auto <green>: checks PayForwarding account settings
+416-MoneySetAuto=   <gold><bold>setauto <rose><acc|OFF><green>: Changes or sets PayForwarding account
+417-BankWithdraw=   <gold><bold>withdraw <rose><a><green>: withdraw from account
+418-BankDeposit=   <gold><bold>deposit <rose><a><green>: deposit into account
+419-JointWithdraw=   <gold><bold>withdraw <rose><acc> <a><green>: withdraw from Account
+420-JointDeposit=   <gold><bold>deposit <rose><acc> <a><green>: deposit into Account
+421-JointPay=   <gold><bold>pay <rose><acc> <a><green>: pay Account
+422-JointCreate=   <gold><bold>create <rose><acc><green>: create Account
+423-JointDelete=   <gold><bold>delete <rose><acc><green>: deletes Account
+424-JointAddOwner=   <gold><bold>addowner <rose><acc> <p><green>: add owner to Account
+425-JointRemoveOwner=   <gold><bold>removeowner <rose><acc> <p><green>: remove owner from Account
+426-JointAddUser=   <gold><bold>adduser <rose><acc> <p><green>: add user to Account
+427-JointRemoveUser=   <gold><bold>removeuser <rose><acc> <p><green>: remove user from Account
+428-JointSetUserMax=   <gold><bold>setusermax <rose><a><green>: set user's Max Withdraw Amount per set delay
+429-JointUserMaxCheck=   <gold><bold>usermax <rose><acc> <a><green>: checks UserMaxWithdraw per set delay
+430-JointSetUserWithdrawDelay=   <gold><bold>setdelay <rose><acc> <a><green>: sets User Max Withdraw delay
+431-AccountSet=   <gold><bold>set <rose><acc/p> <a><green>: Set account balance to amount
+432-AccountReset=   <gold><bold>reset <rose><acc/p><green>: Reset account balance to default
+433-AccountAdd=   <gold><bold>add <rose><acc/p> <a><green>: Add amount to account
+434-AccountRemove=   <gold><bold>remove <rose><acc/p> <a><green>: Remove amount from account
 #########################################
 ##### Logging Messages (600 Series) #####
 601-PlayerPayPlayer=<p1> paid <p2> <a>
