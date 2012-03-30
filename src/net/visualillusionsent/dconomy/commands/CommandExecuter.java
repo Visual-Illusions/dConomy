@@ -106,18 +106,29 @@ public class CommandExecuter {
                     defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
                 }
-                //TODO verify args[1] is joint account ???
+                
+                boolean isBase = true;
+                for(JointCommands cmd : JointCommands.values()){
+                    if(args[1].toUpperCase().matches(cmd.name())){
+                        isBase = false;
+                    }
+                }
+                
+                if(isBase){
+                    return JointCommands.BASE.execute(user, new String[]{ args[1] });
+                }
+                
                 JointCommands theCommand = JointCommands.valueOf(args[1].toUpperCase());
                 
-                if(args.length > 3){
-                    newArgs = new String[args.length-3];
+                if(args.length > 2){
+                    newArgs = new String[args.length-2];
                 }
                 else{
                     newArgs = new String[]{ "" };
                 }
                 
-                for (int i = 3; i < args.length; i++) {
-                    newArgs[i-3] = args[i];
+                for (int i = 2; i < args.length; i++) {
+                    newArgs[i-2] = args[i];
                 }
                 
                 return theCommand.execute(user, newArgs);

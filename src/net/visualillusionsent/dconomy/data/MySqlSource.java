@@ -33,7 +33,7 @@ public class MySqlSource extends DataSource{
         this.password = password;
     }
     
-    public Connection getSQLConn() throws SQLException{
+    private Connection getSQLConn() throws SQLException{
         Connection conn = DriverManager.getConnection(database, username, password);
         return conn;
     }
@@ -57,10 +57,10 @@ public class MySqlSource extends DataSource{
     
     private boolean CreateTable(){
         String table1 = ("CREATE TABLE IF NOT EXISTS `dConomy` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Player` varchar(16) NOT NULL, `Account` DECIMAL(64,2) NOT NULL, `Bank` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
-        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` INT(255) NOT NULL, PRIMARY KEY (`ID`))");
+        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` BIGINT(255) NOT NULL, PRIMARY KEY (`ID`))");
         String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
         
-        String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` INT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` ;");
+        String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` BIGINT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` ;");
         boolean toRet = true;
         try{
             conn = getSQLConn();
@@ -173,7 +173,7 @@ public class MySqlSource extends DataSource{
                             long reset = DCoProperties.getJointDelay();
                             delay = rs.getInt("WithdrawDelay");
                             reset = rs.getLong("DelayReset");
-                            JointAccount joint = new JointAccount(owners, users, bal, max, delay, reset);
+                            JointAccount joint = new JointAccount(users, owners, bal, max, delay, reset);
                             jointmap.put(accname, joint);
                         }
                         catch(Exception e){
@@ -209,6 +209,8 @@ public class MySqlSource extends DataSource{
         ArrayList<String> update = new ArrayList<String>();
         ArrayList<String> insert = new ArrayList<String>();
         ArrayList<String> exists = new ArrayList<String>();
+        ArrayList<String> delete = new ArrayList<String>();
+        
         try{
             conn = getSQLConn();
         }
@@ -242,6 +244,7 @@ public class MySqlSource extends DataSource{
                     ps.addBatch();
                 }
                 ps.executeBatch();
+                ps.close();
                 
                 ps = conn.prepareStatement("INSERT INTO dConomy (Player, Account, Bank) VALUES(?,?,?)");
                 for(String in : insert){
@@ -251,11 +254,13 @@ public class MySqlSource extends DataSource{
                     ps.addBatch();
                 }
                 ps.executeBatch();
+                ps.close();
             }
             update.clear();
             insert.clear();
             exists.clear();
             synchronized(jointmap){
+                System.out.println("Joint");
                 ps = conn.prepareStatement("SELECT * FROM dConomyJoint");
                 rs = ps.executeQuery();
                 while (rs.next()){
@@ -263,11 +268,16 @@ public class MySqlSource extends DataSource{
                 }
                 
                 for(String ex : exists){
-                    if(jointmap.containsKey(ex)){
-                        update.add(ex);
+                    if(!jointmap.containsKey(ex)){
+                        delete.add(ex);
+                    }
+                }
+                for(String key : jointmap.keySet()){
+                    if(exists.contains(key)){
+                        update.add(key);
                     }
                     else{
-                        insert.add(ex);
+                        insert.add(key);
                     }
                 }
                 
@@ -284,6 +294,7 @@ public class MySqlSource extends DataSource{
                     ps.addBatch();
                 }
                 ps.executeBatch();
+                ps.close();
                 
                 ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw, WithdrawDelay, DelayReset)VALUES (?,?,?,?,?,?,?)");
                 for(String in : insert){
@@ -298,6 +309,15 @@ public class MySqlSource extends DataSource{
                     ps.addBatch();
                 }
                 ps.executeBatch();
+                ps.close();
+                
+                ps = conn.prepareStatement("DELETE FROM dConomyJoint WHERE Name = ?");
+                for(String del : delete){
+                    ps.setString(1, del);
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+                ps.close();
             }
         }
         catch(SQLException SQLE){

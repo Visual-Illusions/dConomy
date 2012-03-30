@@ -188,15 +188,11 @@ public class FlatFileSource extends DataSource{
     
     public void saveMaps(){
         super.saveMaps();
-        FileInputStream in;
         FileOutputStream out;
         logger.info("[dConomy] Saving accounts...");
         synchronized(accmap){
             try{
-                in = new FileInputStream(accFile);
                 Properties account = new Properties();
-                account.load(in);
-                in.close();
                 for(String acc : accmap.keySet()){
                     account.setProperty(acc, String.valueOf(accmap.get(acc)));
                 }
@@ -210,10 +206,7 @@ public class FlatFileSource extends DataSource{
         }
         synchronized(bankmap){
             try{
-                in = new FileInputStream(bankFile);
                 Properties account = new Properties();
-                account.load(in);
-                in.close();
                 for(String acc : bankmap.keySet()){
                     account.setProperty(acc, String.valueOf(accmap.get(acc)));
                 }
@@ -228,10 +221,7 @@ public class FlatFileSource extends DataSource{
         synchronized(jointmap){
             for(String acc : jointmap.keySet()){
                 try{
-                    in = new FileInputStream(new File(jds+acc+".txt"));
                     Properties account = new Properties();
-                    account.load(in);
-                    in.close();
                       
                     JointAccount joint = jointmap.get(acc);
                     String owners = joint.getOwners();

@@ -10,6 +10,8 @@ import net.visualillusionsent.dconomy.data.DCoProperties;
  * <p>
  * <a href="http://visualillusionsent.net/">http://visualillusionsent.net/</a>
  * <p>
+ * dConomy is a plugin for the CanaryMod Minecraft Server Modification.
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or

@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.messages;
 
+/**
+ * Handles account related messages
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since 2.0
+ * @author darkdiplomat
+ */
 public enum AccountMessages {
     
     /**
@@ -191,6 +199,15 @@ public enum AccountMessages {
         return mess;
     }
     
+    /**
+     * Handles the parsing of the message
+     * 
+     * @param username
+     * @param type
+     * @param amount
+     * @param rank
+     * @return message
+     */
     public final String Mess(String username, String type, double amount, int rank){
         return LoadMessages.parseMessage(mess, username, type, amount, rank);
     }

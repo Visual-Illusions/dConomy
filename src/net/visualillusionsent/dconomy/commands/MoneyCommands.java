@@ -17,6 +17,82 @@ import net.visualillusionsent.dconomy.data.DCoProperties;
 public enum MoneyCommands {
     
     /**
+     * Adds specified amount to specified user's account
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to add and user's name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
+    ADD{
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            if(!user.isAdmin()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
+            }
+            if(!argcheck(2, args)){
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                return res;
+            }
+            double deposit = 0;
+            try{
+                deposit = Double.parseDouble(args[1]);
+            }
+            catch (NumberFormatException nfe){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            if (deposit < 0.01){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) + deposit;
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, user.getName(), newbal);
+            res.setMess(new String[]{prefix+AdminMessages.A304.Mess(args[0], "Account", newbal)});
+            log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
+            return res;
+        } 
+    },
+    
+    /**
+     * Checks if user has Pay Forwarding set up
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: none needed
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
+    AUTO{
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            
+            if(!user.canForward()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
+            }
+            
+            if (user.canForward() && DCoProperties.getDS().isPayForwarding(user.getName())){
+                String account = DCoProperties.getDS().getPayForwardingAcc(user.getName());
+                if (account.equals("Bank")){
+                    res.setMess(new String[]{prefix+AccountMessages.A219.Mess(null, null, 0, -1)});
+                }else{
+                    res.setMess(new String[]{prefix+AccountMessages.A220.Mess(null, account, 0, -1)});
+                }
+            }
+            else{
+                res.setMess(new String[]{prefix+AccountMessages.A218.Mess(null, null, 0, -1)});
+            }
+            
+            return res;
+        }
+    },
+    
+    /**
      * Checks account balance of user or another user if allowed.
      * <p>
      * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
@@ -41,6 +117,39 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+AccountMessages.A201.Mess(null, "Account", DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()), -1)});
                 return res;
             }
+        }
+    },
+    
+    /**
+     * Displays help information.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: none needed
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
+    HELP{
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            res.setMess(new String[]{HelpMessages.H401.Mess(),
+                                     HelpMessages.H404.Mess(),
+                                     HelpMessages.H405.Mess(),
+                                     HelpMessages.H409.Mess(),
+                                     HelpMessages.H414.Mess(),
+                                     (user.canRank() ? HelpMessages.H412.Mess() : null),
+                                     (user.canRank() ? HelpMessages.H413.Mess() : null),
+                                     (user.canForward() ? HelpMessages.H415.Mess() : null),
+                                     (user.canForward() ? HelpMessages.H416.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H431.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H432.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H433.Mess() : null),
+                                     (user.isAdmin() ? HelpMessages.H434.Mess() : null),
+                                     (user.useBank() ? HelpMessages.H407.Mess() : null),
+                                     (user.useJoint() ? HelpMessages.H408.Mess() : null)
+                                     });
+            return res;
         }
     },
     
@@ -193,7 +302,7 @@ public enum MoneyCommands {
                     if (self) {
                         if (name.equalsIgnoreCase(user.getName())) {
                             ranked = AccountMessages.A222.Mess(null, null, 0, rank);
-                            log(LoggingMessages.L638.Mess(user.getName(), null, 0, null));
+                            log(LoggingMessages.L639.Mess(user.getName(), null, 0, null));
                             break;
                         }
                     } else {
@@ -210,180 +319,6 @@ public enum MoneyCommands {
             res.setMess(new String[]{ ranked != null ? prefix+rank : prefix+"Unable to retrieve rank..." });
             return res;
         }
-    },
-    
-    /**
-     * Checks the top accounts.
-     * <p>
-     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
-     * <p>
-     * Command Arguments: The amount to check if applicable.
-     * 
-     * @since   2.0
-     * @see #execute(User, String[])
-     */
-    TOP{
-        public ActionResult execute(User user, String[] args){
-            ActionResult res = new ActionResult();
-            if(!user.canRank()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
-                return res;
-            }
-            int rank = 1, amount = 20;
-            
-            Map<String, Double> sorted = DCoProperties.getDS().getRankMap(AccountType.ACCOUNT);
-            
-            if (sorted.size() < 1) {
-                res.setMess(new String[]{ AccountMessages.A223.Mess(null, "Account", 0, 0)});
-                return res;
-            }
-
-            if(!args[0].equals("")){
-                try{
-                    amount = Integer.parseInt(args[0]);
-                }
-                catch(NumberFormatException nfe){
-                    amount = 20;
-                }
-            }
-            
-            if (amount > sorted.size()) {
-                amount = sorted.size();
-            }
-            
-            String[] ranking = new String[amount+1];
-            ranking[0] = AccountMessages.A223.Mess(null, "Account", 0, amount);
-            
-            for(String name : sorted.keySet()) {
-                double balance = sorted.get(name);
-
-                if (rank <= amount) {
-                    ranking[rank] = AccountMessages.A224.Mess(name, null, balance, rank);
-                }
-                else{
-                    break;
-                }
-                rank++;
-            }
-            
-            log(LoggingMessages.L614.Mess(user.getName(), null, amount, null));
-            
-            res.setMess(ranking);
-            return res;
-        }
-    },
-    
-    /**
-     * Sets specified user's account to specified amount if user calling command is admin.
-     * <p>
-     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
-     * <p>
-     * Command Arguments: The amount to set and user's name of the account.
-     * 
-     * @since   2.0
-     * @see #execute(User, String[])
-     */
-    SET{
-        public ActionResult execute(User user, String[] args){
-            ActionResult res = new ActionResult();
-            if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
-                return res;
-            }
-            if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
-                return res;
-            }
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
-                return res;
-            }
-            double balance = 0;
-            try{
-                balance = Double.parseDouble(args[1]);
-            }catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
-                return res;
-            }
-            if (balance < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
-                return res;
-            }
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], balance);
-            res.setMess(new String[]{prefix+AdminMessages.A302.Mess(args[0], null, balance)});
-            log(LoggingMessages.L619.Mess(user.getName(), args[0], balance, null));
-            return res;
-        }
-    },
-    
-    /**
-     * Resets specified user's account is user calling command is admin.
-     * <p>
-     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
-     * <p>
-     * Command Arguments: The user's name of the account to reset.
-     * 
-     * @since   2.0
-     * @see #execute(User, String[])
-     */
-    RESET{
-        public ActionResult execute(User user, String[] args){
-            ActionResult res = new ActionResult();
-            if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
-                return res;
-            }
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
-                return res;
-            }
-            double reset = DCoProperties.getInitialBalance();
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], reset);
-            res.setMess(new String[]{prefix+AdminMessages.A301.Mess(args[0], null, reset)});
-            log(LoggingMessages.L618.Mess(user.getName(), args[0], reset, null));
-            return res;
-        }
-    },
-    
-    /**
-     * Adds specified amount to specified user's account
-     * <p>
-     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
-     * <p>
-     * Command Arguments: The amount to add and user's name of the account.
-     * 
-     * @since   2.0
-     * @see #execute(User, String[])
-     */
-    ADD{
-        public ActionResult execute(User user, String[] args){
-            ActionResult res = new ActionResult();
-            if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
-                return res;
-            }
-            if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
-                return res;
-            }
-            double deposit = 0;
-            try{
-                deposit = Double.parseDouble(args[1]);
-            }
-            catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
-                return res;
-            }
-            if (deposit < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
-                return res;
-            }
-            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) + deposit;
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, user.getName(), newbal);
-            res.setMess(new String[]{prefix+AdminMessages.A304.Mess(args[0], null, newbal)});
-            log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
-            return res;
-        } 
     },
     
     /**
@@ -425,43 +360,80 @@ public enum MoneyCommands {
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.ACCOUNT, user.getName(), newbal);
-            res.setMess(new String[]{prefix+AdminMessages.A303.Mess(args[0], null, newbal)});
+            res.setMess(new String[]{prefix+AdminMessages.A303.Mess(args[0], "Account", newbal)});
             log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
             return res;
         }
     },
     
     /**
-     * Checks if user has Pay Forwarding set up
+     * Resets specified user's account is user calling command is admin.
      * <p>
      * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
      * <p>
-     * Command Arguments: none needed
+     * Command Arguments: The user's name of the account to reset.
      * 
      * @since   2.0
      * @see #execute(User, String[])
      */
-    AUTO{
+    RESET{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            
-            if(!user.canForward()){
+            if(!user.isAdmin()){
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
                 return res;
             }
-            
-            if (user.canForward() && DCoProperties.getDS().isPayForwarding(user.getName())){
-                String account = DCoProperties.getDS().getPayForwardingAcc(user.getName());
-                if (account.equals("Bank")){
-                    res.setMess(new String[]{prefix+AccountMessages.A219.Mess(null, null, 0, -1)});
-                }else{
-                    res.setMess(new String[]{prefix+AccountMessages.A220.Mess(null, account, 0, -1)});
-                }
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                return res;
             }
-            else{
-                res.setMess(new String[]{prefix+AccountMessages.A218.Mess(null, null, 0, -1)});
+            double reset = DCoProperties.getInitialBalance();
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], reset);
+            res.setMess(new String[]{prefix+AdminMessages.A301.Mess(args[0], "Account", reset)});
+            log(LoggingMessages.L618.Mess(user.getName(), args[0], reset, null));
+            return res;
+        }
+    },
+    
+    /**
+     * Sets specified user's account to specified amount if user calling command is admin.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
+     * <p>
+     * Command Arguments: The amount to set and user's name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
+    SET{
+        public ActionResult execute(User user, String[] args){
+            ActionResult res = new ActionResult();
+            if(!user.isAdmin()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
             }
-            
+            if(!argcheck(2, args)){
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                return res;
+            }
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                return res;
+            }
+            double balance = 0;
+            try{
+                balance = Double.parseDouble(args[1]);
+            }catch (NumberFormatException nfe){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            if (balance < 0){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], balance);
+            res.setMess(new String[]{prefix+AdminMessages.A302.Mess(args[0], "Account", balance)});
+            log(LoggingMessages.L619.Mess(user.getName(), args[0], balance, null));
             return res;
         }
     },
@@ -524,34 +496,62 @@ public enum MoneyCommands {
     },
     
     /**
-     * Displays help information.
+     * Checks the top accounts.
      * <p>
      * Will override {@link #execute(User, String[])} in {@link MoneyCommands}
      * <p>
-     * Command Arguments: none needed
+     * Command Arguments: The amount to check if applicable.
      * 
      * @since   2.0
      * @see #execute(User, String[])
      */
-    HELP{
+    TOP{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            res.setMess(new String[]{HelpMessages.H401.Mess(),
-                                     HelpMessages.H404.Mess(),
-                                     HelpMessages.H405.Mess(),
-                                     HelpMessages.H409.Mess(),
-                                     HelpMessages.H414.Mess(),
-                                     (user.canRank() ? HelpMessages.H412.Mess() : null),
-                                     (user.canRank() ? HelpMessages.H413.Mess() : null),
-                                     (user.canForward() ? HelpMessages.H415.Mess() : null),
-                                     (user.canForward() ? HelpMessages.H416.Mess() : null),
-                                     (user.isAdmin() ? HelpMessages.H431.Mess() : null),
-                                     (user.isAdmin() ? HelpMessages.H432.Mess() : null),
-                                     (user.isAdmin() ? HelpMessages.H433.Mess() : null),
-                                     (user.isAdmin() ? HelpMessages.H434.Mess() : null),
-                                     (user.useBank() ? HelpMessages.H407.Mess() : null),
-                                     (user.useJoint() ? HelpMessages.H408.Mess() : null)
-                                     });
+            if(!user.canRank()){
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                return res;
+            }
+            int rank = 1, amount = 20;
+            
+            Map<String, Double> sorted = DCoProperties.getDS().getRankMap(AccountType.ACCOUNT);
+            
+            if (sorted.size() < 1) {
+                res.setMess(new String[]{ AccountMessages.A223.Mess(null, "Account", 0, 0)});
+                return res;
+            }
+
+            if(!args[0].equals("")){
+                try{
+                    amount = Integer.parseInt(args[0]);
+                }
+                catch(NumberFormatException nfe){
+                    amount = 20;
+                }
+            }
+            
+            if (amount > sorted.size()) {
+                amount = sorted.size();
+            }
+            
+            String[] ranking = new String[amount+1];
+            ranking[0] = AccountMessages.A223.Mess(null, "Account", 0, amount);
+            
+            for(String name : sorted.keySet()) {
+                double balance = sorted.get(name);
+
+                if (rank <= amount) {
+                    ranking[rank] = AccountMessages.A224.Mess(null, name, balance, rank);
+                }
+                else{
+                    break;
+                }
+                rank++;
+            }
+            
+            log(LoggingMessages.L614.Mess(user.getName(), null, amount, null));
+            
+            res.setMess(ranking);
             return res;
         }
     };

@@ -176,6 +176,10 @@ public class DataSource {
         return jointmap.get(accname).isUser(username);
     }
     
+    public boolean isAbsoluteJointUser(String accname, String username){
+        return jointmap.get(accname).isAbsolueUser(username);
+    }
+    
     /**
      * Checks if user is one of the Joint Account's owner
      * 
@@ -311,13 +315,49 @@ public class DataSource {
         jointmap.get(accname).removeOwner(owner);
     }
     
+    /**
+     * Adds a User to the Joint Account
+     * 
+     * @param accname The name of the Joint account
+     * @param user The name of the owner
+     * 
+     * @since   2.0
+     */
+    public void addJointUser(String accname, String user){
+        jointmap.get(accname).addUser(user);
+    }
+    
+    /**
+     * Removes a User to the Joint Account
+     * 
+     * @param accname The name of the Joint account
+     * @param user The name of the user
+     * 
+     * @since   2.0
+     */
+    public void removeJointUser(String accname, String user){
+        jointmap.get(accname).removeOwner(user);
+    }
+    
     
     public void setJointMaxUserWithdraw(String accname, double maxamount){
-        
+        jointmap.get(accname).setMaxUserWithdraw(maxamount);
     }
     
     public String getJointUsers(String accname){
-        return null;
+        return jointmap.get(accname).getUsers();
+    }
+    
+    public int getJointDelay(String accname){
+        return jointmap.get(accname).getDelay();
+    }
+    
+    public void setJointDelay(String accname, int delay){
+        jointmap.get(accname).setDelay(delay);
+    }
+    
+    public long getJointReset(String accname){
+        return jointmap.get(accname).getReset();
     }
     
     /**
@@ -400,6 +440,14 @@ public class DataSource {
                 bvc = new dCValueComparator(bankmap);
                 sortedAccounts = new TreeMap<String, Double>(bvc);
                 sortedAccounts.putAll(bankmap);
+            }
+            else{
+                HashMap<String, Double> jointbalancemap = new HashMap<String, Double>();
+                for(String accname : jointmap.keySet()){
+                    jointbalancemap.put(accname, jointmap.get(accname).getBalance());
+                }
+                sortedAccounts = new TreeMap<String, Double>(bvc);
+                sortedAccounts.putAll(jointbalancemap);
             }
         } catch (Exception ex) {
             logger.warning("[dConomy] Unable to retrieve array of balances!");

@@ -10,6 +10,7 @@ import java.text.NumberFormat;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import net.visualillusionsent.dconomy.AccountType;
 import net.visualillusionsent.dconomy.data.DCoProperties;
 
 public class LoadMessages {
@@ -74,7 +75,7 @@ public class LoadMessages {
         ErrorMessages.E115.setMess(parseMess(ErrorMessages.E115.plainMess(), "115-AccountNotEnoughMoney"));
         ErrorMessages.E116.setMess(parseMess(ErrorMessages.E116.plainMess(), "116-BankNotEnoughMoney"));
         ErrorMessages.E117.setMess(parseMess(ErrorMessages.E117.plainMess(), "117-JointNotEnoughMoney"));
-        ErrorMessages.E118.setMess(parseMess(ErrorMessages.E118.plainMess(), "118-Player-CannotPaySelf"));
+        ErrorMessages.E118.setMess(parseMess(ErrorMessages.E118.plainMess(), "118-PlayerCannotPaySelf"));
         logger.info("[dConomy] ErrorMessages Loaded!");
         logger.info("[dConomy] Loading Account Messages...");
         //Get/Set Account Messages (200 Series)
@@ -252,14 +253,8 @@ public class LoadMessages {
     protected static final String parseMessage(String message, String username, String type, double amount, int rank){
         String parsedMessage = message;
         
-        //int x = (int)Math.floor((jwreset - System.currentTimeMillis()) / 1000);
-        //int xm = (int)Math.floor(x / (60));
-        //String mins = String.valueOf(JWDelay);
-        
         parsedMessage = parsedMessage.replace("<m>", DCoProperties.getMoneyName());
         parsedMessage = parsedMessage.replace("<a>", String.valueOf(displayform.format(amount)));
-        //parsedMessage = parsedMessage.replace("<min>", mins);
-        //parsedMessage = parsedMessage.replace("<xmin>", String.valueOf(xm));
         
         if(username != null){
             parsedMessage = parsedMessage.replace("<p>", username);
@@ -267,10 +262,18 @@ public class LoadMessages {
         
         if(type != null){
             parsedMessage = parsedMessage.replace("<acc>", type);
+            
+            if(DCoProperties.getDS().AccountExists(AccountType.JOINT, type)){
+                int x = (int)Math.floor((DCoProperties.getDS().getJointReset(type) - System.currentTimeMillis()) / 1000);
+                int xm = (int)Math.floor(x / (60));
+                String mins = String.valueOf(DCoProperties.getDS().getJointDelay(type));
+                parsedMessage = parsedMessage.replace("<min>", mins);
+                parsedMessage = parsedMessage.replace("<xmin>", String.valueOf(xm));
+            }
         }
         
         if(rank != -1){
-            parsedMessage = parsedMessage.replace("<rank>", type);
+            parsedMessage = parsedMessage.replace("<rank>", String.valueOf(rank));
         }
         
         return parsedMessage;

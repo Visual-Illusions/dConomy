@@ -18,15 +18,13 @@ public class JointAccount {
     private ArrayList<String> owners = new ArrayList<String>();
     private HashMap<String, Double> juwd = new HashMap<String, Double>();
     private double balance, muw;
-    private int delay;
-    private long reset;
+    private int delay = 0;
+    private long reset = -1;
     private Timer juwdt = new Timer();
     
     JointAccount(String[] users, String[] owners, double balance, double muw, int delay, long reset){
-        if(users != null){
-            for(String user : users){
-                this.users.add(user);
-            }
+        for(String user : users){
+            this.users.add(user);
         }
         for(String owner : owners){
             this.owners.add(owner);
@@ -34,15 +32,19 @@ public class JointAccount {
         this.balance = balance;
         this.muw = muw;
         if(DCoProperties.getJointDelay() > 0){
-            this.delay = delay*1000*60;
-            this.reset = reset - System.currentTimeMillis();
-            if(this.reset <= 0){
-                this.reset = this.delay;
+            if(delay > 0){
+                this.delay = delay;
+                long tempdelay = delay*1000*60;
+                this.reset = reset;
+                long tempreset = reset - System.currentTimeMillis();
+                if(tempreset <= 0){
+                    tempreset = this.delay;
+                }
+                else{
+                    //TODO load juwdmap
+                }
+                juwdt.scheduleAtFixedRate(new Reset(), tempreset, tempdelay);
             }
-            else{
-                //TODO load juwdmap
-            }
-            juwdt.scheduleAtFixedRate(new Reset(), reset, delay);
         }
     }
     
@@ -86,8 +88,13 @@ public class JointAccount {
     protected String getOwners(){
         synchronized(owners){
             StringBuilder sb = new StringBuilder();
-            for(String own : owners){
-                sb.append(own);
+            if(!owners.isEmpty()){
+                for(String own : owners){
+                    sb.append(own);
+                    sb.append(",");
+                }
+            }
+            else{
                 sb.append(",");
             }
             return sb.toString();
@@ -98,10 +105,20 @@ public class JointAccount {
      * Checks is user is an user.
      * 
      * @param name The user's name.
-     * @return true if they are
+     * @return true if they are an user or an owner
      */
     protected boolean isUser(String name){
         return users.contains(name) || owners.contains(name);
+    }
+    
+    /**
+     * Checks is user is an user.
+     * 
+     * @param name The user's name.
+     * @return true if they are an user
+     */
+    protected boolean isAbsolueUser(String name){
+        return users.contains(name);
     }
     
     /**
@@ -134,8 +151,13 @@ public class JointAccount {
     protected String getUsers(){
         synchronized(users){
             StringBuilder sb = new StringBuilder();
-            for(String user : users){
-                sb.append(user);
+            if(!users.isEmpty()){
+                for(String user : users){
+                    sb.append(user);
+                    sb.append(",");
+                }
+            }
+            else{
                 sb.append(",");
             }
             return sb.toString();
@@ -170,6 +192,15 @@ public class JointAccount {
     }
     
     /**
+     * Sets the max user withdraw
+     * 
+     * @param max
+     */
+    protected void setMaxUserWithdraw(double max){
+        this.muw = max;
+    }
+    
+    /**
      * 
      * @param username
      * @param amount
@@ -183,6 +214,7 @@ public class JointAccount {
      */
     protected void cancelDelay(){
         juwdt.cancel();
+        juwdt.purge();
     }
     
     protected boolean canWithdraw(String username, double amount){
@@ -206,6 +238,15 @@ public class JointAccount {
         return delay;
     }
     
+    protected void setDelay(int delay){
+        this.delay = delay;
+        juwdt.cancel();
+        if(delay > 0){
+            juwdt = new Timer();
+            juwdt.scheduleAtFixedRate(new Reset(), (reset-System.currentTimeMillis()), (delay*1000*60));
+        }
+    }
+    
     /**
      * Gets the reset time of the Joint Withdraw delay
      * 
@@ -217,6 +258,11 @@ public class JointAccount {
     
     private class Reset extends TimerTask{
         public void run(){
+            if(reset > System.currentTimeMillis()){
+                reset = System.currentTimeMillis() + (delay * 1000 * 60);
+                setDelay(delay);
+                return;
+            }
             juwd.clear();
             reset = System.currentTimeMillis() + (delay * 1000 * 60);
         }

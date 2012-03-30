@@ -37,7 +37,7 @@ public enum AdminMessages {
      */
     A307("\u00A7e<a> <m>\u00A7a has been added to Joint Account: \u00A7b<acc>'s Balance\u00A7a."),
     
-    /*
+    /**
      *AdminMessage308: JointRemove
      */
     A308("\u00A7e<a> <m>\u00A7a has been removed from Joint Account: \u00A7b<acc>'s Balance\u00A7a.");

@@ -10,7 +10,7 @@
 106-JointAccountNameTaken=<rose><acc> is already in user!
 107-JointAccountNameInvalid=<rose>You have entered illegal characters for an account name!
 108-JointAccountNoPermission=<rose>You do not have access to Joint Account: <acc>!
-109-JointAccuntUserCannotWithdraw=<rose>You cannot make another withdraw for <xmin> Minutes!
+109-JointAccountUserCannotWithdraw=<rose>You cannot make another withdraw for <xmin> Minutes!
 110-JointAccountUserWithdrawTooMuch=<rose>You cannot withdraw that amount at one time!
 111-JointAccountAlreadyUser=<rose><p> is already a User!
 112-JointAccountAlreadyOwner=<rose><p> is already a Owner!
@@ -23,7 +23,7 @@
 #########################################
 ##### Account Messages (200 Series) #####
 201-AccountBalance=<lightgreen>Your <lightblue><bold><acc><lightgreen> balance is <yellow><a> <m><lightgreen>.
-202-AccountNewBalance=<lightgreen>Your new <lightblue><bold><add><lightgreen> balance is <yellow><a> <m><lightgreen>.
+202-AccountNewBalance=<lightgreen>Your new <lightblue><bold><acc><lightgreen> balance is <yellow><a> <m><lightgreen>.
 203-CheckAnotherAccount=<gold><bold><p>'s <lightblue><bold><acc><lightgreen> balance is <yellow><a> <m><lightgreen>.
 204-BankDeposit=<lightgreen>You have deposited <yellow><a> <m><lightgreen> into your <lightblue><bold>Bank<lightgreen>.
 205-BankWithdraw=<lightgreen>You have withdrawn <yellow><a> <m><lightgreen> from your <lightblue><bold>Bank<lightgreen>.
