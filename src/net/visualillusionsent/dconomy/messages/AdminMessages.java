@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.messages;
 
+/**
+ * Handles admin related messages
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since 2.0
+ * @author darkdiplomat
+ */
 public enum AdminMessages {
     
     /**
@@ -56,6 +64,14 @@ public enum AdminMessages {
         return mess;
     }
     
+    /**
+     * Handles the parsing of the message
+     * 
+     * @param username
+     * @param type
+     * @param amount
+     * @return message
+     */
     public final String Mess(String username, String type, double amount){
         return LoadMessages.parseAdminMessage(mess, username, type, amount);
     }

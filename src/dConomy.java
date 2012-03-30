@@ -32,6 +32,7 @@ import net.visualillusionsent.dconomy.data.DCoProperties;
 public class dConomy extends Plugin{
     private Logger logger = Logger.getLogger("Minecraft");
     private dCoListener dcl;
+    private dCBalance dcb;
     private boolean isLoaded = false;
 
     /**
@@ -67,9 +68,11 @@ public class dConomy extends Plugin{
     public void initialize(){
         if( DCoProperties.load() ){
             dcl = new dCoListener();
+            dcb = new dCBalance();
             etc.getLoader().addListener(PluginLoader.Hook.COMMAND, dcl, this, PluginListener.Priority.MEDIUM);
             etc.getLoader().addListener(PluginLoader.Hook.LOGIN, dcl, this, PluginListener.Priority.MEDIUM);
-            //etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dcl, this, PluginListener.Priority.MEDIUM);
+            etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dcl, this, PluginListener.Priority.MEDIUM);
+            etc.getLoader().addCustomListener(dcb);
             etc.getInstance().addCommand("/dConomy", "- displays information about dConomy");
             etc.getInstance().addCommand("/money", "help (?) - display dConomy Money Help");
             etc.getInstance().addCommand("/bank", "help (?) - display dConomy Bank Help");

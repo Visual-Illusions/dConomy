@@ -13,6 +13,12 @@ import java.util.logging.Logger;
 import net.visualillusionsent.dconomy.AccountType;
 import net.visualillusionsent.dconomy.data.DCoProperties;
 
+/**
+ * message loading handler
+ * 
+ * @since   2.0
+ * @author  darkdiplomat
+ */
 public class LoadMessages {
     private static Logger logger = Logger.getLogger("Minecraft");
     private static Properties dCoMess;
@@ -39,6 +45,11 @@ public class LoadMessages {
         }
     }
     
+    /**
+     * loads messages
+     * 
+     * @since 2.0
+     */
     public static void LoadMessage(){
         logger.info("[dConomy] Attempting to Load Messages...");
         
@@ -250,6 +261,16 @@ public class LoadMessages {
         return newmess;
     }
     
+    /**
+     * parses account messages
+     * 
+     * @param message
+     * @param username
+     * @param type
+     * @param amount
+     * @param rank
+     * @return parsedMessage
+     */
     protected static final String parseMessage(String message, String username, String type, double amount, int rank){
         String parsedMessage = message;
         
@@ -279,6 +300,15 @@ public class LoadMessages {
         return parsedMessage;
     }
     
+    /**
+     * parses admin messages
+     * 
+     * @param message
+     * @param username
+     * @param type
+     * @param amount
+     * @return parsedmessage
+     */
     protected static final String parseAdminMessage(String message, String username, String type, double amount){
         String parsedMessage = message;
         
@@ -296,15 +326,37 @@ public class LoadMessages {
         return parsedMessage;
     }
     
+    /**
+     * parses error messages
+     * 
+     * @param message
+     * @param arg
+     * @return message
+     */
     protected static final String parseError(String message, String arg){
         message = message.replace("<m>", DCoProperties.getMoneyName());
         if(arg != null){
             message = message.replace("<p>", arg);
             message = message.replace("<acc>", arg);
+            if(DCoProperties.getDS().AccountExists(AccountType.JOINT, arg)){
+                int x = (int)Math.floor((DCoProperties.getDS().getJointReset(arg) - System.currentTimeMillis()) / 1000);
+                int xm = (int)Math.floor(x / (60));
+                message = message.replace("<xmin>", String.valueOf(xm));
+            }
         }
         return message;
     }
     
+    /**
+     * parses log messages
+     * 
+     * @param message
+     * @param p1
+     * @param p2
+     * @param amount
+     * @param account
+     * @return message
+     */
     protected static final String parseLog(String message, String p1, String p2, String amount, String account){
         if(p1 != null){
             message = message.replace("<p1>", p1);

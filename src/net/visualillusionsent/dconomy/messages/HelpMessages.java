@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.messages;
 
+/**
+ * Handles help related messages
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since 2.0
+ * @author darkdiplomat
+ */
 public enum HelpMessages {
     
     /**
@@ -185,7 +193,12 @@ public enum HelpMessages {
     final String plainMess(){
         return mess;
     }
-                    
+    
+    /**
+     * Gets the help message
+     * 
+     * @return message
+     */
     public final String Mess(){
         return mess;
     }

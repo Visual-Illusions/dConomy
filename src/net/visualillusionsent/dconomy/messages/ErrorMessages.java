@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.messages;
 
+/**
+ * Handles error related messages
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since 2.0
+ * @author darkdiplomat
+ */
 public enum ErrorMessages {
     
     /**
@@ -106,6 +114,12 @@ public enum ErrorMessages {
         return mess;
     }
     
+    /**
+     * Handles the parsing of the message
+     * 
+     * @param arg
+     * @return message
+     */
     public final String Mess(String arg){
         return LoadMessages.parseError(mess, arg);
     }

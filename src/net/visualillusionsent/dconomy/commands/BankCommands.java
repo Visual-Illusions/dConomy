@@ -37,7 +37,7 @@ public enum BankCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
                 return res;
             }
-            if (!DCoProperties.getDS().AccountExists(AccountType.BANK, args[0])){
+            if(!DCoProperties.getDS().AccountExists(AccountType.BANK, args[0])){
                 res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
                 return res;
             }
@@ -53,8 +53,8 @@ public enum BankCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
                 return res;
             }
-            double newbal = DCoProperties.getDS().getBalance(AccountType.BANK, user.getName()) + deposit;
-            DCoProperties.getDS().setBalance(AccountType.BANK, user.getName(), newbal);
+            double newbal = DCoProperties.getDS().getBalance(AccountType.BANK, args[0]) + deposit;
+            DCoProperties.getDS().setBalance(AccountType.BANK, args[0], newbal);
             res.setMess(new String[]{prefix+AdminMessages.A304.Mess(args[0], "Bank", newbal)});
             log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
             return res;

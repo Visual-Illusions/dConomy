@@ -53,7 +53,7 @@
 229-JointAccountUserAdded=<lightgreen>Added <gold><bold><p><lightgreen> as <lightpurple>User<lightgreen> to Joint Account: <lightblue><bold><acc><lightgreen>.
 230-JointAccountUserRemoved=<lightgreen>Removed <gold><bold><p><lightgreen> as <lightpurple>Owner<lightgreen> to Joint Account: <lightblue><bold><acc><lightgreen>.
 231-JointAccountMaxUserWithdrawCheck=<lightgreen>Max User Withdraw is <yellow><a> <m><lightgreen> per <purple><min> Minutes<lightgreen>.
-232-JointAccoutMaxUserWithdrawSet=<lightgreen>You have set Max User Withdraw to <yellow><a> <m><lightgreen>.
+232-JointAccountMaxUserWithdrawSet=<lightgreen>You have set Max User Withdraw to <yellow><a> <m><lightgreen>.
 233-JointAccountMaxUserWithdrawDelaySet=<lightgreen>You have set Max User Withdraw delay to <yellow><min> Minutes<lightgreen>.
 234-JointAccountBalance=<lightgreen>Joint Account: <lightblue><bold><acc>'s<lightgreen> balance is <yellow><a> <m><lightgreen>.
 235-JointAccountNewBalance=<lightgreen>Joint Account: <lightblue><bold><acc>'s<lightgreen> new balance is <yellow><a> <m><lightgreen>.

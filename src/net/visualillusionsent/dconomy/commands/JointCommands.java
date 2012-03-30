@@ -10,6 +10,14 @@ import net.visualillusionsent.dconomy.messages.ErrorMessages;
 import net.visualillusionsent.dconomy.messages.HelpMessages;
 import net.visualillusionsent.dconomy.messages.LoggingMessages;
 
+/**
+ * dConomy joint commands
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since   2.0
+ * @author  darkdiplomat
+ */
 public enum JointCommands {
     
     /**
@@ -373,8 +381,17 @@ public enum JointCommands {
                 if(sendAcc.matches("Bank")){
                     sendAT = AccountType.BANK;
                 }
-                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, sendAcc) && DCoProperties.getDS().isJointOwner(sendAcc, user.getName())){
-                    sendAT = AccountType.JOINT;
+                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, sendAcc) && DCoProperties.getDS().isJointUser(sendAcc, user.getName())){
+                    if(!user.isAdmin() || !DCoProperties.getDS().isJointOwner(sendAcc, user.getName())){
+                        if(DCoProperties.getDS().canWithdraw(user.getName(), sendAcc, change)){
+                            DCoProperties.getDS().addJUWD(sendAcc, user.getName(), change);
+                            sendAT = AccountType.JOINT;
+                        }
+                        else{
+                            res.setMess(new String[]{prefix+(change > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(args[0]) : ErrorMessages.E109.Mess(args[0]))});
+                            return res;
+                        }
+                    }
                 }
             }
             
@@ -657,6 +674,16 @@ public enum JointCommands {
         }
     },
     
+    /**
+     * Sets specified Joint Account's withdraw delay.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link JointCommands}
+     * <p>
+     * Command Arguments: The amount to set and name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
+     */
     SETDELAY{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
@@ -694,12 +721,44 @@ public enum JointCommands {
     },
     
     /**
-     * ...
+     * Sets specified Joint Account's max user withdraw.
+     * <p>
+     * Will override {@link #execute(User, String[])} in {@link JointCommands}
+     * <p>
+     * Command Arguments: The amount to set and name of the account.
+     * 
+     * @since   2.0
+     * @see #execute(User, String[])
      */
     SETUSERMAX{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            //TODO
+            if(!argcheck(2, args)){
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                return res;
+            }
+            if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                return res;
+            }
+            if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                return res;
+            }
+            double newamount = 0;
+            try{
+                newamount = Double.parseDouble(args[1]);
+            }catch (NumberFormatException nfe){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            if (newamount < 0.01){
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            DCoProperties.getDS().setJointMaxUserWithdraw(args[0], newamount);
+            res.setMess(new String[]{prefix+AccountMessages.A232.Mess(user.getName(), args[0], newamount, -1)});
+            log(LoggingMessages.L637.Mess(user.getName(), null, newamount, args[0])); 
             return res;
         }
     },
@@ -802,6 +861,13 @@ public enum JointCommands {
             }
             if (withdraw < 0.01){ 
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                return res;
+            }
+            if(DCoProperties.getDS().canWithdraw(user.getName(), args[0], withdraw)){
+                DCoProperties.getDS().addJUWD(args[0], user.getName(), withdraw);
+            }
+            else{
+                res.setMess(new String[]{prefix+(withdraw > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(args[0]) : ErrorMessages.E109.Mess(args[0]))});
                 return res;
             }
             double newBank = DCoProperties.getDS().getBalance(AccountType.JOINT, args[0]) - withdraw;

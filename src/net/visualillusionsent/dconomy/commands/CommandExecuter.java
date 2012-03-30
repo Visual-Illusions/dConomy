@@ -50,7 +50,7 @@ public class CommandExecuter {
                 newArgs[i-2] = args[i];
             }
             
-            if(args[0].equals("/money")){
+            if(args[0].equalsIgnoreCase("money")){
                 if(!user.useMoney()){
                     defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
@@ -76,7 +76,7 @@ public class CommandExecuter {
                 
                 return theCommand.execute(user, newArgs);
             }
-            else if(args[0].equalsIgnoreCase("/bank")){
+            else if(args[0].equalsIgnoreCase("bank")){
                 if(!user.useBank()){
                     defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;
@@ -101,7 +101,7 @@ public class CommandExecuter {
                 
                 return theCommand.execute(user, newArgs);
             }
-            else if(args[0].equalsIgnoreCase("/joint")){
+            else if(args[0].equalsIgnoreCase("joint")){
                 if(!user.useJoint()){
                     defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
                     return defres;

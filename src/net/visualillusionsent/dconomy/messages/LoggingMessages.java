@@ -1,5 +1,13 @@
 package net.visualillusionsent.dconomy.messages;
 
+/**
+ * Handles logging related messages
+ * <p>
+ * This file is part of {@link dConomy}
+ * 
+ * @since 2.0
+ * @author darkdiplomat
+ */
 public enum LoggingMessages{
     
     /**
@@ -211,6 +219,15 @@ public enum LoggingMessages{
         return mess;
     }
     
+    /**
+     * Handles the parsing of the log message
+     *
+     * @param p1
+     * @param p2
+     * @param amount
+     * @param account
+     * @return message
+     */
     public final String Mess(String p1, String p2, double amount, String account){
         return LoadMessages.parseLog(mess, p1, p2, String.valueOf(amount), account);
     }

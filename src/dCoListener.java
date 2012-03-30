@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import net.visualillusionsent.dconomy.*;
 import net.visualillusionsent.dconomy.commands.CommandExecuter;
 import net.visualillusionsent.dconomy.data.DCoProperties;
+import net.visualillusionsent.dconomy.messages.ErrorMessages;
 
 /**
  * dConomy's Plugin Listener class
@@ -61,6 +62,7 @@ public class dCoListener extends PluginListener{
             try{
                 User user = new User(player.getName(), can(player, "/money"), can(player, "/bank"), can(player, "/joint"),
                                  can(player, "/dcrank"), can(player, "/dccreate"), can(player, "/dcauto"), can(player, "/dcadmin"));
+                args[0] = args[0].substring(1);
                 ActionResult res = CommandExecuter.execute(user, args);
                 for(String message : res.getMess()){
                     if(message != null){
@@ -87,7 +89,69 @@ public class dCoListener extends PluginListener{
         return false;
     }
     
+    /**
+     * Listens for dConomy console commands and forwards them to {@link CommandExecuter#execute(User, String[])}
+     * 
+     * @param   args String array of the command and arguments
+     * @return  true if dConomy command, false otherwise
+     * @since   2.0
+     * @see     CommandExecuter#execute(User, String[])
+     * @see     ActionResult
+     * @see     User
+     */
+    public boolean onConsoleCommand(String[] args){
+        if(args[0].matches("money|joint|bank")){
+            try{
+                if(args.length > 1){
+                    if(args[1].matches("add|remove|set|reset|create|delete|adduser|removeuser|addowner|removeowner|setdelay|setusermax|usermax")){
+                        User user = new User("SERVER", true, true, true, true, true, true, true);
+                        ActionResult res = CommandExecuter.execute(user, args);
+                        for(String message : res.getMess()){
+                            if(message != null){
+                                System.out.println(removeFormating(message));
+                            }
+                        }
+                    }
+                }
+                else{
+                    System.out.println(removeFormating(ErrorMessages.E103.Mess(null)));
+                }
+            }
+            catch(Exception E){
+                logger.log(Level.SEVERE, "[dConomy] An uncaught exception has occured!", E);
+            }
+            return true;
+        }
+        return false;
+    }
+    
     private boolean can(Player player, String cmd){
         return player.canUseCommand(cmd) || player.canUseCommand("/dcadmin");
+    }
+    
+    private String removeFormating(String message){
+        String newmess = message;
+        newmess = newmess.replace("\u00A70", "");
+        newmess = newmess.replace("\u00A71", "");
+        newmess = newmess.replace("\u00A72", "");
+        newmess = newmess.replace("\u00A73", "");
+        newmess = newmess.replace("\u00A74", "");
+        newmess = newmess.replace("\u00A75", "");
+        newmess = newmess.replace("\u00A76", "");
+        newmess = newmess.replace("\u00A77", "");
+        newmess = newmess.replace("\u00A78", "");
+        newmess = newmess.replace("\u00A79", "");
+        newmess = newmess.replace("\u00A7a", "");
+        newmess = newmess.replace("\u00A7b", "");
+        newmess = newmess.replace("\u00A7c", "");
+        newmess = newmess.replace("\u00A7d", "");
+        newmess = newmess.replace("\u00A7e", "");
+        newmess = newmess.replace("\u00A7f", "");
+        newmess = newmess.replace("\u00A7l", "");
+        newmess = newmess.replace("\u00A7m", "");
+        newmess = newmess.replace("\u00A7n", "");
+        newmess = newmess.replace("\u00A7o", "");
+        newmess = newmess.replace("\u00A7r", "");
+        return newmess;
     }
 }

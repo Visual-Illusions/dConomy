@@ -160,13 +160,17 @@ public class FlatFileSource extends DataSource{
                         double muw = Double.parseDouble(account.getProperty("UserMaxWithdraw"));
                         int delay = DCoProperties.getJointDelay();
                         long reset = DCoProperties.getJointDelay();
+                        String juwd = ":,";
                         if(account.containsKey("JointWithdrawDelay")){
                             delay = Integer.parseInt(account.getProperty("JointWithdrawDelay"));
                         }
                         if(account.containsKey("DelayReset")){
                             reset = Long.parseLong(account.getProperty("DelayReset"));
                         }
-                        JointAccount joint = new JointAccount(users, owners, balance, muw, delay, reset);
+                        if(account.containsKey("JointWithdrawDelayMap")){
+                            juwd = account.getProperty("JointWithdrawDelayMap");
+                        }
+                        JointAccount joint = new JointAccount(users, owners, balance, muw, delay, reset, juwd);
                         jointmap.put(name, joint);
                     }
                     catch (NumberFormatException nfe){
@@ -230,12 +234,14 @@ public class FlatFileSource extends DataSource{
                     String muw = String.valueOf(joint.getMaxUserWithdraw());
                     String delay = String.valueOf(joint.getDelay());
                     String reset = String.valueOf(joint.getReset());
+                    String juwd = joint.getJUWDMap();
                     account.setProperty("owners", owners);
                     account.setProperty("users", users);
                     account.setProperty("balance", balance);
                     account.setProperty("UserMaxWithdraw", muw);
                     account.setProperty("WithdrawDelay", delay);
                     account.setProperty("DelayReset", reset);
+                    account.setProperty("JointWithdrawDelayMap", juwd);
                     out = new FileOutputStream(bankFile);
                     account.store(out, null);
                     out.close();

@@ -176,6 +176,15 @@ public class DataSource {
         return jointmap.get(accname).isUser(username);
     }
     
+    /**
+     * Checks if user is one of the Joint Account's users but not an owner
+     * 
+     * @param accname Name of the Joint Account
+     * @param username Name of the user
+     * @return true is user, false otherwise
+     * 
+     * @since   2.0
+     */
     public boolean isAbsoluteJointUser(String accname, String username){
         return jointmap.get(accname).isAbsolueUser(username);
     }
@@ -277,7 +286,7 @@ public class DataSource {
      * @since   2.0
      */
     public void createJointAccount(String accname, String owner){
-        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw(), DCoProperties.getJointDelay(), DCoProperties.getJointDelay()));
+        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw(), DCoProperties.getJointDelay(), DCoProperties.getJointDelay(), ""));
     }
     
     /**
@@ -339,23 +348,56 @@ public class DataSource {
         jointmap.get(accname).removeOwner(user);
     }
     
-    
+    /**
+     * Gets the Joint Account's Max User Withdraw amount
+     * 
+     * @param accname The name of the Joint account.
+     * @param maxamount The max withdraw amount.
+     * 
+     * @since   2.0
+     */
     public void setJointMaxUserWithdraw(String accname, double maxamount){
         jointmap.get(accname).setMaxUserWithdraw(maxamount);
     }
     
+    /**
+     * Gets the list of users for the Joint Account
+     * 
+     * @param accname The name of the Joint account
+     * 
+     * @since   2.0
+     */
     public String getJointUsers(String accname){
         return jointmap.get(accname).getUsers();
     }
     
+    /**
+     * Gets the Joint Account's withdraw delay.
+     * 
+     * @param accname The name of the Joint account
+     * 
+     * @since   2.0
+     */
     public int getJointDelay(String accname){
         return jointmap.get(accname).getDelay();
     }
     
+    /**
+     * Sets the Joint Account's withdraw delay
+     * 
+     * @param accname
+     * @param delay
+     */
     public void setJointDelay(String accname, int delay){
         jointmap.get(accname).setDelay(delay);
     }
     
+    /**
+     * Gets the reset long of Joint Account
+     * 
+     * @param accname
+     * @return reset
+     */
     public long getJointReset(String accname){
         return jointmap.get(accname).getReset();
     }
@@ -400,6 +442,12 @@ public class DataSource {
         return payforwardmap.getProperty(username);
     }
     
+    /**
+     * Sets a user's Pay Forwarding account
+     * 
+     * @param username
+     * @param account
+     */
     public void setPayForwarding(String username, String account){
         payforwardmap.setProperty(username, account);
     }
@@ -416,6 +464,18 @@ public class DataSource {
      */
     public boolean canWithdraw(String username, String accname, double amount){
         return jointmap.get(accname).canWithdraw(username, amount);
+    }
+    
+    /**
+     * Adds a user to the withdraw delay list
+     * 
+     * @param username
+     * @param amount
+     * 
+     * @since 2.0
+     */
+    public void addJUWD(String accname, String username, double amount){
+        jointmap.get(accname).addJUWD(username, amount);
     }
     
     /**

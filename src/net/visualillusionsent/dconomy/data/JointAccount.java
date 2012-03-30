@@ -22,7 +22,7 @@ public class JointAccount {
     private long reset = -1;
     private Timer juwdt = new Timer();
     
-    JointAccount(String[] users, String[] owners, double balance, double muw, int delay, long reset){
+    JointAccount(String[] users, String[] owners, double balance, double muw, int delay, long reset, String juwd){
         for(String user : users){
             this.users.add(user);
         }
@@ -41,7 +41,11 @@ public class JointAccount {
                     tempreset = this.delay;
                 }
                 else{
-                    //TODO load juwdmap
+                   String[] juwdsplit = juwd.split(",");
+                   for(String juwds : juwdsplit){
+                       String[] juwdss = juwds.split(":");
+                       this.juwd.put(juwdss[0], Double.valueOf(juwdss[1]));
+                   }
                 }
                 juwdt.scheduleAtFixedRate(new Reset(), tempreset, tempdelay);
             }
@@ -53,6 +57,8 @@ public class JointAccount {
      * 
      * @param name The user's name.
      * @return true if they are
+     * 
+     * @since 2.0
      */
     protected boolean isOwner(String name){
         return owners.contains(name);
@@ -62,6 +68,8 @@ public class JointAccount {
      * Adds a user as an owner.
      * 
      * @param name The user's name.
+     * 
+     * @since 2.0
      */
     protected void addOwner(String name){
         if(!owners.contains(name)){
@@ -73,6 +81,8 @@ public class JointAccount {
      * Removes user as an owner.
      * 
      * @param name The user's name.
+     * 
+     * @since 2.0
      */
     protected void removeOwner(String name){
         if(owners.contains(name)){
@@ -84,6 +94,8 @@ public class JointAccount {
      * Gets the account's owners
      * 
      * @return the owners
+     * 
+     * @since 2.0
      */
     protected String getOwners(){
         synchronized(owners){
@@ -106,6 +118,8 @@ public class JointAccount {
      * 
      * @param name The user's name.
      * @return true if they are an user or an owner
+     * 
+     * @since 2.0
      */
     protected boolean isUser(String name){
         return users.contains(name) || owners.contains(name);
@@ -116,6 +130,8 @@ public class JointAccount {
      * 
      * @param name The user's name.
      * @return true if they are an user
+     * 
+     * @since 2.0
      */
     protected boolean isAbsolueUser(String name){
         return users.contains(name);
@@ -125,6 +141,8 @@ public class JointAccount {
      * Adds a user as an user.
      * 
      * @param name The user's name.
+     * 
+     * @since 2.0
      */
     protected void addUser(String name){
         if(!users.contains(name)){
@@ -136,6 +154,8 @@ public class JointAccount {
      * Removes user as an user.
      * 
      * @param name The user's name.
+     * 
+     * @since 2.0
      */
     protected void removeUser(String name){
         if(users.contains(name)){
@@ -147,6 +167,8 @@ public class JointAccount {
      * Gets the account's users
      * 
      * @return the users
+     * 
+     * @since 2.0
      */
     protected String getUsers(){
         synchronized(users){
@@ -168,6 +190,8 @@ public class JointAccount {
      * Gets the account's balance
      * 
      * @return balance
+     * 
+     * @since 2.0
      */
     protected double getBalance(){
         return balance;
@@ -177,6 +201,8 @@ public class JointAccount {
      * Sets the accounts balance
      * 
      * @param bal
+     * 
+     * @since 2.0
      */
     protected void setBalance(double bal){
         balance = bal;
@@ -186,6 +212,8 @@ public class JointAccount {
      * Gets the max user withdraw
      * 
      * @return muw
+     * 
+     * @since 2.0
      */
     protected double getMaxUserWithdraw(){
         return muw;
@@ -195,28 +223,62 @@ public class JointAccount {
      * Sets the max user withdraw
      * 
      * @param max
+     * 
+     * @since 2.0
      */
     protected void setMaxUserWithdraw(double max){
         this.muw = max;
     }
     
     /**
+     * Adds a user to the withdraw delay list
      * 
      * @param username
      * @param amount
+     * 
+     * @since 2.0
      */
     protected void addJUWD(String username, double amount){
         juwd.put(username, amount);
     }
     
+    protected String getJUWDMap(){
+        StringBuilder sb = new StringBuilder();
+        if(!juwd.isEmpty()){
+            synchronized(juwd){
+                for(String key : juwd.keySet()){
+                    sb.append(key);
+                    sb.append(":");
+                    sb.append(String.valueOf(juwd.get(key)));
+                    sb.append(",");
+                }
+            }
+        }
+        else{
+            sb.append(":,");
+        }
+        return sb.toString();
+    }
+    
     /**
      * Cancels the JointWithdrawDelay timer
+     * 
+     * @since 2.0
      */
     protected void cancelDelay(){
         juwdt.cancel();
         juwdt.purge();
     }
     
+    /**
+     * Checks if a user can withdraw
+     * 
+     * @param username
+     * @param amount
+     * @return true if user can
+     * 
+     * @since 2.0
+     */
     protected boolean canWithdraw(String username, double amount){
         if(amount > muw){
             return false;
@@ -233,11 +295,20 @@ public class JointAccount {
      * Gets the Joint Withdraw delay
      * 
      * @return delay
+     * 
+     * @since 2.0
      */
     protected int getDelay(){
         return delay;
     }
     
+    /**
+     * Sets the Joint Account withdraw delay
+     * 
+     * @param delay
+     * 
+     * @since 2.0
+     */
     protected void setDelay(int delay){
         this.delay = delay;
         juwdt.cancel();
@@ -251,6 +322,8 @@ public class JointAccount {
      * Gets the reset time of the Joint Withdraw delay
      * 
      * @return reset
+     * 
+     * @since 2.0
      */
     protected long getReset(){
         return reset;

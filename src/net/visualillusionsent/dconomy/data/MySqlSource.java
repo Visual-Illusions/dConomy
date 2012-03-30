@@ -60,7 +60,7 @@ public class MySqlSource extends DataSource{
         String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` BIGINT(255) NOT NULL, PRIMARY KEY (`ID`))");
         String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
         
-        String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` BIGINT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` ;");
+        String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` BIGINT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` , ADD COLUMN `JointWithdrawDelayMap` TEXT NOT NULL  AFTER `DelayReset` ;");
         boolean toRet = true;
         try{
             conn = getSQLConn();
@@ -169,11 +169,11 @@ public class MySqlSource extends DataSource{
                             String[] users = rs.getString("Users").split(",");
                             double bal = rs.getDouble("Balance");
                             double max = rs.getDouble("UserMaxWithdraw");
-                            int delay = DCoProperties.getJointDelay();
-                            long reset = DCoProperties.getJointDelay();
-                            delay = rs.getInt("WithdrawDelay");
-                            reset = rs.getLong("DelayReset");
-                            JointAccount joint = new JointAccount(users, owners, bal, max, delay, reset);
+                            int delay = rs.getInt("WithdrawDelay");
+                            long reset = rs.getLong("DelayReset");
+                            String juwd = rs.getString("JointWithdrawDelayMap");
+                            
+                            JointAccount joint = new JointAccount(users, owners, bal, max, delay, reset, juwd);
                             jointmap.put(accname, joint);
                         }
                         catch(Exception e){
@@ -281,7 +281,7 @@ public class MySqlSource extends DataSource{
                     }
                 }
                 
-                ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ?, Users = ?, Balance = ?, UserMaxWithdraw = ?, WithdrawDelay = ?, DelayReset = ? WHERE Name = ?");
+                ps = conn.prepareStatement("UPDATE dConomyJoint SET Owners = ?, Users = ?, Balance = ?, UserMaxWithdraw = ?, WithdrawDelay = ?, DelayReset = ?, JointWithdrawDelayMap = ? WHERE Name = ?");
                 for(String up : update){
                     JointAccount joint = jointmap.get(up);
                     ps.setString(1, joint.getOwners());
@@ -290,13 +290,14 @@ public class MySqlSource extends DataSource{
                     ps.setDouble(4, joint.getMaxUserWithdraw());
                     ps.setInt(5, joint.getDelay());
                     ps.setLong(6, joint.getReset());
-                    ps.setString(7, up);
+                    ps.setString(7, joint.getJUWDMap());
+                    ps.setString(8, up);
                     ps.addBatch();
                 }
                 ps.executeBatch();
                 ps.close();
                 
-                ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw, WithdrawDelay, DelayReset)VALUES (?,?,?,?,?,?,?)");
+                ps = conn.prepareStatement("INSERT INTO dConomyJoint (Name, Owners, Users, Balance, UserMaxWithdraw, WithdrawDelay, DelayReset, JointWithdrawDelayMap) VALUES (?,?,?,?,?,?,?,?)");
                 for(String in : insert){
                     JointAccount joint = jointmap.get(in);
                     ps.setString(1, in);
@@ -306,6 +307,7 @@ public class MySqlSource extends DataSource{
                     ps.setDouble(5, joint.getMaxUserWithdraw());
                     ps.setInt(6, joint.getDelay());
                     ps.setLong(7, joint.getReset());
+                    ps.setString(8, joint.getJUWDMap());
                     ps.addBatch();
                 }
                 ps.executeBatch();
