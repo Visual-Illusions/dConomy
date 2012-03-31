@@ -103,18 +103,16 @@ public class dCoListener extends PluginListener{
         if(args[0].matches("money|joint|bank")){
             try{
                 if(args.length > 1){
-                    if(args[1].matches("add|remove|set|reset|create|delete|adduser|removeuser|addowner|removeowner|setdelay|setusermax|usermax")){
-                        User user = new User("SERVER", true, true, true, true, true, true, true);
-                        ActionResult res = CommandExecuter.execute(user, args);
-                        for(String message : res.getMess()){
-                            if(message != null){
-                                System.out.println(removeFormating(message));
-                            }
+                    User user = new User("SERVER", true, true, true, true, true, true, true);
+                    ActionResult res = CommandExecuter.execute(user, args);
+                    for(String message : res.getMess()){
+                        if(message != null){
+                            System.out.println(removeFormating(message));
                         }
                     }
                 }
                 else{
-                    System.out.println(removeFormating(ErrorMessages.E103.Mess(null)));
+                    System.out.println(removeFormating(ErrorMessages.E103.Mess(null, null)));
                 }
             }
             catch(Exception E){

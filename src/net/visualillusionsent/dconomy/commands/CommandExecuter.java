@@ -52,7 +52,7 @@ public class CommandExecuter {
             
             if(args[0].equalsIgnoreCase("money")){
                 if(!user.useMoney()){
-                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null, null)});
                     return defres;
                 }
                 
@@ -78,7 +78,7 @@ public class CommandExecuter {
             }
             else if(args[0].equalsIgnoreCase("bank")){
                 if(!user.useBank()){
-                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null, null)});
                     return defres;
                 }
                 
@@ -103,7 +103,7 @@ public class CommandExecuter {
             }
             else if(args[0].equalsIgnoreCase("joint")){
                 if(!user.useJoint()){
-                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null)});
+                    defres.setMess(new String[]{ErrorMessages.E101.Mess(null, null)});
                     return defres;
                 }
                 

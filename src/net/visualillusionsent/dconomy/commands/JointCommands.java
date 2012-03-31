@@ -34,15 +34,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             
@@ -52,11 +52,11 @@ public enum JointCommands {
                 deposit = Double.parseDouble(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (deposit < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             
@@ -82,19 +82,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             if(DCoProperties.getDS().isJointOwner(args[0], args[1])){
-                res.setMess(new String[]{prefix+ErrorMessages.E112.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E112.Mess(null, args[0])});
                 return res;
             }
             
@@ -119,19 +119,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             if(DCoProperties.getDS().isJointUser(args[0], args[1])){
-                res.setMess(new String[]{prefix+ErrorMessages.E111.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E111.Mess(null, args[0])});
                 return res;
             }
             
@@ -156,15 +156,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointUser(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             
@@ -187,19 +187,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.canCreate()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res; 
             }
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E106.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E106.Mess(null, args[0])});
                 return res;
             }
             if(!args[0].matches("[_a-zA-Z0-9\\-\\.]+")){
-                res.setMess(new String[]{prefix+ErrorMessages.E107.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E107.Mess(null, args[0])});
                 return res;
             }
             DCoProperties.getDS().createJointAccount(args[0], user.getName());
@@ -223,19 +223,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.canCreate()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res; 
             }
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             DCoProperties.getDS().deleteJointAccount(args[0]);
@@ -257,16 +257,20 @@ public enum JointCommands {
     DEPOSIT{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointUser(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             double deposit = 0;
@@ -274,16 +278,16 @@ public enum JointCommands {
                 deposit = Double.parseDouble(args[1]);
             }
             catch(NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (deposit < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             double newAcc = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) - deposit;
             if (newAcc < 0){ 
-                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null, null)});
                 return res;
             }
             double newBal = DCoProperties.getDS().getBalance(AccountType.JOINT, args[0]) + deposit;
@@ -350,13 +354,17 @@ public enum JointCommands {
     PAY{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
         
             if (!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             
@@ -365,12 +373,12 @@ public enum JointCommands {
             try{
                 change = Double.parseDouble(args[1]);
             }catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
         
             if (change < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
         
@@ -388,7 +396,7 @@ public enum JointCommands {
                             sendAT = AccountType.JOINT;
                         }
                         else{
-                            res.setMess(new String[]{prefix+(change > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(args[0]) : ErrorMessages.E109.Mess(args[0]))});
+                            res.setMess(new String[]{prefix+(change > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(null, null) : ErrorMessages.E109.Mess(args[0], null))});
                             return res;
                         }
                     }
@@ -401,7 +409,7 @@ public enum JointCommands {
             double deposit = balanceReceiver + change;
             
             if (deduct < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null, null)});
                 return res;
             }
           
@@ -445,15 +453,15 @@ public enum JointCommands {
             int rank = -1;
             ActionResult res = new ActionResult();
             if(!user.canRank()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null, args[0])});
                 return res;
             }
             
@@ -489,15 +497,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             double deduct = 0;
@@ -505,16 +513,16 @@ public enum JointCommands {
                 deduct = Double.parseDouble(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (deduct < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             double newbal = DCoProperties.getDS().getBalance(AccountType.JOINT, args[0]) - deduct;
             if(newbal < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.JOINT, args[0], newbal);
@@ -538,19 +546,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             if(!DCoProperties.getDS().isJointOwner(args[0], args[1])){
-                res.setMess(new String[]{prefix+ErrorMessages.E114.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E114.Mess(null, args[0])});
                 return res;
             }
             
@@ -575,19 +583,19 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             if(!DCoProperties.getDS().isAbsoluteJointUser(args[0], args[1])){
-                res.setMess(new String[]{prefix+ErrorMessages.E114.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E114.Mess(null, args[0])});
                 return res;
             }
             
@@ -612,15 +620,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null,null)});
                 return res;
             }
             if (!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.JOINT, args[0], 0);
@@ -644,15 +652,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null,null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null,null)});
                 return res;
             }
             if (!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             double balance = 0;
@@ -660,11 +668,11 @@ public enum JointCommands {
                 balance = Double.parseDouble(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (balance < 0.01 && balance != 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.JOINT, args[0], balance);
@@ -688,15 +696,15 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(args[0].equals("")){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             
@@ -705,11 +713,11 @@ public enum JointCommands {
                 delay = Integer.parseInt(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (delay < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             
@@ -734,26 +742,26 @@ public enum JointCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointOwner(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             double newamount = 0;
             try{
                 newamount = Double.parseDouble(args[1]);
             }catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (newamount < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             DCoProperties.getDS().setJointMaxUserWithdraw(args[0], newamount);
@@ -778,7 +786,7 @@ public enum JointCommands {
             ActionResult res = new ActionResult();
             
             if(!user.canRank()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             
@@ -839,16 +847,20 @@ public enum JointCommands {
     WITHDRAW{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E105.Mess(null, args[0])});
                 return res;
             }
             if(!user.isAdmin() && !DCoProperties.getDS().isJointUser(args[0], user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E108.Mess(null, args[0])});
                 return res;
             }
             double withdraw = 0;
@@ -856,23 +868,23 @@ public enum JointCommands {
                 withdraw = Double.parseDouble(args[1]);
             }
             catch(NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (withdraw < 0.01){ 
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if(DCoProperties.getDS().canWithdraw(user.getName(), args[0], withdraw)){
                 DCoProperties.getDS().addJUWD(args[0], user.getName(), withdraw);
             }
             else{
-                res.setMess(new String[]{prefix+(withdraw > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(args[0]) : ErrorMessages.E109.Mess(args[0]))});
+                res.setMess(new String[]{prefix+(withdraw > DCoProperties.getDS().getJointUserWithdrawMax(args[0]) ? ErrorMessages.E110.Mess(null, args[0]) : ErrorMessages.E109.Mess(null, args[0]))});
                 return res;
             }
             double newBank = DCoProperties.getDS().getBalance(AccountType.JOINT, args[0]) - withdraw;
             if (newBank < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E116.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E116.Mess(null, null)});
                 return res;
             }
             double newAcc = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()) + withdraw;

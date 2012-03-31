@@ -333,16 +333,18 @@ public class LoadMessages {
      * @param arg
      * @return message
      */
-    protected static final String parseError(String message, String arg){
+    protected static final String parseError(String message, String arg1, String arg2){
         message = message.replace("<m>", DCoProperties.getMoneyName());
-        if(arg != null){
-            message = message.replace("<p>", arg);
-            message = message.replace("<acc>", arg);
-            if(DCoProperties.getDS().AccountExists(AccountType.JOINT, arg)){
-                int x = (int)Math.floor((DCoProperties.getDS().getJointReset(arg) - System.currentTimeMillis()) / 1000);
+        if(arg1 != null){
+            message = message.replace("<p>", arg1);
+            if(DCoProperties.getDS().AccountExists(AccountType.JOINT, arg1)){
+                int x = (int)Math.floor((DCoProperties.getDS().getJointReset(arg1) - System.currentTimeMillis()) / 1000);
                 int xm = (int)Math.floor(x / (60));
                 message = message.replace("<xmin>", String.valueOf(xm));
             }
+        }
+        if(arg2 != null){
+            message = message.replace("<acc>", arg2);
         }
         return message;
     }

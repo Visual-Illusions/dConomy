@@ -28,7 +28,7 @@ public enum ErrorMessages {
     /**
      * Error104: AccountNotFound
      */
-    E104("\u00A7cCould not find account for <p>!"),
+    E104("\u00A7cCould not find <acc> for <p>!"),
     
     /**
      * Error105: JointAccountNotFound
@@ -120,7 +120,7 @@ public enum ErrorMessages {
      * @param arg
      * @return message
      */
-    public final String Mess(String arg){
-        return LoadMessages.parseError(mess, arg);
+    public final String Mess(String arg1, String arg2){
+        return LoadMessages.parseError(mess, arg1, arg2);
     }
 }

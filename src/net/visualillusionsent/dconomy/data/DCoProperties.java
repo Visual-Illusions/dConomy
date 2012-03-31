@@ -145,17 +145,6 @@ public class DCoProperties {
                     logger.warning("[dConomy] Disabling MySQL!");
                     mysql = false;
                 }
-                
-                if(mysql){
-                    try {
-                        Class.forName(driver);
-                    } 
-                    catch (ClassNotFoundException cnfe) {
-                        logger.warning("[dConomy] Unable to find driver class: " + driver);
-                        logger.warning("[dConomy] Disabling MySQL!");
-                        mysql = false;
-                    }
-                }
             }
             else{
                 try {
@@ -164,10 +153,21 @@ public class DCoProperties {
                     database = dcsql.getProperty("db");
                     username = dcsql.getProperty("user");
                     password = dcsql.getProperty("pass");
+                    driver = dcsql.getProperty("driver");
                     stream.close();
                 } 
                 catch (IOException ex) {
                     logger.warning("[dConomy] Unable to load MySQL Settings...");
+                    mysql = false;
+                }
+            }
+            if(mysql){
+                try {
+                    Class.forName(driver);
+                } 
+                catch (ClassNotFoundException cnfe) {
+                    logger.warning("[dConomy] Unable to find driver class: " + driver);
+                    logger.warning("[dConomy] Disabling MySQL!");
                     mysql = false;
                 }
             }

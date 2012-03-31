@@ -30,15 +30,15 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                 return res; 
             }
             double deposit = 0;
@@ -46,11 +46,11 @@ public enum MoneyCommands {
                 deposit = Double.parseDouble(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (deposit < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]) + deposit;
@@ -74,9 +74,12 @@ public enum MoneyCommands {
     AUTO{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!user.canForward()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             
@@ -111,7 +114,7 @@ public enum MoneyCommands {
             ActionResult res = new ActionResult();
             if(!args[0].equals("") && !DCoProperties.getAOC()){
                 if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                     return res; 
                 }
                 res.setMess(new String[]{prefix+AccountMessages.A203.Mess(args[0], "Account", DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]), -1)});
@@ -122,7 +125,7 @@ public enum MoneyCommands {
                 return res;
             }
             else{
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
         }
@@ -174,18 +177,22 @@ public enum MoneyCommands {
     PAY{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             
             if (args[0].equals(user.getName())){
-                res.setMess(new String[]{prefix+ErrorMessages.E118.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E118.Mess(args[0], null)});
                 return res;
             }
             
             if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                 return res;
             }
             
@@ -194,12 +201,12 @@ public enum MoneyCommands {
             try{
                 change = Double.parseDouble(args[1]);
             }catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             
             if (change < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             
@@ -234,7 +241,7 @@ public enum MoneyCommands {
             double deposit = balanceReceiver + change;
                 
             if (deduct < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E115.Mess(null, null)});
                 return res;
             }
               
@@ -294,13 +301,13 @@ public enum MoneyCommands {
             ActionResult res = new ActionResult();
             int rank = 1;
             if(!user.canRank()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             boolean self = true;
             if(!args[0].equals("")){
                 if(!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                     return res;
                 }
                 self = false;
@@ -346,11 +353,11 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             double deduct = 0;
@@ -358,16 +365,16 @@ public enum MoneyCommands {
                 deduct = Double.parseDouble(args[1]);
             }
             catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (deduct < 0.01){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]) - deduct;
             if(newbal < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], newbal);
@@ -391,11 +398,11 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                 return res;
             }
             double reset = DCoProperties.getInitialBalance();
@@ -420,26 +427,26 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.isAdmin()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             if(!argcheck(2, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                 return res;
             }
             double balance = 0;
             try{
                 balance = Double.parseDouble(args[1]);
             }catch (NumberFormatException nfe){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             if (balance < 0){
-                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
             DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], balance);
@@ -462,14 +469,17 @@ public enum MoneyCommands {
     SETAUTO{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
-            
+            if(user.getName().equals("SERVER")){
+                res.setMess(new String[]{"You cannot use that command from the console!"});
+                return res;
+            }
             if(!user.canForward()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             
             if(!argcheck(1, args)){
-                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
             
@@ -478,7 +488,7 @@ public enum MoneyCommands {
             if(!args[0].equalsIgnoreCase("OFF")){
                 if(!args[0].equalsIgnoreCase("Bank")){
                     if(!DCoProperties.getDS().AccountExists(AccountType.JOINT, args[0])){
-                        res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0])});
+                        res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
                         return res;
                     }
                     account = args[0];
@@ -520,7 +530,7 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!user.canRank()){
-                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null)});
+                res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
             int rank = 1, amount = 20;

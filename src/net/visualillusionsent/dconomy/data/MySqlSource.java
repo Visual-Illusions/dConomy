@@ -260,7 +260,6 @@ public class MySqlSource extends DataSource{
             insert.clear();
             exists.clear();
             synchronized(jointmap){
-                System.out.println("Joint");
                 ps = conn.prepareStatement("SELECT * FROM dConomyJoint");
                 rs = ps.executeQuery();
                 while (rs.next()){
