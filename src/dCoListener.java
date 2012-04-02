@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import net.visualillusionsent.dconomy.*;
 import net.visualillusionsent.dconomy.commands.CommandExecuter;
 import net.visualillusionsent.dconomy.data.DCoProperties;
+import net.visualillusionsent.dconomy.data.SaveCaller;
 import net.visualillusionsent.dconomy.messages.ErrorMessages;
 
 /**
@@ -86,6 +87,11 @@ public class dCoListener extends PluginListener{
             }
             return true;
         }
+        else if(args[0].equalsIgnoreCase("/#stop")){
+            if(player.isOp()){
+                new SaveCaller().run();
+            }
+        }
         return false;
     }
     
@@ -119,6 +125,9 @@ public class dCoListener extends PluginListener{
                 logger.log(Level.SEVERE, "[dConomy] An uncaught exception has occured!", E);
             }
             return true;
+        }
+        else if(args[0].equalsIgnoreCase("stop")){
+            new SaveCaller().run();
         }
         return false;
     }

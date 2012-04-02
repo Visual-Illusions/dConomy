@@ -57,7 +57,7 @@ public class dConomy extends Plugin{
         if(!CommandExecuter.isLatest()){
             logger.info("[dConomy] - There is an update available! Current = v" + CommandExecuter.currver);
         }
-        logger.info("dConomy v"+CommandExecuter.version+"Enabled!");
+        logger.info("dConomy v"+CommandExecuter.version+" RC1 Enabled!");
     }
     
     /**

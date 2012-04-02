@@ -107,7 +107,13 @@ public class CommandExecuter {
                     return defres;
                 }
                 
+                if(args.length < 2){
+                    defres.setMess(new String[]{ErrorMessages.E103.Mess(null, null)});
+                    return defres;
+                }
+                
                 boolean isBase = true;
+                
                 for(JointCommands cmd : JointCommands.values()){
                     if(args[1].toUpperCase().matches(cmd.name())){
                         isBase = false;

@@ -150,6 +150,7 @@ public class FlatFileSource extends DataSource{
             String[] accounts = jointdir.list();
             if(accounts != null){
                 for(String acc : accounts){
+                    if(acc.equals("JUWD.txt")) continue;
                     try{
                         Properties account = new Properties();
                         account.load(new FileInputStream(new File(jds+acc)));
@@ -176,12 +177,16 @@ public class FlatFileSource extends DataSource{
                     catch (NumberFormatException nfe){
                         logger.warning("Error reading file for JointAccount: "+acc);
                         continue;
-                    } 
+                    }
                     catch (FileNotFoundException fnfe) {
                         logger.warning("Error reading file for JointAccount: "+acc);
                         continue;
                     }
                     catch (IOException ioe) {
+                        logger.warning("Error reading file for JointAccount: "+acc);
+                        continue;
+                    }
+                    catch (NullPointerException npe){
                         logger.warning("Error reading file for JointAccount: "+acc);
                         continue;
                     }
