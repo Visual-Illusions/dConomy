@@ -74,9 +74,9 @@ public class dConomy extends Plugin{
             etc.getLoader().addListener(PluginLoader.Hook.SERVERCOMMAND, dcl, this, PluginListener.Priority.MEDIUM);
             etc.getLoader().addCustomListener(dcb);
             etc.getInstance().addCommand("/dConomy", "- displays information about dConomy");
-            etc.getInstance().addCommand("/money", "help (?) - display dConomy Money Help");
-            etc.getInstance().addCommand("/bank", "help (?) - display dConomy Bank Help");
-            etc.getInstance().addCommand("/joint","help (?) - display dConomy Joint Help");
+            etc.getInstance().addCommand("/money", "help - display dConomy Money Help");
+            etc.getInstance().addCommand("/bank", "help - display dConomy Bank Help");
+            etc.getInstance().addCommand("/joint","help - display dConomy Joint Help");
             logger.info("dConomy Initialized!");
             isLoaded = true;
         }

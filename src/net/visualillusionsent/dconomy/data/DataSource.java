@@ -73,6 +73,7 @@ public class DataSource {
             }
             if(breset > 0){
                 btemp = (long)(breset / 60 / 1000);
+                reseter.setProperty("BankTimerResetTo", String.valueOf((btemp * 60 * 1000)+System.currentTimeMillis()));
             }
         }
         
@@ -80,7 +81,7 @@ public class DataSource {
         stpe.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
         stpe.scheduleAtFixedRate(new SaveCaller(), 15L, 15L, TimeUnit.MINUTES);
         
-        if(btemp > 0){
+        if(btemp > 0 && DCoProperties.getBankDelay() > 0){
             stpe.scheduleAtFixedRate(new BankInterestCaller(), btemp, (long)DCoProperties.getBankDelay(), TimeUnit.MINUTES);
         }
     }
