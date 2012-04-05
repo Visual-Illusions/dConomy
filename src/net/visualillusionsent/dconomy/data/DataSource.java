@@ -287,7 +287,7 @@ public class DataSource {
      * @since   2.0
      */
     public void createJointAccount(String accname, String owner){
-        jointmap.put(accname, new JointAccount(null, new String[]{owner}, 0, DCoProperties.getJointMaxDraw(), DCoProperties.getJointDelay(), DCoProperties.getJointDelay(), ""));
+        jointmap.put(accname, new JointAccount(new String[]{""}, new String[]{owner}, 0, DCoProperties.getJointMaxDraw(), DCoProperties.getJointDelay(), DCoProperties.getJointDelay(), ""));
     }
     
     /**

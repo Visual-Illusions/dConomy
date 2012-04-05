@@ -115,18 +115,20 @@ public class DCoProperties {
         Properties dcsql = new Properties();
         
         if(!dCoMySQL.exists()){
+            logger.info("[dConomy] dCoMySQL.ini not found... Creating...");
             try {
-                BufferedWriter out = new BufferedWriter(new FileWriter(dCoPropsFile));
-                out.write("Driver=com.mysql.jdbc.Driver"); out.newLine();
-                out.write("Password=root"); out.newLine();
+                BufferedWriter out = new BufferedWriter(new FileWriter(dCoMySQL));
                 out.write("DataBase=jdbc:mysql://localhost:3306/minecraft"); out.newLine();
                 out.write("UserName=root"); out.newLine();
+                out.write("Password=root"); out.newLine();
+                out.write("Driver=com.mysql.jdbc.Driver");
                 out.close();
+                logger.info("[dConomy] dCoMySQL.ini created!");
             } 
             catch (IOException e) {
                 logger.severe("[dConomy] Unable to create MySQL Properties File");
-                mysql = false;
             }
+            mysql = false;
         }
         
         if(mysql){
