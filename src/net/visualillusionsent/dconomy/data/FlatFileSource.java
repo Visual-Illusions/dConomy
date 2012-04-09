@@ -62,8 +62,24 @@ public class FlatFileSource extends DataSource{
         else{
             logger.info("[dConomy] File: 'dCBanks.txt' not found! Attempting to create...");
             try{
-                bankFile.createNewFile();
-                logger.info("[dConomy] File: 'dCBanks.txt' created!");
+                File oldBnkFile = new File(DCoProperties.getDir()+"dCBank.txt");
+                if(oldBnkFile.exists()){
+                    logger.info("[dConomy] File: 'dCBank.txt' found! Attempting to rename to 'dCBanks.txt'...");
+                    if(!oldBnkFile.renameTo(bankFile)){
+                        logger.info("[dConomy] Failed to rename 'dCBank.txt' to 'dCBanks.txt'...");
+                    }
+                    else{
+                        logger.info("[dConomy] Attempting to load Bank Accounts...");
+                        if(!loadBanks()){
+                            return false;
+                        }
+                        logger.info("[dConomy] Bank Accounts loaded!");
+                    }
+                }
+                else{
+                    bankFile.createNewFile();
+                    logger.info("[dConomy] File: 'dCBanks.txt' created!");
+                }
             } 
             catch(IOException ioe){
                 logger.severe("Failed to create File: dCBanks.txt... dConomy will now be disabled...");
@@ -103,6 +119,7 @@ public class FlatFileSource extends DataSource{
                         continue;
                     }
                 }
+                in.close();
             }
             catch(IOException ioe){
                 logger.log(Level.SEVERE, "Error reading File: dCAccounts.txt", ioe);
@@ -118,7 +135,7 @@ public class FlatFileSource extends DataSource{
             try{
                 BufferedReader in = new BufferedReader(new FileReader(bankFile));
                 String line;
-                String[] acc = new String[]{ "" };
+                String[] acc = new String[]{ "Unknown(null?)" };
                 while((line = in.readLine()) != null){
                     if(line.startsWith("#")) continue;
                     try{
@@ -135,6 +152,7 @@ public class FlatFileSource extends DataSource{
                         continue;
                     }
                 }
+                in.close();
             }
             catch(IOException ioe){
                 logger.log(Level.SEVERE, "Error reading File: dCBanks.txt", ioe);
@@ -197,7 +215,6 @@ public class FlatFileSource extends DataSource{
     
     public void saveMaps(){
         super.saveMaps();
-        FileOutputStream out;
         logger.info("[dConomy] Saving accounts...");
         synchronized(accmap){
             try{
@@ -205,8 +222,9 @@ public class FlatFileSource extends DataSource{
                 for(String acc : accmap.keySet()){
                     account.setProperty(acc, String.valueOf(accmap.get(acc)));
                 }
-                out = new FileOutputStream(accFile);
+                FileOutputStream out = new FileOutputStream(accFile);
                 account.store(out, null);
+                out.flush();
                 out.close();
             }
             catch (IOException ioe) {
@@ -215,12 +233,13 @@ public class FlatFileSource extends DataSource{
         }
         synchronized(bankmap){
             try{
-                Properties account = new Properties();
+                Properties bank = new Properties();
                 for(String acc : bankmap.keySet()){
-                    account.setProperty(acc, String.valueOf(accmap.get(acc)));
+                    bank.setProperty(acc, String.valueOf(bankmap.get(acc)));
                 }
-                out = new FileOutputStream(bankFile);
-                account.store(out, null);
+                FileOutputStream out = new FileOutputStream(bankFile);
+                bank.store(out, null);
+                out.flush();
                 out.close();
             }
             catch (IOException ioe) {
@@ -247,8 +266,10 @@ public class FlatFileSource extends DataSource{
                     account.setProperty("WithdrawDelay", delay);
                     account.setProperty("DelayReset", reset);
                     account.setProperty("JointWithdrawDelayMap", juwd);
-                    out = new FileOutputStream(bankFile);
+                    
+                    FileOutputStream out = new FileOutputStream(bankFile);
                     account.store(out, null);
+                    out.flush();
                     out.close();
                 }
                 catch (IOException ioe) {
