@@ -19,8 +19,8 @@ import net.visualillusionsent.dconomy.messages.ErrorMessages;
 public class CommandExecuter {
     private static ActionResult defres = new ActionResult();
     public static final String name = "dConomy";
-    public static final float version = 2.0F;
-    public static float currver = version;
+    public static final String version = "2.0_1";
+    public static String currver = version;
     
     /**
      * dConomy Command execution handler.
@@ -157,10 +157,10 @@ public class CommandExecuter {
             BufferedReader in = new BufferedReader(new InputStreamReader(new URL("http://visualillusionsent.net/cmod_plugins/versions.php?plugin="+name).openStream()));
             String inputLine;
             if ((inputLine = in.readLine()) != null) {
-                currver = Float.valueOf(inputLine);
+                currver = inputLine;
             }
             in.close();
-            return version >= currver;
+            return Float.valueOf(version.replace("_", "")) >= Float.valueOf(currver.replace("_", ""));
         } 
         catch (Exception E) { }
         return true;

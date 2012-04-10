@@ -225,19 +225,19 @@ public class dCBalance implements PluginInterface{
                 if(pacc.equals("Account")){
                     if (ds.AccountExists(ACC, pname)){
                         newBal = ds.getBalance(ACC, pname) + amount;
-                        ds.setBalance(ACC, pname, amount);
+                        ds.setBalance(ACC, pname, newBal);
                     }
                 }
                 else if(pacc.equals("Bank")){
                     if(ds.AccountExists(BAK, pname)){
                         newBal = ds.getBalance(BAK, pname) + amount;
-                        ds.setBalance(BAK, pname, amount);
+                        ds.setBalance(BAK, pname, newBal);
                     }
                 }
                 else if(ds.AccountExists(JON, pacc)){
                     if(ds.isJointUser(pacc, pname)){
                         newBal = ds.getBalance(JON, pacc) + amount;
-                        ds.setBalance(JON, pacc, amount);
+                        ds.setBalance(JON, pacc, newBal);
                     }
                 }
             }
@@ -256,14 +256,14 @@ public class dCBalance implements PluginInterface{
                     if (ds.AccountExists(ACC, pname)){
                         newBal = ds.getBalance(ACC, pname) - amount;
                         newBal = (newBal >= 0 ? newBal : 0);
-                        ds.setBalance(ACC, pname, amount);
+                        ds.setBalance(ACC, pname, newBal);
                     }
                 }
                 else if(pacc.equals("Bank")){
                     if(ds.AccountExists(BAK, pname)){
                         newBal = ds.getBalance(BAK, pname) - amount;
                         newBal = (newBal >= 0 ? newBal : 0);
-                        ds.setBalance(BAK, pname, amount);
+                        ds.setBalance(BAK, pname, newBal);
                     }
                 }
                 else if(ds.AccountExists(JON, pacc)){
@@ -279,7 +279,7 @@ public class dCBalance implements PluginInterface{
                         else{
                             newBal = ds.getBalance(JON, pacc) - amount;
                             newBal = (newBal >= 0 ? newBal : 0);
-                            ds.setBalance(JON, pacc, amount);
+                            ds.setBalance(JON, pacc, newBal);
                         }
                     }
                 }

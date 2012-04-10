@@ -40,12 +40,17 @@ public class JointAccount {
                 if(tempreset <= 0){
                     tempreset = this.delay;
                 }
-                else{
-                   String[] juwdsplit = juwd.split(",");
-                   for(String juwds : juwdsplit){
-                       String[] juwdss = juwds.split(":");
-                       this.juwd.put(juwdss[0], Double.valueOf(juwdss[1]));
-                   }
+                else if (juwd != null){
+                    try{
+                        String[] juwdsplit = juwd.split(",");
+                        for(String juwds : juwdsplit){
+                            String[] juwdss = juwds.split(":");
+                            this.juwd.put(juwdss[0], Double.valueOf(juwdss[1]));
+                        }
+                    }
+                    catch(ArrayIndexOutOfBoundsException AIOOBE){
+                        //Skip it all
+                    }
                 }
                 juwdt.scheduleAtFixedRate(new Reset(), tempreset, tempdelay);
             }
