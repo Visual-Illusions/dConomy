@@ -222,13 +222,13 @@ public class dCBalance implements PluginInterface{
                 if(ds.isPayForwarding(pname)){
                     pacc = ds.getPayForwardingAcc(pname);
                 }
-                if(pacc.equals("Account")){
+                if(pacc.equalsIgnoreCase("Account")){
                     if (ds.AccountExists(ACC, pname)){
                         newBal = ds.getBalance(ACC, pname) + amount;
                         ds.setBalance(ACC, pname, newBal);
                     }
                 }
-                else if(pacc.equals("Bank")){
+                else if(pacc.equalsIgnoreCase("Bank")){
                     if(ds.AccountExists(BAK, pname)){
                         newBal = ds.getBalance(BAK, pname) + amount;
                         ds.setBalance(BAK, pname, newBal);
@@ -252,14 +252,14 @@ public class dCBalance implements PluginInterface{
                 if(ds.isPayForwarding(pname)){
                     pacc = ds.getPayForwardingAcc(pname);
                 }
-                if(pacc.equals("Account")){
+                if(pacc.equalsIgnoreCase("Account")){
                     if (ds.AccountExists(ACC, pname)){
                         newBal = ds.getBalance(ACC, pname) - amount;
                         newBal = (newBal >= 0 ? newBal : 0);
                         ds.setBalance(ACC, pname, newBal);
                     }
                 }
-                else if(pacc.equals("Bank")){
+                else if(pacc.equalsIgnoreCase("Bank")){
                     if(ds.AccountExists(BAK, pname)){
                         newBal = ds.getBalance(BAK, pname) - amount;
                         newBal = (newBal >= 0 ? newBal : 0);
@@ -268,9 +268,9 @@ public class dCBalance implements PluginInterface{
                 }
                 else if(ds.AccountExists(JON, pacc)){
                     if(ds.isJointUser(pacc, pname)){
-                        if(!DCoProperties.getDS().isJointOwner(pacc, pname)){
-                            if(DCoProperties.getDS().canWithdraw(pname, pacc, amount)){
-                                DCoProperties.getDS().addJUWD(pname, pacc, amount);
+                        if(!ds.isJointOwner(pacc, pname)){
+                            if(ds.canWithdraw(pname, pacc, amount)){
+                                ds.addJUWD(pname, pacc, amount);
                                 newBal = ds.getBalance(JON, pacc) - amount;
                                 newBal = (newBal >= 0 ? newBal : 0);
                                 ds.setBalance(JON, pacc, newBal);

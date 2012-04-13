@@ -227,8 +227,8 @@ public class MySqlSource extends DataSource{
                     exists.add(rs.getString("Player"));
                 }
                 
-                for(String ex : exists){
-                    if(accmap.containsKey(ex) && bankmap.containsKey(ex)){
+                for(String ex : accmap.keySet()){
+                    if(exists.contains(ex)){
                         update.add(ex);
                     }
                     else{

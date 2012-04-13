@@ -19,7 +19,7 @@ import net.visualillusionsent.dconomy.messages.ErrorMessages;
 public class CommandExecuter {
     private static ActionResult defres = new ActionResult();
     public static final String name = "dConomy";
-    public static final String version = "2.0_1";
+    public static final String version = "2.0_2";
     public static String currver = version;
     
     /**
