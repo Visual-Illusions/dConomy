@@ -147,14 +147,14 @@ public class CommandExecuter {
                 if(args.length > 1 && args[1].equals("update") && user.isAdmin()){
                     if(!vc.isLatest() || (args.length > 2 && args[2].equals("force"))){
                        defres.setMess(new String[]{ "\u00A72[\u00A7fdCo\u00A72]\u00A7f "+update.performUpdate() });
+                       return defres;
                     }
                     else{
                         defres.setMess(new String[]{ "\u00A72[\u00A7fdCo\u00A72]\u00A7c Already is latest version... (use '/dConomy update force' to force an update)" });
+                        return defres;
                     }
                 }
-                else{
-                    defres.setMess(new String[]{"§2dConomy v§6"+version+"§2 By: §aDarkDiplomat", user.isAdmin() ? (vc.isLatest() ? null : "§cAn update is avalible: §ev"+vc.getCurrentVersion()) : null });
-                }
+                defres.setMess(new String[]{"§2dConomy v§6"+version+"§2 By: §aDarkDiplomat", user.isAdmin() ? (vc.isLatest() ? null : "§cAn update is avalible: §ev"+vc.getCurrentVersion()) : null });
             }
         }
         catch(IllegalArgumentException IAE){
