@@ -40,16 +40,17 @@ public class DataSource {
     
     private ScheduledThreadPoolExecutor stpe;
     Properties reseter = new Properties();
-    private final File resetFile = new File("plugins/config/dConomy/dCTimerReser.DONOTEDIT");
+    private final File resetFile = new File("plugins/config/dConomy/dCTimerReset.DONOTEDIT");
     
     /**
      * Sets up Saving and Bank Interest
      * 
      * @since 2.0
      */
-    void Scheduler(){
-        long btemp = 0;
-        if(DCoProperties.getBankDelay() > 0){
+    void BankInterestScheduler(){
+        logger.info("[dConomy] Setting up Bank Interest Payouts...");
+        long btemp = DCoProperties.getBankDelay();
+        if(btemp > 0){
             if(resetFile.exists()){
                 try {
                     FileInputStream in = new FileInputStream(resetFile);
@@ -60,28 +61,28 @@ public class DataSource {
                 if(reseter.containsKey("BankTimerResetTo")){
                     breset = Long.valueOf(reseter.getProperty("BankTimerResetTo")) - System.currentTimeMillis();
                 }
-                else{
-                    breset = DCoProperties.getBankDelay();
-                }
             }
             else{
                 try {
                     resetFile.createNewFile();
                 }
                 catch (IOException e) { }
-                breset = DCoProperties.getBankDelay();
             }
             if(breset > 0){
                 btemp = (long)(breset / 60 / 1000);
+                if(btemp < 1){
+                    btemp = DCoProperties.getBankDelay();
+                }
                 reseter.setProperty("BankTimerResetTo", String.valueOf((btemp * 60 * 1000)+System.currentTimeMillis()));
             }
+            
         }
         
         stpe = new ScheduledThreadPoolExecutor(1);
         stpe.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
         stpe.scheduleAtFixedRate(new SaveCaller(), 15L, 15L, TimeUnit.MINUTES);
         
-        if(btemp > 0 && DCoProperties.getBankDelay() > 0){
+        if(btemp > 0){
             stpe.scheduleAtFixedRate(new BankInterestCaller(), btemp, (long)DCoProperties.getBankDelay(), TimeUnit.MINUTES);
         }
     }
@@ -112,6 +113,7 @@ public class DataSource {
             in.close();
         } 
         catch (IOException e) { }
+        
         return true;
     }
     

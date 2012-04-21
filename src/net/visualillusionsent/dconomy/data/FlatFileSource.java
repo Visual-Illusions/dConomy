@@ -93,7 +93,7 @@ public class FlatFileSource extends DataSource{
             logger.severe("Failed to create Directory: dConomy/JointAccounts/... dConomy will now be disabled...");
             return false;
         }
-        Scheduler();
+        BankInterestScheduler();
         return true;
     }
     

@@ -51,13 +51,13 @@ public class MySqlSource extends DataSource{
         if(!loadJointAccounts()){
             return false;
         }
-        Scheduler();
+        BankInterestScheduler();
         return true;
     }
     
     private boolean CreateTable(){
         String table1 = ("CREATE TABLE IF NOT EXISTS `dConomy` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Player` varchar(16) NOT NULL, `Account` DECIMAL(64,2) NOT NULL, `Bank` DECIMAL(64,2) NOT NULL, PRIMARY KEY (`ID`))");
-        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` BIGINT(255) NOT NULL, PRIMARY KEY (`ID`))");
+        String table2 = ("CREATE TABLE IF NOT EXISTS `dConomyJoint` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Name` varchar(32) NOT NULL, `Owners` text NOT NULL, `Users` text NOT NULL, `Balance` DECIMAL(64,2) NOT NULL, `UserMaxWithdraw` DECIMAL(64,2) NOT NULL, `WithdrawDelay` INT(255) NOT NULL, `DelayReset` BIGINT(255) NOT NULL, `JointWithdrawDelayMap` TEXT NOT NULL, PRIMARY KEY (`ID`))");
         String table3 = ("CREATE TABLE IF NOT EXISTS `dConomyLog` (`ID` INT(255) NOT NULL AUTO_INCREMENT, `Date` varchar(32) NOT NULL, `Time` varchar(32) NOT NULL, `Transaction` Text NOT NULL, PRIMARY KEY (`ID`))");
         
         String update1 = ("ALTER TABLE `dConomyJoint` ADD COLUMN `WithdrawDelay` INT(255) NOT NULL DEFAULT 30  AFTER `UserMaxWithdraw` , ADD COLUMN `DelayReset` BIGINT(255) NOT NULL DEFAULT -1  AFTER `WithdrawDelay` , ADD COLUMN `JointWithdrawDelayMap` TEXT NOT NULL  AFTER `DelayReset` ;");

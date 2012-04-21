@@ -46,6 +46,7 @@ public class dConomy extends Plugin{
             etc.getInstance().removeCommand("/dConomy");
             DCoProperties.getDS().terminateThreads();
             DCoProperties.getDS().saveMaps();
+            etc.getLoader().removeCustomListener("dCBalance");
         }
         logger.info("dConomy disabled...");
     }
@@ -55,7 +56,7 @@ public class dConomy extends Plugin{
      */
     public void enable() {
         if(!CommandExecuter.isLatest()){
-            logger.info("[dConomy] - There is an update available! Current = v" + CommandExecuter.currver);
+            logger.info("[dConomy] - There is an update available! Current = v" + CommandExecuter.CurrVer());
         }
         logger.info("dConomy v"+CommandExecuter.version+" Enabled!");
     }

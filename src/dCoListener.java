@@ -59,7 +59,7 @@ public class dCoListener extends PluginListener{
      * @see     User
      */
     public boolean onCommand(Player player, String[] args){
-        if(args[0].matches("/money|/joint|/bank")){
+        if(args[0].matches("/money|/joint|/bank|/dConomy")){
             try{
                 User user = new User(player.getName(), can(player, "/money"), can(player, "/bank"), can(player, "/joint"),
                                  can(player, "/dcrank"), can(player, "/dccreate"), can(player, "/dcauto"), can(player, "/dcadmin"));

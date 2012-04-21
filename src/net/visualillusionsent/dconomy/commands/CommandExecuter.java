@@ -1,12 +1,12 @@
 package net.visualillusionsent.dconomy.commands;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.util.logging.Logger;
 
 import net.visualillusionsent.dconomy.ActionResult;
 import net.visualillusionsent.dconomy.User;
 import net.visualillusionsent.dconomy.messages.ErrorMessages;
+import net.visualillusionsent.viutils.Updater;
+import net.visualillusionsent.viutils.VersionCheck;
 
 /**
  * dConomy command handling class
@@ -18,9 +18,13 @@ import net.visualillusionsent.dconomy.messages.ErrorMessages;
  */
 public class CommandExecuter {
     private static ActionResult defres = new ActionResult();
-    public static final String name = "dConomy";
-    public static final String version = "2.0_2";
-    public static String currver = version;
+    private static final String name        = "dConomy";
+    public static final String version     = "2.1";
+    private static final String checkurl    = "http://visualillusionsent.net/cmod_plugins/versions.php?plugin="+name;
+    private static final String downurl     = "http://dl.canarymod.net/plugins/get.php?c=e&id=11";
+    private static final String jarloc      = "plugins/dConomy.jar";
+    private static VersionCheck vc = new VersionCheck(version, checkurl);
+    private static final Updater update = new Updater(downurl, jarloc, name, Logger.getLogger("Minecraft"));
     
     /**
      * dConomy Command execution handler.
@@ -139,6 +143,19 @@ public class CommandExecuter {
                 
                 return theCommand.execute(user, newArgs);
             }
+            else if(args[0].equals("dConomy")){
+                if(args.length > 1 && args[1].equals("update") && user.isAdmin()){
+                    if(!vc.isLatest() || (args.length > 2 && args[2].equals("force"))){
+                       defres.setMess(new String[]{ "\u00A72[\u00A7fdCo\u00A72]\u00A7f "+update.performUpdate() });
+                    }
+                    else{
+                        defres.setMess(new String[]{ "\u00A72[\u00A7fdCo\u00A72]\u00A7c Already is latest version... (use '/dConomy update force' to force an update)" });
+                    }
+                }
+                else{
+                    defres.setMess(new String[]{"§2dConomy v§6"+version+"§2 By: §aDarkDiplomat", user.isAdmin() ? (vc.isLatest() ? null : "§cAn update is avalible: §ev"+vc.getCurrentVersion()) : null });
+                }
+            }
         }
         catch(IllegalArgumentException IAE){
            defres.setMess(new String[]{"\u00A72[\u00A7fdCo\u00A72]\u00A7f Invaild dConomy Command!"});
@@ -146,23 +163,11 @@ public class CommandExecuter {
         return defres;
     }
     
-    /**
-     * Checks is dConomy is the latest version
-     * 
-     * @return true if it is
-     * @since   2.0
-     */
-    public static final boolean isLatest(){
-        try{
-            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("http://visualillusionsent.net/cmod_plugins/versions.php?plugin="+name).openStream()));
-            String inputLine;
-            if ((inputLine = in.readLine()) != null) {
-                currver = inputLine;
-            }
-            in.close();
-            return Float.valueOf(version.replace("_", "")) >= Float.valueOf(currver.replace("_", ""));
-        } 
-        catch (Exception E) { }
-        return true;
+    public static boolean isLatest(){
+        return vc.isLatest();
+    }
+    
+    public static String CurrVer(){
+        return vc.getCurrentVersion();
     }
 }
