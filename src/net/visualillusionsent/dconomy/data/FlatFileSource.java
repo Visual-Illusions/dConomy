@@ -28,7 +28,6 @@ public class FlatFileSource extends DataSource{
     private File accFile = new File(DCoProperties.getDir()+"dCAccounts.txt");
     private File bankFile = new File(DCoProperties.getDir()+"dCBanks.txt");
     private File jointdir = new File(jds);
-   
     
     FlatFileSource(){ }
     
@@ -171,7 +170,8 @@ public class FlatFileSource extends DataSource{
                     if(acc.equals("JUWD.txt")) continue;
                     try{
                         Properties account = new Properties();
-                        account.load(new FileInputStream(new File(jds+acc)));
+                        File accfile = new File(jds+acc);
+                        account.load(new FileInputStream(accfile));
                         String name = acc;
                         String[] owners = account.getProperty("owners").split(",");
                         String[] users = account.getProperty("users").split(",");
@@ -187,25 +187,25 @@ public class FlatFileSource extends DataSource{
                             reset = Long.parseLong(account.getProperty("DelayReset"));
                         }
                         if(account.containsKey("JointWithdrawDelayMap")){
-                            juwd = account.getProperty("JointWithdrawDelayMap");
+                            juwd = account.getProperty("JointWithdrawDelayMap").replace("\\", "");
                         }
                         JointAccount joint = new JointAccount(users, owners, balance, muw, delay, reset, juwd);
                         jointmap.put(name, joint);
                     }
                     catch (NumberFormatException nfe){
-                        logger.warning("Error reading file for JointAccount: "+acc);
+                        logger.warning("Error reading file for JointAccount: "+acc+" (NumberFormatException)");
                         continue;
                     }
                     catch (FileNotFoundException fnfe) {
-                        logger.warning("Error reading file for JointAccount: "+acc);
+                        logger.warning("Error reading file for JointAccount: "+acc+" (FileNotFoundException)");
                         continue;
                     }
                     catch (IOException ioe) {
-                        logger.warning("Error reading file for JointAccount: "+acc);
+                        logger.warning("Error reading file for JointAccount: "+acc+" (IOException)");
                         continue;
                     }
                     catch (NullPointerException npe){
-                        logger.warning("Error reading file for JointAccount: "+acc);
+                        logger.warning("Error reading file for JointAccount: "+acc+" (NullPointerException)");
                         continue;
                     }
                 }
@@ -267,13 +267,13 @@ public class FlatFileSource extends DataSource{
                     account.setProperty("DelayReset", reset);
                     account.setProperty("JointWithdrawDelayMap", juwd);
                     
-                    FileOutputStream out = new FileOutputStream(bankFile);
+                    FileOutputStream out = new FileOutputStream(new File(jds+acc+".dcj"));
                     account.store(out, null);
                     out.flush();
                     out.close();
                 }
                 catch (IOException ioe) {
-                    logger.warning("Error saving to Joint Account File: "+acc+".txt");
+                    logger.warning("Error saving to Joint Account File: "+acc+".dcj");
                 }
             }
         }

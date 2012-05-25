@@ -19,7 +19,7 @@ import net.visualillusionsent.viutils.VersionCheck;
 public class CommandExecuter {
     private static ActionResult defres = new ActionResult();
     private static final String name        = "dConomy";
-    public static final String version     = "2.1";
+    public static final String version     = "2.1_1";
     private static final String checkurl    = "http://visualillusionsent.net/cmod_plugins/versions.php?plugin="+name;
     private static final String downurl     = "http://dl.canarymod.net/plugins/get.php?c=e&id=11";
     private static final String jarloc      = "plugins/dConomy.jar";
