@@ -29,19 +29,26 @@ public enum MoneyCommands {
     ADD{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            
             if(!user.isAdmin()){
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
+            
             if(!argcheck(2, args)){
                 res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+            
+            String theUser = match(user.getMisc(), args[0]);
+            
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                 return res; 
             }
+            
             double deposit = 0;
+            
             try{
                 deposit = Double.parseDouble(args[1]);
             }
@@ -49,14 +56,18 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
+            
             if (deposit < 0.01){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
-            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]) + deposit;
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], newbal);
-            res.setMess(new String[]{prefix+AdminMessages.A304.Mess(args[0], "Account", deposit)});
-            log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
+            
+            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, theUser) + deposit;
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, theUser, newbal);
+            
+            res.setMess(new String[]{prefix+AdminMessages.A304.Mess(theUser, "Account", deposit)});
+            log(LoggingMessages.L623.Mess(user.getName(), theUser, newbal, null));
+            
             return res;
         } 
     },
@@ -74,10 +85,12 @@ public enum MoneyCommands {
     AUTO{
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
+            
             if(user.getName().equals("SERVER")){
                 res.setMess(new String[]{"You cannot use that command from the console!"});
                 return res;
             }
+            
             if(!user.canForward()){
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
@@ -87,7 +100,8 @@ public enum MoneyCommands {
                 String account = DCoProperties.getDS().getPayForwardingAcc(user.getName());
                 if (account.equals("Bank")){
                     res.setMess(new String[]{prefix+AccountMessages.A219.Mess(null, null, 0, -1)});
-                }else{
+                }
+                else{
                     res.setMess(new String[]{prefix+AccountMessages.A220.Mess(null, account, 0, -1)});
                 }
             }
@@ -113,14 +127,20 @@ public enum MoneyCommands {
         public ActionResult execute(User user, String[] args){
             ActionResult res = new ActionResult();
             if(!args[0].equals("") && !DCoProperties.getAOC()){
-                if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+                String theUser = match(user.getMisc(), args[0]);
+                if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                     return res; 
                 }
-                res.setMess(new String[]{prefix+AccountMessages.A203.Mess(args[0], "Account", DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]), -1)});
+                
+                res.setMess(new String[]{prefix+AccountMessages.A203.Mess(theUser, "Account", DCoProperties.getDS().getBalance(AccountType.ACCOUNT, theUser), -1)});
                 return res;
             }
             else if(!user.getName().equals("SERVER")){
+                if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, user.getName())){
+                    DCoProperties.getDS().setInitialBalance(AccountType.ACCOUNT, user.getName());
+                }
+                
                 res.setMess(new String[]{prefix+AccountMessages.A201.Mess(null, "Account", DCoProperties.getDS().getBalance(AccountType.ACCOUNT, user.getName()), -1)});
                 return res;
             }
@@ -181,6 +201,7 @@ public enum MoneyCommands {
                 res.setMess(new String[]{"You cannot use that command from the console!"});
                 return res;
             }
+            
             if(!argcheck(2, args)){
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
@@ -191,8 +212,10 @@ public enum MoneyCommands {
                 return res;
             }
             
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+            String theUser = match(user.getMisc(), args[0]);
+            
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                 return res;
             }
             
@@ -211,7 +234,8 @@ public enum MoneyCommands {
             }
             
             AccountType sendAT = AccountType.ACCOUNT, recAT = AccountType.ACCOUNT;
-            String sendAcc = user.getName(), recAcc = args[0];
+            String sendAcc = user.getName(), recAcc = theUser;
+            
             if (DCoProperties.getDS().isPayForwarding(user.getName()) && user.canForward()){
                 sendAcc = DCoProperties.getDS().getPayForwardingAcc(user.getName());
                 if(sendAcc.matches("Bank")){
@@ -225,12 +249,13 @@ public enum MoneyCommands {
                 }
             }
             
-            if (DCoProperties.getDS().isPayForwarding(args[0])){
-                recAcc = DCoProperties.getDS().getPayForwardingAcc(args[0]);
+            if (DCoProperties.getDS().isPayForwarding(theUser)){
+                recAcc = DCoProperties.getDS().getPayForwardingAcc(theUser);
+               
                 if(recAcc.equals("Bank")){
                     recAT = AccountType.BANK;
                 }
-                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, recAcc) && DCoProperties.getDS().isJointUser(recAcc, args[0])){
+                else if(DCoProperties.getDS().AccountExists(AccountType.JOINT, recAcc) && DCoProperties.getDS().isJointUser(recAcc, theUser)){
                     sendAT = AccountType.JOINT;
                 }
             }
@@ -248,39 +273,43 @@ public enum MoneyCommands {
             DCoProperties.getDS().setBalance(sendAT, sendAcc, deduct);
             DCoProperties.getDS().setBalance(recAT, recAcc, deposit);
             
-            if(sendAT.equals(AccountType.ACCOUNT)){
-                res.setMess(new String[]{prefix+AccountMessages.A208.Mess(args[0], null, change, -1),
-                                         prefix+AccountMessages.A202.Mess(null, "Account", deduct, -1)});
-                log(LoggingMessages.L601.Mess(user.getName(), args[0], change, null));
-            }
-            else if(sendAT.equals(AccountType.BANK)){
-                res.setMess(new String[]{prefix+AccountMessages.A208.Mess(args[0], null, change, -1),
-                                         prefix+AccountMessages.A210.Mess(null, "Bank", change, -1),
-                                         prefix+AccountMessages.A202.Mess(null, "Bank", deduct, -1)});
-                log(LoggingMessages.L609.Mess(user.getName(), args[0], change, null));
-            }
-            else{
-                res.setMess(new String[]{prefix+AccountMessages.A208.Mess(args[0], null, change, -1),
-                                         prefix+AccountMessages.A211.Mess(null, sendAcc, change, -1),
-                                         prefix+AccountMessages.A235.Mess(null, sendAcc, deduct, -1)});
-                log(LoggingMessages.L610.Mess(user.getName(), args[0], change, sendAcc));
+            switch(sendAT){
+                case ACCOUNT:
+                    res.setMess(new String[]{prefix+AccountMessages.A208.Mess(theUser, null, change, -1),
+                                             prefix+AccountMessages.A202.Mess(null, "Account", deduct, -1)});
+                    log(LoggingMessages.L601.Mess(user.getName(), theUser, change, null));
+                    break;
+                
+                case BANK:
+                    res.setMess(new String[]{prefix+AccountMessages.A208.Mess(theUser, null, change, -1),
+                                             prefix+AccountMessages.A210.Mess(null, "Bank", change, -1),
+                                             prefix+AccountMessages.A202.Mess(null, "Bank", deduct, -1)});
+                    log(LoggingMessages.L609.Mess(user.getName(), theUser, change, null));
+                    break;
+                case JOINT:
+                    res.setMess(new String[]{prefix+AccountMessages.A208.Mess(theUser, null, change, -1),
+                                             prefix+AccountMessages.A211.Mess(null, sendAcc, change, -1),
+                                             prefix+AccountMessages.A235.Mess(null, sendAcc, deduct, -1)});
+                    log(LoggingMessages.L610.Mess(user.getName(), theUser, change, sendAcc));
             }
             
-            if(recAT.equals(AccountType.ACCOUNT)){
-                res.setOtherMess(args[0], new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
-                                                       prefix+AccountMessages.A202.Mess(null, "Account", deposit, -1)});
-            }
-            else if(recAT.equals(AccountType.BANK)){
-                res.setOtherMess(args[0], new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
-                                                       prefix+AccountMessages.A213.Mess(null, null, deposit, -1), 
-                                                       prefix+AccountMessages.A202.Mess(null, "Bank", deposit, -1)});
-                log(LoggingMessages.L608.Mess(args[0], null, change, recAcc));
-            }
-            else{
-                res.setOtherMess(args[0], new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
-                                                       prefix+AccountMessages.A214.Mess(null, recAcc, deposit, -1), 
-                                                       prefix+AccountMessages.A235.Mess(null, recAcc, deposit, -1)});
-                log(LoggingMessages.L631.Mess(args[0], null, change, recAcc));
+            switch(recAT){
+                case ACCOUNT:
+                    res.setOtherMess(theUser, new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
+                                                           prefix+AccountMessages.A202.Mess(null, "Account", deposit, -1)});
+                    break;
+                case BANK:
+                    res.setOtherMess(theUser, new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
+                                                           prefix+AccountMessages.A213.Mess(null, null, deposit, -1), 
+                                                           prefix+AccountMessages.A202.Mess(null, "Bank", deposit, -1)});
+                    log(LoggingMessages.L608.Mess(theUser, null, change, recAcc));
+                    break;
+                case JOINT:
+                    res.setOtherMess(theUser, new String[]{prefix+AccountMessages.A212.Mess(user.getName(), null, change, -1),
+                                                           prefix+AccountMessages.A214.Mess(null, recAcc, deposit, -1), 
+                                                           prefix+AccountMessages.A235.Mess(null, recAcc, deposit, -1)});
+                    log(LoggingMessages.L631.Mess(theUser, null, change, recAcc));
+                    break;
             }
             return res;
         }
@@ -305,9 +334,10 @@ public enum MoneyCommands {
                 return res;
             }
             boolean self = true;
+            String theUser = match(user.getMisc(), args[0]);
             if(!args[0].equals("")){
-                if(!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+                if(!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                    res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                     return res;
                 }
                 self = false;
@@ -319,14 +349,14 @@ public enum MoneyCommands {
                 for (String name : sorted.keySet()) {
                     if (self) {
                         if (name.equalsIgnoreCase(user.getName())) {
-                            ranked = AccountMessages.A222.Mess(null, null, 0, rank);
+                            ranked = AccountMessages.A221.Mess(null, null, 0, rank);
                             log(LoggingMessages.L639.Mess(user.getName(), null, 0, null));
                             break;
                         }
                     } else {
-                        if (name.equalsIgnoreCase(args[0])) {
-                            ranked = AccountMessages.A221.Mess(args[0], null, 0, rank);
-                            log(LoggingMessages.L638.Mess(user.getName(), args[0], 0, null));
+                        if (name.equalsIgnoreCase(theUser)) {
+                            ranked = AccountMessages.A222.Mess(theUser, null, 0, rank);
+                            log(LoggingMessages.L638.Mess(user.getName(), theUser, 0, null));
                             break;
                         }
                     }
@@ -334,7 +364,7 @@ public enum MoneyCommands {
                 }
             }
             
-            res.setMess(new String[]{ ranked != null ? prefix+rank : prefix+"Unable to retrieve rank..." });
+            res.setMess(new String[]{ ranked != null ? prefix+ranked : prefix+"Unable to retrieve rank..." });
             return res;
         }
     },
@@ -356,10 +386,12 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
+            
             if(!argcheck(2, args)){
                 res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
+            
             double deduct = 0;
             try{
                 deduct = Double.parseDouble(args[1]);
@@ -368,18 +400,30 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
+            
             if (deduct < 0.01){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
-            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, args[0]) - deduct;
+            
+            String theUser = match(user.getMisc(), args[0]);
+            
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
+                return res;
+            }
+            
+            double newbal = DCoProperties.getDS().getBalance(AccountType.ACCOUNT, theUser) - deduct;
+            
             if(newbal < 0){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], newbal);
-            res.setMess(new String[]{prefix+AdminMessages.A303.Mess(args[0], "Account", deduct)});
-            log(LoggingMessages.L623.Mess(user.getName(), args[0], newbal, null));
+            
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, theUser, newbal);
+            
+            res.setMess(new String[]{prefix+AdminMessages.A303.Mess(theUser, "Account", deduct)});
+            log(LoggingMessages.L623.Mess(user.getName(), theUser, newbal, null));
             return res;
         }
     },
@@ -401,14 +445,19 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+            
+            String theUser = match(user.getMisc(), args[0]);
+            
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                 return res;
             }
+            
             double reset = DCoProperties.getInitialBalance();
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], reset);
-            res.setMess(new String[]{prefix+AdminMessages.A301.Mess(args[0], "Account", reset)});
-            log(LoggingMessages.L618.Mess(user.getName(), args[0], reset, null));
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, theUser, reset);
+            
+            res.setMess(new String[]{prefix+AdminMessages.A301.Mess(theUser, "Account", reset)});
+            log(LoggingMessages.L618.Mess(user.getName(), theUser, reset, null));
             return res;
         }
     },
@@ -430,14 +479,19 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E101.Mess(null, null)});
                 return res;
             }
+            
             if(!argcheck(2, args)){
                 res.setMess(new String[]{prefix+ErrorMessages.E103.Mess(null, null)});
                 return res;
             }
-            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, args[0])){
-                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(args[0], "Account")});
+            
+            String theUser = match(user.getMisc(), args[0]);
+            
+            if (!DCoProperties.getDS().AccountExists(AccountType.ACCOUNT, theUser)){
+                res.setMess(new String[]{prefix+ErrorMessages.E104.Mess(theUser, "Account")});
                 return res;
             }
+            
             double balance = 0;
             try{
                 balance = Double.parseDouble(args[1]);
@@ -445,13 +499,16 @@ public enum MoneyCommands {
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
+            
             if (balance < 0){
                 res.setMess(new String[]{prefix+ErrorMessages.E102.Mess(null, null)});
                 return res;
             }
-            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, args[0], balance);
-            res.setMess(new String[]{prefix+AdminMessages.A302.Mess(args[0], "Account", balance)});
-            log(LoggingMessages.L619.Mess(user.getName(), args[0], balance, null));
+            
+            DCoProperties.getDS().setBalance(AccountType.ACCOUNT, theUser, balance);
+            
+            res.setMess(new String[]{prefix+AdminMessages.A302.Mess(theUser, "Account", balance)});
+            log(LoggingMessages.L619.Mess(user.getName(), theUser, balance, null));
             return res;
         }
     },
@@ -613,4 +670,9 @@ public enum MoneyCommands {
     public ActionResult execute(User user, String[] args){
         return new ActionResult();
     }
+    
+    private static String match(Misc misc, String name){
+        String theUser = misc.matchPlayer(name);
+        return theUser != null ? theUser : name;
+    }   
 }

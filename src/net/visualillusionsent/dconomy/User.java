@@ -1,5 +1,6 @@
 package net.visualillusionsent.dconomy;
 
+
 /**
  * dConomy User handling class
  * <p>
@@ -11,6 +12,7 @@ package net.visualillusionsent.dconomy;
 public class User {
     private String name;
     private boolean money, bank, joint, rank, create, auto, admin;
+    private Misc misc;
     
     /**
      * Class constructor.
@@ -25,7 +27,7 @@ public class User {
      * @param admin     Boolean value for if user is a dConomy Admin.
      * @since   2.0
      */
-    public User(String name, boolean money, boolean bank, boolean joint, boolean rank, boolean create, boolean auto, boolean admin){
+    public User(String name, boolean money, boolean bank, boolean joint, boolean rank, boolean create, boolean auto, boolean admin, Misc misc){
         this.name = name;
         this.money = money;
         this.bank = bank;
@@ -34,6 +36,7 @@ public class User {
         this.create = create;
         this.auto = auto;
         this.admin = admin;
+        this.misc = misc;
     }
     
     /**
@@ -114,5 +117,9 @@ public class User {
      */
     public boolean isAdmin(){
         return admin;
+    }
+    
+    public Misc getMisc(){
+        return misc;
     }
 }

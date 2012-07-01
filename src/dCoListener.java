@@ -62,7 +62,7 @@ public class dCoListener extends PluginListener{
         if(args[0].matches("/money|/joint|/bank|/dConomy")){
             try{
                 User user = new User(player.getName(), can(player, "/money"), can(player, "/bank"), can(player, "/joint"),
-                                 can(player, "/dcrank"), can(player, "/dccreate"), can(player, "/dcauto"), can(player, "/dcadmin"));
+                                 can(player, "/dcrank"), can(player, "/dccreate"), can(player, "/dcauto"), can(player, "/dcadmin"), new MiscImpl());
                 args[0] = args[0].substring(1);
                 ActionResult res = CommandExecuter.execute(user, args);
                 for(String message : res.getMess()){
@@ -109,7 +109,7 @@ public class dCoListener extends PluginListener{
         if(args[0].matches("money|joint|bank")){
             try{
                 if(args.length > 1){
-                    User user = new User("SERVER", true, true, true, true, true, true, true);
+                    User user = new User("SERVER", true, true, true, true, true, true, true, new MiscImpl());
                     ActionResult res = CommandExecuter.execute(user, args);
                     for(String message : res.getMess()){
                         if(message != null){
