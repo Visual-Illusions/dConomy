@@ -1,0 +1,37 @@
+﻿# dConomy 3 - Bukkit Plugin configuration file
+name: dConomy
+main: net.visualillusionsent.server.mod.bukkit.plugin.dconomy.dConomy
+version: 3
+author: Jason (darkdiplomat)
+website: http://visualillusionsent.net
+
+commands:
+  wallet:
+    description: Wallet base command. Use /wallet help for sub command help.
+    usage: /wallet <subcommand> <subargs>
+  dconomy:
+    description: Displays build info about dConomy and a few other things.
+    usage: /dconomy
+
+permissions:
+  dconomy.admin:
+    description: Gives Admin rights to dConomy functions
+    default: op
+
+###################################################
+# © Copyright 2011-2013 Visual Illusions Entertainment. 
+# 
+# This file is part of dConomy.
+#
+# dConomy is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with dConomy.
+# If not, see http://www.gnu.org/licenses/gpl.html
+####################################################

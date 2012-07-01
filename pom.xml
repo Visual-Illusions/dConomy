@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.visualillusionsent</groupId>
+  <artifactId>dconomy</artifactId>
+  <version>3.0-SNAPSHOT</version>
+  <name>dConomy</name>
+  <description>Economy base plugin for CanaryMod and Bukkit</description>
+  <licenses>
+    <license>
+      <name>GNU General Public License v3</name>
+      <url>http://www.gnu.org/licenses/lgpl.html</url>
+      <comments>
+        dConomy is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+              
+        dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+        See the GNU General Public License for more details.
+      </comments>
+    </license>
+  </licenses>
+  <url>http://docs.visualillusionsent.net/dConomy/</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+   <name>Visual Illusions Entertainment</name>
+   <url>http://visualillusionsent.net</url>
+  </organization>
+  <scm>
+   <url>http://github.com/Visual-Illusions/dConomy</url>
+   <connection>GitHub</connection>
+   <developerConnection>darkdiplomat</developerConnection>
+  </scm>
+  <issueManagement>
+   <url>http://github.com/Visual-Illusions/dConomy/issues</url>
+   <system>GitHub Issues Tracker</system>
+  </issueManagement>
+  <ciManagement>
+   <url>http://ci.visualillusionsent.net/job/dConomy</url>
+   <system>Jenkins</system>
+  </ciManagement>
+  <distributionManagement>
+    <repository>
+      <id>vi-repo</id>
+      <url>ftp://repo.visualillusionsent.net/</url>
+    </repository>
+  </distributionManagement>
+  <repositories>
+    <repository>
+      <id>CodeBukkit</id>
+      <name>Bukkit Public Repository</name>
+      <url>http://repo.bukkit.org/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>vi-repo</id>
+      <name>Visual Illusions Repository</name>
+      <url>http://repo.visualillusionsent.net/</url>
+      <releases>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <dependencies>
+   <dependency>
+    <groupId>net.visualillusionsent</groupId>
+    <artifactId>viutils</artifactId>
+    <version>1.0.4-SNAPSHOT</version>
+   </dependency>
+   <!-- Mods -->
+   <dependency>
+    <groupId>net.canarymod</groupId>
+    <artifactId>CanaryLib</artifactId>
+    <version>0.7-SNAPSHOT</version>
+   </dependency>
+   <dependency>
+    <groupId>org.bukkit</groupId>
+    <artifactId>bukkit</artifactId>
+    <version>1.5.1-R0.2</version>
+   </dependency>
+   <!-- testing -->
+   <dependency>
+     <groupId>junit</groupId>
+     <artifactId>junit</artifactId>
+     <version>4.11</version>
+     <scope>test</scope>
+   </dependency>
+  </dependencies>
+</project>

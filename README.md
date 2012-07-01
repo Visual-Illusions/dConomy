@@ -1,18 +1,18 @@
-dConomy
+dConomy 3 Core
 ====================
-Economy Base with Bank/Shared Accounts
+Multi-Mod Economy Base plugin
 ---------
 
-dConomy is a plugin for the CanaryMod Minecraft Server Modification.
+dConomy3 being designed for Bukkit and CanaryMod.
 
-(C) 2011-2012 Visual Illusions Entertainment
+(C) 2011-2013 Visual Illusions Entertainment
 
 Licensed under the GNU General Public License v3
 
 License
 ---------
-dConomy v2.x
-Copyright (C) 2011-2012 Visual Illusions Entertainment
+dConomy v3.x
+Copyright (C) 2011-2013 Visual Illusions Entertainment
 
 Author: Jason Jones (darkdiplomat) <darkdiplomat@visualillusionsent.net>
 
