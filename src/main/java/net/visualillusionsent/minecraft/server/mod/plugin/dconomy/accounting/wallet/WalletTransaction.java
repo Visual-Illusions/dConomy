@@ -1,36 +1,36 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
+import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
-public class WalletTransaction implements AccountTransaction{
+public final class WalletTransaction extends AccountTransaction{
     public enum ActionType {
         PAY, //
         ADMIN_ADD, //
         ADMIN_REMOVE, //
         ADMIN_SET, //
-        PLUGIN_ADD, //
+        PLUGIN_DEBIT, //
+        PLUGIN_DEPOSIT, //
         PLUGIN_SET, //
-        PLUGIN_REMOVE, //
         ;
     }
 
-    private final Mod_Caller sender, recipient;
+    private final Mod_User sender, recipient;
     private final ActionType type;
     private final double amount;
 
-    public WalletTransaction(Mod_Caller sender, Mod_Caller recipient, ActionType type, double amount){
+    public WalletTransaction(Mod_User sender, Mod_User recipient, ActionType type, double amount){
         this.sender = sender;
         this.recipient = recipient;
         this.type = type;
         this.amount = amount;
     }
 
-    public final Mod_Caller getSender(){
+    public final Mod_User getSender(){
         return sender;
     }
 
-    public final Mod_Caller getRecipient(){
+    public final Mod_User getRecipient(){
         return recipient;
     }
 

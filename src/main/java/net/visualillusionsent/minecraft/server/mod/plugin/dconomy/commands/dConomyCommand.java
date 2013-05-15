@@ -1,6 +1,6 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
+import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 
 public abstract class dConomyCommand{
@@ -10,11 +10,11 @@ public abstract class dConomyCommand{
         this.minArgs = minArgs;
     }
 
-    public final boolean parseCommand(Mod_Caller caller, String[] args){
-        if (args == null || args.length <= 0 || caller == null) {
+    public final boolean parseCommand(Mod_User caller, String[] args, boolean adjust){
+        if (args == null || caller == null) {
             return false;
         }
-        String[] cmdArgs = adjustedArgs(args, 1);
+        String[] cmdArgs = adjust ? adjustedArgs(args, 1) : args;
 
         if (cmdArgs.length < minArgs) {
             caller.error(MessageTranslator.transMessage("error.args"));
@@ -27,6 +27,9 @@ public abstract class dConomyCommand{
     }
 
     private final String[] adjustedArgs(String[] args, int start){
+        if (args.length == 0) {
+            return args;
+        }
         String[] toRet = new String[args.length - start];
         try {
             System.arraycopy(args, start, toRet, 0, toRet.length);
@@ -37,5 +40,5 @@ public abstract class dConomyCommand{
         return toRet;
     }
 
-    protected abstract void execute(Mod_Caller caller, String[] args);
+    protected abstract void execute(Mod_User caller, String[] args);
 }

@@ -1,19 +1,19 @@
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
+package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
-import net.canarymod.api.OfflinePlayer;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import org.bukkit.plugin.Plugin;
 
-public final class Canary_OfflineUser implements Mod_User{
-    private final OfflinePlayer player;
+public final class Bukkit_Plugin implements Mod_User{
+    private final Plugin plugin;
 
-    public Canary_OfflineUser(OfflinePlayer player){
-        this.player = player;
+    public Bukkit_Plugin(Plugin plugin){
+        this.plugin = plugin;
     }
 
     @Override
     public final String getName(){
-        return player.getName();
+        return plugin.getName();
     }
 
     @Override
@@ -29,11 +29,11 @@ public final class Canary_OfflineUser implements Mod_User{
 
     @Override
     public final ModType getModType(){
-        return ModType.CANARY;
+        return ModType.BUKKIT;
     }
 
     @Override
-    public final boolean hasPermission(String perm){
-        return player.hasPermission(perm);
+    public boolean hasPermission(String perm){
+        return true;
     }
 }

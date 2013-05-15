@@ -6,16 +6,17 @@ import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 
-public abstract class AccountSetBalanceHook extends Hook{
+public abstract class AccountDepositHook extends Hook{
+
     private final Mod_User sender;
     private final Mod_User recipient;
-    private final double toSet;
+    private final double deposit;
     private String error;
 
-    public AccountSetBalanceHook(Plugin plugin, Mod_User recipient, double toSet){
+    public AccountDepositHook(Plugin plugin, Mod_User recipient, double deposit){
         this.sender = new Canary_Plugin(plugin);
         this.recipient = recipient;
-        this.toSet = toSet;
+        this.deposit = deposit;
     }
 
     public final Mod_User getSender(){
@@ -26,8 +27,8 @@ public abstract class AccountSetBalanceHook extends Hook{
         return recipient;
     }
 
-    public final double getToSet(){
-        return toSet;
+    public final double getDeposit(){
+        return deposit;
     }
 
     /**

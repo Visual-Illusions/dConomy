@@ -17,23 +17,23 @@ public final class ServerWallet extends Wallet{
     }
 
     @Override
-    public final double addToBalance(double add){
-        return maxAlways ? 999999999999999999D : super.addToBalance(add);
+    public final double deposit(double add){
+        return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
     @Override
-    public final double addToBalance(String add){
-        return maxAlways ? 999999999999999999D : super.addToBalance(add);
+    public final double deposit(String add){
+        return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
     @Override
-    public final double removeFromBalance(double remove){
-        return maxAlways ? 999999999999999999D : super.removeFromBalance(remove);
+    public final double debit(double remove){
+        return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
     @Override
-    public final double removeFromBalance(String remove){
-        return maxAlways ? 999999999999999999D : super.removeFromBalance(remove);
+    public final double debit(String remove){
+        return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
     @Override

@@ -23,7 +23,7 @@ public abstract class Account{
         return balance;
     }
 
-    public double addToBalance(double add) throws AccountingException{
+    public double deposit(double add) throws AccountingException{
         balance += testArgumentDouble(add);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
@@ -33,15 +33,12 @@ public abstract class Account{
         return balance;
     }
 
-    public double addToBalance(String add) throws AccountingException{
-        return addToBalance(testArgumentString(add));
+    public double deposit(String add) throws AccountingException{
+        return deposit(testArgumentString(add));
     }
 
-    public double removeFromBalance(double remove) throws AccountingException{
+    public double debit(double remove) throws AccountingException{
         double toRemove = testArgumentDouble(remove);
-        if (balance - toRemove < 0) {
-            throw new AccountingException("error.no.money");
-        }
         balance -= toRemove;
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
@@ -51,8 +48,8 @@ public abstract class Account{
         return balance;
     }
 
-    public double removeFromBalance(String remove) throws AccountingException{
-        return removeFromBalance(testArgumentString(remove));
+    public double debit(String remove) throws AccountingException{
+        return debit(testArgumentString(remove));
     }
 
     public double setBalance(double set) throws AccountingException{

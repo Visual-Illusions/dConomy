@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
 /**
- * This file is part of VI-MCMIL.
  * Copyright 2013 Visual Illusions Entertainment.
  * Licensed under the terms of the GNU General Public License Version 3 as published by the Free Software Foundation
  * 
@@ -31,5 +30,7 @@ public interface Mod_Server{
 
     void newTransaction(AccountTransaction transaction);
 
-    Mod_Caller getServerUser();
+    void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction);
+
+    void deregisterTransactionHandler(Class<?> clazz);
 }

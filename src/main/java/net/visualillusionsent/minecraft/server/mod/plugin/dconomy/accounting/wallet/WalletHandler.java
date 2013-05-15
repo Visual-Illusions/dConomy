@@ -1,7 +1,7 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
 import java.util.concurrent.ConcurrentHashMap;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
+import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 
 public final class WalletHandler{
@@ -29,7 +29,7 @@ public final class WalletHandler{
         return newWallet(username);
     }
 
-    public static final Wallet getWallet(Mod_Caller caller){
+    public static final Wallet getWallet(Mod_User caller){
         return getWalletByName(caller.getName());
     }
 

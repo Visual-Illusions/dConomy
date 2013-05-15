@@ -1,21 +1,22 @@
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
+package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
-import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
+import org.bukkit.event.Event;
 
-public abstract class AccountSetBalanceHook extends Hook{
+public abstract class AccountDepositEvent extends Event{
+
     private final Mod_User sender;
     private final Mod_User recipient;
-    private final double toSet;
+    private final double deposit;
     private String error;
 
-    public AccountSetBalanceHook(Plugin plugin, Mod_User recipient, double toSet){
+    public AccountDepositEvent(Plugin plugin, Mod_User recipient, double deposit){
         this.sender = new Canary_Plugin(plugin);
         this.recipient = recipient;
-        this.toSet = toSet;
+        this.deposit = deposit;
     }
 
     public final Mod_User getSender(){
@@ -26,8 +27,8 @@ public abstract class AccountSetBalanceHook extends Hook{
         return recipient;
     }
 
-    public final double getToSet(){
-        return toSet;
+    public final double getDeposit(){
+        return deposit;
     }
 
     /**
@@ -42,4 +43,5 @@ public abstract class AccountSetBalanceHook extends Hook{
     public final void setResult(AccountingException aex){
         this.error = aex.getMessage();
     }
+
 }

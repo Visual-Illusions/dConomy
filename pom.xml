@@ -4,6 +4,10 @@
   <artifactId>dconomy</artifactId>
   <version>3.0-SNAPSHOT</version>
   <name>dConomy</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <ProgramStatus>ALPHA</ProgramStatus>
+  </properties>
   <description>Economy base plugin for CanaryMod and Bukkit</description>
   <licenses>
     <license>
@@ -74,7 +78,7 @@
    <dependency>
     <groupId>net.canarymod</groupId>
     <artifactId>CanaryLib</artifactId>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.8-SNAPSHOT</version>
    </dependency>
    <dependency>
     <groupId>org.bukkit</groupId>
@@ -89,4 +93,92 @@
      <scope>test</scope>
    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <!-- Start: Generate Timestamp -->
+      <plugin>
+        <groupId>com.github.goldin</groupId>
+        <artifactId>timestamp-maven-plugin</artifactId>
+        <version>0.2.5</version>
+        <executions>
+          <execution>
+            <id>set-build-timestamp</id>
+            <goals>
+              <goal>timestamp</goal>
+            </goals>
+            <phase>validate</phase>
+              <configuration>
+                <timestamp>
+                  <property>timestamp</property>
+                  <pattern>yyyyMMddHHmm</pattern>
+                  <timezone>GMT-6</timezone>
+                  <locale>US</locale>
+                </timestamp>
+              </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- End: Generate Timestamp -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <finalName>${project.build.finalName}</finalName>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+            <manifestEntries>
+                <Title>dConomy</Title>
+                <Version>${project.version}</Version>
+                <Build>${timestamp}</Build>
+                <ProgramStatus>${ProgramStatus}</ProgramStatus>
+                <Vendor>Visual Illusions Entertainment</Vendor>
+                <Built-By>${user.name}</Built-By>
+                <Class-Path>../lib/viutils-1.0.4.jar ../lib/jdom2.jar ../lib/sqlite.jar ../lib/postgresql.jar</Class-Path>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+     <plugins>
+      <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+      <plugin>
+       <groupId>org.eclipse.m2e</groupId>
+       <artifactId>lifecycle-mapping</artifactId>
+       <version>1.0.0</version>
+       <configuration>
+        <lifecycleMappingMetadata>
+         <pluginExecutions>
+          <pluginExecution>
+           <pluginExecutionFilter>
+            <groupId>com.github.goldin</groupId>
+            <artifactId>timestamp-maven-plugin</artifactId>
+            <versionRange>[0.2.5,)</versionRange>
+            <goals>
+             <goal>timestamp</goal>
+            </goals>
+           </pluginExecutionFilter>
+           <action>
+            <ignore></ignore>
+           </action>
+          </pluginExecution>
+         </pluginExecutions>
+        </lifecycleMappingMetadata>
+       </configuration>
+      </plugin>
+     </plugins>
+    </pluginManagement>
+    <extensions>
+      <!-- FTP Extension to upload to repo.visualillusionsent.net -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>1.0-alpha-6</version>
+      </extension>
+    </extensions>
+  </build>
 </project>

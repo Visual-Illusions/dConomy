@@ -68,23 +68,15 @@ public final class dCoBase{
     }
 
     public static void stacktrace(Throwable thrown){
-        $.logger.log(dCoLevel.STACKTRACE, "Stacktrace: ", thrown);
+        if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
+            $.logger.log(dCoLevel.STACKTRACE, "Stacktrace: ", thrown);
+        }
     }
 
     public static void debug(String msg){
-        $.logger.log(dCoLevel.GENERAL, msg);
-    }
-
-    public static void log(dCoLevel lvl, String msg){
-        $.logger.log(lvl, msg);
-    }
-
-    public static void log(dCoLevel lvl, String msg, Throwable thrown){
-        $.logger.log(lvl, msg, thrown);
-    }
-
-    public static void killLogger(){
-        $.logger.setLevel(Level.OFF);
+        if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
+            $.logger.log(dCoLevel.GENERAL, msg);
+        }
     }
 
     public final void cleanUp(){

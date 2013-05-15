@@ -1,6 +1,5 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
@@ -13,24 +12,24 @@ public final class WalletBaseCommand extends dConomyCommand{
         super(0);
     }
 
-    protected final void execute(Mod_Caller caller, String[] args){
+    protected final void execute(Mod_User user, String[] args){
         Wallet theWallet;
         if (args.length == 1) {
             Mod_User theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
             if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
-                caller.error("error.404.user", args[0]);
+                user.error("error.404.user", args[0]);
                 return;
             }
             if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-                caller.error("error.404.wallet", theUser.getName());
+                user.error("error.404.wallet", theUser.getName());
                 return;
             }
             theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
-            caller.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
+            user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
         }
         else {
-            theWallet = WalletHandler.getWalletByName(caller.getName());
-            caller.message("account.balance", Double.valueOf(theWallet.getBalance()));
+            theWallet = WalletHandler.getWalletByName(user.getName());
+            user.message("account.balance", Double.valueOf(theWallet.getBalance()));
         }
     }
 }

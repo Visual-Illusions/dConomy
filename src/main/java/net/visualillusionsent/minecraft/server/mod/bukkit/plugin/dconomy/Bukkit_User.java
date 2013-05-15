@@ -1,15 +1,16 @@
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
+package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
-import net.canarymod.api.entity.living.humanoid.Player;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-public final class Canary_User implements Mod_User{
+public class Bukkit_User implements Mod_User{
 
     private final Player player;
 
-    public Canary_User(Player player){
+    public Bukkit_User(Player player){
         this.player = player;
     }
 
@@ -26,10 +27,10 @@ public final class Canary_User implements Mod_User{
     @Override
     public final void error(String key, Object... args){
         if (args == null || key.trim().isEmpty()) {
-            player.notice(key);
+            player.sendMessage(ChatColor.RED + key);
         }
         else {
-            player.notice(MessageTranslator.transFormMessage(key, true, args));
+            player.sendMessage(ChatColor.RED + MessageTranslator.transFormMessage(key, true, args));
         }
     }
 
@@ -50,12 +51,12 @@ public final class Canary_User implements Mod_User{
 
     @Override
     public final ModType getModType(){
-        return ModType.CANARY;
+        return ModType.BUKKIT;
     }
 
     @Override
     public final boolean equals(Object obj){
-        if (obj instanceof Canary_User) {
+        if (obj instanceof Bukkit_User) {
             return obj == this;
         }
         return obj == player;
@@ -65,4 +66,5 @@ public final class Canary_User implements Mod_User{
     public final int hashCode(){
         return player.hashCode();
     }
+
 }

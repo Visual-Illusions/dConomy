@@ -1,6 +1,5 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
@@ -14,25 +13,25 @@ public final class WalletAddCommand extends dConomyCommand{
         super(2);
     }
 
-    protected final void execute(Mod_Caller caller, String[] args){
+    protected final void execute(Mod_User user, String[] args){
         Mod_User theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
         if (theUser == null && !args[1].toUpperCase().equals("SERVER")) {
-            caller.error("error.404.user", args[1]);
+            user.error("error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
             if (!(args.length > 2) || !args[2].equals("-force")) {
-                caller.error("error.404.wallet", theUser.getName());
+                user.error("error.404.wallet", theUser.getName());
                 return;
             }
         }
         try {
-            double newbal = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).addToBalance(args[0]);
-            caller.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
-            dCoBase.getServer().newTransaction(new WalletTransaction(caller, theUser == null ? dCoBase.getServer().getServerUser() : theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
+            double newbal = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).deposit(args[0]);
+            user.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
+            dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
-            caller.error(ae.getMessage());
+            user.error(ae.getMessage());
         }
     }
 }
