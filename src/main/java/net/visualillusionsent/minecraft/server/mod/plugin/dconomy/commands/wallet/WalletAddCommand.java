@@ -17,22 +17,22 @@ public final class WalletAddCommand extends dConomyCommand{
     protected final void execute(Mod_Caller caller, String[] args){
         Mod_User theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
         if (theUser == null && !args[1].toUpperCase().equals("SERVER")) {
-            caller.sendError("error.404.user", args[1]);
+            caller.error("error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
             if (!(args.length > 2) || !args[2].equals("-force")) {
-                caller.sendError("error.404.wallet", theUser.getName());
+                caller.error("error.404.wallet", theUser.getName());
                 return;
             }
         }
         try {
             double newbal = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).addToBalance(args[0]);
-            caller.sendError("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
+            caller.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
             dCoBase.getServer().newTransaction(new WalletTransaction(caller, theUser == null ? dCoBase.getServer().getServerUser() : theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
-            caller.sendError(ae.getMessage());
+            caller.error(ae.getMessage());
         }
     }
 }

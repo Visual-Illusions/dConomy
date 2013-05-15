@@ -19,11 +19,11 @@ public final class WalletPayCommand extends dConomyCommand{
     protected final void execute(Mod_Caller caller, String[] args){
         Mod_User theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
         if (theUser == null && !args[1].toUpperCase().equals("SERVER")) {
-            caller.sendError("error.404.user", args[1]);
+            caller.error("error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            caller.sendError("error.404.wallet", theUser.getName());
+            caller.error("error.404.wallet", theUser.getName());
             return;
         }
         Wallet userWallet = WalletHandler.getWalletByName(caller.getName());
@@ -31,11 +31,11 @@ public final class WalletPayCommand extends dConomyCommand{
         try {
             userWallet.removeFromBalance(args[0]);
             payeeWallet.addToBalance(args[0]);
-            caller.sendMessage("paid.user", theUser == null ? "SERVER" : theUser.getName(), args[0]);
+            caller.message("paid.user", theUser == null ? "SERVER" : theUser.getName(), args[0]);
             dCoBase.getServer().newTransaction(new WalletTransaction(caller, theUser == null ? dCoBase.getServer().getServerUser() : theUser, WalletTransaction.ActionType.PAY, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
-            caller.sendError(ae.getMessage());
+            caller.error(ae.getMessage());
         }
     }
 }

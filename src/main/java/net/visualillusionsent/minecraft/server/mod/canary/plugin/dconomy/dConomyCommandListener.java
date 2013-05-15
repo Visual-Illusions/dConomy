@@ -5,6 +5,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandListener;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Caller;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.InformationCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletAddCommand;
@@ -13,7 +14,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.walle
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
 
-public class dConomyCommandListener implements CommandListener{
+public final class dConomyCommandListener implements CommandListener{
     private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset;
 
     public dConomyCommandListener(){
@@ -30,7 +31,7 @@ public class dConomyCommandListener implements CommandListener{
             permissions = { "dconomy" },
             toolTip = "/dconomy")
     public final void information(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
         infoCmd.parseCommand(modcall, args);
     }
 
@@ -39,7 +40,7 @@ public class dConomyCommandListener implements CommandListener{
             permissions = { "dconomy.wallet" },
             toolTip = "/wallet [subcommand] [args]")
     public final void walletBase(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
 
         if (!walletbase.parseCommand(modcall, args)) {
             msgrec.notice("/wallet [subcommand] [args]");
@@ -52,7 +53,7 @@ public class dConomyCommandListener implements CommandListener{
             toolTip = "/wallet add <amount> <user>",
             parent = "wallet")
     public final void walletAdd(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
 
         if (!walletadd.parseCommand(modcall, args)) {
             msgrec.notice("/wallet add <amount> <user> [-force]");
@@ -65,7 +66,7 @@ public class dConomyCommandListener implements CommandListener{
             toolTip = "/wallet pay <user> <amount>",
             parent = "wallet")
     public final void walletPay(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
 
         if (!walletpay.parseCommand(modcall, args)) {
             msgrec.notice("/wallet pay <amount> <user>");
@@ -78,7 +79,7 @@ public class dConomyCommandListener implements CommandListener{
             toolTip = "/wallet remove <user> <amount>",
             parent = "wallet")
     public final void walletRemove(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
 
         if (!walletremove.parseCommand(modcall, args)) {
             msgrec.notice("/wallet remove <amount> <user>");
@@ -91,7 +92,7 @@ public class dConomyCommandListener implements CommandListener{
             toolTip = "/wallet set <amount> <user> [-force]",
             parent = "wallet")
     public final void walletSet(MessageReceiver msgrec, String[] args){
-        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : new Canary_Console();
+        Mod_Caller modcall = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_Caller) dCoBase.getServer();
 
         if (!walletset.parseCommand(modcall, args)) {
             msgrec.notice("/wallet set <user> <amount>");

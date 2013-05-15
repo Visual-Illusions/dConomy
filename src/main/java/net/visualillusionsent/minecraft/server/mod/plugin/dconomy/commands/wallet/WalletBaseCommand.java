@@ -18,19 +18,19 @@ public final class WalletBaseCommand extends dConomyCommand{
         if (args.length == 1) {
             Mod_User theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
             if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
-                caller.sendError("error.404.user", args[0]);
+                caller.error("error.404.user", args[0]);
                 return;
             }
             if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-                caller.sendError("error.404.wallet", theUser.getName());
+                caller.error("error.404.wallet", theUser.getName());
                 return;
             }
             theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
-            caller.sendMessage("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
+            caller.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
         }
         else {
             theWallet = WalletHandler.getWalletByName(caller.getName());
-            caller.sendMessage("account.balance", Double.valueOf(theWallet.getBalance()));
+            caller.message("account.balance", Double.valueOf(theWallet.getBalance()));
         }
     }
 }

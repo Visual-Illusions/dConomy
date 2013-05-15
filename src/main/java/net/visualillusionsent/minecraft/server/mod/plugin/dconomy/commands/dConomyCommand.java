@@ -17,7 +17,7 @@ public abstract class dConomyCommand{
         String[] cmdArgs = adjustedArgs(args, 1);
 
         if (cmdArgs.length < minArgs) {
-            caller.sendError(MessageTranslator.transMessage("error.args"));
+            caller.error(MessageTranslator.transMessage("error.args"));
             return false;
         }
         else {

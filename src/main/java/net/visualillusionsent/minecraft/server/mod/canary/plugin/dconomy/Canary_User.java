@@ -24,13 +24,23 @@ public final class Canary_User implements Mod_User{
     }
 
     @Override
-    public final void sendError(String key, Object... args){
-        player.notice(MessageTranslator.transFormMessage(key, true, args));
+    public final void error(String key, Object... args){
+        if (args == null || key.trim().isEmpty()) {
+            player.notice(key);
+        }
+        else {
+            player.notice(MessageTranslator.transFormMessage(key, true, args));
+        }
     }
 
     @Override
-    public final void sendMessage(String key, Object... args){
-        player.sendMessage(MessageTranslator.transFormMessage(key, true, args));
+    public final void message(String key, Object... args){
+        if (args == null || key.trim().isEmpty()) {
+            player.sendMessage(key);
+        }
+        else {
+            player.sendMessage(MessageTranslator.transFormMessage(key, true, args));
+        }
     }
 
     @Override

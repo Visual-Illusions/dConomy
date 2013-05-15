@@ -17,10 +17,10 @@ public final class Canary_Plugin implements Mod_Caller{
     }
 
     @Override
-    public final void sendError(String key, Object... args){}
+    public final void error(String key, Object... args){}
 
     @Override
-    public final void sendMessage(String key, Object... args){}
+    public final void message(String key, Object... args){}
 
     @Override
     public final boolean isConsole(){

@@ -22,9 +22,9 @@ public interface Mod_Caller{
 
     String getName();
 
-    void sendError(String key, Object... args);
+    void error(String key, Object... args);
 
-    void sendMessage(String key, Object... args);
+    void message(String key, Object... args);
 
     boolean isConsole();
 

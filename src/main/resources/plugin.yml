@@ -1,21 +1,64 @@
 ﻿# dConomy 3 - Bukkit Plugin configuration file
 name: dConomy
-main: net.visualillusionsent.server.mod.bukkit.plugin.dconomy.dConomy
-version: 3
+version: 3.0
+description: Economy Core plugin
 author: Jason (darkdiplomat)
-website: http://visualillusionsent.net
+website: http://wiki.visualillusionsent.net/dConomy
+main: net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.dConomy
 
 commands:
   wallet:
-    description: Wallet base command. Use /wallet help for sub command help.
-    usage: /wallet <subcommand> <subargs>
+    description: Wallet base command, Displays account balance.
+    usage: /wallet [sub] [args]
+    permission: dconomy.wallet.base
+  wallet pay:
+    description: Used to pay another user.
+    usage: /wallet pay <amount> <user>
+    permission: dconomy.wallet.pay
+  wallet add:
+    description: Adds money to a User's wallet
+    usage: /wallet add <amount> <user>
+    permission: dconomy.admin.wallet.add
+  wallet remove:
+    description: Removes money from a User's wallet
+    usage: /wallet remove <amount> <user>
+    permission: dconomy.admin.wallet.remove
+  wallet set:
+    description: Sets the money in a User's wallet
+    usage: /wallet set <amount> <user>
+    permission: dconomy.admin.wallet.set
   dconomy:
     description: Displays build info about dConomy and a few other things.
     usage: /dconomy
 
 permissions:
-  dconomy.admin:
-    description: Gives Admin rights to dConomy functions
+  dconomy.wallet.*:
+    description: Gives access to all Wallet commands (except administration)
+    default: op
+    children:
+      dconomy.wallet.base: true
+      dconomy.wallet.pay: true
+  dconomy.wallet.base:
+    description: Give access to wallet base command.
+    default: op
+  dconomy.wallet.pay:
+    description: Give access to wallet pay command.
+    default: op
+  dconomy.admin.wallet.*:
+    description: Gives Admin rights to all dConomy Wallets
+    default: op
+    children:
+      dconomy.admin.wallet.add: true
+      dconomy.admin.wallet.remove: true
+      dconomy.admin.wallet.set: true
+  dconomy.admin.wallet.add:
+    description: Gives rights to add money to a wallet
+    default: op
+  dconomy.admin.wallet.remove:
+    description: Gives rights to remove money from a wallet
+    default: op
+  dconomy.admin.wallet.set:
+    description: Gives rights to set the money in a wallet
     default: op
 
 ###################################################
