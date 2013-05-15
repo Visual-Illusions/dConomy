@@ -1,6 +1,7 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import net.canarymod.Canary;
+import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletBalanceEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletDebitEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletDepositEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletSetBalanceEvent;
@@ -20,6 +21,18 @@ public final class dConomyBukkitAPIListener implements Listener{
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public final void walletBalance(WalletBalanceEvent event){
+        try {
+            event.setBalance(WalletHandler.getWallet(event.getUser()).getBalance());
+        }
+        catch (AccountingException aex) {
+            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getRequester().getName() + "'. Reason: " + aex.getMessage());
+            event.setResult(aex);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletDeposit(WalletDepositEvent event){
         try {
             WalletHandler.getWallet(event.getRecipient()).deposit(event.getDeposit());
@@ -31,6 +44,7 @@ public final class dConomyBukkitAPIListener implements Listener{
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletDebit(WalletDebitEvent event){
         try {
             WalletHandler.getWallet(event.getRecipient()).deposit(event.getDebit());
@@ -42,6 +56,7 @@ public final class dConomyBukkitAPIListener implements Listener{
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletSet(WalletSetBalanceEvent event){
         try {
             WalletHandler.getWallet(event.getRecipient()).deposit(event.getToSet());

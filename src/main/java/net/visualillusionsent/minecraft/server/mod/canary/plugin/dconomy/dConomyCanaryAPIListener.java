@@ -4,6 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.hook.HookHandler;
 import net.canarymod.plugin.PluginListener;
 import net.canarymod.plugin.Priority;
+import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletBalanceHook;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletDebitHook;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletDepositHook;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletSetBalanceHook;
@@ -17,6 +18,17 @@ public final class dConomyCanaryAPIListener implements PluginListener{
 
     dConomyCanaryAPIListener(dConomy dCo){
         Canary.hooks().registerListener(this, dCo);
+    }
+
+    @HookHandler(priority = Priority.CRITICAL)
+    public final void walletBalance(WalletBalanceHook hook){
+        try {
+            hook.setBalance(WalletHandler.getWallet(hook.getUser()).getBalance());
+        }
+        catch (AccountingException aex) {
+            dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getRequester().getName() + "'. Reason: " + aex.getMessage());
+            hook.setResult(aex);
+        }
     }
 
     @HookHandler(priority = Priority.CRITICAL)
