@@ -3,20 +3,31 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wa
 import java.util.concurrent.ConcurrentHashMap;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletXMLSource;
 
 public final class WalletHandler{
 
     private final ConcurrentHashMap<String, Wallet> wallets;
     private static final WalletHandler $;
     private final ServerWallet servwallet;
+    private final WalletDataSource source;
+    private static boolean init;
 
     static {
-        $ = new WalletHandler();
+        $ = new WalletHandler(dCoBase.getDataHandler().getDataSourceType());
     }
 
-    private WalletHandler(){
+    private WalletHandler(DataSourceType type){
         wallets = new ConcurrentHashMap<String, Wallet>();
         servwallet = new ServerWallet(dCoBase.getProperties().getBooleanValue("server.max.always"));
+        if (type == DataSourceType.MYSQL) {
+            source = null;
+        }
+        else {
+            source = new WalletXMLSource();
+        }
     }
 
     public static final Wallet getWalletByName(String username){
@@ -42,9 +53,16 @@ public final class WalletHandler{
     }
 
     public static final Wallet newWallet(String username){
-        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"));
+        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), $.source);
         addWallet(wallet);
         return wallet;
+    }
+
+    public static final void initialize(){
+        if (!init) {
+            $.source.load();
+            init = true;
+        }
     }
 
     public static final void cleanUp(){

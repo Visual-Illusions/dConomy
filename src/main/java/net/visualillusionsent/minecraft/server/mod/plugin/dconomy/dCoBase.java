@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 import net.visualillusionsent.lang.InitializationError;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.DataSourceType;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.dCoDataHandler;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.dCoProperties;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHandler;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoProperties;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
 
 public final class dCoBase{

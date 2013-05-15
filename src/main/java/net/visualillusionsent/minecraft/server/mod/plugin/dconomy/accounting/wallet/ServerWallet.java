@@ -7,7 +7,7 @@ public final class ServerWallet extends Wallet{
     private final boolean maxAlways;
 
     public ServerWallet(boolean maxAlways){
-        super("SERVER", maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"));
+        super("SERVER", maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"), null);
         this.maxAlways = maxAlways;
     }
 

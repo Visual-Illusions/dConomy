@@ -1,18 +1,21 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataSource;
 
 public abstract class Account{
 
     protected final String owner;
     protected double balance;
+    private final dCoDataSource datasource;
 
-    public Account(String owner, double balance){
+    public Account(String owner, double balance, dCoDataSource datasource){
         if (owner == null) {
             throw new IllegalArgumentException("Owner cannot be null");
         }
         this.owner = owner;
         this.balance = balance;
+        this.datasource = datasource;
     }
 
     public String getOwner(){
@@ -86,4 +89,8 @@ public abstract class Account{
     }
 
     protected abstract void save();
+
+    public final dCoDataSource getDataSource(){
+        return datasource;
+    }
 }

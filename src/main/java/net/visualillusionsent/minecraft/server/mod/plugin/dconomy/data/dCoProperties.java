@@ -1,4 +1,4 @@
-package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io;
+package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 
 import java.io.File;
 import java.net.URISyntaxException;

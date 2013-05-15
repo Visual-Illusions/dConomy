@@ -1,29 +1,24 @@
 /* 
- * Copyright 2013 Visual Illusions Entertainment.
+ * Copyright 2011 - 2013 Visual Illusions Entertainment.
  *  
- * This file is part of Visual Illusions Minecraft Mod Interface Library (VI-MCMIL).
+ * This file is part of dConomy.
  *
- * VI-MCMIL is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * VI-MCMIL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with VI-MCMIL.
+ * You should have received a copy of the GNU General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html
+ * 
+ * Source Code available @ https://github.com/Visual-Illusions/dConomy
  */
 package net.visualillusionsent.minecraft.server.mod.interfaces;
 
-/**
- * This file is part of VI-MCMIL.
- * Copyright 2013 Visual Illusions Entertainment.
- * Licensed under the terms of the GNU General Public License Version 3 as published by the Free Software Foundation
- * 
- * @author Jason (darkdiplomat)
- */
 public enum MCChatForm {
 
     /**
@@ -138,11 +133,11 @@ public enum MCChatForm {
 
     private final char charCode;
 
-    private MCChatForm(char charCode) {
+    private MCChatForm(char charCode){
         this.charCode = charCode;
     }
 
-    public final String concat(String str) {
+    public final String concat(String str){
         if (this == MARKER) {
             return stringValue().concat(str);
         }
@@ -156,7 +151,7 @@ public enum MCChatForm {
      * 
      * @return char value of the {@code MCChatForm}
      */
-    public final char charValue() {
+    public final char charValue(){
         return charCode;
     }
 
@@ -165,7 +160,7 @@ public enum MCChatForm {
      * 
      * @return String value of {@code MCChatForm}
      */
-    public final String stringValue() {
+    public final String stringValue(){
         return String.valueOf(charCode);
     }
 
@@ -175,7 +170,7 @@ public enum MCChatForm {
      * 
      * @return {@link MARKER} or {@link MARKER} + colorCode
      */
-    public final String toString() {
+    public final String toString(){
         if (this == MARKER) {
             return stringValue();
         }
@@ -190,7 +185,7 @@ public enum MCChatForm {
      * @param str
      * @return str with formating removed
      */
-    public static final String removeFormating(String str) {
+    public static final String removeFormating(String str){
         return str.replaceAll(MARKER.concat("[A-FL-NRa-fl-nr0-9]"), "");
     }
 }

@@ -1,19 +1,20 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
 
 public abstract class Wallet extends Account{
 
-    public Wallet(String owner, double balance){
-        super(owner, balance);
+    public Wallet(String owner, double balance, WalletDataSource source){
+        super(owner, balance, source);
     }
 
     @Override
     public final boolean equals(Object obj){
-        if(obj instanceof Wallet){
+        if (obj instanceof Wallet) {
             return this == obj;
         }
-        else if(obj instanceof String){
+        else if (obj instanceof String) {
             return this.owner.equals(obj);
         }
         return false;

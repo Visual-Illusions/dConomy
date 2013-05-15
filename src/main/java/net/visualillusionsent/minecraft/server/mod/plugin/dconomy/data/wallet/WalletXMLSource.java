@@ -1,4 +1,4 @@
-package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io;
+package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +16,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-public final class WalletXMLSource implements dCoDataSource{
+public final class WalletXMLSource extends WalletDataSource{
 
     private final Format xmlform = Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator(SystemUtils.LINE_SEP);
     private final XMLOutputter outputter = new XMLOutputter(xmlform);
@@ -63,7 +63,7 @@ public final class WalletXMLSource implements dCoDataSource{
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
-                    new UserWallet(wallet.getAttributeValue("user"), wallet.getAttribute("balance").getDoubleValue());
+                    new UserWallet(wallet.getAttributeValue("user"), wallet.getAttribute("balance").getDoubleValue(), this);
                     load++;
                 }
             }

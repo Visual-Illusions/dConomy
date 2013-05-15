@@ -17,7 +17,7 @@
  * 
  * Source Code availible @ https://github.com/darkdiplomat/Realms
  */
-package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io;
+package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 
 import java.sql.SQLException;
 

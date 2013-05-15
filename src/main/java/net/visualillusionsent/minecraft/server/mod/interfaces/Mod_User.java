@@ -20,15 +20,54 @@ package net.visualillusionsent.minecraft.server.mod.interfaces;
  */
 public interface Mod_User{
 
+    /**
+     * Gets the name of the {@code Mod_User}
+     * 
+     * @return
+     */
     String getName();
 
+    /**
+     * Sends a error message to the {@code Mod_User}
+     * 
+     * @param key
+     *            the translation key or plain message to be sent
+     * @param args
+     *            the arguments for translation
+     */
     void error(String key, Object... args);
 
+    /**
+     * Sends a message to the {@code Mod_User}
+     * 
+     * @param key
+     *            the translation key or plain message to be sent
+     * @param args
+     *            the arguments for translation
+     */
     void message(String key, Object... args);
 
+    /**
+     * Checks the {@code Mod_User} for permissions
+     * 
+     * @param perm
+     *            the permission to check for
+     * @return {@code true} if has permission; {@code false} otherwise
+     */
     boolean hasPermission(String perm);
 
+    /**
+     * Checks if the {@code Mod_User} is the console/server
+     * 
+     * @return {@code true} if console/server; {@code false} otherwise
+     */
     boolean isConsole();
 
+    /**
+     * Gets the ModType of the Server
+     * 
+     * @return the ModType
+     * @see ModType
+     */
     ModType getModType();
 }

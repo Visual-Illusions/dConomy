@@ -1,3 +1,22 @@
+/* 
+ * Copyright 2011 - 2013 Visual Illusions Entertainment.
+ *  
+ * This file is part of dConomy.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see http://www.gnu.org/licenses/gpl.html
+ * 
+ * Source Code available @ https://github.com/Visual-Illusions/dConomy
+ */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +35,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
-public class Bukkit_Server implements Mod_Server, Mod_User{
+public final class Bukkit_Server implements Mod_Server, Mod_User{
 
     private final Server serv;
     private final dConomy dCo;
@@ -28,6 +47,9 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Mod_User getUser(String name){
         Player player = serv.getPlayer(name);
@@ -43,26 +65,41 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Logger getServerLogger(){
         return dCo.getLogger();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final ModType getModType(){
         return ModType.BUKKIT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getName(){
         return "SERVER";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isConsole(){
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void error(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
@@ -73,6 +110,9 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void message(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
@@ -83,11 +123,17 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasPermission(String perm){
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void newTransaction(AccountTransaction transaction){
         for (Class<?> clazz : transactions.keySet()) {
@@ -104,6 +150,10 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}<br>
+     * clazz should be assignable from AccountTransactionEvent
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction){
@@ -114,6 +164,11 @@ public class Bukkit_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}<br>
+     * clazz should be assignable from AccountTransactionEvent
+     */
+    @Override
     public void deregisterTransactionHandler(Class<?> clazz){
         if (transactions.containsKey(clazz)) {
             transactions.remove(clazz);

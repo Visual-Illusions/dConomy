@@ -2,11 +2,12 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wa
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
 
 public final class UserWallet extends Wallet{
 
-    public UserWallet(String owner, double balance){
-        super(owner, balance);
+    public UserWallet(String owner, double balance, WalletDataSource source){
+        super(owner, balance, source);
         WalletHandler.addWallet(this);
     }
 

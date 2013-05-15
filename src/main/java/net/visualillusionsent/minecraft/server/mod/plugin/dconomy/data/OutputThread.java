@@ -1,25 +1,23 @@
-package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io;
+package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 
 final class OutputThread extends Thread{
 
     private final dCoDataHandler handler;
-    private final dCoDataSource source;
     private volatile boolean running = true;
 
-    public OutputThread(dCoDataHandler handler, dCoDataSource source){
+    public OutputThread(dCoDataHandler handler){
         this.handler = handler;
-        this.source = source;
     }
 
     public void run(){
-        while(running){
-            try{
+        while (running) {
+            try {
                 Account account = handler.getQueue().next();
-                source.saveAccount(account);
+                account.getDataSource().saveAccount(account);
             }
-            catch(Exception e){}
+            catch (Exception e) {}
         }
     }
 
