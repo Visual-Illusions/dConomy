@@ -23,7 +23,7 @@ public interface Mod_User{
     /**
      * Gets the name of the {@code Mod_User}
      * 
-     * @return
+     * @return the {@code Mod_User} name
      */
     String getName();
 

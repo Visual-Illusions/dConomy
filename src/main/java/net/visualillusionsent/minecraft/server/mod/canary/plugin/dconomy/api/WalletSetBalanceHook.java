@@ -41,8 +41,8 @@ public final class WalletSetBalanceHook extends AccountSetBalanceHook{
      * @param toSet
      *            the amount to set the account to
      */
-    public WalletSetBalanceHook(Plugin plugin, Mod_User recipient, double toRemove){
-        super(plugin, recipient, toRemove);
+    public WalletSetBalanceHook(Plugin plugin, Mod_User recipient, double toSet){
+        super(plugin, recipient, toSet);
     }
 
 }

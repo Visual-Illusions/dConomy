@@ -166,9 +166,9 @@ public enum MCChatForm {
 
     /**
      * Returns a string of the {@code MCChatForm}<br>
-     * If the {@code MCChatForm} is that other than {@link MARKER} then {@link MARKER} is appended to the front.
+     * If the {@code MCChatForm} is that other than {@code MARKER} then {@code MARKER} is appended to the front.
      * 
-     * @return {@link MARKER} or {@link MARKER} + colorCode
+     * @return {@code MARKER} or {@code MARKER} + colorCode
      */
     public final String toString(){
         if (this == MARKER) {

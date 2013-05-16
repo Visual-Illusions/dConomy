@@ -41,8 +41,8 @@ public final class WalletDebitHook extends AccountDebitHook{
      * @param debit
      *            the amount to be removed
      */
-    public WalletDebitHook(Plugin plugin, Mod_User recipient, double toAdd){
-        super(plugin, recipient, toAdd);
+    public WalletDebitHook(Plugin plugin, Mod_User recipient, double debit){
+        super(plugin, recipient, debit);
     }
 
 }
