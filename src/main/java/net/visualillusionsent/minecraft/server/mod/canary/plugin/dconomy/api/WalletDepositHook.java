@@ -20,7 +20,6 @@
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
 
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 
 /**
  * Wallet Deposit Hook<br>
@@ -34,15 +33,15 @@ public final class WalletDepositHook extends AccountDepositHook{
     /**
      * Constructs a new WalletDepositHook
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} giving money
-     * @param recipient
-     *            the {@link Mod_User} who is having money deposited
+     * @param username
+     *            the user's name who is having money deposited
      * @param deposit
      *            the amount to be deposited
      */
-    public WalletDepositHook(Plugin plugin, Mod_User recipient, double toAdd){
-        super(plugin, recipient, toAdd);
+    public WalletDepositHook(Plugin caller, String username, double deposit){
+        super(caller, username, deposit);
     }
 
 }

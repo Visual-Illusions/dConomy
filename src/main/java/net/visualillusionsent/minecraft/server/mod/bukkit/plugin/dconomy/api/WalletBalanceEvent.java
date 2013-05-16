@@ -19,7 +19,6 @@
  */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
@@ -36,13 +35,13 @@ public final class WalletBalanceEvent extends AccountBalanceEvent{
     /**
      * Constructs a new WalletBalaceEvent
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} requesting balance information
-     * @param user
-     *            the {@link Mod_User} to get balance for
+     * @param username
+     *            the user's name to get balance for
      */
-    public WalletBalanceEvent(Plugin plugin, Mod_User user){
-        super(plugin, user);
+    public WalletBalanceEvent(Plugin caller, String username){
+        super(caller, username);
     }
 
     // Bukkit Event methods

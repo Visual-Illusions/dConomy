@@ -20,7 +20,6 @@
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
 
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 
 /**
  * Wallet Balance request Hook<br>
@@ -36,11 +35,11 @@ public final class WalletBalanceHook extends AccountBalanceHook{
      * 
      * @param plugin
      *            the {@link Plugin} requesting balance information
-     * @param user
-     *            the {@link Mod_User} to get balance for
+     * @param username
+     *            the user's name to get balance for
      */
-    public WalletBalanceHook(Plugin plugin, Mod_User user){
-        super(plugin, user);
+    public WalletBalanceHook(Plugin plugin, String username){
+        super(plugin, username);
     }
 
 }

@@ -23,7 +23,6 @@ import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 
 /**
  * Account Balance request Hook<br>
@@ -33,44 +32,44 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Acc
  * 
  */
 public abstract class AccountBalanceHook extends Hook{
-    private final Mod_User plugin;
-    private final Mod_User user;
+    private final Mod_User caller;
+    private final String username;
     private double balance = -1;
     private String error;
 
     /**
      * Constructs a new AccountBalanceHook
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} requesting a balance
-     * @param user
-     *            the {@link Mod_User} to get a balance for
+     * @param username
+     *            the user's name to get a balance for
      */
-    public AccountBalanceHook(Plugin plugin, Mod_User user){
-        this.plugin = new Canary_Plugin(plugin);
-        this.user = user;
+    public AccountBalanceHook(Plugin caller, String username){
+        this.caller = new Canary_Plugin(caller);
+        this.username = username;
     }
 
     /**
      * Gets the {@link Mod_User}(Plugin) requesting Balance information.
      * 
-     * @return the {@link Mod_User} requester
+     * @return the {@link Mod_User} caller
      */
-    public final Mod_User getRequester(){
-        return plugin;
+    public final Mod_User getCaller(){
+        return caller;
     }
 
     /**
-     * Gets the {@link Mod_User} who's balance is being requested for
+     * Gets the user's name who's balance is being requested for
      * 
-     * @return the {@link Mod_User}
+     * @return the user's name
      */
-    public final Mod_User getUser(){
-        return user;
+    public final String getUserName(){
+        return username;
     }
 
     /**
-     * Gets the balance of the {@link Mod_User}'s account
+     * Gets the balance of the user's account
      * 
      * @return the balance
      */
@@ -99,11 +98,8 @@ public abstract class AccountBalanceHook extends Hook{
 
     /**
      * Internal use method to set the error message should one have occurred
-     * 
-     * @param aex
-     *            the AccountingException thrown
      */
-    public final void setResult(AccountingException aex){
-        this.error = aex.getMessage();
+    public final void setErrorMessage(String error){
+        this.error = error;
     }
 }

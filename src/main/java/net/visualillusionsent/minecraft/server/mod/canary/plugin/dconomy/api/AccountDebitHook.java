@@ -23,7 +23,6 @@ import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 
 /**
  * Account Debit Hook<br>
@@ -33,24 +32,24 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Acc
  * 
  */
 public abstract class AccountDebitHook extends Hook{
-    private final Mod_User sender;
-    private final Mod_User recipient;
+    private final Mod_User caller;
+    private final String username;
     private final double debit;
     private String error;
 
     /**
      * Constructs a new AccountDebitHook
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} asking to take money
-     * @param recipient
-     *            the {@link Mod_User} who is having money taken
+     * @param username
+     *            the user's name who is having money taken
      * @param debit
      *            the amount to be removed
      */
-    public AccountDebitHook(Plugin plugin, Mod_User recipient, double debit){
-        this.sender = new Canary_Plugin(plugin);
-        this.recipient = recipient;
+    public AccountDebitHook(Plugin caller, String username, double debit){
+        this.caller = new Canary_Plugin(caller);
+        this.username = username;
         this.debit = debit;
     }
 
@@ -59,17 +58,17 @@ public abstract class AccountDebitHook extends Hook{
      * 
      * @return the {@link Mod_User}(plugin)
      */
-    public final Mod_User getSender(){
-        return sender;
+    public final Mod_User getCaller(){
+        return caller;
     }
 
     /**
-     * Gets the {@link Mod_User} who is having money taken
+     * Gets the user's name who is having money taken
      * 
      * @return the {@link Mod_User}
      */
-    public final Mod_User getRecipient(){
-        return recipient;
+    public final String getUserName(){
+        return username;
     }
 
     /**
@@ -92,11 +91,8 @@ public abstract class AccountDebitHook extends Hook{
 
     /**
      * Internal use method to set the error message should one have occurred
-     * 
-     * @param aex
-     *            the AccountingException thrown
      */
-    public final void setResult(AccountingException aex){
-        this.error = aex.getMessage();
+    public final void setErrorMessage(String error){
+        this.error = error;
     }
 }

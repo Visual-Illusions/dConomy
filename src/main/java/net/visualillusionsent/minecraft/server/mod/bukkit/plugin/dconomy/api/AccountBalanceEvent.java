@@ -21,7 +21,6 @@ package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.Bukkit_Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
@@ -34,21 +33,21 @@ import org.bukkit.plugin.Plugin;
  */
 public abstract class AccountBalanceEvent extends Event{
     private final Mod_User plugin;
-    private final Mod_User user;
+    private final String username;
     private double balance = -1;
     private String error;
 
     /**
      * Constructs a new AccountBalanceEvent
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} requesting a balance
-     * @param user
-     *            the {@link Mod_User} to get a balance for
+     * @param username
+     *            the user's name to get a balance for
      */
-    public AccountBalanceEvent(Plugin plugin, Mod_User user){
-        this.plugin = new Bukkit_Plugin(plugin);
-        this.user = user;
+    public AccountBalanceEvent(Plugin caller, String username){
+        this.plugin = new Bukkit_Plugin(caller);
+        this.username = username;
     }
 
     /**
@@ -56,21 +55,21 @@ public abstract class AccountBalanceEvent extends Event{
      * 
      * @return the {@link Mod_User} requester
      */
-    public final Mod_User getRequester(){
+    public final Mod_User getCaller(){
         return plugin;
     }
 
     /**
-     * Gets the {@link Mod_User} who's balance is being requested for
+     * Gets the user's name who's balance is being requested for
      * 
-     * @return
+     * @return the user's name
      */
-    public final Mod_User getUser(){
-        return user;
+    public final String getUserName(){
+        return username;
     }
 
     /**
-     * Gets the balance of the {@link Mod_User}'s account
+     * Gets the balance of the user's account
      * 
      * @return the balance
      */
@@ -99,12 +98,9 @@ public abstract class AccountBalanceEvent extends Event{
 
     /**
      * Internal use method to set the error message should one have occurred
-     * 
-     * @param aex
-     *            the AccountingException thrown
      */
-    public final void setResult(AccountingException aex){
-        this.error = aex.getMessage();
+    public final void setErrorMessage(String error){
+        this.error = error;
     }
 
 }

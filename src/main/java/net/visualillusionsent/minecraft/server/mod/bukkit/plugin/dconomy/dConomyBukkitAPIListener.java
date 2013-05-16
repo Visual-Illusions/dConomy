@@ -43,47 +43,67 @@ public final class dConomyBukkitAPIListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletBalance(WalletBalanceEvent event){
         try {
-            event.setBalance(WalletHandler.getWallet(event.getUser()).getBalance());
+            if (WalletHandler.verifyAccount(event.getUserName())) {
+                event.setBalance(WalletHandler.getWalletByName(event.getUserName()).getBalance());
+            }
+            else {
+                event.setErrorMessage("Wallet Not Found");
+            }
         }
         catch (AccountingException aex) {
-            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getRequester().getName() + "'. Reason: " + aex.getMessage());
-            event.setResult(aex);
+            dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
+            event.setErrorMessage(aex.getMessage());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletDeposit(WalletDepositEvent event){
         try {
-            WalletHandler.getWallet(event.getRecipient()).deposit(event.getDeposit());
-            Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getSender(), event.getRecipient(), WalletTransaction.ActionType.PLUGIN_DEPOSIT, event.getDeposit())));
+            if (WalletHandler.verifyAccount(event.getUserName())) {
+                WalletHandler.getWalletByName(event.getUserName()).deposit(event.getDeposit());
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_DEPOSIT, event.getDeposit())));
+            }
+            else {
+                event.setErrorMessage("Wallet Not Found");
+            }
         }
         catch (AccountingException aex) {
-            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getSender().getName() + "'. Reason: " + aex.getMessage());
-            event.setResult(aex);
+            dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
+            event.setErrorMessage(aex.getMessage());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletDebit(WalletDebitEvent event){
         try {
-            WalletHandler.getWallet(event.getRecipient()).deposit(event.getDebit());
-            Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getSender(), event.getRecipient(), WalletTransaction.ActionType.PLUGIN_DEBIT, event.getDebit())));
+            if (WalletHandler.verifyAccount(event.getUserName())) {
+                WalletHandler.getWalletByName(event.getUserName()).debit(event.getDebit());
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_DEBIT, event.getDebit())));
+            }
+            else {
+                event.setErrorMessage("Wallet Not Found");
+            }
         }
         catch (AccountingException aex) {
-            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getSender().getName() + "'. Reason: " + aex.getMessage());
-            event.setResult(aex);
+            dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
+            event.setErrorMessage(aex.getMessage());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void walletSet(WalletSetBalanceEvent event){
         try {
-            WalletHandler.getWallet(event.getRecipient()).deposit(event.getToSet());
-            Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getSender(), event.getRecipient(), WalletTransaction.ActionType.PLUGIN_SET, event.getToSet())));
+            if (WalletHandler.verifyAccount(event.getUserName())) {
+                WalletHandler.getWalletByName(event.getUserName()).setBalance(event.getToSet());
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_SET, event.getToSet())));
+            }
+            else {
+                event.setErrorMessage("Wallet Not Found");
+            }
         }
         catch (AccountingException aex) {
-            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getSender().getName() + "'. Reason: " + aex.getMessage());
-            event.setResult(aex);
+            dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
+            event.setErrorMessage(aex.getMessage());
         }
     }
 

@@ -19,7 +19,6 @@
  */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
@@ -36,15 +35,15 @@ public final class WalletDebitEvent extends AccountDebitEvent{
     /**
      * Constructs a new WalletDebitEvent
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} asking to take money
-     * @param recipient
-     *            the {@link Mod_User} who is having money taken
+     * @param username
+     *            the user's name who is having money taken
      * @param debit
      *            the amount to be removed
      */
-    public WalletDebitEvent(Plugin plugin, Mod_User recipient, double debit){
-        super(plugin, recipient, debit);
+    public WalletDebitEvent(Plugin caller, String username, double debit){
+        super(caller, username, debit);
     }
 
     // Bukkit Event methods

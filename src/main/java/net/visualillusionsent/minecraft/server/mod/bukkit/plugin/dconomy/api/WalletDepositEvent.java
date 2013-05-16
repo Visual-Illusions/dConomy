@@ -20,7 +20,6 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -36,15 +35,15 @@ public final class WalletDepositEvent extends AccountDepositEvent{
     /**
      * Constructs a new WalletDepositEvent
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} giving money
-     * @param recipient
-     *            the {@link Mod_User} who is having money deposited
+     * @param username
+     *            the user's name who is having money deposited
      * @param deposit
      *            the amount to be deposited
      */
-    public WalletDepositEvent(Plugin plugin, Mod_User recipient, double deposit){
-        super(plugin, recipient, deposit);
+    public WalletDepositEvent(Plugin caller, String username, double deposit){
+        super(caller, username, deposit);
     }
 
     // Bukkit Event methods

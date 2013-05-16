@@ -21,7 +21,6 @@ package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.Bukkit_Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
@@ -33,24 +32,24 @@ import org.bukkit.plugin.Plugin;
  * 
  */
 public abstract class AccountSetBalanceEvent extends Event{
-    private final Mod_User sender;
-    private final Mod_User recipient;
+    private final Mod_User caller;
+    private final String username;
     private final double toSet;
     private String error;
 
     /**
      * Constructs a new AccountSetBalanceEvent
      * 
-     * @param plugin
+     * @param caller
      *            the {@link Plugin} setting the balance
-     * @param recipient
-     *            the {@link Mod_User} who is having their balance set
+     * @param username
+     *            the user's name who is having their balance set
      * @param toSet
      *            the amount to set the account to
      */
-    public AccountSetBalanceEvent(Plugin plugin, Mod_User recipient, double toSet){
-        this.sender = new Bukkit_Plugin(plugin);
-        this.recipient = recipient;
+    public AccountSetBalanceEvent(Plugin caller, String username, double toSet){
+        this.caller = new Bukkit_Plugin(caller);
+        this.username = username;
         this.toSet = toSet;
     }
 
@@ -59,17 +58,17 @@ public abstract class AccountSetBalanceEvent extends Event{
      * 
      * @return the {@link Mod_User}(plugin)
      */
-    public final Mod_User getSender(){
-        return sender;
+    public final Mod_User getCaller(){
+        return caller;
     }
 
     /**
-     * Gets the {@link Mod_User} who is having balance set
+     * Gets the user's name who is having balance set
      * 
-     * @return the {@link Mod_User}
+     * @return the user's name
      */
-    public final Mod_User getRecipient(){
-        return recipient;
+    public final String getUserName(){
+        return username;
     }
 
     /**
@@ -92,11 +91,8 @@ public abstract class AccountSetBalanceEvent extends Event{
 
     /**
      * Internal use method to set the error message should one have occurred
-     * 
-     * @param aex
-     *            the AccountingException thrown
      */
-    public final void setResult(AccountingException aex){
-        this.error = aex.getMessage();
+    public final void setErrorMessage(String error){
+        this.error = error;
     }
 }
