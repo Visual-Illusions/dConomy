@@ -28,8 +28,10 @@ public final class WalletPayCommand extends dConomyCommand{
         Wallet userWallet = WalletHandler.getWalletByName(user.getName());
         Wallet payeeWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
         try {
-            userWallet.debit(args[0]);
+            userWallet.testDebit(args[0]);
+            payeeWallet.testDeposit(args[0]);
             payeeWallet.deposit(args[0]);
+            userWallet.debit(args[0]);
             user.message("paid.user", theUser == null ? "SERVER" : theUser.getName(), Double.parseDouble(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.PAY, Double.parseDouble(args[0])));
         }

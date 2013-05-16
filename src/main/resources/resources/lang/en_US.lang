@@ -3,6 +3,7 @@
 error.permission=You do not have permission to use that command.
 error.nan=Invalid number given.
 error.no.money=Not enough money to pay that amount.
+error.money.max=$c6{0}$cC already has max allowed balance.
 error.args=You did not give enough arguments.
 error.404.wallet=Could not find $c3WALLET$cC for$c6 {0}.
 error.404.user=Could not find User: {0}.

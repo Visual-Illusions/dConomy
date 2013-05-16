@@ -14,7 +14,7 @@ public final class WalletBaseCommand extends dConomyCommand{
 
     protected final void execute(Mod_User user, String[] args){
         Wallet theWallet;
-        if (args.length == 1) {
+        if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
             Mod_User theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
             if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
                 user.error("error.404.user", args[0]);

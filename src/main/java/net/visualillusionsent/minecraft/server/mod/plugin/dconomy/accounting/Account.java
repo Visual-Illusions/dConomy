@@ -103,6 +103,21 @@ public abstract class Account{
         return deposit(testArgumentString(add));
     }
 
+    public void testDeposit(String add) throws AccountingException{
+        testDeposit(testArgumentString(add));
+    }
+
+    public void testDeposit(double add) throws AccountingException{
+        double balance = this.balance + testArgumentDouble(add);
+        double max = dCoBase.getProperties().getDouble("max.account.balance");
+        if (balance > max) {
+            balance = max;
+            if (!this.owner.equals("SERVER")) {
+                throw new AccountingException("error.money.max");
+            }
+        }
+    }
+
     /**
      * Debits money from an account
      * 
@@ -115,10 +130,6 @@ public abstract class Account{
     public double debit(double remove) throws AccountingException{
         double toRemove = testArgumentDouble(remove);
         balance -= toRemove;
-        double max = dCoBase.getProperties().getDouble("max.account.balance");
-        if (balance > max) {
-            balance = max;
-        }
         this.save();
         return balance;
     }

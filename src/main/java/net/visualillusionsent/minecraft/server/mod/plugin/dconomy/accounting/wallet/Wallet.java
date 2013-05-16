@@ -1,6 +1,7 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
 
 public abstract class Wallet extends Account{
@@ -18,6 +19,16 @@ public abstract class Wallet extends Account{
             return this.owner.equals(obj);
         }
         return false;
+    }
+
+    public final void testDebit(double remove){
+        if (balance - remove < 0) {
+            throw new AccountingException("error.no.money");
+        }
+    }
+
+    public final void testDebit(String remove){
+        testDebit(this.testArgumentString(remove));
     }
 
     @Override
