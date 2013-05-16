@@ -49,15 +49,21 @@ public final class dConomy extends JavaPlugin{
 
     @Override
     public final void onDisable(){
-        base.cleanUp();
+        base.cleanUp(); // Clean Up
     }
 
     @Override
     public final void onEnable(){
+        // Create dCoBase, initializing properties and such
         base = new dCoBase(new Bukkit_Server(getServer(), this), getLogger());
+        // Cause Wallets to load
         WalletHandler.initialize();
+        // Initialize Listener
         new dConomyBukkitAPIListener(this);
+        // Register WalletTransaction
         dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class, WalletTransaction.class);
+
+        // Initialize Commands
         infoCmd = new InformationCommand();
         walletbase = new WalletBaseCommand();
         walletadd = new WalletAddCommand();

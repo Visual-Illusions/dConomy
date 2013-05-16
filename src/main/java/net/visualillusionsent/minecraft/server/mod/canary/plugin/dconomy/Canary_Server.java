@@ -1,3 +1,22 @@
+/* 
+ * Copyright 2011 - 2013 Visual Illusions Entertainment.
+ *  
+ * This file is part of dConomy.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see http://www.gnu.org/licenses/gpl.html
+ * 
+ * Source Code available @ https://github.com/Visual-Illusions/dConomy
+ */
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,7 +28,6 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.AccountTransactionHook;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MCChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
@@ -18,18 +36,27 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
+/**
+ * Canary Server wrapper for Mod_Server implementation
+ * 
+ * @author Jason (darkdiplomat)
+ * 
+ */
 public class Canary_Server implements Mod_Server, Mod_User{
 
     private final Server serv;
-    private final Plugin dCo;
+    private final dConomy dCo;
     private final ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>> transactions;
 
-    public Canary_Server(Server serv, Plugin dCo){
+    public Canary_Server(Server serv, dConomy dCo){
         this.serv = serv;
         this.dCo = dCo;
         this.transactions = new ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Mod_User getUser(String name){
         Player player = serv.matchPlayer(name);
@@ -45,31 +72,49 @@ public class Canary_Server implements Mod_Server, Mod_User{
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Logger getServerLogger(){
         return dCo.getLogman();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final ModType getModType(){
         return ModType.CANARY;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getName(){
         return "SERVER";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasPermission(String perm){
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isConsole(){
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void error(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
@@ -80,6 +125,9 @@ public class Canary_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void message(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
@@ -90,6 +138,9 @@ public class Canary_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void newTransaction(AccountTransaction transaction){
         for (Class<?> clazz : transactions.keySet()) {
@@ -106,6 +157,9 @@ public class Canary_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction){
@@ -116,6 +170,9 @@ public class Canary_Server implements Mod_Server, Mod_User{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deregisterTransactionHandler(Class<?> clazz){
         if (transactions.containsKey(clazz)) {

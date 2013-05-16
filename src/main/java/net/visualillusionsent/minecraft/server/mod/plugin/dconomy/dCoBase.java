@@ -43,37 +43,37 @@ public final class dCoBase{
         return server;
     }
 
-    public static void info(String msg){
+    public final static void info(String msg){
         $.logger.info(msg);
     }
 
-    public static void info(String msg, Throwable thrown){
+    public final static void info(String msg, Throwable thrown){
         $.logger.log(Level.INFO, msg, thrown);
     }
 
-    public static void warning(String msg){
+    public final static void warning(String msg){
         $.logger.warning(msg);
     }
 
-    public static void warning(String msg, Throwable thrown){
+    public final static void warning(String msg, Throwable thrown){
         $.logger.log(Level.WARNING, msg, thrown);
     }
 
-    public static void severe(String msg){
+    public final static void severe(String msg){
         $.logger.severe(msg);
     }
 
-    public static void severe(String msg, Throwable thrown){
+    public final static void severe(String msg, Throwable thrown){
         $.logger.log(Level.SEVERE, msg, thrown);
     }
 
-    public static void stacktrace(Throwable thrown){
+    public final static void stacktrace(Throwable thrown){
         if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
             $.logger.log(dCoLevel.STACKTRACE, "Stacktrace: ", thrown);
         }
     }
 
-    public static void debug(String msg){
+    public final static void debug(String msg){
         if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
             $.logger.log(dCoLevel.GENERAL, msg);
         }

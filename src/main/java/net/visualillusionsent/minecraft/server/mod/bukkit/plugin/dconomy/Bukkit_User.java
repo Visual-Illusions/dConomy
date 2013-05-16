@@ -19,16 +19,28 @@
  */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
+import net.canarymod.api.OfflinePlayer;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * Bukkit Offline User implementation
+ * 
+ * @author Jason (darkdiplomat)
+ */
 public final class Bukkit_User implements Mod_User{
 
     private final Player player;
 
+    /**
+     * Constructs a new Bukkit_User
+     * 
+     * @param player
+     *            the {@link OfflinePlayer} to wrap
+     */
     public Bukkit_User(Player player){
         this.player = player;
     }

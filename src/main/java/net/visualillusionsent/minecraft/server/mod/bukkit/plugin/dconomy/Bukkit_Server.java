@@ -35,6 +35,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+/**
+ * Bukkit Server wrapper for Mod_Server implementation
+ * 
+ * @author Jason (darkdiplomat)
+ * 
+ */
 public final class Bukkit_Server implements Mod_Server, Mod_User{
 
     private final Server serv;
