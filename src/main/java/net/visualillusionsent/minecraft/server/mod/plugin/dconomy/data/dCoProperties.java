@@ -3,8 +3,6 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.PropertiesFile;
 
@@ -14,12 +12,7 @@ public final class dCoProperties{
     private final String configDir;
 
     public dCoProperties(){
-        if (dCoBase.getServer().getModType() == ModType.FORGE) {
-            configDir = "dConomy3/";
-        }
-        else {
-            configDir = "plugins/dConomy3/";
-        }
+        configDir = "config/dConomy3/";
 
         File dir = new File(configDir);
         if (!dir.exists()) {

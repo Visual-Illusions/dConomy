@@ -10,9 +10,9 @@ error.min=Amount specified was less than the minimum of 0.01
 account.balance=$cAYour $c3WALLET$cA balance is $cE{0,number,#.##} $m$cA.
 account.balance.other=$c6{0} $c3WALLET$cA balance is $cE{1,number,#.##} $m$cA.
 paid.user=$cAYou paid $cE{1,number,#.##} $m$cA to $c6{0}$cA.
-admin.add.balance=$cCadmin.add.balance message missing.
-admin.remove.balance=$cCadmin.remove.balance message missing.
-admin.set.balance=$cCadmin.set.balance message missing.
+admin.add.balance=$cAAdded $cE{1,number,#.##} $m$cA to $c6{0}$c3 Wallet Balance$cA.
+admin.remove.balance=$cARemoved $cE{1,number,#.##} $m$cA from $c6{0}$c3 Wallet Balance$cA.
+admin.set.balance=$cASet $c6{0}$cA $c3 Wallet Balance$cA to $cE{1,number,#.##} $m$cA.
 admin.reset.balance=$cCadmin.reset.balance message missing.
 ##################################################
 # © Copyright 2012-2013 Visual Illusions Entertainment. 

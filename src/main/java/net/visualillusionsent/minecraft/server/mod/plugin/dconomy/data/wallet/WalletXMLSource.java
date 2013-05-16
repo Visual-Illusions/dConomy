@@ -16,7 +16,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-public final class WalletXMLSource extends WalletDataSource{
+public final class WalletXMLSource implements WalletDataSource{
 
     private final Format xmlform = Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator(SystemUtils.LINE_SEP);
     private final XMLOutputter outputter = new XMLOutputter(xmlform);
@@ -83,10 +83,10 @@ public final class WalletXMLSource extends WalletDataSource{
     }
 
     @Override
-    public final void saveAccount(Account account){
+    public final boolean saveAccount(Account account){
+        boolean success = true;
         synchronized (lock) {
             File walletFile = new File(wallet_Path);
-            Exception ex = null;
             try {
                 Document doc = builder.build(walletFile);
                 Element root = doc.getRootElement();
@@ -110,8 +110,10 @@ public final class WalletXMLSource extends WalletDataSource{
                     writer = new FileWriter(walletFile);
                     outputter.output(root, writer);
                 }
-                catch (IOException e) {
-                    ex = e;
+                catch (IOException ex) {
+                    dCoBase.severe("Failed to write to Wallets file...");
+                    dCoBase.stacktrace(ex);
+                    success = false;
                 }
                 finally {
                     try {
@@ -121,25 +123,25 @@ public final class WalletXMLSource extends WalletDataSource{
                     }
                     catch (IOException e) {}
                     writer = null;
-                    if (ex != null) {
-                        dCoBase.severe("Failed to write to Wallets file...");
-                        dCoBase.stacktrace(ex);
-                    }
                 }
             }
             catch (JDOMException jdomex) {
                 dCoBase.severe("JDOM Exception while trying to save wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(jdomex);
+                success = false;
             }
             catch (IOException ioex) {
                 dCoBase.severe("Input/Output Exception while trying to save wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(ioex);
+                success = false;
             }
         }
+        return success;
     }
 
     @Override
-    public final void reloadAccount(Account account){
+    public final boolean reloadAccount(Account account){
+        boolean success = true;
         synchronized (lock) {
             File walletFile = new File(wallet_Path);
             try {
@@ -157,11 +159,16 @@ public final class WalletXMLSource extends WalletDataSource{
             catch (JDOMException jdomex) {
                 dCoBase.severe("JDOM Exception while trying to reload wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(jdomex);
+                success = false;
             }
             catch (IOException ioex) {
                 dCoBase.severe("Input/Output Exception while trying to reload wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(ioex);
+                success = false;
             }
         }
+        return success;
     }
+
+    public final void cleanUp(){}
 }

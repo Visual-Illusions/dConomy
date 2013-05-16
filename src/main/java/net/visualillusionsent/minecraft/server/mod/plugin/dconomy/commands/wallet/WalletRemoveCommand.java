@@ -24,8 +24,8 @@ public final class WalletRemoveCommand extends dConomyCommand{
             return;
         }
         try {
-            double newbal = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).debit(args[0]);
-            user.error("admin.remove.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
+            WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).debit(args[0]);
+            user.error("admin.remove.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_REMOVE, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

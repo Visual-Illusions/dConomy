@@ -26,8 +26,8 @@ public final class WalletAddCommand extends dConomyCommand{
             }
         }
         try {
-            double newbal = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).deposit(args[0]);
-            user.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), newbal);
+            WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).deposit(args[0]);
+            user.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

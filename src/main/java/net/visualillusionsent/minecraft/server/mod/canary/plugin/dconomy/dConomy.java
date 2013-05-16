@@ -57,10 +57,10 @@ public final class dConomy extends Plugin{
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ierr.getCause());
         }
         catch (CommandDependencyException cdex) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex.getCause());
+            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex);
         }
         catch (Exception ex) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex.getCause());
+            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex);
         }
         return false;
     }

@@ -45,9 +45,6 @@ public class dCoDataHandler{
     public void killOutput(){
         clearQueue();
         outThread.terminate();
-        // if(source.getType() == DataSourceType.SQLITE){
-        // ((SQLite_Source)source).closeDatabase();
-        // }
     }
 
     public final DataSourceType getDataSourceType(){

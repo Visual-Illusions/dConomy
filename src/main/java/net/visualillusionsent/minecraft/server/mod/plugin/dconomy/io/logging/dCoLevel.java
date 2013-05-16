@@ -6,10 +6,10 @@ public final class dCoLevel extends Level{
 
     private static final long serialVersionUID = 210434042012L;
     private static int baselvl = 15000;
-    private static final String RD = "DCONOMY-DEBUG-";
+    private static final String RD = "DEBUG-";
     public static final dCoLevel //
-                    STACKTRACE = new dCoLevel(RD.concat("STACKTRACE"), genLevel()), //
-                    GENERAL = new dCoLevel(RD.concat("GENERAL"), genLevel());
+            STACKTRACE = new dCoLevel(RD.concat("STACKTRACE"), genLevel()), //
+            GENERAL = new dCoLevel(RD.concat("GENERAL"), genLevel());
 
     protected dCoLevel(String name, int intvalue){
         super(name, intvalue);

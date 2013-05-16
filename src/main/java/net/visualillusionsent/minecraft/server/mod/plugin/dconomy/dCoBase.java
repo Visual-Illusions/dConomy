@@ -33,6 +33,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wal
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoProperties;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLite_Source;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
 import net.visualillusionsent.utils.ProgramStatus;
 import net.visualillusionsent.utils.VersionChecker;
@@ -69,7 +70,7 @@ public final class dCoBase{
             vc = new VersionChecker(name, getRawVersion(), build, version_check_URL, status, true);
             checkVersion();
             props = new dCoProperties();
-            handler = new dCoDataHandler(DataSourceType.XML);
+            handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
         }
         catch (Exception ex) {
             throw new InitializationError(ex);
@@ -153,16 +154,8 @@ public final class dCoBase{
         return $.version;
     }
 
-    public final static boolean isAlpah(){
-        return $.status == ProgramStatus.ALPHA;
-    }
-
-    public final static boolean isBeta(){
-        return $.status == ProgramStatus.BETA;
-    }
-
-    public final static boolean isReleaseCandidate(){
-        return $.status == ProgramStatus.RELEASE_CANDIDATE;
+    public final static ProgramStatus getProgramStatus(){
+        return $.status;
     }
 
     private void generateVersion(){
@@ -255,5 +248,9 @@ public final class dCoBase{
 
     public final void cleanUp(){
         WalletHandler.cleanUp();
+        $.handler.killOutput();
+        if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
+            WalletSQLite_Source.cleanUp();
+        }
     }
 }

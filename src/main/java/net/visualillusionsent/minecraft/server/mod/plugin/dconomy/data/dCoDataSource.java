@@ -8,7 +8,7 @@ public interface dCoDataSource{
 
     boolean load();
 
-    void saveAccount(Account account);
+    boolean saveAccount(Account account);
 
-    void reloadAccount(Account account);
+    boolean reloadAccount(Account account);
 }
