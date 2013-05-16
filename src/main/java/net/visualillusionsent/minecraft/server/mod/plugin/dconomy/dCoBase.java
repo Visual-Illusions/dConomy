@@ -19,6 +19,12 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.visualillusionsent.lang.InitializationError;
@@ -28,6 +34,8 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourc
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoProperties;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
+import net.visualillusionsent.utils.ProgramStatus;
+import net.visualillusionsent.utils.VersionChecker;
 
 /**
  * dConomy Base class.<br>
@@ -41,6 +49,13 @@ public final class dCoBase{
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
+    private final String name = "dConomy";
+    private final String version_check_URL = "http://visualillusionsent.net/minecraft/plugins/";
+    private final VersionChecker vc;
+    private ProgramStatus status;
+    private String version;
+    private String build;
+
     private static dCoBase $;
     private static Mod_Server server;
 
@@ -49,6 +64,10 @@ public final class dCoBase{
             $ = this;
             this.logger = logger;
             server = serv;
+            generateVersion();
+            checkStatus();
+            vc = new VersionChecker(name, getRawVersion(), build, version_check_URL, status, true);
+            checkVersion();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.XML);
         }
@@ -117,6 +136,120 @@ public final class dCoBase{
     public final static void debug(String msg){
         if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
             $.logger.log(dCoLevel.GENERAL, msg);
+        }
+    }
+
+    public final static String getVersion(){
+        if ($.version == null) {
+            $.generateVersion();
+        }
+        return $.version.concat(".").concat($.build);
+    }
+
+    public final static String getRawVersion(){
+        if ($.version == null) {
+            $.generateVersion();
+        }
+        return $.version;
+    }
+
+    public final static boolean isAlpah(){
+        return $.status == ProgramStatus.ALPHA;
+    }
+
+    public final static boolean isBeta(){
+        return $.status == ProgramStatus.BETA;
+    }
+
+    public final static boolean isReleaseCandidate(){
+        return $.status == ProgramStatus.RELEASE_CANDIDATE;
+    }
+
+    private void generateVersion(){
+        try {
+            Manifest manifest = getManifest();
+            Attributes mainAttribs = manifest.getMainAttributes();
+            version = mainAttribs.getValue("Version").replace("-SNAPSHOT", "");
+            build = mainAttribs.getValue("Build");
+            try {
+                status = ProgramStatus.valueOf(mainAttribs.getValue("ProgramStatus"));
+            }
+            catch (IllegalArgumentException iaex) {
+                status = ProgramStatus.UNKNOWN;
+            }
+        }
+        catch (Exception e) {
+            warning(e.getMessage());
+        }
+        if (version == null) {
+            version = "UNKNOWN";
+        }
+        else if (build == null) {
+            build = "UNKNOWN";
+        }
+    }
+
+    private final Manifest getManifest() throws Exception{
+        Manifest toRet = null;
+        Exception ex = null;
+        JarFile jar = null;
+        try {
+            jar = new JarFile(getJarPath());
+            toRet = jar.getManifest();
+        }
+        catch (Exception e) {
+            ex = e;
+        }
+        finally {
+            if (jar != null) {
+                try {
+                    jar.close();
+                }
+                catch (IOException e) {}
+            }
+            if (ex != null) {
+                throw ex;
+            }
+        }
+        return toRet;
+    }
+
+    private final String getJarPath(){ // For when the jar isn't dConomy3.jar
+        try {
+            CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
+            return codeSource.getLocation().toURI().getPath();
+        }
+        catch (URISyntaxException ex) {}
+        return "plugins/dConomy3.jar";
+    }
+
+    private final void checkStatus(){
+        if (status == ProgramStatus.UNKNOWN) {
+            severe("dConomy has declared itself as an 'UNKNOWN STATUS' build. Use is not advised and could cause damage to your system!");
+        }
+        else if (status == ProgramStatus.ALPHA) {
+            warning("dConomy has declared itself as a 'ALPHA' build. Production use is not advised!");
+        }
+        else if (status == ProgramStatus.BETA) {
+            warning("dConomy has declared itself as a 'BETA' build. Production use is not advised!");
+        }
+        else if (status == ProgramStatus.RELEASE_CANDIDATE) {
+            info("dConomy has declared itself as a 'Release Candidate' build. Expect some bugs.");
+        }
+    }
+
+    public final static VersionChecker getVersionChecker(){
+        return $.vc;
+    }
+
+    private final void checkVersion(){
+        Boolean islatest = vc.isLatest();
+        if (islatest == null) {
+            warning("VersionCheckerError: " + vc.getErrorMessage());
+        }
+        else if (!vc.isLatest()) {
+            warning(vc.getUpdateAvailibleMessage());
+            warning("You can view update info @ http://wiki.visualillusionsent.net/dConomy#ChangeLog");
         }
     }
 

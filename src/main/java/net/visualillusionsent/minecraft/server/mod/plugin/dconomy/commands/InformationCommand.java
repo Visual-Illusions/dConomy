@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MCChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.utils.StringUtils;
+import net.visualillusionsent.utils.VersionChecker;
 
 public final class InformationCommand extends dConomyCommand{
     private final List<String> about;
@@ -13,10 +15,10 @@ public final class InformationCommand extends dConomyCommand{
     public InformationCommand(){
         super(0);
         List<String> pre = new ArrayList<String>();
-        pre.add(center(MCChatForm.ORANGE + "-" + MCChatForm.LIGHT_GREEN + " dConomy Core v3.0 " + MCChatForm.ORANGE + "-"));
-
+        pre.add(center(MCChatForm.ORANGE + "---" + MCChatForm.LIGHT_GREEN + " dConomy Core v" + dCoBase.getRawVersion() + MCChatForm.ORANGE + " ---"));
+        pre.add("$VERSION_CHECK$");
         pre.add(MCChatForm.ORANGE + "Lead Developer:" + MCChatForm.LIGHT_GREEN + " DarkDiplomat");
-        // pre.add(MCChatForm.ORANGE + "Contributers:" + MCChatForm.LIGHT_GREEN+" "); //If someone adds to dConomy, their name can go here
+        pre.add(MCChatForm.ORANGE + "Contributers:" + MCChatForm.LIGHT_GREEN + " "); // If someone adds to dConomy, their name can go here
         pre.add(MCChatForm.ORANGE + "Website:" + MCChatForm.LIGHT_GREEN + " http://wiki.visualillusionsent.net/dConomy");
         pre.add(MCChatForm.ORANGE + "Issues:" + MCChatForm.LIGHT_GREEN + " https://github.com/Visual-Illusions/dConomy/issues");
 
@@ -27,7 +29,22 @@ public final class InformationCommand extends dConomyCommand{
 
     public final void execute(Mod_User user, String[] args){
         for (String msg : about) {
-            user.message(msg);
+            if (msg.equals("$VERSION_CHECK$")) {
+                VersionChecker vc = dCoBase.getVersionChecker();
+                Boolean islatest = vc.isLatest();
+                if (islatest == null) {
+                    user.message(center(MCChatForm.GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
+                }
+                else if (!vc.isLatest()) {
+                    user.message(center(MCChatForm.GRAY + vc.getUpdateAvailibleMessage()));
+                }
+                else {
+                    user.message(center(MCChatForm.LIGHT_GREEN + "Latest Version Installed"));
+                }
+            }
+            else {
+                user.message(msg);
+            }
         }
     }
 
