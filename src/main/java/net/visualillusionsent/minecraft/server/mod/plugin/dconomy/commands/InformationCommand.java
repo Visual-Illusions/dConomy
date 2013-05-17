@@ -41,7 +41,7 @@ public final class InformationCommand extends dConomyCommand{
         pre.add(MCChatForm.CYAN + "Website:" + MCChatForm.LIGHT_GREEN + " http://wiki.visualillusionsent.net/dConomy");
         pre.add(MCChatForm.CYAN + "Issues:" + MCChatForm.LIGHT_GREEN + " https://github.com/Visual-Illusions/dConomy/issues");
 
-        // Next 3 lines should always remain at the end of the About
+        // Next 2 lines should always remain at the end of the About
         pre.add(center("§aCopyright © 2011-2013 §2Visual §6I§9l§bl§4u§as§2i§5o§en§7s §2Entertainment"));
         about = Collections.unmodifiableList(pre);
     }
