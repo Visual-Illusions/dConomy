@@ -79,7 +79,7 @@ public final class WalletHandler{
     }
 
     /**
-     * Gets a {@link Waller} for a {@link Mod_User}
+     * Gets a {@link Wallet} for a {@link Mod_User}
      * 
      * @param user
      *            the {@link Mod_User} to get a wallet for
