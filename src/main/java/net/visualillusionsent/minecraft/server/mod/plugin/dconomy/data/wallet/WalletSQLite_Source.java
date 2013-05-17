@@ -41,7 +41,7 @@ public final class WalletSQLite_Source extends WalletSQL_Source{
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:".concat(db_Path));
             st = conn.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` (`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, PRIMARY KEY (`owner`))");
+            st.execute("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` (`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             st.close();
         }
         catch (SQLException sqlex) {

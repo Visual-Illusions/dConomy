@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.UserWallet;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 
 public abstract class WalletSQL_Source implements WalletDataSource{
     protected Connection conn;
@@ -43,7 +44,8 @@ public abstract class WalletSQL_Source implements WalletDataSource{
             while (rs.next()) {
                 String name = rs.getString("owner");
                 double balance = rs.getDouble("balance");
-                new UserWallet(name, balance, this);
+                boolean locked = rs.getBoolean("lockedOut");
+                new UserWallet(name, balance, locked, this);
                 load++;
             }
             dCoBase.info(String.format("Loaded %d Wallets...", load));
@@ -82,16 +84,18 @@ public abstract class WalletSQL_Source implements WalletDataSource{
                 boolean found = rs.next();
                 if (found) {
                     ps.close();
-                    ps = conn.prepareStatement("UPDATE `" + wallet_table + "` SET `balance`=? WHERE `owner`=?");
+                    ps = conn.prepareStatement("UPDATE `" + wallet_table + "` SET `balance`=?, `lockedOut`=? WHERE `owner`=?");
                     ps.setDouble(1, wallet.getBalance());
-                    ps.setString(2, wallet.getOwner());
+                    ps.setInt(2, ((Wallet) wallet).isLocked() ? 1 : 0);
+                    ps.setString(3, wallet.getOwner());
                     ps.execute();
                 }
                 else {
                     ps.close();
-                    ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`) VALUES(?,?)");
+                    ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`,`lockedOut`) VALUES(?,?,?)");
                     ps.setString(1, wallet.getOwner());
-                    ps.setDouble(2, wallet.getBalance());
+                    ps.setInt(2, ((Wallet) wallet).isLocked() ? 1 : 0);
+                    ps.setDouble(3, wallet.getBalance());
                     ps.execute();
                 }
                 dCoBase.debug("Wallet saved!");
@@ -128,6 +132,7 @@ public abstract class WalletSQL_Source implements WalletDataSource{
             rs = ps.executeQuery();
             while (rs.next()) {
                 wallet.setBalance(rs.getDouble("balance"));
+                ((Wallet) wallet).setLockOut(rs.getBoolean("lockedOut"));
             }
             dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner()));
         }

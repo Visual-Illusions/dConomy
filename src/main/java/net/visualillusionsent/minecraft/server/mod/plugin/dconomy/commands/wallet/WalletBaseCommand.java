@@ -44,11 +44,21 @@ public final class WalletBaseCommand extends dConomyCommand{
                 return;
             }
             theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
-            user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
+            if (theWallet.isLocked()) {
+                user.message("error.lock.out", theUser == null ? "SERVER" : theUser.getName());
+            }
+            else {
+                user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
+            }
         }
         else {
             theWallet = WalletHandler.getWalletByName(user.getName());
-            user.message("account.balance", Double.valueOf(theWallet.getBalance()));
+            if (theWallet.isLocked()) {
+                user.message("error.lock.out", user.getName());
+            }
+            else {
+                user.message("account.balance", Double.valueOf(theWallet.getBalance()));
+            }
         }
     }
 }

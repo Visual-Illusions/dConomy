@@ -28,7 +28,9 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.Infor
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletAddCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletBaseCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletLockCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletPayCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletReloadCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
@@ -46,7 +48,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class dConomy extends JavaPlugin{
     private dCoBase base;
-    private dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset;
+    private dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
 
     @Override
     public final void onDisable(){
@@ -72,6 +74,8 @@ public final class dConomy extends JavaPlugin{
         walletremove = new WalletRemoveCommand();
         walletset = new WalletSetCommand();
         walletreset = new WalletResetCommand();
+        walletreload = new WalletReloadCommand();
+        walletlock = new WalletLockCommand();
     }
 
     @Override
@@ -111,7 +115,17 @@ public final class dConomy extends JavaPlugin{
                 }
                 else if (subcmd.equals("reset")) {
                     if (!walletreset.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet reset <amount> <user>");
+                        sender.sendMessage(ChatColor.RED + "/wallet reset <user>");
+                    }
+                }
+                else if (subcmd.equals("reload")) {
+                    if (!walletreload.parseCommand(user, args, true)) {
+                        sender.sendMessage(ChatColor.RED + "/wallet reload <user>");
+                    }
+                }
+                else if (subcmd.equals("lock")) {
+                    if (!walletlock.parseCommand(user, args, true)) {
+                        sender.sendMessage(ChatColor.RED + "/wallet lock <yes|no> <user>");
                     }
                 }
                 else {

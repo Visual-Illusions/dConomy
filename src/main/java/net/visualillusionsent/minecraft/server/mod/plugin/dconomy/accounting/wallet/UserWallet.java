@@ -37,11 +37,13 @@ public final class UserWallet extends Wallet{
      *            the owner's name
      * @param balance
      *            the current balance
+     * @param locked
+     *            whether or not the Wallet is locked out
      * @param source
      *            the {@link WalletDataSource} used to store the Wallet
      */
-    public UserWallet(String owner, double balance, WalletDataSource source){
-        super(owner, balance, source);
+    public UserWallet(String owner, double balance, boolean locked, WalletDataSource source){
+        super(owner, balance, locked, source);
         WalletHandler.addWallet(this);
     }
 
@@ -51,5 +53,13 @@ public final class UserWallet extends Wallet{
     @Override
     protected final void save(){
         dCoBase.getDataHandler().addToQueue(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean reload(){
+        return this.datasource.reloadAccount(this);
     }
 }

@@ -32,7 +32,7 @@ public final class ServerWallet extends Wallet{
     private final boolean maxAlways;
 
     public ServerWallet(boolean maxAlways){
-        super("SERVER", maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"), null);
+        super("SERVER", maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"), dCoBase.getProperties().getBooleanValue("server.account.locked"), null);
         this.maxAlways = maxAlways;
     }
 
@@ -108,5 +108,15 @@ public final class ServerWallet extends Wallet{
         if (!maxAlways) {
             dCoBase.getProperties().setServerBalance(getBalance());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean reload(){
+        this.balance = dCoBase.getProperties().getDouble("server.balance");
+        this.locked = dCoBase.getProperties().getBooleanValue("server.account.locked");
+        return true;
     }
 }

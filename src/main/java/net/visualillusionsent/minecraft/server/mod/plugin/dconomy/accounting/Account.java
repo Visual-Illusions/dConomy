@@ -32,7 +32,7 @@ public abstract class Account{
 
     protected final String owner;
     protected double balance;
-    private final dCoDataSource datasource;
+    protected final dCoDataSource datasource;
 
     /**
      * Constructs a new Account
@@ -234,6 +234,11 @@ public abstract class Account{
      * Override and insert Account saving code here
      */
     protected abstract void save();
+
+    /**
+     * Override and insert Account reload code here
+     */
+    public abstract boolean reload();
 
     /**
      * Gets the {@link dCoDataSource} associated with the Account

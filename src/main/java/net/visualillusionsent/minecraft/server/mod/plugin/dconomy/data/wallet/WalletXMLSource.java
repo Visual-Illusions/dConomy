@@ -26,8 +26,8 @@ import java.util.List;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.UserWallet;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.utils.SystemUtils;
-import org.jdom2.Comment;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -53,7 +53,6 @@ public final class WalletXMLSource implements WalletDataSource{
             dCoBase.info("Wallets file not found. Creating...");
             Element wallets = new Element("wallets");
             Document root = new Document(wallets);
-            wallets.addContent(new Comment("Modifing this file while server is running may cause issues!"));
             try {
                 writer = new FileWriter(wallet_Path);
                 outputter.output(root, writer);
@@ -82,7 +81,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
-                    new UserWallet(wallet.getAttributeValue("user"), wallet.getAttribute("balance").getDoubleValue(), this);
+                    new UserWallet(wallet.getAttributeValue("user"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
                     load++;
                 }
             }
@@ -115,6 +114,7 @@ public final class WalletXMLSource implements WalletDataSource{
                     String name = wallet.getChildText("name");
                     if (name.equals(account.getOwner())) {
                         wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
+                        wallet.getAttribute("lockedOut").setValue(String.valueOf(((Wallet) account).isLocked()));
                         found = true;
                         break;
                     }
@@ -123,6 +123,7 @@ public final class WalletXMLSource implements WalletDataSource{
                     Element newWallet = new Element("wallet");
                     newWallet.setAttribute("user", account.getOwner());
                     newWallet.setAttribute("balance", String.format("%.2f", account.getBalance()));
+                    newWallet.setAttribute("lockedOut", String.valueOf(((Wallet) account).isLocked()));
                     root.addContent(newWallet);
                 }
                 try {
@@ -171,6 +172,7 @@ public final class WalletXMLSource implements WalletDataSource{
                     String name = wallet.getChildText("name");
                     if (name.equals(account.getOwner())) {
                         account.setBalance(wallet.getAttribute("balance").getDoubleValue());
+                        ((Wallet) account).setLockOut(wallet.getAttribute("lockedOut").getBooleanValue());
                         break;
                     }
                 }

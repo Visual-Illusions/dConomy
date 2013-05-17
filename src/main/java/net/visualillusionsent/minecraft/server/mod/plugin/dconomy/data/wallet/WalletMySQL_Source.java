@@ -34,7 +34,7 @@ public final class WalletMySQL_Source extends WalletSQL_Source{
             PreparedStatement ps = null;
             dCoBase.debug("Testing Wallet table and creating if needed...");
             ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` " + //
-                    "(`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL PRIMARY KEY (`owner`))");
+                    "(`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             ps.execute();
             ps.close();
         }

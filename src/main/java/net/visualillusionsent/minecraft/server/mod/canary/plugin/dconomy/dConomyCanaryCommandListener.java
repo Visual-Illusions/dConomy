@@ -31,13 +31,15 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.Infor
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletAddCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletBaseCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletLockCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletPayCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletReloadCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
 
 public final class dConomyCanaryCommandListener implements CommandListener{
-    private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset;
+    private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
 
     dConomyCanaryCommandListener(dConomy dCo) throws CommandDependencyException{
         infoCmd = new InformationCommand();
@@ -47,6 +49,8 @@ public final class dConomyCanaryCommandListener implements CommandListener{
         walletremove = new WalletRemoveCommand();
         walletset = new WalletSetCommand();
         walletreset = new WalletResetCommand();
+        walletreload = new WalletReloadCommand();
+        walletlock = new WalletLockCommand();
         Canary.commands().registerCommands(this, dCo, false);
     }
 
@@ -133,6 +137,32 @@ public final class dConomyCanaryCommandListener implements CommandListener{
 
         if (!walletreset.parseCommand(user, args, true)) {
             msgrec.notice("/wallet reset <user>");
+        }
+    }
+
+    @Command(aliases = { "reload" },
+            description = "Used to reload a user's wallet from the datasource",
+            permissions = { "dconomy.admin.wallet.reload" },
+            toolTip = "/wallet reload <user>",
+            parent = "wallet")
+    public final void walletReload(MessageReceiver msgrec, String[] args){
+        Mod_User user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_User) dCoBase.getServer();
+
+        if (!walletreload.parseCommand(user, args, true)) {
+            msgrec.notice("/wallet reload <user>");
+        }
+    }
+
+    @Command(aliases = { "lock" },
+            description = "Used to lock/unlock a user's wallet from the datasource",
+            permissions = { "dconomy.admin.wallet.lock" },
+            toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
+            parent = "wallet")
+    public final void walletLock(MessageReceiver msgrec, String[] args){
+        Mod_User user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_User) dCoBase.getServer();
+
+        if (!walletlock.parseCommand(user, args, true)) {
+            msgrec.notice("/wallet lock <yes|no> <user>");
         }
     }
 }

@@ -118,7 +118,7 @@ public final class WalletHandler{
      * @return the new {@link Wallet}
      */
     public static final Wallet newWallet(String username){
-        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), $.source);
+        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, $.source);
         addWallet(wallet);
         return wallet;
     }

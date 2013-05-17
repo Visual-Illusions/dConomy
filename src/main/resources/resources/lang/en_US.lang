@@ -8,6 +8,7 @@ error.args=You did not give enough arguments.
 error.404.wallet=Could not find $c3WALLET$cC for$c6 {0}.
 error.404.user=Could not find User: {0}.
 error.min=Amount specified was less than the minimum of 0.01
+error.lock.out=$c6{0} $c3WALLET$cC is locked. If this is you, contact an Admin.
 account.balance=$cAYour $c3WALLET$cA balance is $cE{0,number,#.##} $m$cA.
 account.balance.other=$c6{0} $c3WALLET$cA balance is $cE{1,number,#.##} $m$cA.
 paid.user=$cAYou paid $cE{1,number,#.##} $m$cA to $c6{0}$cA.
@@ -15,6 +16,10 @@ admin.add.balance=$cAAdded $cE{1,number,#.##} $m$cA to $c6{0}$c3 Wallet Balance$
 admin.remove.balance=$cARemoved $cE{1,number,#.##} $m$cA from $c6{0}$c3 Wallet Balance$cA.
 admin.set.balance=$cASet $c6{0}$cA $c3 Wallet Balance$cA to $cE{1,number,#.##} $m$cA.
 admin.reset.balance=$cAReset $c6{0}$cA $c3 Wallet Balance$cA.
+admin.reload.wallet.success=$cAReloaded $c6{0}$cA $c3 Wallet Balance$cA.
+admin.reload.wallet.fail=$cCFailed to reload $c6{0}$cA $c3 Wallet Balance$cC.
+admin.wallet.locked=$cALocked $c6{0}$cA $c3 Wallet$cA.
+admin.wallet.unlocked=$cAUnlocked $c6{0}$cA $c3 Wallet$cA.
 ##################################################
 # © Copyright 2012-2013 Visual Illusions Entertainment. 
 # 

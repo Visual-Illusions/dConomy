@@ -30,6 +30,12 @@ commands:
   wallet reset:
     description: Resets the money in a User's wallet
     permission: dconomy.admin.wallet.reset
+  wallet reload:
+    description: Reloads a User's wallet from the datasource
+    permissions: dconomy.admin.wallet.reload
+  wallet lock:
+    description: Locks/Unlocks a User's wallet
+    permissions: dconomy.admin.wallet.lock
   dconomy:
     description: Displays build info about dConomy and a few other things.
     usage: /dconomy
@@ -55,6 +61,8 @@ permissions:
       dconomy.admin.wallet.remove: true
       dconomy.admin.wallet.set: true
       dconomy.admin.wallet.reset: true
+      dconomy.admin.wallet.reload: true
+      dconomy.admin.wallet.lock: true
   dconomy.admin.wallet.add:
     description: Gives rights to add money to a wallet
     default: op
@@ -66,6 +74,12 @@ permissions:
     default: op
   dconomy.admin.wallet.reset:
     description: Gives rights to reset the money in a wallet
+    default: op
+  dconomy.admin.wallet.reload:
+    description: Gives rights to reload a User's Wallet
+    default: op
+  dconomy.admin.wallet.lock:
+    description: Gives rights to lock/unlock a User's Wallet
     default: op
 
 ###################################################

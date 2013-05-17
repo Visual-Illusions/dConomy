@@ -30,9 +30,11 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.Wa
  * 
  */
 public abstract class Wallet extends Account{
+    protected boolean locked;
 
-    public Wallet(String owner, double balance, WalletDataSource source){
+    public Wallet(String owner, double balance, boolean locked, WalletDataSource source){
         super(owner, balance, source);
+        this.locked = locked;
     }
 
     /**
@@ -44,6 +46,9 @@ public abstract class Wallet extends Account{
      *             if unable to debit the money
      */
     public final void testDebit(double remove) throws AccountingException{
+        if (locked) {
+            throw new AccountingException("error.lock.out");
+        }
         if (balance - remove < 0) {
             throw new AccountingException("error.no.money");
         }
@@ -59,6 +64,26 @@ public abstract class Wallet extends Account{
      */
     public final void testDebit(String remove) throws AccountingException{
         testDebit(this.testArgumentString(remove));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void testDeposit(double add) throws AccountingException{
+        if (locked) {
+            throw new AccountingException("error.lock.out");
+        }
+        super.testDeposit(add);
+    }
+
+    public final void setLockOut(boolean locked){
+        this.locked = locked;
+        this.save();
+    }
+
+    public final boolean isLocked(){
+        return locked;
     }
 
     /**
