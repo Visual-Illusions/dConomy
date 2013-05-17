@@ -81,7 +81,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
-                    new UserWallet(wallet.getAttributeValue("user"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
+                    new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
                     load++;
                 }
             }
@@ -111,7 +111,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 List<Element> wallets = root.getChildren();
                 boolean found = false;
                 for (Element wallet : wallets) {
-                    String name = wallet.getChildText("name");
+                    String name = wallet.getChildText("owner");
                     if (name.equals(account.getOwner())) {
                         wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
                         wallet.getAttribute("lockedOut").setValue(String.valueOf(((Wallet) account).isLocked()));
@@ -121,7 +121,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 }
                 if (!found) {
                     Element newWallet = new Element("wallet");
-                    newWallet.setAttribute("user", account.getOwner());
+                    newWallet.setAttribute("owner", account.getOwner());
                     newWallet.setAttribute("balance", String.format("%.2f", account.getBalance()));
                     newWallet.setAttribute("lockedOut", String.valueOf(((Wallet) account).isLocked()));
                     root.addContent(newWallet);
@@ -169,7 +169,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
-                    String name = wallet.getChildText("name");
+                    String name = wallet.getChildText("owner");
                     if (name.equals(account.getOwner())) {
                         account.setBalance(wallet.getAttribute("balance").getDoubleValue());
                         ((Wallet) account).setLockOut(wallet.getAttribute("lockedOut").getBooleanValue());

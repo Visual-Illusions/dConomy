@@ -38,16 +38,11 @@ public final class OutputQueue{
         }
     }
 
-    public final Account next(){
+    public final Account next() throws InterruptedException{
         Account account = null;
         if (queue.isEmpty()) {
             synchronized (queue) {
-                try {
-                    queue.wait();
-                }
-                catch (InterruptedException e) {
-                    return null;
-                }
+                queue.wait();
             }
         }
         try {

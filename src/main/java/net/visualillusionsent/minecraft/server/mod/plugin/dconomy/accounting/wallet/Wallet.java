@@ -19,6 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
@@ -47,7 +48,7 @@ public abstract class Wallet extends Account{
      */
     public final void testDebit(double remove) throws AccountingException{
         if (locked) {
-            throw new AccountingException("error.lock.out");
+            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner));
         }
         if (balance - remove < 0) {
             throw new AccountingException("error.no.money");
@@ -72,7 +73,7 @@ public abstract class Wallet extends Account{
     @Override
     public void testDeposit(double add) throws AccountingException{
         if (locked) {
-            throw new AccountingException("error.lock.out");
+            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner));
         }
         super.testDeposit(add);
     }

@@ -41,7 +41,7 @@ final class OutputThread extends Thread{
                 }
             }
             catch (Exception ex) {
-                dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getName() : "UNKNOWN ACCOUNT CLASS"));
+                dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getSimpleName() : "UNKNOWN ACCOUNT CLASS") + ":" + account.getOwner());
                 dCoBase.stacktrace(ex);
             }
         }
