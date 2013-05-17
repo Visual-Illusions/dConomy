@@ -42,7 +42,7 @@ public class dCoDataHandler{
         queue.clear();
     }
 
-    public void killOutput(){
+    public void cleanUp(){
         clearQueue();
         outThread.terminate();
     }

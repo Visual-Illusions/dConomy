@@ -248,7 +248,7 @@ public final class dCoBase{
 
     public final void cleanUp(){
         WalletHandler.cleanUp();
-        $.handler.killOutput();
+        $.handler.cleanUp();
         if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
             WalletSQLite_Source.cleanUp();
         }

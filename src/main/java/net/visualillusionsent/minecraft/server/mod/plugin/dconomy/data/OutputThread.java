@@ -1,5 +1,6 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 
 final class OutputThread extends Thread{
@@ -13,11 +14,17 @@ final class OutputThread extends Thread{
 
     public void run(){
         while (running) {
+            Account account = null;
             try {
-                Account account = handler.getQueue().next();
-                account.getDataSource().saveAccount(account);
+                account = handler.getQueue().next();
+                if (account.getDataSource() != null) {
+                    account.getDataSource().saveAccount(account);
+                }
             }
-            catch (Exception e) {}
+            catch (Exception ex) {
+                dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getName() : "UNKNOWN ACCOUNT CLASS"));
+                dCoBase.stacktrace(ex);
+            }
         }
     }
 
