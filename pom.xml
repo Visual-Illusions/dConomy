@@ -32,9 +32,9 @@
    <url>http://visualillusionsent.net</url>
   </organization>
   <scm>
-   <url>http://github.com/Visual-Illusions/dConomy</url>
+   <url>scm:git:git://github.com/Visual-Illusions/dConomy.git</url>
    <connection>GitHub</connection>
-   <developerConnection>darkdiplomat</developerConnection>
+   <developerConnection>scm:git:git@github.com:Visual-Illusions/dConomy.git</developerConnection>
   </scm>
   <issueManagement>
    <url>http://github.com/Visual-Illusions/dConomy/issues</url>
@@ -69,11 +69,18 @@
     </repository>
   </repositories>
   <dependencies>
+   <!-- Libraries -->
    <dependency>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>viutils</artifactId>
     <version>1.0.4-SNAPSHOT</version>
    </dependency>
+   <dependency>
+    <groupId>org.xerial</groupId>
+    <artifactId>sqlite-jdbc</artifactId>
+    <version>3.7.2</version>
+   </dependency>
+   <!-- Libraries End -->
    <!-- Mods -->
    <dependency>
     <groupId>net.canarymod</groupId>
@@ -85,45 +92,31 @@
     <artifactId>bukkit</artifactId>
     <version>1.5.1-R0.2</version>
    </dependency>
-   <!-- testing -->
-   <dependency>
-     <groupId>junit</groupId>
-     <artifactId>junit</artifactId>
-     <version>4.11</version>
-     <scope>test</scope>
-   </dependency>
-   <dependency>
-   	<groupId>org.xerial</groupId>
-   	<artifactId>sqlite-jdbc</artifactId>
-   	<version>3.7.2</version>
-   </dependency>
+   <!-- Mods End -->
   </dependencies>
   <build>
     <plugins>
-      <!-- Start: Generate Timestamp -->
       <plugin>
-        <groupId>com.github.goldin</groupId>
-        <artifactId>timestamp-maven-plugin</artifactId>
-        <version>0.2.5</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.2</version>
         <executions>
           <execution>
-            <id>set-build-timestamp</id>
-            <goals>
-              <goal>timestamp</goal>
-            </goals>
             <phase>validate</phase>
-              <configuration>
-                <timestamp>
-                  <property>timestamp</property>
-                  <pattern>yyyyMMddHHmm</pattern>
-                  <timezone>GMT-6</timezone>
-                  <locale>US</locale>
-                </timestamp>
-              </configuration>
+            <goals>
+              <goal>create</goal>
+            </goals>
           </execution>
         </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+          <format>{0,number}</format>
+          <items>
+            <item>buildNumber0</item>
+          </items>
+        </configuration>
       </plugin>
-      <!-- End: Generate Timestamp -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -136,47 +129,19 @@
               <addClasspath>false</addClasspath>
             </manifest>
             <manifestEntries>
-                <Title>dConomy</Title>
-                <Version>${project.version}</Version>
-                <Build>${timestamp}</Build>
-                <ProgramStatus>${ProgramStatus}</ProgramStatus>
-                <Vendor>Visual Illusions Entertainment</Vendor>
-                <Built-By>${user.name}</Built-By>
-                <Class-Path>../lib/viutils-1.0.4.jar ../lib/jdom2.jar ../lib/sqlite.jar ../lib/postgresql.jar</Class-Path>
+              <Title>dConomy</Title>
+              <Version>${project.version}</Version>
+              <Build>${buildNumber}</Build>
+              <ProgramStatus>${ProgramStatus}</ProgramStatus>
+              <Vendor>Visual Illusions Entertainment</Vendor>
+              <Built-By>${user.name}</Built-By>
+              <Build-Time>${maven.build.timestamp}</Build-Time>
+              <Class-Path>../lib/viutils-1.0.4.jar ../lib/jdom2.jar ../lib/sqlite.jar ../lib/postgresql.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>
       </plugin>
     </plugins>
-    <pluginManagement>
-     <plugins>
-      <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-      <plugin>
-       <groupId>org.eclipse.m2e</groupId>
-       <artifactId>lifecycle-mapping</artifactId>
-       <version>1.0.0</version>
-       <configuration>
-        <lifecycleMappingMetadata>
-         <pluginExecutions>
-          <pluginExecution>
-           <pluginExecutionFilter>
-            <groupId>com.github.goldin</groupId>
-            <artifactId>timestamp-maven-plugin</artifactId>
-            <versionRange>[0.2.5,)</versionRange>
-            <goals>
-             <goal>timestamp</goal>
-            </goals>
-           </pluginExecutionFilter>
-           <action>
-            <ignore></ignore>
-           </action>
-          </pluginExecution>
-         </pluginExecutions>
-        </lifecycleMappingMetadata>
-       </configuration>
-      </plugin>
-     </plugins>
-    </pluginManagement>
     <extensions>
       <!-- FTP Extension to upload to repo.visualillusionsent.net -->
       <extension>

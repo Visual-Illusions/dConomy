@@ -1,3 +1,5 @@
-main-class=net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.dConomy
+;# dConomy3 Canary Plugin Configuration File
 author=darkdiplomat
 version=3.0 ALPHA
+mount-point=post
+main-class=net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.dConomy
