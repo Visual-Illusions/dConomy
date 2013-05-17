@@ -42,7 +42,7 @@ public final class dCoProperties{
             FileUtils.cloneFileFromJar(getJarPath(), "resources/default_config.cfg", configDir.concat("settings.cfg"));
         }
         propsFile = new PropertiesFile(configDir.concat("settings.cfg"));
-        // TODO Test Properties
+        testProperties();
     }
 
     public final void reloadProperties(){
@@ -77,5 +77,62 @@ public final class dCoProperties{
 
     public final String getConfigurationDirectory(){
         return configDir;
+    }
+
+    private final void testProperties(){
+        boolean missingProp = false;
+        if (!propsFile.containsKey("default.balance")) {
+            propsFile.setDouble("default.balance", 0, "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");
+            missingProp = true;
+        }
+        else if (propsFile.getDouble("default.balance") < 0.01) {
+            propsFile.setDouble("default.balance", 0);
+        }
+        if (!propsFile.containsKey("max.account.balance")) {
+            propsFile.setDouble("max.account.balance", 999999999999999999D, "Max allow Account balance, should never be set to more than 999999999999999999");
+            missingProp = true;
+        }
+        else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
+            propsFile.setDouble("max.account.balance", 999999999999999999D);
+        }
+        if (!propsFile.containsKey("money.name")) {
+            propsFile.setString("money.name", "Coins", "Name to call your currency");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("server.max.always")) {
+            propsFile.setString("server.max.always", "yes", "Server always has maximum currency");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("datasource")) {
+            propsFile.setString("datasource", "xml", "Datasource Setting (case insensitive) - Types: xml (jdom2.jar required for Bukkit), mysql, sqlite (sqlite.jar required for Canary)");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("sql.user")) {
+            propsFile.setString("sql.user", "user", "SQL Username");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("sql.password")) {
+            propsFile.setString("sql.password", "pass", "SQL Password");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("sql.database.url")) {
+            propsFile.setString("sql.database.url", "localhost:3306/minecraft", "SQL Database URL (jdbc:[sql]: not required) Defaults: (SQLite) plugins/dConomy3/dConomy3.db (Others) domain.suffix:port/databasename");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("sql.wallet.table")) {
+            propsFile.setString("sql.wallet.table", "dCoWallet", "SQL Wallet table");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("adminonly.balance.check")) {
+            propsFile.setString("adminonly.balance.check", "no", "Admin Only Check Another Players Balance - Set to false to allow all");
+            missingProp = true;
+        }
+        if (!propsFile.containsKey("debug.enabled")) {
+            propsFile.setString("debug.enabled", "no", "Debugging");
+            missingProp = true;
+        }
+        if (missingProp) {
+            propsFile.save();
+        }
     }
 }
