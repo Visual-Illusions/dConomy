@@ -54,8 +54,8 @@ public final class dCoBase{
     private final String version_check_URL = "http://visualillusionsent.net/minecraft/plugins/";
     private final VersionChecker vc;
     private ProgramStatus status;
-    private String version;
-    private String build;
+    private float version;
+    private short build;
     private String buildTime;
 
     private static dCoBase $;
@@ -68,7 +68,7 @@ public final class dCoBase{
             server = serv;
             readManifest();
             checkStatus();
-            vc = new VersionChecker(name, version, build, version_check_URL, status, true);
+            vc = new VersionChecker(name, String.valueOf(version), String.valueOf(build), version_check_URL, status, true);
             checkVersion();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
@@ -142,14 +142,14 @@ public final class dCoBase{
     }
 
     public final static String getVersion(){
-        return $.version.concat(".").concat($.build);
+        return $.version + "." + $.build;
     }
 
-    public final static String getRawVersion(){
+    public final static float getRawVersion(){
         return $.version;
     }
 
-    public static String getBuildNumber(){
+    public static short getBuildNumber(){
         return $.build;
     }
 
@@ -165,8 +165,8 @@ public final class dCoBase{
         try {
             Manifest manifest = getManifest();
             Attributes mainAttribs = manifest.getMainAttributes();
-            version = mainAttribs.getValue("Version").replace("-SNAPSHOT", "");
-            build = mainAttribs.getValue("Build");
+            version = Float.parseFloat(mainAttribs.getValue("Version").replace("-SNAPSHOT", ""));
+            build = Short.parseShort(mainAttribs.getValue("Build"));
             buildTime = mainAttribs.getValue("Build-Time");
             try {
                 status = ProgramStatus.valueOf(mainAttribs.getValue("ProgramStatus"));
@@ -175,14 +175,10 @@ public final class dCoBase{
                 status = ProgramStatus.UNKNOWN;
             }
         }
-        catch (Exception e) {
-            warning(e.getMessage());
-        }
-        if (version == null) {
-            version = "UNKNOWN";
-        }
-        else if (build == null) {
-            build = "UNKNOWN";
+        catch (Exception ex) {
+            version = -1.0F;
+            build = -1;
+            buildTime = "19700101-0000";
         }
     }
 
