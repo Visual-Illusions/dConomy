@@ -60,4 +60,8 @@ public final class OutputQueue{
             queue.clear();
         }
     }
+
+    public final boolean hasNext(){
+        return queue.size() > 0;
+    }
 }

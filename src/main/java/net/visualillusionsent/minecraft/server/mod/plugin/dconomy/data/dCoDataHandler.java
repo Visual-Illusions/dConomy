@@ -57,13 +57,18 @@ public class dCoDataHandler{
         return queue;
     }
 
-    private void clearQueue(){
-        queue.clear();
-    }
-
     public void cleanUp(){
-        clearQueue();
         outThread.terminate();
+        while (queue.hasNext()) { // Save the rest immediately
+            Account account = null;
+            try {
+                account = queue.next();
+            }
+            catch (InterruptedException ex) {}
+            if (account != null && account.getDataSource() != null) {
+                account.getDataSource().saveAccount(account);
+            }
+        }
     }
 
     public final DataSourceType getDataSourceType(){

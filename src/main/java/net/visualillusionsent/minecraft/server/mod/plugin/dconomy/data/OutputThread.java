@@ -36,7 +36,7 @@ final class OutputThread extends Thread{
             Account account = null;
             try {
                 account = handler.getQueue().next();
-                if (account.getDataSource() != null) {
+                if (account != null && account.getDataSource() != null) {
                     account.getDataSource().saveAccount(account);
                 }
             }
