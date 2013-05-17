@@ -103,10 +103,26 @@ public abstract class Account{
         return deposit(testArgumentString(add));
     }
 
+    /**
+     * Tests a deposit before adding it.
+     * 
+     * @param add
+     *            the amount to be added
+     * @throws AccountingException
+     *             should an AccountingException occur
+     */
     public void testDeposit(String add) throws AccountingException{
         testDeposit(testArgumentString(add));
     }
 
+    /**
+     * Tests a deposit before adding it.
+     * 
+     * @param add
+     *            the amount to be added
+     * @throws AccountingException
+     *             should an AccountingException occur
+     */
     public void testDeposit(double add) throws AccountingException{
         double balance = this.balance + testArgumentDouble(add);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
@@ -180,6 +196,14 @@ public abstract class Account{
         return setBalance(testArgumentString(set));
     }
 
+    /**
+     * Tests a String for a double value
+     * 
+     * @param value
+     *            the value to test
+     * @return double value of the String
+     * @throws AccountingException
+     */
     protected final double testArgumentString(String value) throws AccountingException{
         double testNum = 0;
         try {
@@ -191,6 +215,14 @@ public abstract class Account{
         return testNum;
     }
 
+    /**
+     * Tests a double for negative value and rounds it to 2 decimal places
+     * 
+     * @param value
+     *            the value to test
+     * @return the dConomy rounded value
+     * @throws AccountingException
+     */
     protected final double testArgumentDouble(double value) throws AccountingException{
         if (value < 0) {
             throw new AccountingException("error.min");
@@ -198,8 +230,16 @@ public abstract class Account{
         return Math.round(value * 100) / 100.0f; // Even out the number to a 0.## form
     }
 
+    /**
+     * Override and insert Account saving code here
+     */
     protected abstract void save();
 
+    /**
+     * Gets the {@link dCoDataSource} associated with the Account
+     * 
+     * @return the {@link dCoDataSource}
+     */
     public final dCoDataSource getDataSource(){
         return datasource;
     }

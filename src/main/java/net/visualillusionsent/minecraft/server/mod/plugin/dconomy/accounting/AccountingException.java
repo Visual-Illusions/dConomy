@@ -21,6 +21,13 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 
+/**
+ * Accounting Exception<br>
+ * Thrown when Accounting encounters a problem such as max balance or negative numbers
+ * 
+ * @author Jason (darkdiplomat)
+ * 
+ */
 public final class AccountingException extends RuntimeException{
 
     public AccountingException(String msg){

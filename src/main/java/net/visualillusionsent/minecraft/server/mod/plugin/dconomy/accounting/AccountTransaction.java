@@ -19,4 +19,10 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting;
 
+/**
+ * Extends this class for making call back Hook/Events
+ * 
+ * @author Jason (darkdiplomat)
+ * 
+ */
 public abstract class AccountTransaction{}
