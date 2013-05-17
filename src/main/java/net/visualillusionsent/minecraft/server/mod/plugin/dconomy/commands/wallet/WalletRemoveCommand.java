@@ -39,12 +39,12 @@ public final class WalletRemoveCommand extends dConomyCommand{
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.wallet", theUser.getName());
+            user.error("error.404.account", theUser.getName(), "WALLET");
             return;
         }
         try {
             WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).debit(args[0]);
-            user.error("admin.remove.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]));
+            user.error("admin.remove.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_REMOVE, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

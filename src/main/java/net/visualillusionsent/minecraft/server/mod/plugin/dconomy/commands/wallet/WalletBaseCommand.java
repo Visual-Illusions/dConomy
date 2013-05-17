@@ -40,12 +40,12 @@ public final class WalletBaseCommand extends dConomyCommand{
                 return;
             }
             if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-                user.error("error.404.wallet", theUser.getName());
+                user.error("error.404.account", theUser.getName(), "WALLET");
                 return;
             }
             theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
             if (theWallet.isLocked()) {
-                user.message("error.lock.out", theUser == null ? "SERVER" : theUser.getName());
+                user.message("error.lock.out", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
             }
             else {
                 user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
@@ -54,10 +54,10 @@ public final class WalletBaseCommand extends dConomyCommand{
         else {
             theWallet = WalletHandler.getWalletByName(user.getName());
             if (theWallet.isLocked()) {
-                user.message("error.lock.out", user.getName());
+                user.message("error.lock.out", user.getName(), "WALLET");
             }
             else {
-                user.message("account.balance", Double.valueOf(theWallet.getBalance()));
+                user.message("account.balance", Double.valueOf(theWallet.getBalance()), "WALLET");
             }
         }
     }

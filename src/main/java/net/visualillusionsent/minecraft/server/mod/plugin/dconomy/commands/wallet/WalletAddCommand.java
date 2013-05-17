@@ -40,13 +40,13 @@ public final class WalletAddCommand extends dConomyCommand{
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
             if (!(args.length > 2) || !args[2].equals("-force")) {
-                user.error("error.404.wallet", theUser.getName());
+                user.error("error.404.account", theUser.getName(), "WALLET");
                 return;
             }
         }
         try {
             WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).deposit(args[0]);
-            user.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]));
+            user.error("admin.add.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

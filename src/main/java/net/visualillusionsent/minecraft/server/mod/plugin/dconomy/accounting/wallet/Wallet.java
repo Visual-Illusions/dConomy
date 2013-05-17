@@ -48,7 +48,7 @@ public abstract class Wallet extends Account{
      */
     public final void testDebit(double remove) throws AccountingException{
         if (locked) {
-            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner));
+            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner, "WALLET"));
         }
         if (balance - remove < 0) {
             throw new AccountingException("error.no.money");
@@ -73,14 +73,16 @@ public abstract class Wallet extends Account{
     @Override
     public void testDeposit(double add) throws AccountingException{
         if (locked) {
-            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner));
+            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner, "WALLET"));
         }
         super.testDeposit(add);
     }
 
     public final void setLockOut(boolean locked){
-        this.locked = locked;
-        this.save();
+        if (this.locked != locked) {
+            this.locked = locked;
+            this.save();
+        }
     }
 
     public final boolean isLocked(){

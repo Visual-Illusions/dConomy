@@ -1,27 +1,26 @@
 # This file NEEDS to be in UTF-8 format!
 # This file is also the default Language file and needs to be included
-error.permission=You do not have permission to use that command.
 error.nan=Invalid number given.
 error.no.money=Not enough money to pay that amount.
-error.money.max=$c6{0}$cC already has max allowed balance.
+error.money.max=$c6{0} {1}$cC already has max allowed balance.
 error.args=You did not give enough arguments.
-error.404.wallet=Could not find $c3WALLET$cC for$c6 {0}.
+error.404.account=Could not find $c3{1}$cC for$c6 {0}.
 error.404.user=Could not find User: {0}.
 error.min=Amount specified was less than the minimum of 0.01
-error.lock.out=$c6{0} $c3WALLET$cC is locked. If this is you, contact an Admin.
-account.balance=$cAYour $c3WALLET$cA balance is $cE{0,number,#.##} $m$cA.
-account.balance.other=$c6{0} $c3WALLET$cA balance is $cE{1,number,#.##} $m$cA.
+error.account.lock=$c6{0} $c3{1}$cC is locked. If this is you, contact an Admin.
+account.balance=$cAYour $c3{1}$cA balance is $cE{0,number,#.##} $m$cA.
+account.balance.other=$c6{0} $c3{2}$cA balance is $cE{1,number,#.##} $m$cA.
 paid.user=$cAYou paid $cE{1,number,#.##} $m$cA to $c6{0}$cA.
-admin.add.balance=$cAAdded $cE{1,number,#.##} $m$cA to $c6{0}$c3 Wallet Balance$cA.
-admin.remove.balance=$cARemoved $cE{1,number,#.##} $m$cA from $c6{0}$c3 Wallet Balance$cA.
-admin.set.balance=$cASet $c6{0}$cA $c3 Wallet Balance$cA to $cE{1,number,#.##} $m$cA.
-admin.reset.balance=$cAReset $c6{0}$cA $c3 Wallet Balance$cA.
-admin.reload.wallet.success=$cAReloaded $c6{0}$cA $c3 Wallet Balance$cA.
-admin.reload.wallet.fail=$cCFailed to reload $c6{0}$cA $c3 Wallet Balance$cC.
-admin.wallet.locked=$cALocked $c6{0}$cA $c3 Wallet$cA.
-admin.wallet.unlocked=$cAUnlocked $c6{0}$cA $c3 Wallet$cA.
+admin.add.balance=$cAAdded $cE{1,number,#.##} $m$cA to $c6{0} $c3{2}$cA.
+admin.remove.balance=$cARemoved $cE{1,number,#.##} $m$cA from $c6{0} $c3{2}$cA.
+admin.set.balance=$cASet $c6{0}$cA $c3{2}$cA to $cE{1,number,#.##} $m$cA.
+admin.reset.balance=$cAReset $c6{0}$cA $c3{1}$cA.
+admin.reload.account.success=$cAReloaded $c6{0}$cA $c3{1}$cA.
+admin.reload.account.fail=$cCFailed to reload $c6{0}$cA $c3{1}$cC.
+admin.account.locked=$cALocked $c6{0}$cA $c3{1}$cA.
+admin.account.unlocked=$cAUnlocked $c6{0}$cA $c3{1}$cA.
 ##################################################
-# © Copyright 2012-2013 Visual Illusions Entertainment. 
+# © Copyright 2011-2013 Visual Illusions Entertainment. 
 # 
 # This file is part of dConomy.
 #

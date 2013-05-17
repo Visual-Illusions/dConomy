@@ -19,6 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting;
 
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataSource;
 
@@ -127,9 +128,8 @@ public abstract class Account{
         double balance = this.balance + testArgumentDouble(add);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
-            balance = max;
             if (!this.owner.equals("SERVER")) {
-                throw new AccountingException("error.money.max");
+                throw new AccountingException(MessageTranslator.transFormMessage("error.money.max", true, this.owner, this.getClass().getSimpleName().toUpperCase()));
             }
         }
     }

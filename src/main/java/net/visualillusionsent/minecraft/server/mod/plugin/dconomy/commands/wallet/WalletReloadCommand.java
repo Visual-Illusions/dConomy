@@ -21,7 +21,6 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wall
 
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.dConomyCommand;
 
@@ -38,19 +37,14 @@ public final class WalletReloadCommand extends dConomyCommand{
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.wallet", theUser.getName());
+            user.error("error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        try {
-            if (WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).reload()) {
-                user.error("admin.reload.wallet.success", theUser == null ? "SERVER" : theUser.getName());
-            }
-            else {
-                user.error("admin.reload.wallet.fail", theUser == null ? "SERVER" : theUser.getName());
-            }
+        if (WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).reload()) {
+            user.error("admin.reload.account.success", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
-        catch (AccountingException ae) {
-            user.error(ae.getMessage());
+        else {
+            user.error("admin.reload.account.fail", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
     }
 }

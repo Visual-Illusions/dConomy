@@ -19,7 +19,6 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting;
 
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 
 /**
  * Accounting Exception<br>
@@ -43,7 +42,7 @@ public final class AccountingException extends RuntimeException{
     }
 
     public final String getMessage(){
-        return MessageTranslator.transMessage(super.getMessage());
+        return super.getMessage();
     }
 
     private static final long serialVersionUID = 311216012013L;

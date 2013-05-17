@@ -69,7 +69,7 @@ public final class WalletXMLSource implements WalletDataSource{
                 catch (IOException e) {}
                 writer = null;
                 if (ex != null) {
-                    dCoBase.severe("Failed to create new Zones file...");
+                    dCoBase.severe("Failed to create new Wallets file...");
                     dCoBase.stacktrace(ex);
                     return false;
                 }

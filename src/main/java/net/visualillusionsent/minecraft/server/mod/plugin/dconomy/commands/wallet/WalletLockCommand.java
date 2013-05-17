@@ -21,7 +21,6 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wall
 
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.utils.BooleanUtils;
@@ -39,21 +38,16 @@ public final class WalletLockCommand extends dConomyCommand{
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.wallet", theUser.getName());
+            user.error("error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        try {
-            boolean locked = BooleanUtils.parseBoolean(args[0]);
-            WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).setLockOut(locked);
-            if (locked) {
-                user.error("admin.wallet.locked", theUser == null ? "SERVER" : theUser.getName());
-            }
-            else {
-                user.error("admin.wallet.unlocked", theUser == null ? "SERVER" : theUser.getName());
-            }
+        boolean locked = BooleanUtils.parseBoolean(args[0]);
+        WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).setLockOut(locked);
+        if (locked) {
+            user.error("admin.account.locked", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
-        catch (AccountingException ae) {
-            user.error(ae.getMessage());
+        else {
+            user.error("admin.account.unlocked", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
     }
 }

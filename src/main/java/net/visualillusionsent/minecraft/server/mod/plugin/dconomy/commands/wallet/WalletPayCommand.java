@@ -41,7 +41,7 @@ public final class WalletPayCommand extends dConomyCommand{
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.wallet", theUser.getName());
+            user.error("error.404.wallet", theUser.getName(), "WALLET");
             return;
         }
         Wallet userWallet = WalletHandler.getWalletByName(user.getName());
