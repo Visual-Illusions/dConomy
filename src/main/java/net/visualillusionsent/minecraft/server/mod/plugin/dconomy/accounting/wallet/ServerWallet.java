@@ -108,6 +108,7 @@ public final class ServerWallet extends Wallet{
         if (!maxAlways) {
             dCoBase.getProperties().setServerBalance(getBalance());
         }
+        dCoBase.getProperties().setServerAccountLock(locked);
     }
 
     /**

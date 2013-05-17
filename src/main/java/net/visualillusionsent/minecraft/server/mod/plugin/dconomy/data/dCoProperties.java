@@ -66,6 +66,10 @@ public final class dCoProperties{
         propsFile.save();
     }
 
+    public final void setServerAccountLock(boolean locked){
+        propsFile.setString("server.account.locked", locked ? "yes" : "no");
+    }
+
     private final String getJarPath(){ // For when the jar isn't dConomy3.jar
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
