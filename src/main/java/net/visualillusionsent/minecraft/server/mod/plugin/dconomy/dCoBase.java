@@ -56,6 +56,7 @@ public final class dCoBase{
     private ProgramStatus status;
     private String version;
     private String build;
+    private String buildTime;
 
     private static dCoBase $;
     private static Mod_Server server;
@@ -65,9 +66,9 @@ public final class dCoBase{
             $ = this;
             this.logger = logger;
             server = serv;
-            generateVersion();
+            readManifest();
             checkStatus();
-            vc = new VersionChecker(name, getRawVersion(), build, version_check_URL, status, true);
+            vc = new VersionChecker(name, version, build, version_check_URL, status, true);
             checkVersion();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
@@ -141,29 +142,32 @@ public final class dCoBase{
     }
 
     public final static String getVersion(){
-        if ($.version == null) {
-            $.generateVersion();
-        }
         return $.version.concat(".").concat($.build);
     }
 
     public final static String getRawVersion(){
-        if ($.version == null) {
-            $.generateVersion();
-        }
         return $.version;
+    }
+
+    public static String getBuildNumber(){
+        return $.build;
+    }
+
+    public static String getBuildTime(){
+        return $.buildTime;
     }
 
     public final static ProgramStatus getProgramStatus(){
         return $.status;
     }
 
-    private void generateVersion(){
+    private final void readManifest(){
         try {
             Manifest manifest = getManifest();
             Attributes mainAttribs = manifest.getMainAttributes();
             version = mainAttribs.getValue("Version").replace("-SNAPSHOT", "");
             build = mainAttribs.getValue("Build");
+            buildTime = mainAttribs.getValue("Build-Time");
             try {
                 status = ProgramStatus.valueOf(mainAttribs.getValue("ProgramStatus"));
             }

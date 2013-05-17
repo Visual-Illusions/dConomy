@@ -36,6 +36,8 @@ public final class InformationCommand extends dConomyCommand{
         List<String> pre = new ArrayList<String>();
         pre.add(center(MCChatForm.CYAN + "---" + MCChatForm.LIGHT_GREEN + " d" + MCChatForm.ORANGE + "Conomy " + MCChatForm.PURPLE + "v" + dCoBase.getRawVersion() + MCChatForm.CYAN + " ---"));
         pre.add("$VERSION_CHECK$");
+        pre.add(MCChatForm.CYAN + "Build:" + MCChatForm.LIGHT_GREEN + dCoBase.getBuildNumber());
+        pre.add(MCChatForm.CYAN + "Built:" + MCChatForm.LIGHT_GREEN + dCoBase.getBuildTime());
         pre.add(MCChatForm.CYAN + "Lead Developer:" + MCChatForm.LIGHT_GREEN + " DarkDiplomat");
         pre.add(MCChatForm.CYAN + "Contributers:" + MCChatForm.LIGHT_GREEN + " "); // If someone adds to dConomy, their name can go here
         pre.add(MCChatForm.CYAN + "Website:" + MCChatForm.LIGHT_GREEN + " http://wiki.visualillusionsent.net/dConomy");
