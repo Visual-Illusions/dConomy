@@ -14,7 +14,7 @@ paid.user=$cAYou paid $cE{1,number,#.##} $m$cA to $c6{0}$cA.
 admin.add.balance=$cAAdded $cE{1,number,#.##} $m$cA to $c6{0}$c3 Wallet Balance$cA.
 admin.remove.balance=$cARemoved $cE{1,number,#.##} $m$cA from $c6{0}$c3 Wallet Balance$cA.
 admin.set.balance=$cASet $c6{0}$cA $c3 Wallet Balance$cA to $cE{1,number,#.##} $m$cA.
-admin.reset.balance=$cCadmin.reset.balance message missing.
+admin.reset.balance=$cAReset $c6{0}$cA $c3 Wallet Balance$cA.
 ##################################################
 # © Copyright 2012-2013 Visual Illusions Entertainment. 
 # 

@@ -30,6 +30,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.walle
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletBaseCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletPayCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletRemoveCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,7 +46,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class dConomy extends JavaPlugin{
     private dCoBase base;
-    private dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset;
+    private dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset;
 
     @Override
     public final void onDisable(){
@@ -70,6 +71,7 @@ public final class dConomy extends JavaPlugin{
         walletpay = new WalletPayCommand();
         walletremove = new WalletRemoveCommand();
         walletset = new WalletSetCommand();
+        walletreset = new WalletResetCommand();
     }
 
     @Override
@@ -105,6 +107,11 @@ public final class dConomy extends JavaPlugin{
                 else if (subcmd.equals("set")) {
                     if (!walletset.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet set <amount> <user>");
+                    }
+                }
+                else if (subcmd.equals("reset")) {
+                    if (!walletreset.parseCommand(user, args, true)) {
+                        sender.sendMessage(ChatColor.RED + "/wallet reset <amount> <user>");
                     }
                 }
                 else {

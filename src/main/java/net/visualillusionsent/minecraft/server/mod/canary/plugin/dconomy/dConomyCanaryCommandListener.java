@@ -33,10 +33,11 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.walle
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletBaseCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletPayCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletRemoveCommand;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
 
 public final class dConomyCanaryCommandListener implements CommandListener{
-    private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset;
+    private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset;
 
     dConomyCanaryCommandListener(dConomy dCo) throws CommandDependencyException{
         infoCmd = new InformationCommand();
@@ -45,6 +46,7 @@ public final class dConomyCanaryCommandListener implements CommandListener{
         walletpay = new WalletPayCommand();
         walletremove = new WalletRemoveCommand();
         walletset = new WalletSetCommand();
+        walletreset = new WalletResetCommand();
         Canary.commands().registerCommands(this, dCo, false);
     }
 
@@ -85,7 +87,7 @@ public final class dConomyCanaryCommandListener implements CommandListener{
     @Command(aliases = { "pay" },
             description = "Used to pay another user",
             permissions = { "dconomy.wallet.pay" },
-            toolTip = "/wallet pay <user> <amount>",
+            toolTip = "/wallet pay <amount> <user>",
             parent = "wallet")
     public final void walletPay(MessageReceiver msgrec, String[] args){
         Mod_User user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_User) dCoBase.getServer();
@@ -117,7 +119,20 @@ public final class dConomyCanaryCommandListener implements CommandListener{
         Mod_User user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_User) dCoBase.getServer();
 
         if (!walletset.parseCommand(user, args, true)) {
-            msgrec.notice("/wallet set <user> <amount>");
+            msgrec.notice("/wallet set <amount> <user>");
+        }
+    }
+
+    @Command(aliases = { "reset" },
+            description = "Used to reset the money of a user's wallet",
+            permissions = { "dconomy.admin.wallet.reset" },
+            toolTip = "/wallet reset <user>",
+            parent = "wallet")
+    public final void walletReset(MessageReceiver msgrec, String[] args){
+        Mod_User user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (Mod_User) dCoBase.getServer();
+
+        if (!walletreset.parseCommand(user, args, true)) {
+            msgrec.notice("/wallet reset <user>");
         }
     }
 }
