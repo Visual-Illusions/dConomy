@@ -50,8 +50,6 @@ public final class dCoBase{
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
-    private final String name = "dConomy";
-    private final String version_check_URL = "http://visualillusionsent.net/minecraft/plugins/";
     private final VersionChecker vc;
     private ProgramStatus status;
     private float version;
@@ -61,14 +59,14 @@ public final class dCoBase{
     private static dCoBase $;
     private static Mod_Server server;
 
-    public dCoBase(Mod_Server serv, Logger logger){
+    public dCoBase(IdConomy idconomy){
         try {
             $ = this;
-            this.logger = logger;
-            server = serv;
+            this.logger = idconomy.getPluginLogger();
+            server = idconomy.getModServer();
             readManifest();
             checkStatus();
-            vc = new VersionChecker(name, String.valueOf(version), String.valueOf(build), version_check_URL, status, true);
+            vc = new VersionChecker("dConomy", String.valueOf(version), String.valueOf(build), "http://visualillusionsent.net/minecraft/plugins/", status, true);
             checkVersion();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));

@@ -19,8 +19,11 @@
  */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
+import java.util.logging.Logger;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletTransactionEvent;
+import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
 import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
@@ -46,7 +49,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author Jason (darkdiplomat)
  * 
  */
-public final class dConomy extends JavaPlugin{
+public final class dConomy extends JavaPlugin implements IdConomy{
     private dCoBase base;
     private dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
 
@@ -58,7 +61,7 @@ public final class dConomy extends JavaPlugin{
     @Override
     public final void onEnable(){
         // Create dCoBase, initializing properties and such
-        base = new dCoBase(new Bukkit_Server(getServer(), this), getLogger());
+        base = new dCoBase(this);
         // Cause Wallets to load
         WalletHandler.initialize();
         // Initialize Listener
@@ -137,5 +140,15 @@ public final class dConomy extends JavaPlugin{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Logger getPluginLogger(){
+        return this.getLogger();
+    }
+
+    @Override
+    public Mod_Server getModServer(){
+        return new Bukkit_Server(getServer(), this);
     }
 }

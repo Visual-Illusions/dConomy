@@ -20,11 +20,14 @@
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.lang.InitializationError;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
+import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
@@ -35,7 +38,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wal
  * @author Jason (darkdiplomat)
  * 
  */
-public final class dConomy extends Plugin{
+public final class dConomy extends Plugin implements IdConomy{
     private dCoBase base;
 
     @Override
@@ -46,7 +49,7 @@ public final class dConomy extends Plugin{
     @Override
     public final boolean enable(){
         try {
-            base = new dCoBase(new Canary_Server(Canary.getServer(), this), this.getLogman());
+            base = new dCoBase(this);
             WalletHandler.initialize();
             new dConomyCanaryAPIListener(this);
             new dConomyCanaryCommandListener(this);
@@ -63,5 +66,15 @@ public final class dConomy extends Plugin{
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex);
         }
         return false;
+    }
+
+    @Override
+    public Logger getPluginLogger(){
+        return this.getLogman();
+    }
+
+    @Override
+    public Mod_Server getModServer(){
+        return new Canary_Server(Canary.getServer(), this);
     }
 }

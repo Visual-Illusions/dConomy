@@ -51,7 +51,7 @@ public abstract class WalletSQL_Source implements WalletDataSource{
             dCoBase.info(String.format("Loaded %d Wallets...", load));
         }
         catch (SQLException sqlex) {
-            dCoBase.severe("SQL Exception while parsing Wallets file...");
+            dCoBase.severe("SQL Exception while parsing Wallets table...");
             dCoBase.stacktrace(sqlex);
             success = false;
         }
