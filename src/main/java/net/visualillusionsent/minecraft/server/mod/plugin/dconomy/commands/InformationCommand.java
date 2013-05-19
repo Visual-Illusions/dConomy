@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MCChatForm;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.utils.StringUtils;
 import net.visualillusionsent.utils.VersionChecker;
@@ -48,7 +48,7 @@ public final class InformationCommand extends dConomyCommand{
         about = Collections.unmodifiableList(pre);
     }
 
-    public final void execute(Mod_User user, String[] args){
+    public final void execute(IModUser user, String[] args){
         for (String msg : about) {
             if (msg.equals("$VERSION_CHECK$")) {
                 VersionChecker vc = dCoBase.getVersionChecker();

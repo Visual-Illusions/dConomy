@@ -28,6 +28,7 @@ final class OutputThread extends Thread{
     private volatile boolean running = true;
 
     public OutputThread(dCoDataHandler handler){
+        super("dConomy-OutputQueue-Thread");
         this.handler = handler;
     }
 
@@ -41,8 +42,10 @@ final class OutputThread extends Thread{
                 }
             }
             catch (Exception ex) {
-                dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getSimpleName() : "UNKNOWN ACCOUNT CLASS") + ":" + account.getOwner());
-                dCoBase.stacktrace(ex);
+                if (running) {
+                    dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getSimpleName() : "UNKNOWN ACCOUNT CLASS") + ":" + (account != null ? account.getOwner() : "UNKNOWN OWNER"));
+                    dCoBase.stacktrace(ex);
+                }
             }
         }
     }

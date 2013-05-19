@@ -28,7 +28,7 @@ import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.visualillusionsent.lang.InitializationError;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHandler;
@@ -57,7 +57,7 @@ public final class dCoBase{
     private String buildTime;
 
     private static dCoBase $;
-    private static Mod_Server server;
+    private static IModServer server;
 
     public dCoBase(IdConomy idconomy){
         try {
@@ -95,11 +95,11 @@ public final class dCoBase{
     }
 
     /**
-     * Gets the {@link Mod_Server} instance
+     * Gets the {@link IModServer} instance
      * 
-     * @return {@link Mod_Server}
+     * @return {@link IModServer}
      */
-    public final static Mod_Server getServer(){
+    public final static IModServer getServer(){
         return server;
     }
 

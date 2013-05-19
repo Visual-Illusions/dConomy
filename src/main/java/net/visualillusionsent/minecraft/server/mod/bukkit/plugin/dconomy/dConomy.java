@@ -21,8 +21,8 @@ package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import java.util.logging.Logger;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletTransactionEvent;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
@@ -83,7 +83,7 @@ public final class dConomy extends JavaPlugin implements IdConomy{
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-        Mod_User user = sender instanceof Player ? new Bukkit_User((Player) sender) : (Mod_User) dCoBase.getServer();
+        IModUser user = sender instanceof Player ? new Bukkit_User((Player) sender) : (IModUser) dCoBase.getServer();
         if (cmd.getName().equals("dconomy")) {
             infoCmd.parseCommand(user, args, false);
             return true;
@@ -148,7 +148,7 @@ public final class dConomy extends JavaPlugin implements IdConomy{
     }
 
     @Override
-    public Mod_Server getModServer(){
+    public IModServer getModServer(){
         return new Bukkit_Server(getServer(), this);
     }
 }

@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 
 public abstract class dConomyCommand{
@@ -29,7 +29,7 @@ public abstract class dConomyCommand{
         this.minArgs = minArgs;
     }
 
-    public final boolean parseCommand(Mod_User caller, String[] args, boolean adjust){
+    public final boolean parseCommand(IModUser caller, String[] args, boolean adjust){
         if (args == null || caller == null) {
             return false;
         }
@@ -59,5 +59,5 @@ public abstract class dConomyCommand{
         return toRet;
     }
 
-    protected abstract void execute(Mod_User caller, String[] args);
+    protected abstract void execute(IModUser caller, String[] args);
 }

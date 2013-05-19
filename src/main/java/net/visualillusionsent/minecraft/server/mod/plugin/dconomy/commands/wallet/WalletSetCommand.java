@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
@@ -31,8 +31,8 @@ public final class WalletSetCommand extends dConomyCommand{
         super(2);
     }
 
-    protected final void execute(Mod_User user, String[] args){
-        Mod_User theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
+    protected final void execute(IModUser user, String[] args){
+        IModUser theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
         if (theUser == null && !args[1].toUpperCase().equals("SERVER")) {
             user.error("error.404.user", args[1]);
             return;
@@ -45,6 +45,6 @@ public final class WalletSetCommand extends dConomyCommand{
         }
         WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).setBalance(args[0]);
         user.error("admin.set.balance", theUser == null ? "SERVER" : theUser.getName(), Double.valueOf(args[0]), "WALLET");
-        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (Mod_User) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_SET, Double.parseDouble(args[0])));
+        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (IModUser) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_SET, Double.parseDouble(args[0])));
     }
 }

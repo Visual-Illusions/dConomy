@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
 public final class WalletTransaction extends AccountTransaction{
@@ -34,22 +34,22 @@ public final class WalletTransaction extends AccountTransaction{
         ;
     }
 
-    private final Mod_User sender, recipient;
+    private final IModUser sender, recipient;
     private final ActionType type;
     private final double amount;
 
-    public WalletTransaction(Mod_User sender, Mod_User recipient, ActionType type, double amount){
+    public WalletTransaction(IModUser sender, IModUser recipient, ActionType type, double amount){
         this.sender = sender;
         this.recipient = recipient;
         this.type = type;
         this.amount = amount;
     }
 
-    public final Mod_User getSender(){
+    public final IModUser getSender(){
         return sender;
     }
 
-    public final Mod_User getRecipient(){
+    public final IModUser getRecipient(){
         return recipient;
     }
 

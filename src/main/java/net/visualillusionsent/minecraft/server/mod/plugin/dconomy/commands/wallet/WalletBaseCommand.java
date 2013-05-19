@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
@@ -31,10 +31,10 @@ public final class WalletBaseCommand extends dConomyCommand{
         super(0);
     }
 
-    protected final void execute(Mod_User user, String[] args){
+    protected final void execute(IModUser user, String[] args){
         Wallet theWallet;
         if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
-            Mod_User theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
+            IModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
             if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
                 user.error("error.404.user", args[0]);
                 return;

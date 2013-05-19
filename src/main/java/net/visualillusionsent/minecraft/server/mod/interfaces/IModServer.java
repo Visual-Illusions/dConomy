@@ -22,16 +22,16 @@ package net.visualillusionsent.minecraft.server.mod.interfaces;
 import java.util.logging.Logger;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
-public interface Mod_Server{
+public interface IModServer{
 
     /**
-     * Gets a {@link Mod_User} for the specified name
+     * Gets a {@link IModUser} for the specified name
      * 
      * @param name
-     *            the name of the {@link Mod_User}
-     * @return {@link Mod_User} if found; {@code null} otherwise
+     *            the name of the {@link IModUser}
+     * @return {@link IModUser} if found; {@code null} otherwise
      */
-    Mod_User getUser(String name);
+    IModUser getUser(String name);
 
     /**
      * Gets the Logger for the Server

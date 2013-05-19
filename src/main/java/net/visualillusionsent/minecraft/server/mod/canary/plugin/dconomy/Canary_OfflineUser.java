@@ -21,14 +21,14 @@ package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
 
 import net.canarymod.api.OfflinePlayer;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 
 /**
  * Canary Offline User implementation
  * 
  * @author Jason (darkdiplomat)
  */
-public final class Canary_OfflineUser implements Mod_User{
+public final class Canary_OfflineUser implements IModUser{
     private final OfflinePlayer player;
 
     /**

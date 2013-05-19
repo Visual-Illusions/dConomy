@@ -21,7 +21,7 @@ package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
 
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 
 /**
  * Canary Plugin wrapper for Mod_User implementation
@@ -29,7 +29,7 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
  * @author darkdiplomat
  * 
  */
-public final class Canary_Plugin implements Mod_User{
+public final class Canary_Plugin implements IModUser{
     private final Plugin plugin;
 
     /**

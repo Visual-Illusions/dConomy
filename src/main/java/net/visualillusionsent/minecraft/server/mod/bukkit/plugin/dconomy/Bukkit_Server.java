@@ -26,8 +26,8 @@ import net.canarymod.logger.Logman;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.AccountTransactionEvent;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MCChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 import org.bukkit.Bukkit;
@@ -41,7 +41,7 @@ import org.bukkit.entity.Player;
  * @author Jason (darkdiplomat)
  * 
  */
-public final class Bukkit_Server implements Mod_Server, Mod_User{
+public final class Bukkit_Server implements IModServer, IModUser{
 
     private final Server serv;
     private final dConomy dCo;
@@ -57,7 +57,7 @@ public final class Bukkit_Server implements Mod_Server, Mod_User{
      * {@inheritDoc}
      */
     @Override
-    public final Mod_User getUser(String name){
+    public final IModUser getUser(String name){
         Player player = serv.getPlayer(name);
         if (player != null) {
             return new Bukkit_User(player);

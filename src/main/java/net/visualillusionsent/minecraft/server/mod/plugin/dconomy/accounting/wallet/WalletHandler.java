@@ -20,7 +20,7 @@
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet;
 
 import java.util.concurrent.ConcurrentHashMap;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
@@ -79,13 +79,13 @@ public final class WalletHandler{
     }
 
     /**
-     * Gets a {@link Wallet} for a {@link Mod_User}
+     * Gets a {@link Wallet} for a {@link IModUser}
      * 
      * @param user
-     *            the {@link Mod_User} to get a wallet for
+     *            the {@link IModUser} to get a wallet for
      * @return the {@link Wallet} for the user if found; {@code null} if not found
      */
-    public static final Wallet getWallet(Mod_User user){
+    public static final Wallet getWallet(IModUser user){
         return getWalletByName(user.getName());
     }
 

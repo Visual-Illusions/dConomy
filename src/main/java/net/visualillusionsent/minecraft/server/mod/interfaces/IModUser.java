@@ -18,7 +18,7 @@ package net.visualillusionsent.minecraft.server.mod.interfaces;
  * 
  * @author Jason (darkdiplomat)
  */
-public interface Mod_User{
+public interface IModUser{
 
     /**
      * Gets the name of the {@code Mod_User}

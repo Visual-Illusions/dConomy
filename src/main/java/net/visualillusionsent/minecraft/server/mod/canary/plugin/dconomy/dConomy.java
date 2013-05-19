@@ -26,7 +26,7 @@ import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.lang.InitializationError;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_Server;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
@@ -39,7 +39,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wal
  * 
  */
 public final class dConomy extends Plugin implements IdConomy{
-    private dCoBase base;
+    private static dCoBase base;
 
     @Override
     public final void disable(){
@@ -74,7 +74,11 @@ public final class dConomy extends Plugin implements IdConomy{
     }
 
     @Override
-    public Mod_Server getModServer(){
+    public IModServer getModServer(){
         return new Canary_Server(Canary.getServer(), this);
+    }
+
+    public static dCoBase getdCoBase(){
+        return base;
     }
 }

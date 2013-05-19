@@ -21,7 +21,7 @@ package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import org.bukkit.event.Event;
 
 /**
@@ -33,7 +33,7 @@ import org.bukkit.event.Event;
  */
 public abstract class AccountDepositEvent extends Event{
 
-    private final Mod_User caller;
+    private final IModUser caller;
     private final String username;
     private final double deposit;
     private String error;
@@ -55,11 +55,11 @@ public abstract class AccountDepositEvent extends Event{
     }
 
     /**
-     * Gets the {@link Mod_User}(plugin) asking to take money
+     * Gets the {@link IModUser}(plugin) asking to take money
      * 
-     * @return the {@link Mod_User}(plugin)
+     * @return the {@link IModUser}(plugin)
      */
-    public final Mod_User getCaller(){
+    public final IModUser getCaller(){
         return caller;
     }
 

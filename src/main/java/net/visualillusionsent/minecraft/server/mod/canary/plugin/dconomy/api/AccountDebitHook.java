@@ -22,7 +22,7 @@ package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
+import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 
 /**
  * Account Debit Hook<br>
@@ -32,7 +32,7 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.Mod_User;
  * 
  */
 public abstract class AccountDebitHook extends Hook{
-    private final Mod_User caller;
+    private final IModUser caller;
     private final String username;
     private final double debit;
     private String error;
@@ -54,18 +54,18 @@ public abstract class AccountDebitHook extends Hook{
     }
 
     /**
-     * Gets the {@link Mod_User}(plugin) asking to take money
+     * Gets the {@link IModUser}(plugin) asking to take money
      * 
-     * @return the {@link Mod_User}(plugin)
+     * @return the {@link IModUser}(plugin)
      */
-    public final Mod_User getCaller(){
+    public final IModUser getCaller(){
         return caller;
     }
 
     /**
      * Gets the user's name who is having money taken
      * 
-     * @return the {@link Mod_User}
+     * @return the {@link IModUser}
      */
     public final String getUserName(){
         return username;
