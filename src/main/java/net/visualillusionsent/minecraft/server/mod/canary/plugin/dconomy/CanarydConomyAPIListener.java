@@ -33,9 +33,9 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Acc
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
 
-public final class dConomyCanaryAPIListener implements PluginListener{
+public final class CanarydConomyAPIListener implements PluginListener{
 
-    dConomyCanaryAPIListener(dConomy dCo){
+    CanarydConomyAPIListener(dConomy dCo){
         Canary.hooks().registerListener(this, dCo);
     }
 

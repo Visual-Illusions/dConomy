@@ -38,10 +38,10 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.walle
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands.wallet.WalletSetCommand;
 
-public final class dConomyCanaryCommandListener implements CommandListener{
+public final class CanarydConomyCommandListener implements CommandListener{
     private final dConomyCommand infoCmd, walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
 
-    dConomyCanaryCommandListener(dConomy dCo) throws CommandDependencyException{
+    CanarydConomyCommandListener(dConomy dCo) throws CommandDependencyException{
         infoCmd = new InformationCommand();
         walletbase = new WalletBaseCommand();
         walletadd = new WalletAddCommand();
@@ -56,7 +56,7 @@ public final class dConomyCanaryCommandListener implements CommandListener{
 
     @Command(aliases = { "dconomy" },
             description = "dConomy Information Command",
-            permissions = { "dconomy" },
+            permissions = { "" },
             toolTip = "/dconomy")
     public final void information(MessageReceiver msgrec, String[] args){
         IModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (IModUser) dCoBase.getServer();

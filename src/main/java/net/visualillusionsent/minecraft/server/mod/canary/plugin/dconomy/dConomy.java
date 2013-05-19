@@ -51,8 +51,8 @@ public final class dConomy extends Plugin implements IdConomy{
         try {
             base = new dCoBase(this);
             WalletHandler.initialize();
-            new dConomyCanaryAPIListener(this);
-            new dConomyCanaryCommandListener(this);
+            new CanarydConomyAPIListener(this);
+            new CanarydConomyCommandListener(this);
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
             return true;
         }

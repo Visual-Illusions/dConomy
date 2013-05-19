@@ -34,9 +34,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-public final class dConomyBukkitAPIListener implements Listener{
+public final class BukkitdConomyAPIListener implements Listener{
 
-    dConomyBukkitAPIListener(dConomy plugin){
+    BukkitdConomyAPIListener(dConomy plugin){
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

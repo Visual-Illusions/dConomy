@@ -65,7 +65,7 @@ public final class dConomy extends JavaPlugin implements IdConomy{
         // Cause Wallets to load
         WalletHandler.initialize();
         // Initialize Listener
-        new dConomyBukkitAPIListener(this);
+        new BukkitdConomyAPIListener(this);
         // Register WalletTransaction
         dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class, WalletTransaction.class);
 

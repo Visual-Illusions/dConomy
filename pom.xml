@@ -32,7 +32,7 @@
    <url>http://visualillusionsent.net</url>
   </organization>
   <scm>
-   <url>scm:git:git://github.com/Visual-Illusions/dConomy.git</url>
+   <url>https://github.com/Visual-Illusions/dConomy</url>
    <connection>GitHub</connection>
    <developerConnection>scm:git:git@github.com:Visual-Illusions/dConomy.git</developerConnection>
   </scm>
