@@ -136,7 +136,7 @@
               <Vendor>Visual Illusions Entertainment</Vendor>
               <Built-By>${user.name}</Built-By>
               <Build-Time>${maven.build.timestamp}</Build-Time>
-              <Class-Path>../lib/viutils-1.0.4.jar ../lib/jdom2.jar ../lib/sqlite.jar ../lib/postgresql.jar</Class-Path>
+              <Class-Path>../lib/sqlite.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>

@@ -25,7 +25,7 @@ package net.visualillusionsent.lang;
  * 
  * @author Jason (darkdiplomat)
  */
-public final class InitializationError extends Error{
+public final class dConomyInitializationError extends Error{
 
     /**
      * Constructs a new Initialization Error with a message
@@ -33,7 +33,7 @@ public final class InitializationError extends Error{
      * @param msg
      *            the message to add
      */
-    public InitializationError(String msg){
+    public dConomyInitializationError(String msg){
         super(msg);
     }
 
@@ -45,7 +45,7 @@ public final class InitializationError extends Error{
      * @param cause
      *            the {@link Throwable} cause for the error
      */
-    public InitializationError(String msg, Throwable cause){
+    public dConomyInitializationError(String msg, Throwable cause){
         super(msg, cause);
     }
 
@@ -55,7 +55,7 @@ public final class InitializationError extends Error{
      * @param cause
      *            the {@link Throwable} cause for the error
      */
-    public InitializationError(Throwable cause){
+    public dConomyInitializationError(Throwable cause){
         super(cause);
     }
 

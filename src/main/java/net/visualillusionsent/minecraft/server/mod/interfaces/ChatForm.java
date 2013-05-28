@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.interfaces;
 
-public enum MCChatForm {
+public enum ChatForm {
 
     /**
      * <b>MARKER §</b>
@@ -133,7 +133,7 @@ public enum MCChatForm {
 
     private final char charCode;
 
-    private MCChatForm(char charCode){
+    private ChatForm(char charCode){
         this.charCode = charCode;
     }
 

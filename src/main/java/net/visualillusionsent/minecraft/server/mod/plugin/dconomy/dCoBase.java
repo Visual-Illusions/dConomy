@@ -27,7 +27,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.visualillusionsent.lang.InitializationError;
+import net.visualillusionsent.lang.dConomyInitializationError;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
@@ -60,6 +60,9 @@ public final class dCoBase{
     private static IModServer server;
 
     public dCoBase(IdConomy idconomy){
+        if ($ != null) {
+            throw new dConomyInitializationError("Already loaded");
+        }
         try {
             $ = this;
             this.logger = idconomy.getPluginLogger();
@@ -72,7 +75,7 @@ public final class dCoBase{
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
         }
         catch (Exception ex) {
-            throw new InitializationError(ex);
+            throw new dConomyInitializationError(ex);
         }
     }
 
@@ -250,5 +253,6 @@ public final class dCoBase{
         if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
             WalletSQLite_Source.cleanUp();
         }
+        $ = null;
     }
 }

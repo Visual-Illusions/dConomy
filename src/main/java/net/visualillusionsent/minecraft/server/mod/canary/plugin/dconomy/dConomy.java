@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.lang.InitializationError;
+import net.visualillusionsent.lang.dConomyInitializationError;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
@@ -56,7 +56,7 @@ public final class dConomy extends Plugin implements IdConomy{
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
             return true;
         }
-        catch (InitializationError ierr) {
+        catch (dConomyInitializationError ierr) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ierr.getCause());
         }
         catch (CommandDependencyException cdex) {
