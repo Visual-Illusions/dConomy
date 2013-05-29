@@ -22,7 +22,7 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.commands;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ChatForm;
+import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.utils.StringUtils;
@@ -34,14 +34,14 @@ public final class InformationCommand extends dConomyCommand{
     public InformationCommand(){
         super(0);
         List<String> pre = new ArrayList<String>();
-        pre.add(center(ChatForm.CYAN + "---" + ChatForm.LIGHT_GREEN + " d" + ChatForm.ORANGE + "Conomy " + ChatForm.PURPLE + "v" + dCoBase.getRawVersion() + ChatForm.CYAN + " ---"));
+        pre.add(center(MineChatForm.CYAN + "---" + MineChatForm.LIGHT_GREEN + " d" + MineChatForm.ORANGE + "Conomy " + MineChatForm.PURPLE + "v" + dCoBase.getRawVersion() + MineChatForm.CYAN + " ---"));
         pre.add("$VERSION_CHECK$");
-        pre.add(ChatForm.CYAN + "Build: " + ChatForm.LIGHT_GREEN + dCoBase.getBuildNumber());
-        pre.add(ChatForm.CYAN + "Built: " + ChatForm.LIGHT_GREEN + dCoBase.getBuildTime());
-        pre.add(ChatForm.CYAN + "Lead Developer: " + ChatForm.LIGHT_GREEN + "DarkDiplomat");
-        pre.add(ChatForm.CYAN + "Contributers: " + ChatForm.LIGHT_GREEN + " "); // If someone adds to dConomy, their name can go here
-        pre.add(ChatForm.CYAN + "Website: " + ChatForm.LIGHT_GREEN + "http://wiki.visualillusionsent.net/dConomy");
-        pre.add(ChatForm.CYAN + "Issues: " + ChatForm.LIGHT_GREEN + "https://github.com/Visual-Illusions/dConomy/issues");
+        pre.add(MineChatForm.CYAN + "Build: " + MineChatForm.LIGHT_GREEN + dCoBase.getBuildNumber());
+        pre.add(MineChatForm.CYAN + "Built: " + MineChatForm.LIGHT_GREEN + dCoBase.getBuildTime());
+        pre.add(MineChatForm.CYAN + "Lead Developer: " + MineChatForm.LIGHT_GREEN + "DarkDiplomat");
+        pre.add(MineChatForm.CYAN + "Contributers: " + MineChatForm.LIGHT_GREEN + " "); // If someone adds to dConomy, their name can go here
+        pre.add(MineChatForm.CYAN + "Website: " + MineChatForm.LIGHT_GREEN + "http://wiki.visualillusionsent.net/dConomy");
+        pre.add(MineChatForm.CYAN + "Issues: " + MineChatForm.LIGHT_GREEN + "https://github.com/Visual-Illusions/dConomy/issues");
 
         // Next 2 lines should always remain at the end of the About
         pre.add(center("§aCopyright © 2011-2013 §2Visual §6I§9l§bl§4u§as§2i§5o§en§7s §2Entertainment"));
@@ -54,13 +54,13 @@ public final class InformationCommand extends dConomyCommand{
                 VersionChecker vc = dCoBase.getVersionChecker();
                 Boolean islatest = vc.isLatest();
                 if (islatest == null) {
-                    user.message(center(ChatForm.GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
+                    user.message(center(MineChatForm.GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
                 }
                 else if (!vc.isLatest()) {
-                    user.message(center(ChatForm.GRAY + vc.getUpdateAvailibleMessage()));
+                    user.message(center(MineChatForm.GRAY + vc.getUpdateAvailibleMessage()));
                 }
                 else {
-                    user.message(center(ChatForm.LIGHT_GREEN + "Latest Version Installed"));
+                    user.message(center(MineChatForm.LIGHT_GREEN + "Latest Version Installed"));
                 }
             }
             else {
@@ -70,7 +70,7 @@ public final class InformationCommand extends dConomyCommand{
     }
 
     private final String center(String toCenter){
-        String strColorless = ChatForm.removeFormating(toCenter);
+        String strColorless = MineChatForm.removeFormating(toCenter);
         return StringUtils.padCharLeft(toCenter, (int) (Math.floor(63 - strColorless.length()) / 2), ' ');
     }
 }

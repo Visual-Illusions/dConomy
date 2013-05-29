@@ -19,7 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.ChatForm;
+import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.utils.LocaleHelper;
 
 public final class MessageTranslator extends LocaleHelper{
@@ -48,6 +48,6 @@ public final class MessageTranslator extends LocaleHelper{
     }
 
     private static final String colorForm(String msg){
-        return msg.replace("$c", ChatForm.MARKER.stringValue());
+        return msg.replace("$c", MineChatForm.MARKER.stringValue());
     }
 }

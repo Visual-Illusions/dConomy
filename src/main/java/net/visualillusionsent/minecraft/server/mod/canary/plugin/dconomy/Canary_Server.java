@@ -29,7 +29,7 @@ import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.AccountTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ChatForm;
+import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
@@ -118,7 +118,7 @@ public class Canary_Server implements IModServer, IModUser{
     @Override
     public void error(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
-            getServerLogger().log(CanaryLevel.NOTICE, ChatForm.removeFormating(key));
+            getServerLogger().log(CanaryLevel.NOTICE, MineChatForm.removeFormating(key));
         }
         else {
             getServerLogger().log(CanaryLevel.NOTICE, MessageTranslator.transFormMessage(key, false, args));
@@ -131,7 +131,7 @@ public class Canary_Server implements IModServer, IModUser{
     @Override
     public void message(final String key, final Object... args){
         if (args == null || key.trim().isEmpty()) {
-            getServerLogger().info(ChatForm.removeFormating(key));
+            getServerLogger().info(MineChatForm.removeFormating(key));
         }
         else {
             getServerLogger().info(MessageTranslator.transFormMessage(key, false, args));
