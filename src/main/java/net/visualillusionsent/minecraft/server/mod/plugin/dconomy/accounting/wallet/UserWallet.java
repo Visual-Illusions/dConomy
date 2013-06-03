@@ -60,6 +60,6 @@ public final class UserWallet extends Wallet{
      */
     @Override
     public boolean reload(){
-        return this.datasource.reloadAccount(this);
+        return ((WalletDataSource) datasource).reloadAccount(this);
     }
 }

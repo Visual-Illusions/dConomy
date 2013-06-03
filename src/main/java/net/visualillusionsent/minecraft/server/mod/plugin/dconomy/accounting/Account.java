@@ -29,6 +29,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataSo
  * @author Jason (darkdiplomat)
  * 
  */
+@SuppressWarnings("rawtypes")
 public abstract class Account{
 
     protected final String owner;
