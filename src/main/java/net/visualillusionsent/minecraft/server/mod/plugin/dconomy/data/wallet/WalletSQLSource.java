@@ -24,11 +24,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 
-public abstract class WalletSQL_Source implements WalletDataSource{
+public abstract class WalletSQLSource implements WalletDataSource{
     protected Connection conn;
     protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
 
@@ -71,7 +70,7 @@ public abstract class WalletSQL_Source implements WalletDataSource{
     }
 
     @Override
-    public boolean saveAccount(Account wallet){
+    public boolean saveAccount(Wallet wallet){
         boolean success = true;
         synchronized (lock) {
             dCoBase.debug("Saving Wallet for: ".concat(wallet.getOwner()));
@@ -121,7 +120,7 @@ public abstract class WalletSQL_Source implements WalletDataSource{
     }
 
     @Override
-    public boolean reloadAccount(Account wallet){
+    public boolean reloadAccount(Wallet wallet){
         boolean success = true;
         dCoBase.debug("Reloading Wallet for: ".concat(wallet.getOwner()));
         PreparedStatement ps = null;

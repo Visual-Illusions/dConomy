@@ -21,13 +21,13 @@ package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data;
 
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 
-public interface dCoDataSource{
+public interface dCoDataSource<T extends Account> {
 
     final Object lock = new Object();
 
     boolean load();
 
-    boolean saveAccount(Account account);
+    boolean saveAccount(T account);
 
-    boolean reloadAccount(Account account);
+    boolean reloadAccount(T account);
 }

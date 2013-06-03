@@ -23,9 +23,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 
-public final class WalletMySQL_Source extends WalletSQL_Source{
+public final class WalletMySQLSource extends WalletSQLSource{
 
     @Override
     public final boolean load(){
@@ -47,7 +47,7 @@ public final class WalletMySQL_Source extends WalletSQL_Source{
     }
 
     @Override
-    public final boolean saveAccount(Account wallet){
+    public final boolean saveAccount(Wallet wallet){
         try {
             testConnection();
         }
@@ -60,7 +60,7 @@ public final class WalletMySQL_Source extends WalletSQL_Source{
     }
 
     @Override
-    public final boolean reloadAccount(Account wallet){
+    public final boolean reloadAccount(Wallet wallet){
         try {
             testConnection();
         }

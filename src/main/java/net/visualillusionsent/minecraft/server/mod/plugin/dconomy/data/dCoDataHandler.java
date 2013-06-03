@@ -24,7 +24,7 @@ import java.sql.DriverManager;
 import java.util.Enumeration;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 
-public class dCoDataHandler{
+public final class dCoDataHandler{
 
     private final OutputQueue queue;
     private final OutputThread outThread;
@@ -57,14 +57,12 @@ public class dCoDataHandler{
         return queue;
     }
 
+    @SuppressWarnings("unchecked")
     public void cleanUp(){
         outThread.terminate();
         while (queue.hasNext()) { // Save the rest immediately
             Account account = null;
-            try {
-                account = queue.next();
-            }
-            catch (InterruptedException ex) {}
+            account = queue.next();
             if (account != null && account.getDataSource() != null) {
                 account.getDataSource().saveAccount(account);
             }

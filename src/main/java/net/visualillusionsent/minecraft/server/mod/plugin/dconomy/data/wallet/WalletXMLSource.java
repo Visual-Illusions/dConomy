@@ -24,7 +24,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.Account;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.utils.SystemUtils;
@@ -101,7 +100,7 @@ public final class WalletXMLSource implements WalletDataSource{
     }
 
     @Override
-    public final boolean saveAccount(Account account){
+    public final boolean saveAccount(Wallet account){
         boolean success = true;
         synchronized (lock) {
             File walletFile = new File(wallet_Path);
@@ -160,7 +159,7 @@ public final class WalletXMLSource implements WalletDataSource{
     }
 
     @Override
-    public final boolean reloadAccount(Account account){
+    public final boolean reloadAccount(Wallet account){
         boolean success = true;
         synchronized (lock) {
             File walletFile = new File(wallet_Path);

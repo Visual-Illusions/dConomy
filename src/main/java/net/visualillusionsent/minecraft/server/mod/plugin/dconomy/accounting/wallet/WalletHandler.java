@@ -24,8 +24,8 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletDataSource;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletMySQL_Source;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLite_Source;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletMySQLSource;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletXMLSource;
 
 /**
@@ -51,10 +51,10 @@ public final class WalletHandler{
         wallets = new ConcurrentHashMap<String, Wallet>();
         servwallet = new ServerWallet(dCoBase.getProperties().getBooleanValue("server.max.always"));
         if (type == DataSourceType.MYSQL) {
-            source = new WalletMySQL_Source();
+            source = new WalletMySQLSource();
         }
         else if (type == DataSourceType.SQLITE) {
-            source = new WalletSQLite_Source();
+            source = new WalletSQLiteSource();
         }
         else {
             source = new WalletXMLSource();

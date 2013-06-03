@@ -19,6 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet;
 
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataSource;
 
-public interface WalletDataSource extends dCoDataSource{}
+public interface WalletDataSource extends dCoDataSource<Wallet>{}

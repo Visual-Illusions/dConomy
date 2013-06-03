@@ -32,6 +32,7 @@ final class OutputThread extends Thread{
         this.handler = handler;
     }
 
+    @SuppressWarnings("unchecked")
     public void run(){
         while (running) {
             Account account = null;

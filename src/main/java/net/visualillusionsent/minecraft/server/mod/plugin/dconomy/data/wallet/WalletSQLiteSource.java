@@ -24,11 +24,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 
-public final class WalletSQLite_Source extends WalletSQL_Source{
-    private static WalletSQLite_Source $;
+public final class WalletSQLiteSource extends WalletSQLSource{
+    private static WalletSQLiteSource $;
     private final String db_Path = dCoBase.getProperties().getString("sql.database.url");
 
-    public WalletSQLite_Source(){
+    public WalletSQLiteSource(){
         if ($ == null) {
             $ = this;
         }

@@ -34,7 +34,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wal
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.DataSourceType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoProperties;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLite_Source;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.ProgramStatus;
@@ -277,7 +277,7 @@ public final class dCoBase{
         WalletHandler.cleanUp();
         $.handler.cleanUp();
         if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
-            WalletSQLite_Source.cleanUp();
+            WalletSQLiteSource.cleanUp();
         }
         $ = null;
     }
