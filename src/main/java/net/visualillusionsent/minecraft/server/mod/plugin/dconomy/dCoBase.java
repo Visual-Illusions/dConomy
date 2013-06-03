@@ -19,6 +19,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.plugin.dconomy;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -35,6 +36,7 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoDataHa
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.dCoProperties;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.data.wallet.WalletSQLite_Source;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
+import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.ProgramStatus;
 import net.visualillusionsent.utils.VersionChecker;
 
@@ -73,9 +75,33 @@ public final class dCoBase{
             checkVersion();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
+            testAndMoveLangFiles();
         }
         catch (Exception ex) {
             throw new dConomyInitializationError(ex);
+        }
+    }
+
+    private void testAndMoveLangFiles(){
+        boolean mvLangtxt = false, mven_US = false;
+        if (!new File("config/dConomy3/lang/").exists()) {
+            new File("config/dConomy3/lang/").mkdir();
+            mvLangtxt = true;
+            mven_US = true;
+        }
+        else {
+            if (!new File("config/dConomy3/lang/languages.txt").exists()) {
+                mvLangtxt = true;
+            }
+            if (!new File("config/dConomy3/lang/en_US.lang").exists()) {
+                mven_US = true;
+            }
+        }
+        if (mvLangtxt) {
+            FileUtils.cloneFileFromJar(getJarPath(), "resources/lang/languages.txt", "config/dConomy3/lang/languages.txt");
+        }
+        if (mven_US) {
+            FileUtils.cloneFileFromJar(getJarPath(), "resources/lang/en_US.lang", "config/dConomy3/lang/en_US.lang");
         }
     }
 

@@ -29,7 +29,9 @@ public final class MessageTranslator extends LocaleHelper{
         $ = new MessageTranslator();
     }
 
-    private MessageTranslator(){}
+    private MessageTranslator(){
+        super(true, "config/dConomy3/lang/");
+    }
 
     public static final String transMessage(String key){
         return colorForm($.localeTranslate(key));
@@ -49,5 +51,9 @@ public final class MessageTranslator extends LocaleHelper{
 
     private static final String colorForm(String msg){
         return msg.replace("$c", MineChatForm.MARKER.stringValue());
+    }
+
+    public static final void reloadMessages(){
+        $.reloadLangFiles();
     }
 }

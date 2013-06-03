@@ -1,5 +1,7 @@
-# This file NEEDS to be in UTF-8 format!
-# This file is also the default Language file and needs to be included
+;# This file NEEDS to be in UTF-8 format!
+;# This file is also the default Language file and needs to be included
+;# DO NOT MODIFY THIS FILE! clone the file to create new translations.
+;# Saving the new file as <localeCode>.lang
 error.nan=Invalid number given.
 error.no.money=Not enough money to pay that amount.
 error.money.max=$c6{0} {1}$cC already has max allowed balance.
@@ -19,20 +21,20 @@ admin.reload.account.success=$cAReloaded $c6{0}$cA $c3{1}$cA.
 admin.reload.account.fail=$cCFailed to reload $c6{0}$cA $c3{1}$cC.
 admin.account.locked=$cALocked $c6{0}$cA $c3{1}$cA.
 admin.account.unlocked=$cAUnlocked $c6{0}$cA $c3{1}$cA.
-##################################################
-# © Copyright 2011-2013 Visual Illusions Entertainment. 
-# 
-# This file is part of dConomy.
-#
-# dConomy is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along with dConomy.
-# If not, see http://www.gnu.org/licenses/gpl.html
-####################################################
+#;
+#; © Copyright 2011-2013 Visual Illusions Entertainment. 
+#; 
+#; This file is part of dConomy.
+#;
+#; dConomy is free software: you can redistribute it and/or modify
+#; it under the terms of the GNU General Public License as published by
+#; the Free Software Foundation, either version 3 of the License, or
+#; (at your option) any later version.
+#; 
+#; dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+#; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#; See the GNU General Public License for more details.
+#;
+#; You should have received a copy of the GNU General Public License along with dConomy.
+#; If not, see http://www.gnu.org/licenses/gpl.html
+#;
