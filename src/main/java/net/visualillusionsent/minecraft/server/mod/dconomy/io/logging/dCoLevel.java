@@ -17,34 +17,25 @@
  * 
  * Source Code available @ https://github.com/Visual-Illusions/dConomy
  */
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
+package net.visualillusionsent.minecraft.server.mod.dconomy.io.logging;
 
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
+import java.util.logging.Level;
 
-/**
- * Wallet Transaction Hook <br>
- * Called when a Wallet balance changes
- * 
- * @author Jason (darkdiplomat)
- */
-public final class WalletTransactionHook extends AccountTransactionHook{
+public final class dCoLevel extends Level{
 
-    /**
-     * Constructs a new Wallet Transaction Hook
-     * 
-     * @param action
-     *            the {@link WalletTransaction} done
-     */
-    public WalletTransactionHook(WalletTransaction action){
-        super(action);
+    private static final long serialVersionUID = 210434042012L;
+    private static int baselvl = 15000;
+    private static final String RD = "DEBUG-";
+    public static final dCoLevel //
+            STACKTRACE = new dCoLevel(RD.concat("STACKTRACE"), genLevel()), //
+            GENERAL = new dCoLevel(RD.concat("GENERAL"), genLevel());
+
+    protected dCoLevel(String name, int intvalue){
+        super(name, intvalue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final WalletTransaction getTransaction(){
-        return (WalletTransaction) action;
+    private final static int genLevel(){
+        ++baselvl;
+        return baselvl;
     }
-
 }

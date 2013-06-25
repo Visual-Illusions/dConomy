@@ -28,10 +28,10 @@ import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.Wal
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletDepositHook;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletSetBalanceHook;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountingException;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.minecraft.server.mod.dconomy.dCoBase;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountingException;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
 
 public final class CanarydConomyAPIListener implements PluginListener{
 

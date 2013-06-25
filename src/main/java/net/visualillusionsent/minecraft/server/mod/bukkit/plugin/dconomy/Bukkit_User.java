@@ -20,9 +20,9 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import net.canarymod.api.OfflinePlayer;
+import net.visualillusionsent.minecraft.server.mod.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

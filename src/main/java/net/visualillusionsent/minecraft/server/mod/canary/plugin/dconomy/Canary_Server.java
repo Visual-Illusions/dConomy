@@ -29,12 +29,12 @@ import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.AccountTransactionHook;
+import net.visualillusionsent.minecraft.server.mod.dconomy.MessageTranslator;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
 
 /**
  * Canary Server wrapper for Mod_Server implementation

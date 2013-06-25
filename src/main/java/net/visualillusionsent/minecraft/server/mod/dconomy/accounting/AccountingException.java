@@ -17,36 +17,33 @@
  * 
  * Source Code available @ https://github.com/Visual-Illusions/dConomy
  */
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
+package net.visualillusionsent.minecraft.server.mod.dconomy.accounting;
 
-import net.canarymod.hook.Hook;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
 
 /**
- * Account Transaction Hook <br>
- * Called when an Account balance changes<br>
- * dConomy Add-on should extend this class for their own Account instances<br>
+ * Accounting Exception<br>
+ * Thrown when Accounting encounters a problem such as max balance or negative numbers
  * 
  * @author Jason (darkdiplomat)
+ * 
  */
-public abstract class AccountTransactionHook extends Hook{
-    protected final AccountTransaction action;
+public final class AccountingException extends RuntimeException{
 
-    /**
-     * Constructs a new Account Transaction Hook
-     * 
-     * @param action
-     *            the AccountTransaction done
-     */
-    public AccountTransactionHook(AccountTransaction action){
-        this.action = action;
+    public AccountingException(String msg){
+        super(msg);
     }
 
-    /**
-     * Returns the {@link AccountTransaction} that happen
-     * 
-     * @return {@link AccountTransaction}
-     */
-    public abstract AccountTransaction getTransaction();
+    public AccountingException(String msg, Throwable cause){
+        super(msg, cause);
+    }
 
+    public AccountingException(Throwable cause){
+        super(cause);
+    }
+
+    public final String getMessage(){
+        return super.getMessage();
+    }
+
+    private static final long serialVersionUID = 311216012013L;
 }

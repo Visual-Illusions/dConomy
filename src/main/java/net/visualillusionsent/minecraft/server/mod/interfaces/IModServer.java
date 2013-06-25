@@ -20,7 +20,7 @@
 package net.visualillusionsent.minecraft.server.mod.interfaces;
 
 import java.util.logging.Logger;
-import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.AccountTransaction;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
 
 public interface IModServer{
 

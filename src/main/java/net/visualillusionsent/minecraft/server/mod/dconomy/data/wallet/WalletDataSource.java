@@ -17,34 +17,9 @@
  * 
  * Source Code available @ https://github.com/Visual-Illusions/dConomy
  */
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
+package net.visualillusionsent.minecraft.server.mod.dconomy.data.wallet;
 
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.minecraft.server.mod.dconomy.data.dCoDataSource;
 
-/**
- * Wallet Transaction Hook <br>
- * Called when a Wallet balance changes
- * 
- * @author Jason (darkdiplomat)
- */
-public final class WalletTransactionHook extends AccountTransactionHook{
-
-    /**
-     * Constructs a new Wallet Transaction Hook
-     * 
-     * @param action
-     *            the {@link WalletTransaction} done
-     */
-    public WalletTransactionHook(WalletTransaction action){
-        super(action);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final WalletTransaction getTransaction(){
-        return (WalletTransaction) action;
-    }
-
-}
+public interface WalletDataSource extends dCoDataSource<Wallet>{}
