@@ -28,9 +28,11 @@ import net.visualillusionsent.lang.dConomyInitializationError;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.IdConomy;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.io.logging.dCoLevel;
 
 /**
  * dConomy main plugin class for Canary implementations
@@ -39,7 +41,13 @@ import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.accounting.wal
  * 
  */
 public final class dConomy extends Plugin implements IdConomy{
+
     private static dCoBase base;
+
+    static {
+        MessageTranslator.getClassVersion();
+        dCoLevel.GENERAL.intValue();
+    }
 
     @Override
     public final void disable(){

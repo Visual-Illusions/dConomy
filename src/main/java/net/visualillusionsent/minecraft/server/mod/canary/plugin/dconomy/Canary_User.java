@@ -21,8 +21,8 @@ package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy;
 
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
 import net.visualillusionsent.minecraft.server.mod.plugin.dconomy.MessageTranslator;
 
 /**
@@ -79,10 +79,10 @@ public final class Canary_User implements IModUser{
     @Override
     public final void message(String key, Object... args){
         if (args == null || key.trim().isEmpty()) {
-            player.sendMessage(key);
+            player.message(key);
         }
         else {
-            player.sendMessage(MessageTranslator.transFormMessage(key, true, args));
+            player.message(MessageTranslator.transFormMessage(key, true, args));
         }
     }
 
