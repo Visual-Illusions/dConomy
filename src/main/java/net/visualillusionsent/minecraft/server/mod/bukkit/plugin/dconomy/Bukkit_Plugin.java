@@ -18,7 +18,7 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
  * @author darkdiplomat
  * 
  */
-public final class Bukkit_Plugin implements IModUser{
+public final class Bukkit_Plugin implements ModUser{
     private final Plugin plugin;
 
     /**

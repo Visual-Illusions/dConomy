@@ -18,23 +18,23 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import java.util.logging.Logger;
+import net.visualillusionsent.dconomy.IdConomy;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.commands.InformationCommand;
+import net.visualillusionsent.dconomy.commands.dConomyCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletAddCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletBaseCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletLockCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletPayCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletReloadCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletTransactionEvent;
-import net.visualillusionsent.minecraft.server.mod.dconomy.IdConomy;
-import net.visualillusionsent.minecraft.server.mod.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.InformationCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletAddCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletBaseCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletLockCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletPayCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletReloadCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletRemoveCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletResetCommand;
-import net.visualillusionsent.minecraft.server.mod.dconomy.commands.wallet.WalletSetCommand;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -81,7 +81,7 @@ public final class dConomy extends JavaPlugin implements IdConomy{
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-        IModUser user = sender instanceof Player ? new Bukkit_User((Player) sender) : (IModUser) dCoBase.getServer();
+        ModUser user = sender instanceof Player ? new Bukkit_User((Player) sender) : (ModUser) dCoBase.getServer();
         if (cmd.getName().equals("dconomy")) {
             infoCmd.parseCommand(user, args, false);
             return true;
@@ -146,7 +146,7 @@ public final class dConomy extends JavaPlugin implements IdConomy{
     }
 
     @Override
-    public IModServer getModServer(){
+    public ModServer getModServer(){
         return new Bukkit_Server(getServer(), this);
     }
 }

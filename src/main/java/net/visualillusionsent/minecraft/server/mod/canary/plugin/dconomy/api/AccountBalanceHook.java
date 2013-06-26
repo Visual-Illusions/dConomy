@@ -20,7 +20,7 @@ package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.Canary_Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 
 /**
  * Account Balance request Hook<br>
@@ -30,7 +30,7 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
  * 
  */
 public abstract class AccountBalanceHook extends Hook{
-    private final IModUser caller;
+    private final ModUser caller;
     private final String username;
     private double balance = -1;
     private String error;
@@ -49,11 +49,11 @@ public abstract class AccountBalanceHook extends Hook{
     }
 
     /**
-     * Gets the {@link IModUser}(Plugin) requesting Balance information.
+     * Gets the {@link ModUser}(Plugin) requesting Balance information.
      * 
-     * @return the {@link IModUser} caller
+     * @return the {@link ModUser} caller
      */
-    public final IModUser getCaller(){
+    public final ModUser getCaller(){
         return caller;
     }
 

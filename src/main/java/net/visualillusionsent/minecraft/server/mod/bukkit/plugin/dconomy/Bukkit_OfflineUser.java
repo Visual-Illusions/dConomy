@@ -18,7 +18,7 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 import org.bukkit.OfflinePlayer;
 
 /**
@@ -26,7 +26,7 @@ import org.bukkit.OfflinePlayer;
  * 
  * @author Jason (darkdiplomat)
  */
-public final class Bukkit_OfflineUser implements IModUser{
+public final class Bukkit_OfflineUser implements ModUser{
     private final OfflinePlayer player;
 
     /**

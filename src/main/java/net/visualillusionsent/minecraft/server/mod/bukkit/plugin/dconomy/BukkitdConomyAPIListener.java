@@ -18,16 +18,16 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy;
 
 import net.canarymod.Canary;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.accounting.AccountingException;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletBalanceEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletDebitEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletDepositEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletSetBalanceEvent;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.WalletTransactionEvent;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountingException;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

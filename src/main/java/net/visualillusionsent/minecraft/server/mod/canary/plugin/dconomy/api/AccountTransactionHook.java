@@ -18,7 +18,7 @@
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api;
 
 import net.canarymod.hook.Hook;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
+import net.visualillusionsent.dconomy.accounting.AccountTransaction;
 
 /**
  * Account Transaction Hook <br>

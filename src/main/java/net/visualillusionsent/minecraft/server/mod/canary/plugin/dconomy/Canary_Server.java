@@ -26,13 +26,13 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
+import net.visualillusionsent.dconomy.MessageTranslator;
+import net.visualillusionsent.dconomy.accounting.AccountTransaction;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.AccountTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.dconomy.MessageTranslator;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 
 /**
  * Canary Server wrapper for Mod_Server implementation
@@ -40,7 +40,7 @@ import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
  * @author Jason (darkdiplomat)
  * 
  */
-public class Canary_Server implements IModServer, IModUser{
+public class Canary_Server implements ModServer, ModUser{
 
     private final Server serv;
     private final dConomy dCo;
@@ -56,7 +56,7 @@ public class Canary_Server implements IModServer, IModUser{
      * {@inheritDoc}
      */
     @Override
-    public final IModUser getUser(String name){
+    public final ModUser getUser(String name){
         Player player = serv.matchPlayer(name);
         if (player != null) {
             return new Canary_User(player);

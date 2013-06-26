@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
 import org.bukkit.event.HandlerList;
 
 /**

@@ -22,15 +22,15 @@ import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.IdConomy;
+import net.visualillusionsent.dconomy.MessageTranslator;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.dConomyInitializationError;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.io.logging.dCoLevel;
 import net.visualillusionsent.minecraft.server.mod.canary.plugin.dconomy.api.WalletTransactionHook;
-import net.visualillusionsent.minecraft.server.mod.dconomy.IdConomy;
-import net.visualillusionsent.minecraft.server.mod.dconomy.MessageTranslator;
-import net.visualillusionsent.minecraft.server.mod.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.dconomy.dConomyInitializationError;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.wallet.WalletTransaction;
-import net.visualillusionsent.minecraft.server.mod.dconomy.io.logging.dCoLevel;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
 
 /**
  * dConomy main plugin class for Canary implementations
@@ -80,7 +80,7 @@ public final class dConomy extends Plugin implements IdConomy{
     }
 
     @Override
-    public IModServer getModServer(){
+    public ModServer getModServer(){
         return new Canary_Server(Canary.getServer(), this);
     }
 

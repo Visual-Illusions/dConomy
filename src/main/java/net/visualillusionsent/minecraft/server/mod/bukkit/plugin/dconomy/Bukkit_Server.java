@@ -21,13 +21,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.canarymod.logger.Logman;
+import net.visualillusionsent.dconomy.MessageTranslator;
+import net.visualillusionsent.dconomy.accounting.AccountTransaction;
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api.AccountTransactionEvent;
-import net.visualillusionsent.minecraft.server.mod.dconomy.MessageTranslator;
-import net.visualillusionsent.minecraft.server.mod.dconomy.accounting.AccountTransaction;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModServer;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
@@ -39,7 +39,7 @@ import org.bukkit.entity.Player;
  * @author Jason (darkdiplomat)
  * 
  */
-public final class Bukkit_Server implements IModServer, IModUser{
+public final class Bukkit_Server implements ModServer, ModUser{
 
     private final Server serv;
     private final dConomy dCo;
@@ -55,7 +55,7 @@ public final class Bukkit_Server implements IModServer, IModUser{
      * {@inheritDoc}
      */
     @Override
-    public final IModUser getUser(String name){
+    public final ModUser getUser(String name){
         Player player = serv.getPlayer(name);
         if (player != null) {
             return new Bukkit_User(player);

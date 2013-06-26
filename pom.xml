@@ -73,7 +73,7 @@
    <dependency>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>viutils</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
    </dependency>
    <dependency>
     <groupId>org.xerial</groupId>
@@ -169,7 +169,7 @@
               <Vendor>Visual Illusions Entertainment</Vendor>
               <Built-By>${user.name}</Built-By>
               <Build-Time>${maven.build.timestamp}</Build-Time>
-              <Class-Path>../lib/sqlite.jar</Class-Path>
+              <Class-Path>../lib/sqlite.jar ../lib/viutils-1.0.4.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>

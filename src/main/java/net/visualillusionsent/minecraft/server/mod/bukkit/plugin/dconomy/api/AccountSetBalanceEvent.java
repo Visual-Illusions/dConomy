@@ -18,7 +18,7 @@
 package net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.api;
 
 import net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.Bukkit_Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.IModUser;
+import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
@@ -30,7 +30,7 @@ import org.bukkit.plugin.Plugin;
  * 
  */
 public abstract class AccountSetBalanceEvent extends Event{
-    private final IModUser caller;
+    private final ModUser caller;
     private final String username;
     private final double toSet;
     private String error;
@@ -52,11 +52,11 @@ public abstract class AccountSetBalanceEvent extends Event{
     }
 
     /**
-     * Gets the {@link IModUser}(plugin) asking to set balance
+     * Gets the {@link ModUser}(plugin) asking to set balance
      * 
-     * @return the {@link IModUser}(plugin)
+     * @return the {@link ModUser}(plugin)
      */
-    public final IModUser getCaller(){
+    public final ModUser getCaller(){
         return caller;
     }
 
