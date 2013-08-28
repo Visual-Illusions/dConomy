@@ -35,7 +35,7 @@ package net.visualillusionsent.minecraft.server.mod.interfaces;
  * 
  * @author Jason (darkdiplomat)
  */
-public interface ModUser{
+public interface ModUser {
 
     /**
      * Gets the name of the {@code Mod_User}
@@ -79,6 +79,13 @@ public interface ModUser{
      * @return {@code true} if console/server; {@code false} otherwise
      */
     boolean isConsole();
+
+    /**
+     * Gets the User's Locale Code
+     * 
+     * @return the User's Locale Code
+     */
+    String getUserLocale();
 
     /**
      * Gets the ModType of the Server

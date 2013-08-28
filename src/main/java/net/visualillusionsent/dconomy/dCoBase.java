@@ -44,7 +44,7 @@ import net.visualillusionsent.utils.VersionChecker;
  * @author Jason (darkdiplomat)
  * 
  */
-public final class dCoBase{
+public final class dCoBase {
 
     private final dCoDataHandler handler;
     private final dCoProperties props;
@@ -58,7 +58,7 @@ public final class dCoBase{
     private static dCoBase $;
     private static ModServer server;
 
-    public dCoBase(IdConomy idconomy){
+    public dCoBase(IdConomy idconomy) {
         if ($ != null) {
             throw new dConomyInitializationError("Already loaded");
         }
@@ -79,7 +79,7 @@ public final class dCoBase{
         }
     }
 
-    private void testAndMoveLangFiles(){
+    private void testAndMoveLangFiles() {
         boolean mvLangtxt = false, mven_US = false;
         if (!new File("config/dConomy3/lang/").exists()) {
             new File("config/dConomy3/lang/").mkdir();
@@ -100,6 +100,7 @@ public final class dCoBase{
         if (mven_US) {
             FileUtils.cloneFileFromJar(getJarPath(), "resources/lang/en_US.lang", "config/dConomy3/lang/en_US.lang");
         }
+        MessageTranslator.reloadMessages();
     }
 
     /**
@@ -107,7 +108,7 @@ public final class dCoBase{
      * 
      * @return {@link dCoDataHandler}
      */
-    public final static dCoDataHandler getDataHandler(){
+    public final static dCoDataHandler getDataHandler() {
         return $.handler;
     }
 
@@ -116,7 +117,7 @@ public final class dCoBase{
      * 
      * @return {@link dCoProperties}
      */
-    public final static dCoProperties getProperties(){
+    public final static dCoProperties getProperties() {
         return $.props;
     }
 
@@ -125,67 +126,67 @@ public final class dCoBase{
      * 
      * @return {@link ModServer}
      */
-    public final static ModServer getServer(){
+    public final static ModServer getServer() {
         return server;
     }
 
-    public final static void info(String msg){
+    public final static void info(String msg) {
         $.logger.info(msg);
     }
 
-    public final static void info(String msg, Throwable thrown){
+    public final static void info(String msg, Throwable thrown) {
         $.logger.log(Level.INFO, msg, thrown);
     }
 
-    public final static void warning(String msg){
+    public final static void warning(String msg) {
         $.logger.warning(msg);
     }
 
-    public final static void warning(String msg, Throwable thrown){
+    public final static void warning(String msg, Throwable thrown) {
         $.logger.log(Level.WARNING, msg, thrown);
     }
 
-    public final static void severe(String msg){
+    public final static void severe(String msg) {
         $.logger.severe(msg);
     }
 
-    public final static void severe(String msg, Throwable thrown){
+    public final static void severe(String msg, Throwable thrown) {
         $.logger.log(Level.SEVERE, msg, thrown);
     }
 
-    public final static void stacktrace(Throwable thrown){
+    public final static void stacktrace(Throwable thrown) {
         if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
             $.logger.log(dCoLevel.STACKTRACE, "Stacktrace: ", thrown);
         }
     }
 
-    public final static void debug(String msg){
+    public final static void debug(String msg) {
         if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
             $.logger.log(dCoLevel.GENERAL, msg);
         }
     }
 
-    public final static String getVersion(){
+    public final static String getVersion() {
         return $.version + "." + $.build;
     }
 
-    public final static float getRawVersion(){
+    public final static float getRawVersion() {
         return $.version;
     }
 
-    public static short getBuildNumber(){
+    public static short getBuildNumber() {
         return $.build;
     }
 
-    public static String getBuildTime(){
+    public static String getBuildTime() {
         return $.buildTime;
     }
 
-    public final static ProgramStatus getProgramStatus(){
+    public final static ProgramStatus getProgramStatus() {
         return $.status;
     }
 
-    private final void readManifest(){
+    private final void readManifest() {
         try {
             Manifest manifest = getManifest();
             Attributes mainAttribs = manifest.getMainAttributes();
@@ -206,7 +207,7 @@ public final class dCoBase{
         }
     }
 
-    private final Manifest getManifest() throws Exception{
+    private final Manifest getManifest() throws Exception {
         Manifest toRet = null;
         Exception ex = null;
         JarFile jar = null;
@@ -231,7 +232,7 @@ public final class dCoBase{
         return toRet;
     }
 
-    private final String getJarPath(){ // For when the jar isn't dConomy3.jar
+    private final String getJarPath() { // For when the jar isn't dConomy3.jar
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
             return codeSource.getLocation().toURI().getPath();
@@ -240,7 +241,7 @@ public final class dCoBase{
         return "plugins/dConomy3.jar";
     }
 
-    private final void checkStatus(){
+    private final void checkStatus() {
         if (status == ProgramStatus.UNKNOWN) {
             severe("dConomy has declared itself as an 'UNKNOWN STATUS' build. Use is not advised and could cause damage to your system!");
         }
@@ -255,11 +256,11 @@ public final class dCoBase{
         }
     }
 
-    public final static VersionChecker getVersionChecker(){
+    public final static VersionChecker getVersionChecker() {
         return $.vc;
     }
 
-    private final void checkVersion(){
+    private final void checkVersion() {
         Boolean islatest = vc.isLatest();
         if (islatest == null) {
             warning("VersionCheckerError: " + vc.getErrorMessage());
@@ -270,12 +271,16 @@ public final class dCoBase{
         }
     }
 
-    public final void cleanUp(){
+    public final void cleanUp() {
         WalletHandler.cleanUp();
         $.handler.cleanUp();
         if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
             WalletSQLiteSource.cleanUp();
         }
         $ = null;
+    }
+
+    public static final String getServerLocale() {
+        return "en_US";
     }
 }

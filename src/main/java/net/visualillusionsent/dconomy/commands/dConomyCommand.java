@@ -17,24 +17,24 @@
  */
 package net.visualillusionsent.dconomy.commands;
 
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
 
-public abstract class dConomyCommand{
+public abstract class dConomyCommand {
+
     private final int minArgs;
 
-    protected dConomyCommand(int minArgs){
+    protected dConomyCommand(int minArgs) {
         this.minArgs = minArgs;
     }
 
-    public final boolean parseCommand(ModUser caller, String[] args, boolean adjust){
+    public final boolean parseCommand(ModUser caller, String[] args, boolean adjust) {
         if (args == null || caller == null) {
             return false;
         }
         String[] cmdArgs = adjust ? adjustedArgs(args, 1) : args;
 
         if (cmdArgs.length < minArgs) {
-            caller.error(MessageTranslator.transMessage("error.args"));
+            caller.error("error.args");
             return false;
         }
         else {
@@ -43,7 +43,7 @@ public abstract class dConomyCommand{
         }
     }
 
-    private final String[] adjustedArgs(String[] args, int start){
+    private final String[] adjustedArgs(String[] args, int start) {
         if (args.length == 0) {
             return args;
         }

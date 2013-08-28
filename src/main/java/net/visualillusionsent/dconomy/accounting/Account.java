@@ -17,7 +17,6 @@
  */
 package net.visualillusionsent.dconomy.accounting;
 
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.data.dCoDataSource;
 
@@ -28,7 +27,7 @@ import net.visualillusionsent.dconomy.data.dCoDataSource;
  * 
  */
 @SuppressWarnings("rawtypes")
-public abstract class Account{
+public abstract class Account {
 
     protected final String owner;
     protected double balance;
@@ -44,7 +43,7 @@ public abstract class Account{
      * @param datasource
      *            the {@link dCoDataSource} instance used to save/load the Account
      */
-    public Account(String owner, double balance, dCoDataSource datasource){
+    public Account(String owner, double balance, dCoDataSource datasource) {
         if (owner == null) {
             throw new IllegalArgumentException("Owner cannot be null");
         }
@@ -58,7 +57,7 @@ public abstract class Account{
      * 
      * @return Owner's name
      */
-    public String getOwner(){
+    public String getOwner() {
         return owner;
     }
 
@@ -67,7 +66,7 @@ public abstract class Account{
      * 
      * @return account balance
      */
-    public double getBalance(){
+    public double getBalance() {
         return balance;
     }
 
@@ -80,7 +79,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double deposit(double add) throws AccountingException{
+    public double deposit(double add) throws AccountingException {
         balance += testArgumentDouble(add);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
@@ -99,7 +98,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double deposit(String add) throws AccountingException{
+    public double deposit(String add) throws AccountingException {
         return deposit(testArgumentString(add));
     }
 
@@ -111,7 +110,7 @@ public abstract class Account{
      * @throws AccountingException
      *             should an AccountingException occur
      */
-    public void testDeposit(String add) throws AccountingException{
+    public void testDeposit(String add) throws AccountingException {
         testDeposit(testArgumentString(add));
     }
 
@@ -123,12 +122,12 @@ public abstract class Account{
      * @throws AccountingException
      *             should an AccountingException occur
      */
-    public void testDeposit(double add) throws AccountingException{
+    public void testDeposit(double add) throws AccountingException {
         double balance = this.balance + testArgumentDouble(add);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
             if (!this.owner.equals("SERVER")) {
-                throw new AccountingException(MessageTranslator.transFormMessage("error.money.max", true, this.owner, this.getClass().getSimpleName().toUpperCase()));
+                throw new AccountingException("error.money.max", this.owner, this.getClass().getSimpleName().toUpperCase());
             }
         }
     }
@@ -142,7 +141,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double debit(double remove) throws AccountingException{
+    public double debit(double remove) throws AccountingException {
         double toRemove = testArgumentDouble(remove);
         balance -= toRemove;
         this.save();
@@ -158,7 +157,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double debit(String remove) throws AccountingException{
+    public double debit(String remove) throws AccountingException {
         return debit(testArgumentString(remove));
     }
 
@@ -171,7 +170,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double setBalance(double set) throws AccountingException{
+    public double setBalance(double set) throws AccountingException {
         double toSet = testArgumentDouble(set);
         balance = toSet;
         double max = dCoBase.getProperties().getDouble("max.account.balance");
@@ -191,7 +190,7 @@ public abstract class Account{
      * @throws AccountingException
      *             if an Accounting Exception occurs
      */
-    public double setBalance(String set) throws AccountingException{
+    public double setBalance(String set) throws AccountingException {
         return setBalance(testArgumentString(set));
     }
 
@@ -203,7 +202,7 @@ public abstract class Account{
      * @return double value of the String
      * @throws AccountingException
      */
-    protected final double testArgumentString(String value) throws AccountingException{
+    protected final double testArgumentString(String value) throws AccountingException {
         double testNum = 0;
         try {
             testNum = Double.parseDouble(value);
@@ -222,7 +221,7 @@ public abstract class Account{
      * @return the dConomy rounded value
      * @throws AccountingException
      */
-    protected final double testArgumentDouble(double value) throws AccountingException{
+    protected final double testArgumentDouble(double value) throws AccountingException {
         if (value < 0) {
             throw new AccountingException("error.min");
         }
@@ -244,7 +243,7 @@ public abstract class Account{
      * 
      * @return the {@link dCoDataSource}
      */
-    public final dCoDataSource getDataSource(){
+    public final dCoDataSource getDataSource() {
         return datasource;
     }
 }

@@ -6,7 +6,7 @@
   <name>dConomy</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <ProgramStatus>ALPHA</ProgramStatus>
+    <ProgramStatus>BETA</ProgramStatus>
   </properties>
   <description>Economy base plugin for CanaryMod and Bukkit</description>
   <licenses>
@@ -73,7 +73,7 @@
    <dependency>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>viutils</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
    </dependency>
    <dependency>
     <groupId>org.xerial</groupId>
@@ -85,7 +85,7 @@
    <dependency>
     <groupId>net.canarymod</groupId>
     <artifactId>CanaryLib</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.10-SNAPSHOT</version>
    </dependency>
    <dependency>
     <groupId>org.bukkit</groupId>
@@ -95,7 +95,25 @@
    <!-- Mods End -->
   </dependencies>
   <build>
+    <defaultGoal>clean install</defaultGoal>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <linksource>true</linksource>
+          <doctitle>${project.name} ${project.version}</doctitle>
+          <header>Generated: ${timestamp}</header>
+          <footer><![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
+          <links>
+            <link>http://docs.visualillusionsent.net/VIUtils/</link>
+            <link>http://www.jdom.org/docs/apidocs/</link>
+            <link>http://docs.visualillusionsent.net/CanaryLib/</link>
+            <link>http://jd.bukkit.org/rb/apidocs/</link>
+          </links>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
@@ -169,7 +187,7 @@
               <Vendor>Visual Illusions Entertainment</Vendor>
               <Built-By>${user.name}</Built-By>
               <Build-Time>${maven.build.timestamp}</Build-Time>
-              <Class-Path>../lib/sqlite.jar ../lib/viutils-1.0.4.jar</Class-Path>
+              <Class-Path>../lib/viutils.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>

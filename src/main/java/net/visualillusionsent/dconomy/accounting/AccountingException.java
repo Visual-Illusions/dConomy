@@ -17,6 +17,8 @@
  */
 package net.visualillusionsent.dconomy.accounting;
 
+import net.visualillusionsent.dconomy.MessageTranslator;
+import net.visualillusionsent.dconomy.dCoBase;
 
 /**
  * Accounting Exception<br>
@@ -25,22 +27,31 @@ package net.visualillusionsent.dconomy.accounting;
  * @author Jason (darkdiplomat)
  * 
  */
-public final class AccountingException extends RuntimeException{
+public final class AccountingException extends RuntimeException {
 
-    public AccountingException(String msg){
+    private final Object[] args;
+
+    public AccountingException(String msg, Object... args) {
         super(msg);
+        this.args = args;
     }
 
-    public AccountingException(String msg, Throwable cause){
+    public AccountingException(String msg, Throwable cause, Object... args) {
         super(msg, cause);
+        this.args = args;
     }
 
-    public AccountingException(Throwable cause){
+    public AccountingException(Throwable cause, Object... args) {
         super(cause);
+        this.args = args;
     }
 
-    public final String getMessage(){
-        return super.getMessage();
+    public final String getMessage() {
+        return MessageTranslator.translate(super.getMessage(), "en_US", args);
+    }
+
+    public final String getLocalizedMessage() {
+        return MessageTranslator.translate(super.getMessage(), dCoBase.getServerLocale(), args);
     }
 
     private static final long serialVersionUID = 311216012013L;

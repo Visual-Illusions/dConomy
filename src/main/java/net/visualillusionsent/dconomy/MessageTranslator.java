@@ -20,38 +20,35 @@ package net.visualillusionsent.dconomy;
 import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
 import net.visualillusionsent.utils.LocaleHelper;
 
-public final class MessageTranslator extends LocaleHelper{
+public final class MessageTranslator extends LocaleHelper {
 
     private final static MessageTranslator $;
     static {
         $ = new MessageTranslator();
     }
 
-    private MessageTranslator(){
-        super(true, "config/dConomy3/lang/");
+    private MessageTranslator() {
+        super(true, "config/dConomy3/lang/", null);
+        reloadLangFiles();
     }
 
-    public static final String transMessage(String key){
-        return colorForm($.localeTranslate(key));
+    public static final String translate(String key, String locale) {
+        return colorForm($.localeTranslate(key, locale));
     }
 
-    public static final String transFormMessage(String key, boolean color, Object... args){
-        String toRet = $.localeTranslateMessage(key, args);
-        if (color) {
-            toRet = colorForm(toRet);
-        }
-
+    public static final String translate(String key, String locale, Object... args) {
+        String toRet = colorForm($.localeTranslate(key, locale, args));
         if (toRet.contains("$m")) {
             toRet = toRet.replace("$m", dCoBase.getProperties().getString("money.name"));
         }
         return toRet;
     }
 
-    private static final String colorForm(String msg){
+    private static final String colorForm(String msg) {
         return msg.replace("$c", MineChatForm.MARKER.stringValue());
     }
 
-    public static final void reloadMessages(){
+    public static final void reloadMessages() {
         $.reloadLangFiles();
     }
 }

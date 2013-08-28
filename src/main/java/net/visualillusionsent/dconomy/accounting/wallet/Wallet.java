@@ -17,7 +17,6 @@
  */
 package net.visualillusionsent.dconomy.accounting.wallet;
 
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.accounting.Account;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
@@ -28,10 +27,11 @@ import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
  * @author Jason (darkdiplomat)
  * 
  */
-public abstract class Wallet extends Account{
+public abstract class Wallet extends Account {
+
     protected boolean locked;
 
-    public Wallet(String owner, double balance, boolean locked, WalletDataSource source){
+    public Wallet(String owner, double balance, boolean locked, WalletDataSource source) {
         super(owner, balance, source);
         this.locked = locked;
     }
@@ -44,9 +44,9 @@ public abstract class Wallet extends Account{
      * @throws AccountingException
      *             if unable to debit the money
      */
-    public final void testDebit(double remove) throws AccountingException{
+    public final void testDebit(double remove) throws AccountingException {
         if (locked) {
-            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner, "WALLET"));
+            throw new AccountingException("error.lock.out", this.owner, "WALLET");
         }
         if (balance - remove < 0) {
             throw new AccountingException("error.no.money");
@@ -61,7 +61,7 @@ public abstract class Wallet extends Account{
      * @throws AccountingException
      *             if unable to debit the money
      */
-    public final void testDebit(String remove) throws AccountingException{
+    public final void testDebit(String remove) throws AccountingException {
         testDebit(this.testArgumentString(remove));
     }
 
@@ -69,21 +69,21 @@ public abstract class Wallet extends Account{
      * {@inheritDoc}
      */
     @Override
-    public void testDeposit(double add) throws AccountingException{
+    public void testDeposit(double add) throws AccountingException {
         if (locked) {
-            throw new AccountingException(MessageTranslator.transFormMessage("error.lock.out", true, this.owner, "WALLET"));
+            throw new AccountingException("error.lock.out", this.owner, "WALLET");
         }
         super.testDeposit(add);
     }
 
-    public final void setLockOut(boolean locked){
+    public final void setLockOut(boolean locked) {
         if (this.locked != locked) {
             this.locked = locked;
             this.save();
         }
     }
 
-    public final boolean isLocked(){
+    public final boolean isLocked() {
         return locked;
     }
 
@@ -91,7 +91,7 @@ public abstract class Wallet extends Account{
      * {@inheritDoc}
      */
     @Override
-    public final boolean equals(Object obj){
+    public final boolean equals(Object obj) {
         if (obj instanceof Wallet) {
             return this == obj;
         }
@@ -105,7 +105,7 @@ public abstract class Wallet extends Account{
      * {@inheritDoc}
      */
     @Override
-    public final int hashCode(){
+    public final int hashCode() {
         int hash = 7;
         hash = hash * 3 + owner.hashCode();
         hash = hash * 3 + super.hashCode();
@@ -116,7 +116,7 @@ public abstract class Wallet extends Account{
      * {@inheritDoc}
      */
     @Override
-    public final String toString(){
+    public final String toString() {
         return String.format("Wallet[Owner: %s Balance: %.2f]", owner, balance);
     }
 }
