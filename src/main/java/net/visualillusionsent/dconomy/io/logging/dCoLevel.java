@@ -19,7 +19,7 @@ package net.visualillusionsent.dconomy.io.logging;
 
 import java.util.logging.Level;
 
-public final class dCoLevel extends Level{
+public final class dCoLevel extends Level {
 
     private static final long serialVersionUID = 210434042012L;
     private static int baselvl = 15000;
@@ -28,11 +28,11 @@ public final class dCoLevel extends Level{
             STACKTRACE = new dCoLevel(RD.concat("STACKTRACE"), genLevel()), //
             GENERAL = new dCoLevel(RD.concat("GENERAL"), genLevel());
 
-    protected dCoLevel(String name, int intvalue){
+    protected dCoLevel(String name, int intvalue) {
         super(name, intvalue);
     }
 
-    private final static int genLevel(){
+    private final static int genLevel() {
         ++baselvl;
         return baselvl;
     }

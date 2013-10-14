@@ -19,16 +19,15 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Account Deposit Hook<br>
  * dConomy Add-on should extend this class for their own Account instances
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public abstract class AccountDepositHook extends Hook{
+public abstract class AccountDepositHook extends Hook {
 
     private final ModUser caller;
     private final String username;
@@ -37,15 +36,12 @@ public abstract class AccountDepositHook extends Hook{
 
     /**
      * Constructs a new AccountDepositHook
-     * 
-     * @param caller
-     *            the {@link Plugin} giving money
-     * @param username
-     *            the user's name who is having money deposited
-     * @param deposit
-     *            the amount to be deposited
+     *
+     * @param caller   the {@link Plugin} giving money
+     * @param username the user's name who is having money deposited
+     * @param deposit  the amount to be deposited
      */
-    public AccountDepositHook(Plugin caller, String username, double deposit){
+    public AccountDepositHook(Plugin caller, String username, double deposit) {
         this.caller = new Canary_Plugin(caller);
         this.username = username;
         this.deposit = deposit;
@@ -53,44 +49,44 @@ public abstract class AccountDepositHook extends Hook{
 
     /**
      * Gets the {@link ModUser}(plugin) asking to take money
-     * 
+     *
      * @return the {@link ModUser}(plugin)
      */
-    public final ModUser getCaller(){
+    public final ModUser getCaller() {
         return caller;
     }
 
     /**
      * Gets the user's name who is having money taken
-     * 
+     *
      * @return the user's name
      */
-    public final String getUserName(){
+    public final String getUserName() {
         return username;
     }
 
     /**
      * Gets the amount being deposited
-     * 
+     *
      * @return the deposit amount
      */
-    public final double getDeposit(){
+    public final double getDeposit() {
         return deposit;
     }
 
     /**
      * Gets the error message if an error has occurred
-     * 
+     *
      * @return {@code null} if no error occurred; The error message otherwise
      */
-    public final String getErrorMessage(){
+    public final String getErrorMessage() {
         return error;
     }
 
     /**
      * Internal use method to set the error message should one have occurred
      */
-    public final void setErrorMessage(String error){
+    public final void setErrorMessage(String error) {
         this.error = error;
     }
 }

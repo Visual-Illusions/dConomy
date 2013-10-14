@@ -23,34 +23,30 @@ import org.bukkit.plugin.Plugin;
 /**
  * Wallet Debit request Event<br>
  * Plugins should call this Event to debit wallet accounts
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletDebitEvent extends AccountDebitEvent{
+public final class WalletDebitEvent extends AccountDebitEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
      * Constructs a new WalletDebitEvent
-     * 
-     * @param caller
-     *            the {@link Plugin} asking to take money
-     * @param username
-     *            the user's name who is having money taken
-     * @param debit
-     *            the amount to be removed
+     *
+     * @param caller   the {@link Plugin} asking to take money
+     * @param username the user's name who is having money taken
+     * @param debit    the amount to be removed
      */
-    public WalletDebitEvent(Plugin caller, String username, double debit){
+    public WalletDebitEvent(Plugin caller, String username, double debit) {
         super(caller, username, debit);
     }
 
     // Bukkit Event methods
     @Override
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     //

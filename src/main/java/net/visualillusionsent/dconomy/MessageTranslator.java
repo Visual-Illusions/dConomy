@@ -17,12 +17,13 @@
  */
 package net.visualillusionsent.dconomy;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
+import net.visualillusionsent.dconomy.modinterface.MineChatForm;
 import net.visualillusionsent.utils.LocaleHelper;
 
 public final class MessageTranslator extends LocaleHelper {
 
     private final static MessageTranslator $;
+
     static {
         $ = new MessageTranslator();
     }

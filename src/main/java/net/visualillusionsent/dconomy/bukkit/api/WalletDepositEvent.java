@@ -23,34 +23,30 @@ import org.bukkit.event.HandlerList;
 /**
  * Wallet Deposit Event<br>
  * Plugins should call this Event to deposit into wallet accounts
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletDepositEvent extends AccountDepositEvent{
+public final class WalletDepositEvent extends AccountDepositEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
      * Constructs a new WalletDepositEvent
-     * 
-     * @param caller
-     *            the {@link Plugin} giving money
-     * @param username
-     *            the user's name who is having money deposited
-     * @param deposit
-     *            the amount to be deposited
+     *
+     * @param caller   the {@link Plugin} giving money
+     * @param username the user's name who is having money deposited
+     * @param deposit  the amount to be deposited
      */
-    public WalletDepositEvent(Plugin caller, String username, double deposit){
+    public WalletDepositEvent(Plugin caller, String username, double deposit) {
         super(caller, username, deposit);
     }
 
     // Bukkit Event methods
     @Override
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     //

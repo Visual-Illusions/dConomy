@@ -22,18 +22,17 @@ import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
 /**
  * Wallet Transaction Hook <br>
  * Called when a Wallet balance changes
- * 
+ *
  * @author Jason (darkdiplomat)
  */
-public final class WalletTransactionHook extends AccountTransactionHook{
+public final class WalletTransactionHook extends AccountTransactionHook {
 
     /**
      * Constructs a new Wallet Transaction Hook
-     * 
-     * @param action
-     *            the {@link WalletTransaction} done
+     *
+     * @param action the {@link WalletTransaction} done
      */
-    public WalletTransactionHook(WalletTransaction action){
+    public WalletTransactionHook(WalletTransaction action) {
         super(action);
     }
 
@@ -41,7 +40,7 @@ public final class WalletTransactionHook extends AccountTransactionHook{
      * {@inheritDoc}
      */
     @Override
-    public final WalletTransaction getTransaction(){
+    public final WalletTransaction getTransaction() {
         return (WalletTransaction) action;
     }
 

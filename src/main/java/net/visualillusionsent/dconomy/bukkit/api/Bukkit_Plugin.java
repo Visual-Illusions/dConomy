@@ -18,15 +18,14 @@
 package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 import org.bukkit.plugin.Plugin;
 
 /**
  * Bukkit Plugin wrapper for Mod_User implementation
- * 
+ *
  * @author darkdiplomat
- * 
  */
 public final class Bukkit_Plugin implements ModUser {
 
@@ -34,9 +33,8 @@ public final class Bukkit_Plugin implements ModUser {
 
     /**
      * Constructs a new Bukkit_Plugin wrapper
-     * 
-     * @param plugin
-     *            the {@link Plugin} to wrap
+     *
+     * @param plugin the {@link Plugin} to wrap
      */
     public Bukkit_Plugin(Plugin plugin) {
         this.plugin = plugin;
@@ -54,13 +52,15 @@ public final class Bukkit_Plugin implements ModUser {
      * {@inheritDoc}
      */
     @Override
-    public final void error(String key, Object... args) {}
+    public final void error(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void message(String key, Object... args) {}
+    public final void message(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}

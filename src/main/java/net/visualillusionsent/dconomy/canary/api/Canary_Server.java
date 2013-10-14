@@ -17,8 +17,6 @@
  */
 package net.visualillusionsent.dconomy.canary.api;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.Server;
@@ -27,27 +25,29 @@ import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.AccountTransaction;
-import net.visualillusionsent.dconomy.canary.dConomy;
-import net.visualillusionsent.minecraft.server.mod.interfaces.MineChatForm;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.canary.CanarydConomy;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.modinterface.MineChatForm;
+import net.visualillusionsent.dconomy.modinterface.ModServer;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * Canary Server wrapper for Mod_Server implementation
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public class Canary_Server implements ModServer, ModUser {
 
     private final Server serv;
-    private final dConomy dCo;
+    private final CanarydConomy dCo;
     private final ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>> transactions;
 
-    public Canary_Server(Server serv, dConomy dCo) {
+    public Canary_Server(Server serv, CanarydConomy dCo) {
         this.serv = serv;
         this.dCo = dCo;
         this.transactions = new ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>>();
@@ -61,8 +61,7 @@ public class Canary_Server implements ModServer, ModUser {
         Player player = serv.matchPlayer(name);
         if (player != null) {
             return new Canary_User(player);
-        }
-        else {
+        } else {
             OfflinePlayer offplayer = serv.getOfflinePlayer(name);
             if (offplayer != null) {
                 return new Canary_OfflineUser(offplayer);
@@ -118,8 +117,7 @@ public class Canary_Server implements ModServer, ModUser {
     public void error(final String key, final Object... args) {
         if (args == null || key.trim().isEmpty()) {
             getServerLogger().log(CanaryLevel.NOTICE, MineChatForm.removeFormating(key));
-        }
-        else {
+        } else {
             getServerLogger().log(CanaryLevel.NOTICE, MessageTranslator.translate(key, getUserLocale(), args));
         }
     }
@@ -131,8 +129,7 @@ public class Canary_Server implements ModServer, ModUser {
     public void message(final String key, final Object... args) {
         if (args == null || key.trim().isEmpty()) {
             getServerLogger().info(MineChatForm.removeFormating(key));
-        }
-        else {
+        } else {
             getServerLogger().info(MessageTranslator.translate(key, getUserLocale(), args));
         }
     }
@@ -148,8 +145,7 @@ public class Canary_Server implements ModServer, ModUser {
                     AccountTransactionHook hook = (AccountTransactionHook) clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Canary.hooks().callHook(hook);
                     break;
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionHook", ex);
                 }
             }

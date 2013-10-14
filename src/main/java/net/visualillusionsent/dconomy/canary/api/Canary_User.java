@@ -20,12 +20,12 @@ package net.visualillusionsent.dconomy.canary.api;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Canary User implementation
- * 
+ *
  * @author Jason (darkdiplomat)
  */
 public final class Canary_User implements ModUser {
@@ -34,9 +34,8 @@ public final class Canary_User implements ModUser {
 
     /**
      * Constructs a new Canary_User
-     * 
-     * @param player
-     *            the {@link OfflinePlayer} to wrap
+     *
+     * @param player the {@link OfflinePlayer} to wrap
      */
     public Canary_User(Player player) {
         this.player = player;

@@ -17,18 +17,19 @@
  */
 package net.visualillusionsent.dconomy.data;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.security.CodeSource;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.PropertiesFile;
 
-public final class dCoProperties{
+import java.io.File;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+
+public final class dCoProperties {
 
     private final PropertiesFile propsFile;
     private final String configDir;
 
-    public dCoProperties(){
+    public dCoProperties() {
         configDir = "config/dConomy3/";
 
         File dir = new File(configDir);
@@ -43,62 +44,60 @@ public final class dCoProperties{
         testProperties();
     }
 
-    public final void reloadProperties(){
+    public final void reloadProperties() {
         propsFile.reload();
     }
 
-    public final String getString(String key){
+    public final String getString(String key) {
         return propsFile.getString(key);
     }
 
-    public final double getDouble(String key){
+    public final double getDouble(String key) {
         return propsFile.getDouble(key);
     }
 
-    public final boolean getBooleanValue(String key){
+    public final boolean getBooleanValue(String key) {
         return propsFile.getBoolean(key);
     }
 
-    public final void setServerBalance(double value){
+    public final void setServerBalance(double value) {
         propsFile.setDouble("server.balance", value);
         propsFile.save();
     }
 
-    public final void setServerAccountLock(boolean locked){
+    public final void setServerAccountLock(boolean locked) {
         propsFile.setString("server.account.locked", locked ? "yes" : "no");
     }
 
-    public final PropertiesFile getPropertiesFile(){
+    public final PropertiesFile getPropertiesFile() {
         return propsFile;
     }
 
-    private final String getJarPath(){ // For when the jar isn't dConomy3.jar
+    private final String getJarPath() { // For when the jar isn't dConomy3.jar
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
             return codeSource.getLocation().toURI().getPath();
+        } catch (URISyntaxException ex) {
         }
-        catch (URISyntaxException ex) {}
         return "plugins/dConomy3.jar";
     }
 
-    public final String getConfigurationDirectory(){
+    public final String getConfigurationDirectory() {
         return configDir;
     }
 
-    private final void testProperties(){
+    private final void testProperties() {
         boolean missingProp = false;
         if (!propsFile.containsKey("default.balance")) {
             propsFile.setDouble("default.balance", 0, "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");
             missingProp = true;
-        }
-        else if (propsFile.getDouble("default.balance") < 0.01) {
+        } else if (propsFile.getDouble("default.balance") < 0.01) {
             propsFile.setDouble("default.balance", 0);
         }
         if (!propsFile.containsKey("max.account.balance")) {
             propsFile.setDouble("max.account.balance", 999999999999999999D, "Max allow Account balance, should never be set to more than 999999999999999999");
             missingProp = true;
-        }
-        else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
+        } else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
             propsFile.setDouble("max.account.balance", 999999999999999999D);
         }
         if (!propsFile.containsKey("money.name")) {

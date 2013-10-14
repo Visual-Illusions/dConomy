@@ -19,16 +19,15 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Account Debit Hook<br>
  * dConomy Add-on should extend this class for their own Account instances
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public abstract class AccountDebitHook extends Hook{
+public abstract class AccountDebitHook extends Hook {
     private final ModUser caller;
     private final String username;
     private final double debit;
@@ -36,15 +35,12 @@ public abstract class AccountDebitHook extends Hook{
 
     /**
      * Constructs a new AccountDebitHook
-     * 
-     * @param caller
-     *            the {@link Plugin} asking to take money
-     * @param username
-     *            the user's name who is having money taken
-     * @param debit
-     *            the amount to be removed
+     *
+     * @param caller   the {@link Plugin} asking to take money
+     * @param username the user's name who is having money taken
+     * @param debit    the amount to be removed
      */
-    public AccountDebitHook(Plugin caller, String username, double debit){
+    public AccountDebitHook(Plugin caller, String username, double debit) {
         this.caller = new Canary_Plugin(caller);
         this.username = username;
         this.debit = debit;
@@ -52,44 +48,44 @@ public abstract class AccountDebitHook extends Hook{
 
     /**
      * Gets the {@link ModUser}(plugin) asking to take money
-     * 
+     *
      * @return the {@link ModUser}(plugin)
      */
-    public final ModUser getCaller(){
+    public final ModUser getCaller() {
         return caller;
     }
 
     /**
      * Gets the user's name who is having money taken
-     * 
+     *
      * @return the {@link ModUser}
      */
-    public final String getUserName(){
+    public final String getUserName() {
         return username;
     }
 
     /**
      * Gets the amount being removed
-     * 
+     *
      * @return the debit amount
      */
-    public final double getDebit(){
+    public final double getDebit() {
         return debit;
     }
 
     /**
      * Gets the error message if an error has occurred
-     * 
+     *
      * @return {@code null} if no error occurred; The error message otherwise
      */
-    public final String getErrorMessage(){
+    public final String getErrorMessage() {
         return error;
     }
 
     /**
      * Internal use method to set the error message should one have occurred
      */
-    public final void setErrorMessage(String error){
+    public final void setErrorMessage(String error) {
         this.error = error;
     }
 }

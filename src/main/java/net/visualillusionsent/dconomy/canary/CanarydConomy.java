@@ -17,29 +17,29 @@
  */
 package net.visualillusionsent.dconomy.canary;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
-import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.IdConomy;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.dConomyInitializationError;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.canary.api.Canary_Server;
 import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.dConomy;
+import net.visualillusionsent.dconomy.dConomyInitializationError;
 import net.visualillusionsent.dconomy.io.logging.dCoLevel;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
+import net.visualillusionsent.dconomy.modinterface.ModServer;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * dConomy main plugin class for Canary implementations
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class dConomy extends Plugin implements IdConomy{
+public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
 
@@ -49,12 +49,12 @@ public final class dConomy extends Plugin implements IdConomy{
     }
 
     @Override
-    public final void disable(){
+    public final void disable() {
         base.cleanUp();
     }
 
     @Override
-    public final boolean enable(){
+    public final boolean enable() {
         try {
             base = new dCoBase(this);
             WalletHandler.initialize();
@@ -62,30 +62,31 @@ public final class dConomy extends Plugin implements IdConomy{
             new CanarydConomyCommandListener(this);
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
             return true;
-        }
-        catch (dConomyInitializationError ierr) {
+        } catch (dConomyInitializationError ierr) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ierr.getCause());
-        }
-        catch (CommandDependencyException cdex) {
+        } catch (CommandDependencyException cdex) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex);
         }
         return false;
     }
 
     @Override
-    public Logger getPluginLogger(){
+    public Logger getPluginLogger() {
         return this.getLogman();
     }
 
     @Override
-    public ModServer getModServer(){
+    public ModServer getModServer() {
         return new Canary_Server(Canary.getServer(), this);
     }
 
-    public static dCoBase getdCoBase(){
+    public static dCoBase getdCoBase() {
         return base;
+    }
+
+    public float getReportedVersion(){
+        return Float.valueOf(getVersion());
     }
 }

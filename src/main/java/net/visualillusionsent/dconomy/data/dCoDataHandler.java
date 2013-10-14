@@ -17,29 +17,27 @@
  */
 package net.visualillusionsent.dconomy.data;
 
+import net.visualillusionsent.dconomy.accounting.Account;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.Enumeration;
-import net.visualillusionsent.dconomy.accounting.Account;
 
-public final class dCoDataHandler{
+public final class dCoDataHandler {
 
     private final OutputQueue queue;
     private final OutputThread outThread;
     private final DataSourceType dataType;
 
-    public dCoDataHandler(DataSourceType type) throws DataSourceException{
+    public dCoDataHandler(DataSourceType type) throws DataSourceException {
         dataType = type;
         if (type == DataSourceType.XML) {
             testJDOM();
-        }
-        else if (type == DataSourceType.MYSQL) {
+        } else if (type == DataSourceType.MYSQL) {
             testMySQLDriver();
-        }
-        else if (type == DataSourceType.SQLITE) {
+        } else if (type == DataSourceType.SQLITE) {
             testSQLiteDriver();
-        }
-        else {
+        } else {
             throw new DataSourceException("Invaild DataSourceType...");
         }
         queue = new OutputQueue();
@@ -47,16 +45,16 @@ public final class dCoDataHandler{
         outThread.start();
     }
 
-    public void addToQueue(Account account){
+    public void addToQueue(Account account) {
         queue.add(account);
     }
 
-    OutputQueue getQueue(){
+    OutputQueue getQueue() {
         return queue;
     }
 
     @SuppressWarnings("unchecked")
-    public void cleanUp(){
+    public void cleanUp() {
         outThread.terminate();
         while (queue.hasNext()) { // Save the rest immediately
             Account account = null;
@@ -67,20 +65,19 @@ public final class dCoDataHandler{
         }
     }
 
-    public final DataSourceType getDataSourceType(){
+    public final DataSourceType getDataSourceType() {
         return dataType;
     }
 
-    private final void testJDOM() throws DataSourceException{
+    private final void testJDOM() throws DataSourceException {
         try {
             Class.forName("org.jdom2.JDOMException");
-        }
-        catch (ClassNotFoundException cnfe) {
+        } catch (ClassNotFoundException cnfe) {
             throw new DataSourceException(cnfe, DataSourceType.XML);
         }
     }
 
-    private final boolean canFindSQLDriver(String driver){
+    private final boolean canFindSQLDriver(String driver) {
         Enumeration<Driver> en = DriverManager.getDrivers();
         while (en.hasMoreElements()) {
             Driver drive = en.nextElement();
@@ -91,23 +88,21 @@ public final class dCoDataHandler{
         return false;
     }
 
-    private final void testSQLiteDriver() throws DataSourceException{
+    private final void testSQLiteDriver() throws DataSourceException {
         if (!canFindSQLDriver("org.sqlite.JDBC")) {
             try {
                 Class.forName("org.sqlite.JDBC");
-            }
-            catch (ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException cnfe) {
                 throw new DataSourceException(cnfe, DataSourceType.SQLITE);
             }
         }
     }
 
-    private final void testMySQLDriver() throws DataSourceException{
+    private final void testMySQLDriver() throws DataSourceException {
         if (!canFindSQLDriver("com.mysql.jdbc.Driver")) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-            }
-            catch (ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException cnfe) {
                 throw new DataSourceException(cnfe, DataSourceType.MYSQL);
             }
         }

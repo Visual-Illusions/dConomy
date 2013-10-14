@@ -17,19 +17,19 @@
  */
 package net.visualillusionsent.dconomy.commands.wallet;
 
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 import net.visualillusionsent.utils.BooleanUtils;
 
-public final class WalletLockCommand extends dConomyCommand{
+public final class WalletLockCommand extends dConomyCommand {
 
-    public WalletLockCommand(){
+    public WalletLockCommand() {
         super(1);
     }
 
-    protected final void execute(ModUser user, String[] args){
+    protected final void execute(ModUser user, String[] args) {
         ModUser theUser = args[1].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[1]);
         if (theUser == null && !args[1].toUpperCase().equals("SERVER")) {
             user.error("error.404.user", args[1]);
@@ -43,8 +43,7 @@ public final class WalletLockCommand extends dConomyCommand{
         WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).setLockOut(locked);
         if (locked) {
             user.error("admin.account.locked", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
-        }
-        else {
+        } else {
             user.error("admin.account.unlocked", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
     }

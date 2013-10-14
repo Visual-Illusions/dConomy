@@ -15,13 +15,12 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.minecraft.server.mod.interfaces;
+package net.visualillusionsent.dconomy.modinterface;
 
 /**
  * Enumeration of supported/soon to be supported Mods
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public enum ModType {
 

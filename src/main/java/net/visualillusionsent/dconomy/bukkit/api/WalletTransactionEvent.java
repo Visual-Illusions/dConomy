@@ -23,19 +23,18 @@ import org.bukkit.event.HandlerList;
 /**
  * Wallet Transaction Hook <br>
  * Called when a Wallet balance changes
- * 
+ *
  * @author Jason (darkdiplomat)
  */
-public final class WalletTransactionEvent extends AccountTransactionEvent{
+public final class WalletTransactionEvent extends AccountTransactionEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
      * Constructs a new Wallet Transaction Event
-     * 
-     * @param action
-     *            the {@link WalletTransaction} done
+     *
+     * @param action the {@link WalletTransaction} done
      */
-    public WalletTransactionEvent(WalletTransaction action){
+    public WalletTransactionEvent(WalletTransaction action) {
         super(action);
     }
 
@@ -43,17 +42,17 @@ public final class WalletTransactionEvent extends AccountTransactionEvent{
      * {@inheritDoc}
      */
     @Override
-    public final WalletTransaction getTransaction(){
+    public final WalletTransaction getTransaction() {
         return (WalletTransaction) action;
     }
 
     // Bukkit Event methods
     @Override
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     //

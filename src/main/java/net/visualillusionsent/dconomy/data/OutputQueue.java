@@ -17,33 +17,33 @@
  */
 package net.visualillusionsent.dconomy.data;
 
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import net.visualillusionsent.dconomy.accounting.Account;
 
-public final class OutputQueue{
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+public final class OutputQueue {
 
     private LinkedList<Account> queue;
 
-    public OutputQueue(){
+    public OutputQueue() {
         queue = new LinkedList<Account>();
     }
 
-    public final void add(Account account){
+    public final void add(Account account) {
         synchronized (queue) {
             queue.add(account);
             queue.notify();
         }
     }
 
-    public final Account next(){
+    public final Account next() {
         Account account = null;
         if (queue.isEmpty()) {
             synchronized (queue) {
                 try {
                     queue.wait();
-                }
-                catch (InterruptedException ex) {
+                } catch (InterruptedException ex) {
                     return null;
                 }
             }
@@ -51,20 +51,19 @@ public final class OutputQueue{
         try {
             account = queue.getFirst();
             queue.removeFirst();
-        }
-        catch (NoSuchElementException nsee) {
+        } catch (NoSuchElementException nsee) {
             throw new InternalError("Race hazard in LinkedList object.");
         }
         return account;
     }
 
-    public final void clear(){
+    public final void clear() {
         synchronized (queue) {
             queue.clear();
         }
     }
 
-    public final boolean hasNext(){
+    public final boolean hasNext() {
         return queue.size() > 0;
     }
 }

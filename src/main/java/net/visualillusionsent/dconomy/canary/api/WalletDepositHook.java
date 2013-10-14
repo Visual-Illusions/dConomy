@@ -22,23 +22,19 @@ import net.canarymod.plugin.Plugin;
 /**
  * Wallet Deposit Hook<br>
  * Plugins should call this Hook to deposit into wallet accounts
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletDepositHook extends AccountDepositHook{
+public final class WalletDepositHook extends AccountDepositHook {
 
     /**
      * Constructs a new WalletDepositHook
-     * 
-     * @param caller
-     *            the {@link Plugin} giving money
-     * @param username
-     *            the user's name who is having money deposited
-     * @param deposit
-     *            the amount to be deposited
+     *
+     * @param caller   the {@link Plugin} giving money
+     * @param username the user's name who is having money deposited
+     * @param deposit  the amount to be deposited
      */
-    public WalletDepositHook(Plugin caller, String username, double deposit){
+    public WalletDepositHook(Plugin caller, String username, double deposit) {
         super(caller, username, deposit);
     }
 

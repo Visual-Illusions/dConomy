@@ -24,25 +24,24 @@ import net.visualillusionsent.dconomy.accounting.AccountTransaction;
  * Account Transaction Hook <br>
  * Called when an Account balance changes<br>
  * dConomy Add-on should extend this class for their own Account instances<br>
- * 
+ *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountTransactionHook extends Hook{
+public abstract class AccountTransactionHook extends Hook {
     protected final AccountTransaction action;
 
     /**
      * Constructs a new Account Transaction Hook
-     * 
-     * @param action
-     *            the AccountTransaction done
+     *
+     * @param action the AccountTransaction done
      */
-    public AccountTransactionHook(AccountTransaction action){
+    public AccountTransactionHook(AccountTransaction action) {
         this.action = action;
     }
 
     /**
      * Returns the {@link AccountTransaction} that happen
-     * 
+     *
      * @return {@link AccountTransaction}
      */
     public abstract AccountTransaction getTransaction();

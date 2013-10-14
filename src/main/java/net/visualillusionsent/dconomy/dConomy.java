@@ -17,12 +17,15 @@
  */
 package net.visualillusionsent.dconomy;
 
-import java.util.logging.Logger;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.dconomy.modinterface.ModServer;
 
-public interface IdConomy{
+import java.util.logging.Logger;
+
+public interface dConomy {
 
     Logger getPluginLogger();
 
     ModServer getModServer();
+
+    float getReportedVersion();
 }

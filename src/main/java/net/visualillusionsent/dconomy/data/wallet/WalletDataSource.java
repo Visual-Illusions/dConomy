@@ -20,4 +20,5 @@ package net.visualillusionsent.dconomy.data.wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.data.dCoDataSource;
 
-public interface WalletDataSource extends dCoDataSource<Wallet>{}
+public interface WalletDataSource extends dCoDataSource<Wallet> {
+}

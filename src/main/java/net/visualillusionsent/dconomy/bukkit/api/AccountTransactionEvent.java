@@ -24,25 +24,24 @@ import org.bukkit.event.Event;
  * Account Transaction Event <br>
  * Called when an Account balance changes<br>
  * dConomy Add-on should extend this class for their own Account instances<br>
- * 
+ *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountTransactionEvent extends Event{
+public abstract class AccountTransactionEvent extends Event {
     protected final AccountTransaction action;
 
     /**
      * Constructs a new Account Transaction Event
-     * 
-     * @param action
-     *            the AccountTransaction done
+     *
+     * @param action the AccountTransaction done
      */
-    public AccountTransactionEvent(AccountTransaction action){
+    public AccountTransactionEvent(AccountTransaction action) {
         this.action = action;
     }
 
     /**
      * Returns the {@link AccountTransaction} that happen
-     * 
+     *
      * @return {@link AccountTransaction}
      */
     public abstract AccountTransaction getTransaction();

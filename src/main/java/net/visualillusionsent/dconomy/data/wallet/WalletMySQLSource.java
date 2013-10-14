@@ -17,16 +17,17 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.dconomy.dCoBase;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 
-public final class WalletMySQLSource extends WalletSQLSource{
+public final class WalletMySQLSource extends WalletSQLSource {
 
     @Override
-    public final boolean load(){
+    public final boolean load() {
         try {
             testConnection();
             PreparedStatement ps = null;
@@ -35,8 +36,7 @@ public final class WalletMySQLSource extends WalletSQLSource{
                     "(`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             ps.execute();
             ps.close();
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while testing Wallets tables...");
             dCoBase.stacktrace(sqlex);
             return false;
@@ -45,11 +45,10 @@ public final class WalletMySQLSource extends WalletSQLSource{
     }
 
     @Override
-    public final boolean saveAccount(Wallet wallet){
+    public final boolean saveAccount(Wallet wallet) {
         try {
             testConnection();
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Connection failed while saving Wallet for " + wallet.getOwner());
             dCoBase.stacktrace(sqlex);
             return false;
@@ -58,11 +57,10 @@ public final class WalletMySQLSource extends WalletSQLSource{
     }
 
     @Override
-    public final boolean reloadAccount(Wallet wallet){
+    public final boolean reloadAccount(Wallet wallet) {
         try {
             testConnection();
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Connection failed while reloading Wallet for " + wallet.getOwner());
             dCoBase.stacktrace(sqlex);
             return false;
@@ -70,7 +68,7 @@ public final class WalletMySQLSource extends WalletSQLSource{
         return super.reloadAccount(wallet);
     }
 
-    private final void testConnection() throws SQLException{
+    private final void testConnection() throws SQLException {
         if (conn == null || conn.isClosed() || !conn.isValid(2)) {
             conn = DriverManager.getConnection("jdbc:mysql://" + dCoBase.getProperties().getString("sql.database.url"), dCoBase.getProperties().getString("sql.user"), dCoBase.getProperties().getString("sql.password"));
         }

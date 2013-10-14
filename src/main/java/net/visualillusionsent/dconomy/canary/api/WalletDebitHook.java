@@ -22,23 +22,19 @@ import net.canarymod.plugin.Plugin;
 /**
  * Wallet Debit request Hook<br>
  * Plugins should call this Hook to debit wallet accounts
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletDebitHook extends AccountDebitHook{
+public final class WalletDebitHook extends AccountDebitHook {
 
     /**
      * Constructs a new WalletDebitHook
-     * 
-     * @param caller
-     *            the {@link Plugin} asking to take money
-     * @param username
-     *            the user's name who is having money taken
-     * @param debit
-     *            the amount to be removed
+     *
+     * @param caller   the {@link Plugin} asking to take money
+     * @param username the user's name who is having money taken
+     * @param debit    the amount to be removed
      */
-    public WalletDebitHook(Plugin caller, String username, double debit){
+    public WalletDebitHook(Plugin caller, String username, double debit) {
         super(caller, username, debit);
     }
 

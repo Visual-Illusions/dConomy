@@ -21,15 +21,14 @@ import net.visualillusionsent.dconomy.dCoBase;
 
 /**
  * Server Wallet container
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class ServerWallet extends Wallet{
+public final class ServerWallet extends Wallet {
 
     private final boolean maxAlways;
 
-    public ServerWallet(boolean maxAlways){
+    public ServerWallet(boolean maxAlways) {
         super("SERVER", maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"), dCoBase.getProperties().getBooleanValue("server.account.locked"), null);
         this.maxAlways = maxAlways;
     }
@@ -39,7 +38,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double getBalance(){
+    public final double getBalance() {
         return maxAlways ? 999999999999999999D : super.getBalance();
     }
 
@@ -48,7 +47,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double deposit(double add){
+    public final double deposit(double add) {
         return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
@@ -57,7 +56,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double deposit(String add){
+    public final double deposit(String add) {
         return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
@@ -66,7 +65,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double debit(double remove){
+    public final double debit(double remove) {
         return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
@@ -75,7 +74,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double debit(String remove){
+    public final double debit(String remove) {
         return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
@@ -84,7 +83,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double setBalance(double set){
+    public final double setBalance(double set) {
         return maxAlways ? 999999999999999999D : super.setBalance(set);
     }
 
@@ -93,7 +92,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double setBalance(String set){
+    public final double setBalance(String set) {
         return maxAlways ? 999999999999999999D : super.setBalance(set);
     }
 
@@ -102,7 +101,7 @@ public final class ServerWallet extends Wallet{
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS and stores it to the config
      */
     @Override
-    protected final void save(){
+    protected final void save() {
         if (!maxAlways) {
             dCoBase.getProperties().setServerBalance(getBalance());
         }
@@ -113,7 +112,7 @@ public final class ServerWallet extends Wallet{
      * {@inheritDoc}
      */
     @Override
-    public final boolean reload(){
+    public final boolean reload() {
         this.balance = dCoBase.getProperties().getDouble("server.balance");
         this.locked = dCoBase.getProperties().getBooleanValue("server.account.locked");
         return true;

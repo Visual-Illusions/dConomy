@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy.commands;
 
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 public abstract class dConomyCommand {
 
@@ -36,8 +36,7 @@ public abstract class dConomyCommand {
         if (cmdArgs.length < minArgs) {
             caller.error("error.args");
             return false;
-        }
-        else {
+        } else {
             execute(caller, cmdArgs);
             return true;
         }
@@ -50,8 +49,7 @@ public abstract class dConomyCommand {
         String[] toRet = new String[args.length - start];
         try {
             System.arraycopy(args, start, toRet, 0, toRet.length);
-        }
-        catch (IndexOutOfBoundsException ioobe) {
+        } catch (IndexOutOfBoundsException ioobe) {
             return new String[0];
         }
         return toRet;

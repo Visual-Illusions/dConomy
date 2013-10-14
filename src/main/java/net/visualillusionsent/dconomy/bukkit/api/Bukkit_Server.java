@@ -17,35 +17,35 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.canarymod.logger.Logman;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.AccountTransaction;
-import net.visualillusionsent.dconomy.bukkit.dConomy;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.bukkit.BukkitdConomy;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.modinterface.ModServer;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Bukkit Server wrapper for Mod_Server implementation
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public final class Bukkit_Server implements ModServer, ModUser {
 
     private final Server serv;
-    private final dConomy dCo;
+    private final BukkitdConomy dCo;
     private final ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>> transactions;
 
-    public Bukkit_Server(Server serv, dConomy dCo) {
+    public Bukkit_Server(Server serv, BukkitdConomy dCo) {
         this.serv = serv;
         this.dCo = dCo;
         this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>>();
@@ -59,8 +59,7 @@ public final class Bukkit_Server implements ModServer, ModUser {
         Player player = serv.getPlayer(name);
         if (player != null) {
             return new Bukkit_User(player);
-        }
-        else {
+        } else {
             OfflinePlayer offplayer = serv.getOfflinePlayer(name);
             if (offplayer != null) {
                 return new Bukkit_OfflineUser(offplayer);
@@ -136,8 +135,7 @@ public final class Bukkit_Server implements ModServer, ModUser {
                     AccountTransactionEvent event = (AccountTransactionEvent) clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Bukkit.getPluginManager().callEvent(event);
                     break;
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionEvent", ex);
                 }
             }

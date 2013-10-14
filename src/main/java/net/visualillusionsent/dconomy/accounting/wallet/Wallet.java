@@ -23,9 +23,8 @@ import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
 
 /**
  * Wallet class
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public abstract class Wallet extends Account {
 
@@ -38,11 +37,9 @@ public abstract class Wallet extends Account {
 
     /**
      * Tests a debit before modifing the wallet
-     * 
-     * @param remove
-     *            the amount to test removal for
-     * @throws AccountingException
-     *             if unable to debit the money
+     *
+     * @param remove the amount to test removal for
+     * @throws AccountingException if unable to debit the money
      */
     public final void testDebit(double remove) throws AccountingException {
         if (locked) {
@@ -55,11 +52,9 @@ public abstract class Wallet extends Account {
 
     /**
      * Tests a debit before modifing the wallet
-     * 
-     * @param remove
-     *            the amount to test removal for
-     * @throws AccountingException
-     *             if unable to debit the money
+     *
+     * @param remove the amount to test removal for
+     * @throws AccountingException if unable to debit the money
      */
     public final void testDebit(String remove) throws AccountingException {
         testDebit(this.testArgumentString(remove));
@@ -94,8 +89,7 @@ public abstract class Wallet extends Account {
     public final boolean equals(Object obj) {
         if (obj instanceof Wallet) {
             return this == obj;
-        }
-        else if (obj instanceof String) {
+        } else if (obj instanceof String) {
             return this.owner.equals(obj);
         }
         return false;

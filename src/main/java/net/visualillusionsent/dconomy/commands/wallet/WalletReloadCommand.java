@@ -17,18 +17,18 @@
  */
 package net.visualillusionsent.dconomy.commands.wallet;
 
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
-public final class WalletReloadCommand extends dConomyCommand{
+public final class WalletReloadCommand extends dConomyCommand {
 
-    public WalletReloadCommand(){
+    public WalletReloadCommand() {
         super(1);
     }
 
-    protected final void execute(ModUser user, String[] args){
+    protected final void execute(ModUser user, String[] args) {
         ModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
         if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
             user.error("error.404.user", args[0]);
@@ -40,8 +40,7 @@ public final class WalletReloadCommand extends dConomyCommand{
         }
         if (WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).reload()) {
             user.error("admin.reload.account.success", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
-        }
-        else {
+        } else {
             user.error("admin.reload.account.fail", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
         }
     }

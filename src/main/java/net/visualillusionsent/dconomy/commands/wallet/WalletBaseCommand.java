@@ -17,19 +17,19 @@
  */
 package net.visualillusionsent.dconomy.commands.wallet;
 
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
-public final class WalletBaseCommand extends dConomyCommand{
+public final class WalletBaseCommand extends dConomyCommand {
 
-    public WalletBaseCommand(){
+    public WalletBaseCommand() {
         super(0);
     }
 
-    protected final void execute(ModUser user, String[] args){
+    protected final void execute(ModUser user, String[] args) {
         Wallet theWallet;
         if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
             ModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
@@ -44,17 +44,14 @@ public final class WalletBaseCommand extends dConomyCommand{
             theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
             if (theWallet.isLocked()) {
                 user.message("error.lock.out", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
-            }
-            else {
+            } else {
                 user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
             }
-        }
-        else {
+        } else {
             theWallet = WalletHandler.getWalletByName(user.getName());
             if (theWallet.isLocked()) {
                 user.message("error.lock.out", user.getName(), "WALLET");
-            }
-            else {
+            } else {
                 user.message("account.balance", Double.valueOf(theWallet.getBalance()), "WALLET");
             }
         }

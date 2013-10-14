@@ -19,8 +19,8 @@ package net.visualillusionsent.dconomy.accounting;
 
 /**
  * Extends this class for making call back Hook/Events
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public abstract class AccountTransaction{}
+public abstract class AccountTransaction {
+}

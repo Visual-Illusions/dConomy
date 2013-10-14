@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.minecraft.server.mod.interfaces;
+package net.visualillusionsent.dconomy.modinterface;
 
 public enum MineChatForm {
 
@@ -131,59 +131,57 @@ public enum MineChatForm {
 
     private final char charCode;
 
-    private MineChatForm(char charCode){
+    private MineChatForm(char charCode) {
         this.charCode = charCode;
     }
 
-    public final String concat(String str){
+    public final String concat(String str) {
         if (this == MARKER) {
             return stringValue().concat(str);
-        }
-        else {
+        } else {
             return MARKER.concat(stringValue().concat(str));
         }
     }
 
     /**
      * Returns the char value of the {@code MCChatForm}
-     * 
+     *
      * @return char value of the {@code MCChatForm}
      */
-    public final char charValue(){
+    public final char charValue() {
         return charCode;
     }
 
     /**
      * Returns the {@code MCChatForm} as a {@link String}
-     * 
+     *
      * @return String value of {@code MCChatForm}
      */
-    public final String stringValue(){
+    public final String stringValue() {
         return String.valueOf(charCode);
     }
 
     /**
      * Returns a string of the {@code MCChatForm}<br>
      * If the {@code MCChatForm} is that other than {@code MARKER} then {@code MARKER} is appended to the front.
-     * 
+     *
      * @return {@code MARKER} or {@code MARKER} + colorCode
      */
-    public final String toString(){
+    public final String toString() {
         if (this == MARKER) {
             return stringValue();
-        }
-        else {
+        } else {
             return MARKER.concat(stringValue());
         }
     }
 
     /**
      * removes all color formating from a line
-     * 
+     *
      * @param str
      * @return str with formating removed
      */
-    public static final String removeFormating(String str){
+    public static final String removeFormating(String str) {
         return str.replaceAll(MARKER.concat("[A-FL-NRa-fl-nr0-9]"), "");
     }
 }

@@ -19,12 +19,12 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.api.OfflinePlayer;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Canary Offline User implementation
- * 
+ *
  * @author Jason (darkdiplomat)
  */
 public final class Canary_OfflineUser implements ModUser {
@@ -33,9 +33,8 @@ public final class Canary_OfflineUser implements ModUser {
 
     /**
      * Constructs a new Canary_OfflineUser
-     * 
-     * @param player
-     *            the {@link OfflinePlayer} to wrap
+     *
+     * @param player the {@link OfflinePlayer} to wrap
      */
     public Canary_OfflineUser(OfflinePlayer player) {
         this.player = player;
@@ -53,13 +52,15 @@ public final class Canary_OfflineUser implements ModUser {
      * {@inheritDoc}
      */
     @Override
-    public final void error(String key, Object... args) {}
+    public final void error(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void message(String key, Object... args) {}
+    public final void message(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}

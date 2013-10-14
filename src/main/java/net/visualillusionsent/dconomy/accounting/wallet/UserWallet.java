@@ -22,25 +22,20 @@ import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
 
 /**
  * User Wallet container
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class UserWallet extends Wallet{
+public final class UserWallet extends Wallet {
 
     /**
      * Constructs a new UserWallet and adds it to the {@link WalletHandler}
-     * 
-     * @param owner
-     *            the owner's name
-     * @param balance
-     *            the current balance
-     * @param locked
-     *            whether or not the Wallet is locked out
-     * @param source
-     *            the {@link WalletDataSource} used to store the Wallet
+     *
+     * @param owner   the owner's name
+     * @param balance the current balance
+     * @param locked  whether or not the Wallet is locked out
+     * @param source  the {@link WalletDataSource} used to store the Wallet
      */
-    public UserWallet(String owner, double balance, boolean locked, WalletDataSource source){
+    public UserWallet(String owner, double balance, boolean locked, WalletDataSource source) {
         super(owner, balance, locked, source);
         WalletHandler.addWallet(this);
     }
@@ -49,7 +44,7 @@ public final class UserWallet extends Wallet{
      * {@inheritDoc}
      */
     @Override
-    protected final void save(){
+    protected final void save() {
         dCoBase.getDataHandler().addToQueue(this);
     }
 
@@ -57,7 +52,7 @@ public final class UserWallet extends Wallet{
      * {@inheritDoc}
      */
     @Override
-    public boolean reload(){
+    public boolean reload() {
         return ((WalletDataSource) datasource).reloadAccount(this);
     }
 }

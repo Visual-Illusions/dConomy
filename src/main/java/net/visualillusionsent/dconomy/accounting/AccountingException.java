@@ -23,9 +23,8 @@ import net.visualillusionsent.dconomy.dCoBase;
 /**
  * Accounting Exception<br>
  * Thrown when Accounting encounters a problem such as max balance or negative numbers
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public final class AccountingException extends RuntimeException {
 

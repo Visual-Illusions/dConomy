@@ -23,32 +23,29 @@ import org.bukkit.plugin.Plugin;
 /**
  * Wallet Balance request Event<br>
  * Plugins should call this Event for WalletBalance details
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletBalanceEvent extends AccountBalanceEvent{
+public final class WalletBalanceEvent extends AccountBalanceEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
      * Constructs a new WalletBalaceEvent
-     * 
-     * @param caller
-     *            the {@link Plugin} requesting balance information
-     * @param username
-     *            the user's name to get balance for
+     *
+     * @param caller   the {@link Plugin} requesting balance information
+     * @param username the user's name to get balance for
      */
-    public WalletBalanceEvent(Plugin caller, String username){
+    public WalletBalanceEvent(Plugin caller, String username) {
         super(caller, username);
     }
 
     // Bukkit Event methods
     @Override
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     //

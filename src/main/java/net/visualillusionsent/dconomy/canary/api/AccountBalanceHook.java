@@ -19,16 +19,15 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Account Balance request Hook<br>
  * dConomy Add-on should extend this class for their own Account instances
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public abstract class AccountBalanceHook extends Hook{
+public abstract class AccountBalanceHook extends Hook {
     private final ModUser caller;
     private final String username;
     private double balance = -1;
@@ -36,67 +35,64 @@ public abstract class AccountBalanceHook extends Hook{
 
     /**
      * Constructs a new AccountBalanceHook
-     * 
-     * @param caller
-     *            the {@link Plugin} requesting a balance
-     * @param username
-     *            the user's name to get a balance for
+     *
+     * @param caller   the {@link Plugin} requesting a balance
+     * @param username the user's name to get a balance for
      */
-    public AccountBalanceHook(Plugin caller, String username){
+    public AccountBalanceHook(Plugin caller, String username) {
         this.caller = new Canary_Plugin(caller);
         this.username = username;
     }
 
     /**
      * Gets the {@link ModUser}(Plugin) requesting Balance information.
-     * 
+     *
      * @return the {@link ModUser} caller
      */
-    public final ModUser getCaller(){
+    public final ModUser getCaller() {
         return caller;
     }
 
     /**
      * Gets the user's name who's balance is being requested for
-     * 
+     *
      * @return the user's name
      */
-    public final String getUserName(){
+    public final String getUserName() {
         return username;
     }
 
     /**
      * Gets the balance of the user's account
-     * 
+     *
      * @return the balance
      */
-    public final double getBalance(){
+    public final double getBalance() {
         return balance;
     }
 
     /**
      * Internal use method to set the balance to be returned to the requester.
-     * 
-     * @param balance
-     *            the balance of the account
+     *
+     * @param balance the balance of the account
      */
-    public final void setBalance(double balance){
+    public final void setBalance(double balance) {
         this.balance = balance;
     }
 
     /**
      * Gets the error message if an error has occurred
-     * 
+     *
      * @return {@code null} if no error occurred; The error message otherwise
      */
-    public final String getErrorMessage(){
+    public final String getErrorMessage() {
         return error;
     }
 
     /**
      * Internal use method to set the error message should one have occurred
      */
-    public final void setErrorMessage(String error){
+    public final void setErrorMessage(String error) {
         this.error = error;
     }
 }

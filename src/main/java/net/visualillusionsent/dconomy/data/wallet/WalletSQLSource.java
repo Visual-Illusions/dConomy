@@ -17,20 +17,21 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
+import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.dconomy.dCoBase;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
-import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 
-public abstract class WalletSQLSource implements WalletDataSource{
+public abstract class WalletSQLSource implements WalletDataSource {
     protected Connection conn;
     protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
 
     @Override
-    public boolean load(){
+    public boolean load() {
         PreparedStatement ps = null;
         ResultSet rs = null;
         int load = 0;
@@ -46,13 +47,11 @@ public abstract class WalletSQLSource implements WalletDataSource{
                 load++;
             }
             dCoBase.info(String.format("Loaded %d Wallets...", load));
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while parsing Wallets table...");
             dCoBase.stacktrace(sqlex);
             success = false;
-        }
-        finally {
+        } finally {
             try {
                 if (rs != null && !rs.isClosed()) {
                     rs.close();
@@ -60,15 +59,16 @@ public abstract class WalletSQLSource implements WalletDataSource{
                 if (ps != null && !ps.isClosed()) {
                     ps.close();
                 }
+            } catch (AbstractMethodError e) {
+            } // SQLite weird stuff
+            catch (Exception e) {
             }
-            catch (AbstractMethodError e) {} // SQLite weird stuff
-            catch (Exception e) {}
         }
         return success;
     }
 
     @Override
-    public boolean saveAccount(Wallet wallet){
+    public boolean saveAccount(Wallet wallet) {
         boolean success = true;
         synchronized (lock) {
             dCoBase.debug("Saving Wallet for: ".concat(wallet.getOwner()));
@@ -86,8 +86,7 @@ public abstract class WalletSQLSource implements WalletDataSource{
                     ps.setInt(2, ((Wallet) wallet).isLocked() ? 1 : 0);
                     ps.setString(3, wallet.getOwner());
                     ps.execute();
-                }
-                else {
+                } else {
                     ps.close();
                     ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`,`lockedOut`) VALUES(?,?,?)");
                     ps.setString(1, wallet.getOwner());
@@ -96,12 +95,10 @@ public abstract class WalletSQLSource implements WalletDataSource{
                     ps.execute();
                 }
                 dCoBase.debug("Wallet saved!");
-            }
-            catch (SQLException sqlex) {
+            } catch (SQLException sqlex) {
                 dCoBase.severe("Failed to save Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(sqlex);
-            }
-            finally {
+            } finally {
                 try {
                     if (rs != null && !rs.isClosed()) {
                         rs.close();
@@ -109,16 +106,17 @@ public abstract class WalletSQLSource implements WalletDataSource{
                     if (ps != null && !ps.isClosed()) {
                         ps.close();
                     }
+                } catch (AbstractMethodError e) {
+                } // SQLite weird stuff
+                catch (Exception e) {
                 }
-                catch (AbstractMethodError e) {} // SQLite weird stuff
-                catch (Exception e) {}
             }
         }
         return success;
     }
 
     @Override
-    public boolean reloadAccount(Wallet wallet){
+    public boolean reloadAccount(Wallet wallet) {
         boolean success = true;
         dCoBase.debug("Reloading Wallet for: ".concat(wallet.getOwner()));
         PreparedStatement ps = null;
@@ -132,13 +130,11 @@ public abstract class WalletSQLSource implements WalletDataSource{
                 ((Wallet) wallet).setLockOut(rs.getBoolean("lockedOut"));
             }
             dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner()));
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while reloading Wallet for: " + wallet.getOwner());
             dCoBase.stacktrace(sqlex);
             success = false;
-        }
-        finally {
+        } finally {
             try {
                 if (rs != null && !rs.isClosed()) {
                     rs.close();
@@ -146,9 +142,10 @@ public abstract class WalletSQLSource implements WalletDataSource{
                 if (ps != null && !ps.isClosed()) {
                     ps.close();
                 }
+            } catch (AbstractMethodError e) {
+            } // SQLite weird stuff
+            catch (Exception e) {
             }
-            catch (AbstractMethodError e) {} // SQLite weird stuff
-            catch (Exception e) {}
         }
         return success;
     }

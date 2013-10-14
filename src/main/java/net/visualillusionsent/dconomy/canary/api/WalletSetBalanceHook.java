@@ -22,23 +22,19 @@ import net.canarymod.plugin.Plugin;
 /**
  * Wallet Set Balance Hook<br>
  * Plugins should call this Hook to set wallet account balances
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletSetBalanceHook extends AccountSetBalanceHook{
+public final class WalletSetBalanceHook extends AccountSetBalanceHook {
 
     /**
      * Constructs a new WalletSetBalanceHook
-     * 
-     * @param caller
-     *            the {@link Plugin} setting the balance
-     * @param username
-     *            the user's name who is having their balance set
-     * @param toSet
-     *            the amount to set the account to
+     *
+     * @param caller   the {@link Plugin} setting the balance
+     * @param username the user's name who is having their balance set
+     * @param toSet    the amount to set the account to
      */
-    public WalletSetBalanceHook(Plugin caller, String username, double toSet){
+    public WalletSetBalanceHook(Plugin caller, String username, double toSet) {
         super(caller, username, toSet);
     }
 

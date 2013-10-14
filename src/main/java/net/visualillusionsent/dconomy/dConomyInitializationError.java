@@ -20,40 +20,36 @@ package net.visualillusionsent.dconomy;
 /**
  * Initialization Error<br>
  * thrown if something causes the program to no be able to initialize
- * 
+ *
  * @author Jason (darkdiplomat)
  */
-public final class dConomyInitializationError extends Error{
+public final class dConomyInitializationError extends Error {
 
     /**
      * Constructs a new Initialization Error with a message
-     * 
-     * @param msg
-     *            the message to add
+     *
+     * @param msg the message to add
      */
-    public dConomyInitializationError(String msg){
+    public dConomyInitializationError(String msg) {
         super(msg);
     }
 
     /**
      * Constructs a new Initialization Error with a message and cause
-     * 
-     * @param msg
-     *            the message to add
-     * @param cause
-     *            the {@link Throwable} cause for the error
+     *
+     * @param msg   the message to add
+     * @param cause the {@link Throwable} cause for the error
      */
-    public dConomyInitializationError(String msg, Throwable cause){
+    public dConomyInitializationError(String msg, Throwable cause) {
         super(msg, cause);
     }
 
     /**
      * Constructs a new Initialization Error with a cause
-     * 
-     * @param cause
-     *            the {@link Throwable} cause for the error
+     *
+     * @param cause the {@link Throwable} cause for the error
      */
-    public dConomyInitializationError(Throwable cause){
+    public dConomyInitializationError(Throwable cause) {
         super(cause);
     }
 

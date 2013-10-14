@@ -21,91 +21,79 @@ import net.canarymod.Canary;
 import net.canarymod.hook.HookHandler;
 import net.canarymod.plugin.PluginListener;
 import net.canarymod.plugin.Priority;
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
-import net.visualillusionsent.dconomy.canary.api.WalletBalanceHook;
-import net.visualillusionsent.dconomy.canary.api.WalletDebitHook;
-import net.visualillusionsent.dconomy.canary.api.WalletDepositHook;
-import net.visualillusionsent.dconomy.canary.api.WalletSetBalanceHook;
-import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
+import net.visualillusionsent.dconomy.canary.api.*;
+import net.visualillusionsent.dconomy.dCoBase;
 
-public final class CanarydConomyAPIListener implements PluginListener{
+public final class CanarydConomyAPIListener implements PluginListener {
 
-    CanarydConomyAPIListener(dConomy dCo){
+    CanarydConomyAPIListener(CanarydConomy dCo) {
         Canary.hooks().registerListener(this, dCo);
     }
 
     @HookHandler(priority = Priority.CRITICAL)
-    public final void walletBalance(WalletBalanceHook hook){
+    public final void walletBalance(WalletBalanceHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 hook.setBalance(WalletHandler.getWalletByName(hook.getUserName()).getBalance());
-            }
-            else {
+            } else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        }
-        catch (AccountingException aex) {
+        } catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
     }
 
     @HookHandler(priority = Priority.CRITICAL)
-    public final void walletDeposit(final WalletDepositHook hook){
+    public final void walletDeposit(final WalletDepositHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).deposit(hook.getDeposit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEPOSIT, hook.getDeposit())));
-            }
-            else {
+            } else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        }
-        catch (AccountingException aex) {
+        } catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
     }
 
     @HookHandler(priority = Priority.CRITICAL)
-    public final void walletDebit(WalletDebitHook hook){
+    public final void walletDebit(WalletDebitHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).debit(hook.getDebit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEBIT, hook.getDebit())));
-            }
-            else {
+            } else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        }
-        catch (AccountingException aex) {
+        } catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
     }
 
     @HookHandler(priority = Priority.CRITICAL)
-    public final void walletSet(WalletSetBalanceHook hook){
+    public final void walletSet(WalletSetBalanceHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).setBalance(hook.getToSet());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_SET, hook.getToSet())));
-            }
-            else {
+            } else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        }
-        catch (AccountingException aex) {
+        } catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
     }
 
     @HookHandler(priority = Priority.CRITICAL)
-    public final void debugTransaction(WalletTransactionHook hook){
+    public final void debugTransaction(WalletTransactionHook hook) {
         dCoBase.debug("WalletTransactionHook called");
     }
 }

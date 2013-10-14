@@ -19,14 +19,13 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModType;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModType;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Canary Plugin wrapper for Mod_User implementation
- * 
+ *
  * @author darkdiplomat
- * 
  */
 public final class Canary_Plugin implements ModUser {
 
@@ -34,9 +33,8 @@ public final class Canary_Plugin implements ModUser {
 
     /**
      * Constructs a new Canary_Plugin wrapper
-     * 
-     * @param plugin
-     *            the {@link Plugin} to wrap
+     *
+     * @param plugin the {@link Plugin} to wrap
      */
     public Canary_Plugin(Plugin plugin) {
         this.plugin = plugin;
@@ -54,13 +52,15 @@ public final class Canary_Plugin implements ModUser {
      * {@inheritDoc}
      */
     @Override
-    public final void error(String key, Object... args) {}
+    public final void error(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void message(String key, Object... args) {}
+    public final void message(String key, Object... args) {
+    }
 
     /**
      * {@inheritDoc}

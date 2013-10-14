@@ -17,21 +17,21 @@
  */
 package net.visualillusionsent.dconomy.data;
 
-import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.accounting.Account;
+import net.visualillusionsent.dconomy.dCoBase;
 
-final class OutputThread extends Thread{
+final class OutputThread extends Thread {
 
     private final dCoDataHandler handler;
     private volatile boolean running = true;
 
-    public OutputThread(dCoDataHandler handler){
+    public OutputThread(dCoDataHandler handler) {
         super("dConomy-OutputQueue-Thread");
         this.handler = handler;
     }
 
     @SuppressWarnings("unchecked")
-    public void run(){
+    public void run() {
         while (running) {
             Account account = null;
             try {
@@ -39,8 +39,7 @@ final class OutputThread extends Thread{
                 if (account != null && account.getDataSource() != null) {
                     account.getDataSource().saveAccount(account);
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 if (running) {
                     dCoBase.severe("Exception occurred in OutputThread for Account: " + (account != null ? account.getClass().getSimpleName() : "UNKNOWN ACCOUNT CLASS") + ":" + (account != null ? account.getOwner() : "UNKNOWN OWNER"));
                     dCoBase.stacktrace(ex);
@@ -49,7 +48,7 @@ final class OutputThread extends Thread{
         }
     }
 
-    public final void terminate(){
+    public final void terminate() {
         running = false;
         interrupt();
     }

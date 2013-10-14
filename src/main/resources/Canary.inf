@@ -1,5 +1,16 @@
-;# dConomy3 Canary Plugin Configuration File
+;# {name} - Canary Plugin Configuration File
+;# Copyright © {copyright.years} Visual Illusions Entertainment
+name={name}
+main-class={canary.main.class}
 author=Visual Illusions Entertainment
-version=3.0 ALPHA
-name=dConomy
-main-class=net.visualillusionsent.dconomy.canary.dConomy
+version={plugin.version}
+
+;Visual Illusions Specific Settings
+developers={devs}
+build.number={build}
+build.time={build.time}
+program.status={program.status}
+version.check.url={version.check.url}
+wiki.url={wiki}
+issues.url={issues}
+copyright.years={copyright.years}

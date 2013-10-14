@@ -18,9 +18,9 @@
 package net.visualillusionsent.dconomy.accounting.wallet;
 
 import net.visualillusionsent.dconomy.accounting.AccountTransaction;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModUser;
+import net.visualillusionsent.dconomy.modinterface.ModUser;
 
-public final class WalletTransaction extends AccountTransaction{
+public final class WalletTransaction extends AccountTransaction {
     public enum ActionType {
         PAY, //
         ADMIN_ADD, //
@@ -36,26 +36,26 @@ public final class WalletTransaction extends AccountTransaction{
     private final ActionType type;
     private final double amount;
 
-    public WalletTransaction(ModUser sender, ModUser recipient, ActionType type, double amount){
+    public WalletTransaction(ModUser sender, ModUser recipient, ActionType type, double amount) {
         this.sender = sender;
         this.recipient = recipient;
         this.type = type;
         this.amount = amount;
     }
 
-    public final ModUser getSender(){
+    public final ModUser getSender() {
         return sender;
     }
 
-    public final ModUser getRecipient(){
+    public final ModUser getRecipient() {
         return recipient;
     }
 
-    public final ActionType getActionType(){
+    public final ActionType getActionType() {
         return type;
     }
 
-    public final double getAmountChange(){
+    public final double getAmountChange() {
         return amount;
     }
 

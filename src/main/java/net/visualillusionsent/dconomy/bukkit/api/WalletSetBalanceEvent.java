@@ -23,34 +23,30 @@ import org.bukkit.plugin.Plugin;
 /**
  * Wallet Set Balance Event<br>
  * Plugins should call this Event to set wallet account balances
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
-public final class WalletSetBalanceEvent extends AccountSetBalanceEvent{
+public final class WalletSetBalanceEvent extends AccountSetBalanceEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
      * Constructs a new WalletSetBalanceEvent
-     * 
-     * @param caller
-     *            the {@link Plugin} setting the balance
-     * @param username
-     *            the user's name who is having their balance set
-     * @param toSet
-     *            the amount to set the account to
+     *
+     * @param caller   the {@link Plugin} setting the balance
+     * @param username the user's name who is having their balance set
+     * @param toSet    the amount to set the account to
      */
-    public WalletSetBalanceEvent(Plugin caller, String username, double toSet){
+    public WalletSetBalanceEvent(Plugin caller, String username, double toSet) {
         super(caller, username, toSet);
     }
 
     // Bukkit Event methods
     @Override
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     //

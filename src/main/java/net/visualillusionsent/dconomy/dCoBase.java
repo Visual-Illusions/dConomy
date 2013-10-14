@@ -17,64 +17,51 @@
  */
 package net.visualillusionsent.dconomy;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.CodeSource;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.data.DataSourceType;
 import net.visualillusionsent.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.dconomy.data.dCoProperties;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.io.logging.dCoLevel;
-import net.visualillusionsent.minecraft.server.mod.interfaces.ModServer;
+import net.visualillusionsent.dconomy.modinterface.ModServer;
 import net.visualillusionsent.utils.FileUtils;
-import net.visualillusionsent.utils.ProgramStatus;
-import net.visualillusionsent.utils.VersionChecker;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * dConomy Base class.<br>
  * Most things start here.
- * 
+ *
  * @author Jason (darkdiplomat)
- * 
  */
 public final class dCoBase {
 
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
-    private final VersionChecker vc;
-    private ProgramStatus status;
-    private float version;
-    private short build;
-    private String buildTime;
 
     private static dCoBase $;
     private static ModServer server;
+    private static float reported_version;
 
-    public dCoBase(IdConomy idconomy) {
+    public dCoBase(dConomy dconomy) {
         if ($ != null) {
             throw new dConomyInitializationError("Already loaded");
         }
         try {
             $ = this;
-            this.logger = idconomy.getPluginLogger();
-            server = idconomy.getModServer();
-            readManifest();
-            checkStatus();
-            vc = new VersionChecker("dConomy", String.valueOf(version), String.valueOf(build), "http://visualillusionsent.net/minecraft/plugins/", status, true);
-            checkVersion();
+            this.logger = dconomy.getPluginLogger();
+            server = dconomy.getModServer();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
             testAndMoveLangFiles();
-        }
-        catch (Exception ex) {
+
+            this.reported_version = dconomy.getReportedVersion();
+        } catch (Exception ex) {
             throw new dConomyInitializationError(ex);
         }
     }
@@ -85,8 +72,7 @@ public final class dCoBase {
             new File("config/dConomy3/lang/").mkdir();
             mvLangtxt = true;
             mven_US = true;
-        }
-        else {
+        } else {
             if (!new File("config/dConomy3/lang/languages.txt").exists()) {
                 mvLangtxt = true;
             }
@@ -105,7 +91,7 @@ public final class dCoBase {
 
     /**
      * Gets the {@link dCoDataHandler} instance
-     * 
+     *
      * @return {@link dCoDataHandler}
      */
     public final static dCoDataHandler getDataHandler() {
@@ -114,7 +100,7 @@ public final class dCoBase {
 
     /**
      * Gets the {@link dCoProperties} instance
-     * 
+     *
      * @return {@link dCoProperties}
      */
     public final static dCoProperties getProperties() {
@@ -123,7 +109,7 @@ public final class dCoBase {
 
     /**
      * Gets the {@link ModServer} instance
-     * 
+     *
      * @return {@link ModServer}
      */
     public final static ModServer getServer() {
@@ -166,109 +152,13 @@ public final class dCoBase {
         }
     }
 
-    public final static String getVersion() {
-        return $.version + "." + $.build;
-    }
-
-    public final static float getRawVersion() {
-        return $.version;
-    }
-
-    public static short getBuildNumber() {
-        return $.build;
-    }
-
-    public static String getBuildTime() {
-        return $.buildTime;
-    }
-
-    public final static ProgramStatus getProgramStatus() {
-        return $.status;
-    }
-
-    private final void readManifest() {
-        try {
-            Manifest manifest = getManifest();
-            Attributes mainAttribs = manifest.getMainAttributes();
-            version = Float.parseFloat(mainAttribs.getValue("Version").replace("-SNAPSHOT", ""));
-            build = Short.parseShort(mainAttribs.getValue("Build"));
-            buildTime = mainAttribs.getValue("Build-Time");
-            try {
-                status = ProgramStatus.valueOf(mainAttribs.getValue("ProgramStatus"));
-            }
-            catch (IllegalArgumentException iaex) {
-                status = ProgramStatus.UNKNOWN;
-            }
-        }
-        catch (Exception ex) {
-            version = -1.0F;
-            build = -1;
-            buildTime = "19700101-0000";
-        }
-    }
-
-    private final Manifest getManifest() throws Exception {
-        Manifest toRet = null;
-        Exception ex = null;
-        JarFile jar = null;
-        try {
-            jar = new JarFile(getJarPath());
-            toRet = jar.getManifest();
-        }
-        catch (Exception e) {
-            ex = e;
-        }
-        finally {
-            if (jar != null) {
-                try {
-                    jar.close();
-                }
-                catch (IOException e) {}
-            }
-            if (ex != null) {
-                throw ex;
-            }
-        }
-        return toRet;
-    }
-
     private final String getJarPath() { // For when the jar isn't dConomy3.jar
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
             return codeSource.getLocation().toURI().getPath();
+        } catch (URISyntaxException ex) {
         }
-        catch (URISyntaxException ex) {}
         return "plugins/dConomy3.jar";
-    }
-
-    private final void checkStatus() {
-        if (status == ProgramStatus.UNKNOWN) {
-            severe("dConomy has declared itself as an 'UNKNOWN STATUS' build. Use is not advised and could cause damage to your system!");
-        }
-        else if (status == ProgramStatus.ALPHA) {
-            warning("dConomy has declared itself as a 'ALPHA' build. Production use is not advised!");
-        }
-        else if (status == ProgramStatus.BETA) {
-            warning("dConomy has declared itself as a 'BETA' build. Production use is not advised!");
-        }
-        else if (status == ProgramStatus.RELEASE_CANDIDATE) {
-            info("dConomy has declared itself as a 'Release Candidate' build. Expect some bugs.");
-        }
-    }
-
-    public final static VersionChecker getVersionChecker() {
-        return $.vc;
-    }
-
-    private final void checkVersion() {
-        Boolean islatest = vc.isLatest();
-        if (islatest == null) {
-            warning("VersionCheckerError: " + vc.getErrorMessage());
-        }
-        else if (!vc.isLatest()) {
-            warning(vc.getUpdateAvailibleMessage());
-            warning("You can view update info @ http://wiki.visualillusionsent.net/dConomy#ChangeLog");
-        }
     }
 
     public final void cleanUp() {
@@ -278,6 +168,10 @@ public final class dCoBase {
             WalletSQLiteSource.cleanUp();
         }
         $ = null;
+    }
+
+    public static float getVersion(){
+        return reported_version;
     }
 
     public static final String getServerLocale() {

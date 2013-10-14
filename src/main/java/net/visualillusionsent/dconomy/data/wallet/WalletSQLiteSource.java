@@ -17,16 +17,17 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.dCoBase;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletSQLiteSource extends WalletSQLSource{
+public final class WalletSQLiteSource extends WalletSQLSource {
     private static WalletSQLiteSource $;
     private final String db_Path = dCoBase.getProperties().getString("sql.database.url");
 
-    public WalletSQLiteSource(){
+    public WalletSQLiteSource() {
         if ($ == null) {
             $ = this;
         }
@@ -34,15 +35,14 @@ public final class WalletSQLiteSource extends WalletSQLSource{
     }
 
     @Override
-    public final boolean load(){
+    public final boolean load() {
         Statement st = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:".concat(db_Path));
             st = conn.createStatement();
             st.execute("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` (`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             st.close();
-        }
-        catch (SQLException sqlex) {
+        } catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while parsing Wallets table...");
             dCoBase.stacktrace(sqlex);
             return false;
@@ -50,11 +50,11 @@ public final class WalletSQLiteSource extends WalletSQLSource{
         return super.load();
     }
 
-    public static void cleanUp(){
+    public static void cleanUp() {
         try {
             $.conn.close();
+        } catch (Exception e) {
         }
-        catch (Exception e) {}
         $ = null;
     }
 

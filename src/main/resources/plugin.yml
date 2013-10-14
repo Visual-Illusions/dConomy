@@ -1,10 +1,20 @@
-﻿# dConomy 3 - Bukkit Plugin configuration file
-name: dConomy
-version: 3.0
-description: Economy Core plugin
-author: Jason (darkdiplomat)
-website: http://wiki.visualillusionsent.net/dConomy
-main: net.visualillusionsent.minecraft.server.mod.bukkit.plugin.dconomy.dConomy
+﻿# {name} - Bukkit Plugin configuration file
+# Copyright © {copyright.years} Visual Illusions Entertainment
+name: {name}
+main: {bukkit.main.class}
+version: {plugin.version}
+author: Visual Illusions Entertainment
+website: {wiki}
+
+# Visual Illusions Specific Stuff
+developers: {devs}
+build.number: {build}
+build.time: {build.time}
+program.status: {program.status}
+version.check.url: {version.check.url}
+issues.url: {issues}
+copyright.years: {copyright.years}
+# # #
 
 commands:
   wallet:
@@ -81,21 +91,3 @@ permissions:
   dconomy.admin.wallet.lock:
     description: Gives rights to lock/unlock a User's Wallet
     default: op
-
-###################################################
-# © Copyright 2011-2013 Visual Illusions Entertainment. 
-# 
-# This file is part of dConomy.
-#
-# dConomy is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along with dConomy.
-# If not, see http://www.gnu.org/licenses/gpl.html
-####################################################
