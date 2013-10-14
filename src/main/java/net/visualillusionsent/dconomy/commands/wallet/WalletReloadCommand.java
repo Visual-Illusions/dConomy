@@ -29,19 +29,19 @@ public final class WalletReloadCommand extends dConomyCommand {
     }
 
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
-        if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
-            user.error("error.404.user", args[0]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        if (theUser == null) {
+            user.error("error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
             user.error("error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        if (WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).reload()) {
-            user.error("admin.reload.account.success", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
+        if (WalletHandler.getWalletByName(theUser.getName()).reload()) {
+            user.error("admin.reload.account.success", theUser.getName(), "WALLET");
         } else {
-            user.error("admin.reload.account.fail", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
+            user.error("admin.reload.account.fail", theUser.getName(), "WALLET");
         }
     }
 }

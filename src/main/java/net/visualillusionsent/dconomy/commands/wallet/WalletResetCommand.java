@@ -30,17 +30,17 @@ public final class WalletResetCommand extends dConomyCommand {
     }
 
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
-        if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
-            user.error("error.404.user", args[0]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        if (theUser == null) {
+            user.error("error.404.user", args[1]);
             return;
         }
         if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
             user.error("error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
-        user.error("admin.reset.balance", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
-        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser == null ? (ModUser) dCoBase.getServer() : theUser, WalletTransaction.ActionType.ADMIN_SET, dCoBase.getProperties().getDouble("default.balance")));
+        WalletHandler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
+        user.error("admin.reset.balance", theUser.getName(), "WALLET");
+        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_SET, dCoBase.getProperties().getDouble("default.balance")));
     }
 }

@@ -32,20 +32,20 @@ public final class WalletBaseCommand extends dConomyCommand {
     protected final void execute(ModUser user, String[] args) {
         Wallet theWallet;
         if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
-            ModUser theUser = args[0].toUpperCase().equals("SERVER") ? null : dCoBase.getServer().getUser(args[0]);
-            if (theUser == null && !args[0].toUpperCase().equals("SERVER")) {
-                user.error("error.404.user", args[0]);
+            ModUser theUser = args[0].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[0]);
+            if (theUser == null) {
+                user.error("error.404.user", args[1]);
                 return;
             }
             if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
                 user.error("error.404.account", theUser.getName(), "WALLET");
                 return;
             }
-            theWallet = WalletHandler.getWalletByName(theUser == null ? "SERVER" : theUser.getName());
+            theWallet = WalletHandler.getWalletByName(theUser.getName());
             if (theWallet.isLocked()) {
-                user.message("error.lock.out", theUser == null ? "SERVER" : theUser.getName(), "WALLET");
+                user.message("error.lock.out", theUser.getName(), "WALLET");
             } else {
-                user.message("account.balance.other", theUser == null ? "SERVER" : theUser.getName(), theWallet.getBalance());
+                user.message("account.balance.other", theUser.getName(), theWallet.getBalance(), "WALLET");
             }
         } else {
             theWallet = WalletHandler.getWalletByName(user.getName());
