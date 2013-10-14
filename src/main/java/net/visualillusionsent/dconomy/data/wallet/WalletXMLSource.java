@@ -104,7 +104,7 @@ public final class WalletXMLSource implements WalletDataSource {
                 List<Element> wallets = root.getChildren();
                 boolean found = false;
                 for (Element wallet : wallets) {
-                    String name = wallet.getChildText("owner");
+                    String name = wallet.getAttributeValue("owner");
                     if (name.equals(account.getOwner())) {
                         wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
                         wallet.getAttribute("lockedOut").setValue(String.valueOf(((Wallet) account).isLocked()));
@@ -158,10 +158,10 @@ public final class WalletXMLSource implements WalletDataSource {
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
-                    String name = wallet.getChildText("owner");
+                    String name = wallet.getAttributeValue("owner");
                     if (name.equals(account.getOwner())) {
                         account.setBalance(wallet.getAttribute("balance").getDoubleValue());
-                        ((Wallet) account).setLockOut(wallet.getAttribute("lockedOut").getBooleanValue());
+                        account.setLockOut(wallet.getAttribute("lockedOut").getBooleanValue());
                         break;
                     }
                 }
