@@ -25,6 +25,8 @@ import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletXMLSource;
 import net.visualillusionsent.dconomy.modinterface.ModUser;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -111,6 +113,15 @@ public final class WalletHandler {
         Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, $.source);
         addWallet(wallet);
         return wallet;
+    }
+
+    /**
+     * Gets an unmodifiable map of all the wallets
+     *
+     * @return unmodifiable map of wallets
+     */
+    public static final Map<String, Wallet> getWallets() {
+        return Collections.unmodifiableMap($.wallets);
     }
 
     /**
