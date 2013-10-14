@@ -26,6 +26,7 @@ public final class WalletTransaction extends AccountTransaction {
         ADMIN_ADD, //
         ADMIN_REMOVE, //
         ADMIN_SET, //
+        ADMIN_RESET, //
         PLUGIN_DEBIT, //
         PLUGIN_DEPOSIT, //
         PLUGIN_SET, //

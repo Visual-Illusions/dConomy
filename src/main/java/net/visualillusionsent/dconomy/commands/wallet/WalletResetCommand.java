@@ -30,7 +30,7 @@ public final class WalletResetCommand extends dConomyCommand {
     }
 
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
             user.error("error.404.user", args[1]);
             return;
@@ -41,6 +41,6 @@ public final class WalletResetCommand extends dConomyCommand {
         }
         WalletHandler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
         user.error("admin.reset.balance", theUser.getName(), "WALLET");
-        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_SET, dCoBase.getProperties().getDouble("default.balance")));
+        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_RESET, dCoBase.getProperties().getDouble("default.balance")));
     }
 }
