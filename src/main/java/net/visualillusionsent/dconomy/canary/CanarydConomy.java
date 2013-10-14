@@ -86,7 +86,14 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
         return base;
     }
 
+    @Override
     public float getReportedVersion(){
         return Float.valueOf(getVersion());
+    }
+
+    @Override
+    public final void check() {
+        checkStatus();
+        checkVersion();
     }
 }

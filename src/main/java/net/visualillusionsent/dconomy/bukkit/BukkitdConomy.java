@@ -69,4 +69,10 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
     public float getReportedVersion(){
         return Float.valueOf(getDescription().getVersion());
     }
+
+    @Override
+    public final void check() {
+        checkStatus();
+        checkVersion();
+    }
 }

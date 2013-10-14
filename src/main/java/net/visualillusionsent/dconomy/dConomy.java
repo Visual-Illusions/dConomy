@@ -28,4 +28,6 @@ public interface dConomy {
     ModServer getModServer();
 
     float getReportedVersion();
+
+    void check();
 }
