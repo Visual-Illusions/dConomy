@@ -24,7 +24,11 @@ import net.canarymod.plugin.Priority;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
-import net.visualillusionsent.dconomy.canary.api.*;
+import net.visualillusionsent.dconomy.canary.api.WalletBalanceHook;
+import net.visualillusionsent.dconomy.canary.api.WalletDebitHook;
+import net.visualillusionsent.dconomy.canary.api.WalletDepositHook;
+import net.visualillusionsent.dconomy.canary.api.WalletSetBalanceHook;
+import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 
 public final class CanarydConomyAPIListener implements PluginListener {
@@ -38,10 +42,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 hook.setBalance(WalletHandler.getWalletByName(hook.getUserName()).getBalance());
-            } else {
+            }
+            else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
@@ -53,10 +59,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).deposit(hook.getDeposit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEPOSIT, hook.getDeposit())));
-            } else {
+            }
+            else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
@@ -68,10 +76,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).debit(hook.getDebit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEBIT, hook.getDebit())));
-            } else {
+            }
+            else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }
@@ -83,10 +93,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).setBalance(hook.getToSet());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_SET, hook.getToSet())));
-            } else {
+            }
+            else {
                 hook.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
             hook.setErrorMessage(aex.getMessage());
         }

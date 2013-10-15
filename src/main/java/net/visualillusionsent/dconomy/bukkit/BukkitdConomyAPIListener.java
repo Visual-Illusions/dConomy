@@ -21,7 +21,11 @@ import net.canarymod.Canary;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
-import net.visualillusionsent.dconomy.bukkit.api.*;
+import net.visualillusionsent.dconomy.bukkit.api.WalletBalanceEvent;
+import net.visualillusionsent.dconomy.bukkit.api.WalletDebitEvent;
+import net.visualillusionsent.dconomy.bukkit.api.WalletDepositEvent;
+import net.visualillusionsent.dconomy.bukkit.api.WalletSetBalanceEvent;
+import net.visualillusionsent.dconomy.bukkit.api.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 import org.bukkit.event.EventHandler;
@@ -39,10 +43,12 @@ public final class BukkitdConomyAPIListener implements Listener {
         try {
             if (WalletHandler.verifyAccount(event.getUserName())) {
                 event.setBalance(WalletHandler.getWalletByName(event.getUserName()).getBalance());
-            } else {
+            }
+            else {
                 event.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
             event.setErrorMessage(aex.getMessage());
         }
@@ -54,10 +60,12 @@ public final class BukkitdConomyAPIListener implements Listener {
             if (WalletHandler.verifyAccount(event.getUserName())) {
                 WalletHandler.getWalletByName(event.getUserName()).deposit(event.getDeposit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_DEPOSIT, event.getDeposit())));
-            } else {
+            }
+            else {
                 event.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
             event.setErrorMessage(aex.getMessage());
         }
@@ -69,10 +77,12 @@ public final class BukkitdConomyAPIListener implements Listener {
             if (WalletHandler.verifyAccount(event.getUserName())) {
                 WalletHandler.getWalletByName(event.getUserName()).debit(event.getDebit());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_DEBIT, event.getDebit())));
-            } else {
+            }
+            else {
                 event.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
             event.setErrorMessage(aex.getMessage());
         }
@@ -84,10 +94,12 @@ public final class BukkitdConomyAPIListener implements Listener {
             if (WalletHandler.verifyAccount(event.getUserName())) {
                 WalletHandler.getWalletByName(event.getUserName()).setBalance(event.getToSet());
                 Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(event.getCaller(), dCoBase.getServer().getUser(event.getUserName()), WalletTransaction.ActionType.PLUGIN_SET, event.getToSet())));
-            } else {
+            }
+            else {
                 event.setErrorMessage("Wallet Not Found");
             }
-        } catch (AccountingException aex) {
+        }
+        catch (AccountingException aex) {
             dCoBase.warning("Failed to handle Hook: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
             event.setErrorMessage(aex.getMessage());
         }

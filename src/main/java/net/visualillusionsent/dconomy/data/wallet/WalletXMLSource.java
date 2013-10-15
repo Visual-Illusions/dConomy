@@ -54,14 +54,17 @@ public final class WalletXMLSource implements WalletDataSource {
             try {
                 writer = new FileWriter(wallet_Path);
                 outputter.output(root, writer);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 ex = e;
-            } finally {
+            }
+            finally {
                 try {
                     if (writer != null) {
                         writer.close();
                     }
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                 }
                 writer = null;
                 if (ex != null) {
@@ -70,7 +73,8 @@ public final class WalletXMLSource implements WalletDataSource {
                     return false;
                 }
             }
-        } else {
+        }
+        else {
             try {
                 Document doc = builder.build(walletFile);
                 Element root = doc.getRootElement();
@@ -79,11 +83,13 @@ public final class WalletXMLSource implements WalletDataSource {
                     new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
                     load++;
                 }
-            } catch (JDOMException jdomex) {
+            }
+            catch (JDOMException jdomex) {
                 dCoBase.severe("JDOM Exception while parsing Wallets file...");
                 dCoBase.stacktrace(ex);
                 return false;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 dCoBase.severe("Input/Output Exception while parsing Wallets file...");
                 dCoBase.stacktrace(ex);
                 return false;
@@ -122,24 +128,29 @@ public final class WalletXMLSource implements WalletDataSource {
                 try {
                     writer = new FileWriter(walletFile);
                     outputter.output(root, writer);
-                } catch (IOException ex) {
+                }
+                catch (IOException ex) {
                     dCoBase.severe("Failed to write to Wallets file...");
                     dCoBase.stacktrace(ex);
                     success = false;
-                } finally {
+                }
+                finally {
                     try {
                         if (writer != null) {
                             writer.close();
                         }
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) {
                     }
                     writer = null;
                 }
-            } catch (JDOMException jdomex) {
+            }
+            catch (JDOMException jdomex) {
                 dCoBase.severe("JDOM Exception while trying to save wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(jdomex);
                 success = false;
-            } catch (IOException ioex) {
+            }
+            catch (IOException ioex) {
                 dCoBase.severe("Input/Output Exception while trying to save wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(ioex);
                 success = false;
@@ -165,11 +176,13 @@ public final class WalletXMLSource implements WalletDataSource {
                         break;
                     }
                 }
-            } catch (JDOMException jdomex) {
+            }
+            catch (JDOMException jdomex) {
                 dCoBase.severe("JDOM Exception while trying to reload wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(jdomex);
                 success = false;
-            } catch (IOException ioex) {
+            }
+            catch (IOException ioex) {
                 dCoBase.severe("Input/Output Exception while trying to reload wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(ioex);
                 success = false;

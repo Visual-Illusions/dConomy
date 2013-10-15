@@ -38,8 +38,11 @@ public abstract class Wallet extends Account {
     /**
      * Tests a debit before modifing the wallet
      *
-     * @param remove the amount to test removal for
-     * @throws AccountingException if unable to debit the money
+     * @param remove
+     *         the amount to test removal for
+     *
+     * @throws AccountingException
+     *         if unable to debit the money
      */
     public final void testDebit(double remove) throws AccountingException {
         if (locked) {
@@ -53,16 +56,17 @@ public abstract class Wallet extends Account {
     /**
      * Tests a debit before modifing the wallet
      *
-     * @param remove the amount to test removal for
-     * @throws AccountingException if unable to debit the money
+     * @param remove
+     *         the amount to test removal for
+     *
+     * @throws AccountingException
+     *         if unable to debit the money
      */
     public final void testDebit(String remove) throws AccountingException {
         testDebit(this.testArgumentString(remove));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void testDeposit(double add) throws AccountingException {
         if (locked) {
@@ -82,22 +86,19 @@ public abstract class Wallet extends Account {
         return locked;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Wallet) {
             return this == obj;
-        } else if (obj instanceof String) {
+        }
+        else if (obj instanceof String) {
             return this.owner.equals(obj);
         }
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final int hashCode() {
         int hash = 7;
@@ -106,9 +107,7 @@ public abstract class Wallet extends Account {
         return hash;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String toString() {
         return String.format("Wallet[Owner: %s Balance: %.2f]", owner, balance);

@@ -30,7 +30,7 @@ public final class WalletLockCommand extends dConomyCommand {
     }
 
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
             user.error("error.404.user", args[1]);
             return;
@@ -43,7 +43,8 @@ public final class WalletLockCommand extends dConomyCommand {
         WalletHandler.getWalletByName(theUser.getName()).setLockOut(locked);
         if (locked) {
             user.error("admin.account.locked", theUser.getName(), "WALLET");
-        } else {
+        }
+        else {
             user.error("admin.account.unlocked", theUser.getName(), "WALLET");
         }
     }

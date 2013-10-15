@@ -35,47 +35,38 @@ public final class Canary_User implements ModUser {
     /**
      * Constructs a new Canary_User
      *
-     * @param player the {@link OfflinePlayer} to wrap
+     * @param player
+     *         the {@link OfflinePlayer} to wrap
      */
     public Canary_User(Player player) {
         this.player = player;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return player.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean hasPermission(String perm) {
         return player.hasPermission(perm);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void error(String key, Object... args) {
         player.notice(MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void message(String key, Object... args) {
         player.message(MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return false;
@@ -86,17 +77,13 @@ public final class Canary_User implements ModUser {
         return player.getLocale();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.CANARY;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Canary_User) {
@@ -105,9 +92,7 @@ public final class Canary_User implements ModUser {
         return obj == player;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final int hashCode() {
         return player.hashCode();

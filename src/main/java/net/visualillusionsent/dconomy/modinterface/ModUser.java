@@ -47,23 +47,29 @@ public interface ModUser {
     /**
      * Sends a error message to the {@code Mod_User}
      *
-     * @param key  the translation key or plain message to be sent
-     * @param args the arguments for translation
+     * @param key
+     *         the translation key or plain message to be sent
+     * @param args
+     *         the arguments for translation
      */
     void error(String key, Object... args);
 
     /**
      * Sends a message to the {@code Mod_User}
      *
-     * @param key  the translation key or plain message to be sent
-     * @param args the arguments for translation
+     * @param key
+     *         the translation key or plain message to be sent
+     * @param args
+     *         the arguments for translation
      */
     void message(String key, Object... args);
 
     /**
      * Checks the {@code Mod_User} for permissions
      *
-     * @param perm the permission to check for
+     * @param perm
+     *         the permission to check for
+     *
      * @return {@code true} if has permission; {@code false} otherwise
      */
     boolean hasPermission(String perm);
@@ -86,6 +92,7 @@ public interface ModUser {
      * Gets the ModType of the Server
      *
      * @return the ModType
+     *
      * @see ModType
      */
     ModType getModType();

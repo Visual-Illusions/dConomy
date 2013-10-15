@@ -52,9 +52,11 @@ public final class WalletHandler {
         servwallet = new ServerWallet(dCoBase.getProperties().getBooleanValue("server.max.always"));
         if (type == DataSourceType.MYSQL) {
             source = new WalletMySQLSource();
-        } else if (type == DataSourceType.SQLITE) {
+        }
+        else if (type == DataSourceType.SQLITE) {
             source = new WalletSQLiteSource();
-        } else {
+        }
+        else {
             source = new WalletXMLSource();
         }
     }
@@ -62,13 +64,16 @@ public final class WalletHandler {
     /**
      * Gets a {@link Wallet} by a user's name
      *
-     * @param username the user's name to get a wallet for
+     * @param username
+     *         the user's name to get a wallet for
+     *
      * @return the {@link Wallet} for the user, creating a new one if nessary
      */
     public static final Wallet getWalletByName(String username) {
         if (username.equals("SERVER")) {
             return $.servwallet;
-        } else if (verifyAccount(username)) {
+        }
+        else if (verifyAccount(username)) {
             return $.wallets.get(username);
         }
         return newWallet(username);
@@ -77,7 +82,9 @@ public final class WalletHandler {
     /**
      * Gets a {@link Wallet} for a {@link ModUser}
      *
-     * @param user the {@link ModUser} to get a wallet for
+     * @param user
+     *         the {@link ModUser} to get a wallet for
+     *
      * @return the {@link Wallet} for the user if found; {@code null} if not found
      */
     public static final Wallet getWallet(ModUser user) {
@@ -87,7 +94,8 @@ public final class WalletHandler {
     /**
      * Adds a {@link Wallet} to the manager
      *
-     * @param wallet the {@link Wallet} to be added
+     * @param wallet
+     *         the {@link Wallet} to be added
      */
     public static final void addWallet(Wallet wallet) {
         $.wallets.put(wallet.getOwner(), wallet);
@@ -96,7 +104,9 @@ public final class WalletHandler {
     /**
      * Checks if a {@link Wallet} exists
      *
-     * @param username the user's name to check Wallet for
+     * @param username
+     *         the user's name to check Wallet for
+     *
      * @return {@code true} if the wallet exists; {@code false} otherwise
      */
     public static final boolean verifyAccount(String username) {
@@ -106,7 +116,9 @@ public final class WalletHandler {
     /**
      * Creates a new {@link Wallet} with default balance
      *
-     * @param username the user's name to create a wallet for
+     * @param username
+     *         the user's name to create a wallet for
+     *
      * @return the new {@link Wallet}
      */
     public static final Wallet newWallet(String username) {
@@ -124,9 +136,7 @@ public final class WalletHandler {
         return Collections.unmodifiableMap($.wallets);
     }
 
-    /**
-     * Initializer method
-     */
+    /** Initializer method */
     public static final void initialize() {
         if (!init) {
             $.source.load();
@@ -134,9 +144,7 @@ public final class WalletHandler {
         }
     }
 
-    /**
-     * Cleans up
-     */
+    /** Cleans up */
     public static final void cleanUp() {
         $.wallets.clear();
     }

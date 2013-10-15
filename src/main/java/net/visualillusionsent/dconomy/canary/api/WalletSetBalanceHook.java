@@ -30,9 +30,12 @@ public final class WalletSetBalanceHook extends AccountSetBalanceHook {
     /**
      * Constructs a new WalletSetBalanceHook
      *
-     * @param caller   the {@link Plugin} setting the balance
-     * @param username the user's name who is having their balance set
-     * @param toSet    the amount to set the account to
+     * @param caller
+     *         the {@link Plugin} setting the balance
+     * @param username
+     *         the user's name who is having their balance set
+     * @param toSet
+     *         the amount to set the account to
      */
     public WalletSetBalanceHook(Plugin caller, String username, double toSet) {
         super(caller, username, toSet);

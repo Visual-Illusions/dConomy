@@ -32,9 +32,12 @@ public final class WalletSetBalanceEvent extends AccountSetBalanceEvent {
     /**
      * Constructs a new WalletSetBalanceEvent
      *
-     * @param caller   the {@link Plugin} setting the balance
-     * @param username the user's name who is having their balance set
-     * @param toSet    the amount to set the account to
+     * @param caller
+     *         the {@link Plugin} setting the balance
+     * @param username
+     *         the user's name who is having their balance set
+     * @param toSet
+     *         the amount to set the account to
      */
     public WalletSetBalanceEvent(Plugin caller, String username, double toSet) {
         super(caller, username, toSet);

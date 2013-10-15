@@ -28,7 +28,8 @@ public final class dConomyInitializationError extends Error {
     /**
      * Constructs a new Initialization Error with a message
      *
-     * @param msg the message to add
+     * @param msg
+     *         the message to add
      */
     public dConomyInitializationError(String msg) {
         super(msg);
@@ -37,8 +38,10 @@ public final class dConomyInitializationError extends Error {
     /**
      * Constructs a new Initialization Error with a message and cause
      *
-     * @param msg   the message to add
-     * @param cause the {@link Throwable} cause for the error
+     * @param msg
+     *         the message to add
+     * @param cause
+     *         the {@link Throwable} cause for the error
      */
     public dConomyInitializationError(String msg, Throwable cause) {
         super(msg, cause);
@@ -47,7 +50,8 @@ public final class dConomyInitializationError extends Error {
     /**
      * Constructs a new Initialization Error with a cause
      *
-     * @param cause the {@link Throwable} cause for the error
+     * @param cause
+     *         the {@link Throwable} cause for the error
      */
     public dConomyInitializationError(Throwable cause) {
         super(cause);

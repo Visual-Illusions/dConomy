@@ -37,9 +37,12 @@ public abstract class AccountDepositHook extends Hook {
     /**
      * Constructs a new AccountDepositHook
      *
-     * @param caller   the {@link Plugin} giving money
-     * @param username the user's name who is having money deposited
-     * @param deposit  the amount to be deposited
+     * @param caller
+     *         the {@link Plugin} giving money
+     * @param username
+     *         the user's name who is having money deposited
+     * @param deposit
+     *         the amount to be deposited
      */
     public AccountDepositHook(Plugin caller, String username, double deposit) {
         this.caller = new Canary_Plugin(caller);
@@ -83,9 +86,7 @@ public abstract class AccountDepositHook extends Hook {
         return error;
     }
 
-    /**
-     * Internal use method to set the error message should one have occurred
-     */
+    /** Internal use method to set the error message should one have occurred */
     public final void setErrorMessage(String error) {
         this.error = error;
     }

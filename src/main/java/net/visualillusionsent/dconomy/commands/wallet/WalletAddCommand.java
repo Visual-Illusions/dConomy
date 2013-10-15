@@ -31,7 +31,7 @@ public final class WalletAddCommand extends dConomyCommand {
     }
 
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
             user.error("error.404.user", args[1]);
             return;
@@ -46,7 +46,8 @@ public final class WalletAddCommand extends dConomyCommand {
             WalletHandler.getWalletByName(theUser.getName()).deposit(args[0]);
             user.error("admin.add.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_ADD, Double.parseDouble(args[0])));
-        } catch (AccountingException ae) {
+        }
+        catch (AccountingException ae) {
             user.error(ae.getMessage());
         }
     }

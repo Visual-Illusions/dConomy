@@ -34,61 +34,48 @@ public final class Bukkit_OfflineUser implements ModUser {
     /**
      * Constructs a new Bukkit_OfflineUser
      *
-     * @param player the {@link OfflinePlayer} to wrap
+     * @param player
+     *         the {@link OfflinePlayer} to wrap
      */
     public Bukkit_OfflineUser(OfflinePlayer player) {
         this.player = player;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return player.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void error(String key, Object... args) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void message(String key, Object... args) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.BUKKIT;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean hasPermission(String perm) {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale();

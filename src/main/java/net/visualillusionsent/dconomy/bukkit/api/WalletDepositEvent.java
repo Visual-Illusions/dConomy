@@ -32,9 +32,12 @@ public final class WalletDepositEvent extends AccountDepositEvent {
     /**
      * Constructs a new WalletDepositEvent
      *
-     * @param caller   the {@link Plugin} giving money
-     * @param username the user's name who is having money deposited
-     * @param deposit  the amount to be deposited
+     * @param caller
+     *         the {@link Plugin} giving money
+     * @param username
+     *         the user's name who is having money deposited
+     * @param deposit
+     *         the amount to be deposited
      */
     public WalletDepositEvent(Plugin caller, String username, double deposit) {
         super(caller, username, deposit);

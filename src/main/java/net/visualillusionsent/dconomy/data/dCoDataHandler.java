@@ -33,11 +33,14 @@ public final class dCoDataHandler {
         dataType = type;
         if (type == DataSourceType.XML) {
             testJDOM();
-        } else if (type == DataSourceType.MYSQL) {
+        }
+        else if (type == DataSourceType.MYSQL) {
             testMySQLDriver();
-        } else if (type == DataSourceType.SQLITE) {
+        }
+        else if (type == DataSourceType.SQLITE) {
             testSQLiteDriver();
-        } else {
+        }
+        else {
             throw new DataSourceException("Invaild DataSourceType...");
         }
         queue = new OutputQueue();
@@ -72,7 +75,8 @@ public final class dCoDataHandler {
     private final void testJDOM() throws DataSourceException {
         try {
             Class.forName("org.jdom2.JDOMException");
-        } catch (ClassNotFoundException cnfe) {
+        }
+        catch (ClassNotFoundException cnfe) {
             throw new DataSourceException(cnfe, DataSourceType.XML);
         }
     }
@@ -92,7 +96,8 @@ public final class dCoDataHandler {
         if (!canFindSQLDriver("org.sqlite.JDBC")) {
             try {
                 Class.forName("org.sqlite.JDBC");
-            } catch (ClassNotFoundException cnfe) {
+            }
+            catch (ClassNotFoundException cnfe) {
                 throw new DataSourceException(cnfe, DataSourceType.SQLITE);
             }
         }
@@ -102,7 +107,8 @@ public final class dCoDataHandler {
         if (!canFindSQLDriver("com.mysql.jdbc.Driver")) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException cnfe) {
+            }
+            catch (ClassNotFoundException cnfe) {
                 throw new DataSourceException(cnfe, DataSourceType.MYSQL);
             }
         }

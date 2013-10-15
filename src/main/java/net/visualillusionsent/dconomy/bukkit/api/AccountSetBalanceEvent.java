@@ -36,9 +36,12 @@ public abstract class AccountSetBalanceEvent extends Event {
     /**
      * Constructs a new AccountSetBalanceEvent
      *
-     * @param caller   the {@link Plugin} setting the balance
-     * @param username the user's name who is having their balance set
-     * @param toSet    the amount to set the account to
+     * @param caller
+     *         the {@link Plugin} setting the balance
+     * @param username
+     *         the user's name who is having their balance set
+     * @param toSet
+     *         the amount to set the account to
      */
     public AccountSetBalanceEvent(Plugin caller, String username, double toSet) {
         this.caller = new Bukkit_Plugin(caller);
@@ -82,9 +85,7 @@ public abstract class AccountSetBalanceEvent extends Event {
         return error;
     }
 
-    /**
-     * Internal use method to set the error message should one have occurred
-     */
+    /** Internal use method to set the error message should one have occurred */
     public final void setErrorMessage(String error) {
         this.error = error;
     }

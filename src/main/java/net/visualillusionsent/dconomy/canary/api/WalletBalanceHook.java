@@ -30,8 +30,10 @@ public final class WalletBalanceHook extends AccountBalanceHook {
     /**
      * Constructs a new WalletBalaceHook
      *
-     * @param plugin   the {@link Plugin} requesting balance information
-     * @param username the user's name to get balance for
+     * @param plugin
+     *         the {@link Plugin} requesting balance information
+     * @param username
+     *         the user's name to get balance for
      */
     public WalletBalanceHook(Plugin plugin, String username) {
         super(plugin, username);

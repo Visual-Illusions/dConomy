@@ -37,71 +37,56 @@ public final class Bukkit_User implements ModUser {
     /**
      * Constructs a new Bukkit_User
      *
-     * @param player the {@link OfflinePlayer} to wrap
+     * @param player
+     *         the {@link OfflinePlayer} to wrap
      */
     public Bukkit_User(Player player) {
         this.player = player;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return player.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean hasPermission(String perm) {
         return player.hasPermission(perm);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void error(String key, Object... args) {
         player.sendMessage(ChatColor.RED + MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void message(String key, Object... args) {
         player.sendMessage(MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.BUKKIT;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale(); //Bukkit doesn't give access to player locale at this time
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Bukkit_User) {
@@ -110,9 +95,7 @@ public final class Bukkit_User implements ModUser {
         return obj == player;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final int hashCode() {
         return player.hashCode();

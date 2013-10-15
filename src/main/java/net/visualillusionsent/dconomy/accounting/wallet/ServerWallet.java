@@ -108,9 +108,7 @@ public final class ServerWallet extends Wallet {
         dCoBase.getProperties().setServerAccountLock(locked);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean reload() {
         this.balance = dCoBase.getProperties().getDouble("server.balance");

@@ -36,7 +36,8 @@ public final class WalletMySQLSource extends WalletSQLSource {
                     "(`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             ps.execute();
             ps.close();
-        } catch (SQLException sqlex) {
+        }
+        catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while testing Wallets tables...");
             dCoBase.stacktrace(sqlex);
             return false;
@@ -48,7 +49,8 @@ public final class WalletMySQLSource extends WalletSQLSource {
     public final boolean saveAccount(Wallet wallet) {
         try {
             testConnection();
-        } catch (SQLException sqlex) {
+        }
+        catch (SQLException sqlex) {
             dCoBase.severe("SQL Connection failed while saving Wallet for " + wallet.getOwner());
             dCoBase.stacktrace(sqlex);
             return false;
@@ -60,7 +62,8 @@ public final class WalletMySQLSource extends WalletSQLSource {
     public final boolean reloadAccount(Wallet wallet) {
         try {
             testConnection();
-        } catch (SQLException sqlex) {
+        }
+        catch (SQLException sqlex) {
             dCoBase.severe("SQL Connection failed while reloading Wallet for " + wallet.getOwner());
             dCoBase.stacktrace(sqlex);
             return false;

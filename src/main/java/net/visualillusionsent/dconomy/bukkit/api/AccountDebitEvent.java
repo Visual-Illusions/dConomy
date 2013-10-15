@@ -36,9 +36,12 @@ public abstract class AccountDebitEvent extends Event {
     /**
      * Constructs a new AccountDebitEvent
      *
-     * @param caller   the {@link Plugin} asking to take money
-     * @param username the user's name who is having money taken
-     * @param debit    the amount to be removed
+     * @param caller
+     *         the {@link Plugin} asking to take money
+     * @param username
+     *         the user's name who is having money taken
+     * @param debit
+     *         the amount to be removed
      */
     public AccountDebitEvent(Plugin caller, String username, double debit) {
         this.caller = new Bukkit_Plugin(caller);
@@ -82,9 +85,7 @@ public abstract class AccountDebitEvent extends Event {
         return error;
     }
 
-    /**
-     * Internal use method to set the error message should one have occurred
-     */
+    /** Internal use method to set the error message should one have occurred */
     public final void setErrorMessage(String error) {
         this.error = error;
     }

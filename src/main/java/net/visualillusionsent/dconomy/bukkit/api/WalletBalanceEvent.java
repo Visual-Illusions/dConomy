@@ -32,8 +32,10 @@ public final class WalletBalanceEvent extends AccountBalanceEvent {
     /**
      * Constructs a new WalletBalaceEvent
      *
-     * @param caller   the {@link Plugin} requesting balance information
-     * @param username the user's name to get balance for
+     * @param caller
+     *         the {@link Plugin} requesting balance information
+     * @param username
+     *         the user's name to get balance for
      */
     public WalletBalanceEvent(Plugin caller, String username) {
         super(caller, username);

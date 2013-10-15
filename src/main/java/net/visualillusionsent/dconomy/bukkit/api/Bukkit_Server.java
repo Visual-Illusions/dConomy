@@ -51,15 +51,14 @@ public final class Bukkit_Server implements ModServer, ModUser {
         this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>>();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModUser getUser(String name) {
         Player player = serv.getPlayer(name);
         if (player != null) {
             return new Bukkit_User(player);
-        } else {
+        }
+        else {
             OfflinePlayer offplayer = serv.getOfflinePlayer(name);
             if (offplayer != null) {
                 return new Bukkit_OfflineUser(offplayer);
@@ -68,65 +67,49 @@ public final class Bukkit_Server implements ModServer, ModUser {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Logger getServerLogger() {
         return dCo.getLogger();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.BUKKIT;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return "SERVER";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void error(final String key, final Object... args) {
         getServerLogger().log(Level.FINE, MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void message(final String key, final Object... args) {
         getServerLogger().info(MessageTranslator.translate(key, getUserLocale(), args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean hasPermission(String perm) {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void newTransaction(AccountTransaction transaction) {
         for (Class<?> clazz : transactions.keySet()) {
@@ -135,7 +118,8 @@ public final class Bukkit_Server implements ModServer, ModUser {
                     AccountTransactionEvent event = (AccountTransactionEvent) clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Bukkit.getPluginManager().callEvent(event);
                     break;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionEvent", ex);
                 }
             }
@@ -167,9 +151,7 @@ public final class Bukkit_Server implements ModServer, ModUser {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale();

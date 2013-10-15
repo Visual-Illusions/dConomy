@@ -30,15 +30,14 @@ public final class WalletTransactionHook extends AccountTransactionHook {
     /**
      * Constructs a new Wallet Transaction Hook
      *
-     * @param action the {@link WalletTransaction} done
+     * @param action
+     *         the {@link WalletTransaction} done
      */
     public WalletTransactionHook(WalletTransaction action) {
         super(action);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final WalletTransaction getTransaction() {
         return (WalletTransaction) action;

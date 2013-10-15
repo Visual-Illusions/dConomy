@@ -34,61 +34,48 @@ public final class Bukkit_Plugin implements ModUser {
     /**
      * Constructs a new Bukkit_Plugin wrapper
      *
-     * @param plugin the {@link Plugin} to wrap
+     * @param plugin
+     *         the {@link Plugin} to wrap
      */
     public Bukkit_Plugin(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return plugin.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void error(String key, Object... args) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void message(String key, Object... args) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.BUKKIT;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean hasPermission(String perm) {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale();

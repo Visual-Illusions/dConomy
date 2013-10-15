@@ -33,7 +33,7 @@ public final class WalletPayCommand extends dConomyCommand {
 
     @Override
     protected final void execute(ModUser user, String[] args) {
-        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser)dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        ModUser theUser = args[1].toUpperCase().equals("SERVER") ? (ModUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
             user.error("error.404.user", args[1]);
             return;
@@ -51,7 +51,8 @@ public final class WalletPayCommand extends dConomyCommand {
             userWallet.debit(args[0]);
             user.message("paid.user", theUser.getName(), Double.parseDouble(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.PAY, Double.parseDouble(args[0])));
-        } catch (AccountingException ae) {
+        }
+        catch (AccountingException ae) {
             user.error(ae.getMessage());
         }
     }

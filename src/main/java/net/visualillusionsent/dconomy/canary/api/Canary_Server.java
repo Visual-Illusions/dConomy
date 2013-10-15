@@ -53,15 +53,14 @@ public class Canary_Server implements ModServer, ModUser {
         this.transactions = new ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>>();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModUser getUser(String name) {
         Player player = serv.matchPlayer(name);
         if (player != null) {
             return new Canary_User(player);
-        } else {
+        }
+        else {
             OfflinePlayer offplayer = serv.getOfflinePlayer(name);
             if (offplayer != null) {
                 return new Canary_OfflineUser(offplayer);
@@ -70,73 +69,59 @@ public class Canary_Server implements ModServer, ModUser {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final Logger getServerLogger() {
         return dCo.getLogman();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final ModType getModType() {
         return ModType.CANARY;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final String getName() {
         return "SERVER";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean hasPermission(String perm) {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final boolean isConsole() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void error(final String key, final Object... args) {
         if (args == null || key.trim().isEmpty()) {
-            getServerLogger().log(CanaryLevel.NOTICE, MineChatForm.removeFormating(key));
-        } else {
+            getServerLogger().log(CanaryLevel.NOTICE, key);
+        }
+        else {
             getServerLogger().log(CanaryLevel.NOTICE, MessageTranslator.translate(key, getUserLocale(), args));
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void message(final String key, final Object... args) {
         if (args == null || key.trim().isEmpty()) {
-            getServerLogger().info(MineChatForm.removeFormating(key));
-        } else {
+            getServerLogger().info(key);
+        }
+        else {
             getServerLogger().info(MessageTranslator.translate(key, getUserLocale(), args));
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void newTransaction(AccountTransaction transaction) {
         for (Class<?> clazz : transactions.keySet()) {
@@ -145,16 +130,15 @@ public class Canary_Server implements ModServer, ModUser {
                     AccountTransactionHook hook = (AccountTransactionHook) clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Canary.hooks().callHook(hook);
                     break;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionHook", ex);
                 }
             }
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
     public void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction) {
@@ -165,9 +149,7 @@ public class Canary_Server implements ModServer, ModUser {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void deregisterTransactionHandler(Class<?> clazz) {
         if (transactions.containsKey(clazz)) {
@@ -175,9 +157,7 @@ public class Canary_Server implements ModServer, ModUser {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale();

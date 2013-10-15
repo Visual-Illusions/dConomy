@@ -61,7 +61,8 @@ public final class dCoBase {
             testAndMoveLangFiles();
 
             this.reported_version = dconomy.getReportedVersion();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             throw new dConomyInitializationError(ex);
         }
     }
@@ -72,7 +73,8 @@ public final class dCoBase {
             new File("config/dConomy3/lang/").mkdir();
             mvLangtxt = true;
             mven_US = true;
-        } else {
+        }
+        else {
             if (!new File("config/dConomy3/lang/languages.txt").exists()) {
                 mvLangtxt = true;
             }
@@ -156,7 +158,8 @@ public final class dCoBase {
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
             return codeSource.getLocation().toURI().getPath();
-        } catch (URISyntaxException ex) {
+        }
+        catch (URISyntaxException ex) {
         }
         return "plugins/dConomy3.jar";
     }
@@ -170,7 +173,7 @@ public final class dCoBase {
         $ = null;
     }
 
-    public static float getVersion(){
+    public static float getVersion() {
         return reported_version;
     }
 

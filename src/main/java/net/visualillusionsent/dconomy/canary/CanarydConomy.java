@@ -19,7 +19,6 @@ package net.visualillusionsent.dconomy.canary;
 
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.canary.api.Canary_Server;
@@ -27,9 +26,8 @@ import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.dconomy.dConomyInitializationError;
-import net.visualillusionsent.dconomy.io.logging.dCoLevel;
-import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
 import net.visualillusionsent.dconomy.modinterface.ModServer;
+import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,11 +40,6 @@ import java.util.logging.Logger;
 public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
-
-    static {
-        MessageTranslator.getClassVersion();
-        dCoLevel.GENERAL.intValue();
-    }
 
     @Override
     public final void disable() {
@@ -62,11 +55,14 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
             new CanarydConomyCommandListener(this);
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
             return true;
-        } catch (dConomyInitializationError ierr) {
+        }
+        catch (dConomyInitializationError ierr) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ierr.getCause());
-        } catch (CommandDependencyException cdex) {
+        }
+        catch (CommandDependencyException cdex) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex);
         }
         return false;
@@ -87,7 +83,7 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
     }
 
     @Override
-    public float getReportedVersion(){
+    public float getReportedVersion() {
         return Float.valueOf(getVersion());
     }
 

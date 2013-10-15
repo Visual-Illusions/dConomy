@@ -32,15 +32,14 @@ public final class WalletTransactionEvent extends AccountTransactionEvent {
     /**
      * Constructs a new Wallet Transaction Event
      *
-     * @param action the {@link WalletTransaction} done
+     * @param action
+     *         the {@link WalletTransaction} done
      */
     public WalletTransactionEvent(WalletTransaction action) {
         super(action);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final WalletTransaction getTransaction() {
         return (WalletTransaction) action;

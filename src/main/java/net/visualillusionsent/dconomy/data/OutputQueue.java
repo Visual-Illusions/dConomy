@@ -43,7 +43,8 @@ public final class OutputQueue {
             synchronized (queue) {
                 try {
                     queue.wait();
-                } catch (InterruptedException ex) {
+                }
+                catch (InterruptedException ex) {
                     return null;
                 }
             }
@@ -51,7 +52,8 @@ public final class OutputQueue {
         try {
             account = queue.getFirst();
             queue.removeFirst();
-        } catch (NoSuchElementException nsee) {
+        }
+        catch (NoSuchElementException nsee) {
             throw new InternalError("Race hazard in LinkedList object.");
         }
         return account;

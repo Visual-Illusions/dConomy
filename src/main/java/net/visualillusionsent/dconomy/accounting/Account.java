@@ -35,9 +35,12 @@ public abstract class Account {
     /**
      * Constructs a new Account
      *
-     * @param owner      the owner of the account
-     * @param balance    the balance of the account
-     * @param datasource the {@link dCoDataSource} instance used to save/load the Account
+     * @param owner
+     *         the owner of the account
+     * @param balance
+     *         the balance of the account
+     * @param datasource
+     *         the {@link dCoDataSource} instance used to save/load the Account
      */
     public Account(String owner, double balance, dCoDataSource datasource) {
         if (owner == null) {
@@ -69,9 +72,13 @@ public abstract class Account {
     /**
      * Deposits money into the account
      *
-     * @param add the amount to be deposited
+     * @param add
+     *         the amount to be deposited
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double deposit(double add) throws AccountingException {
         balance += testArgumentDouble(add);
@@ -86,9 +93,13 @@ public abstract class Account {
     /**
      * Deposits money into the account
      *
-     * @param add the amount to be deposited
+     * @param add
+     *         the amount to be deposited
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double deposit(String add) throws AccountingException {
         return deposit(testArgumentString(add));
@@ -97,8 +108,11 @@ public abstract class Account {
     /**
      * Tests a deposit before adding it.
      *
-     * @param add the amount to be added
-     * @throws AccountingException should an AccountingException occur
+     * @param add
+     *         the amount to be added
+     *
+     * @throws AccountingException
+     *         should an AccountingException occur
      */
     public void testDeposit(String add) throws AccountingException {
         testDeposit(testArgumentString(add));
@@ -107,8 +121,11 @@ public abstract class Account {
     /**
      * Tests a deposit before adding it.
      *
-     * @param add the amount to be added
-     * @throws AccountingException should an AccountingException occur
+     * @param add
+     *         the amount to be added
+     *
+     * @throws AccountingException
+     *         should an AccountingException occur
      */
     public void testDeposit(double add) throws AccountingException {
         double balance = this.balance + testArgumentDouble(add);
@@ -123,9 +140,13 @@ public abstract class Account {
     /**
      * Debits money from an account
      *
-     * @param remove the amount to be debitted
+     * @param remove
+     *         the amount to be debitted
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double debit(double remove) throws AccountingException {
         double toRemove = testArgumentDouble(remove);
@@ -137,9 +158,13 @@ public abstract class Account {
     /**
      * Debits money from an account
      *
-     * @param remove the amount to be debitted
+     * @param remove
+     *         the amount to be debitted
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double debit(String remove) throws AccountingException {
         return debit(testArgumentString(remove));
@@ -148,9 +173,13 @@ public abstract class Account {
     /**
      * Sets an Account balance
      *
-     * @param set the amount the balance should be set to
+     * @param set
+     *         the amount the balance should be set to
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double setBalance(double set) throws AccountingException {
         double toSet = testArgumentDouble(set);
@@ -166,9 +195,13 @@ public abstract class Account {
     /**
      * Sets an Account balance
      *
-     * @param set the amount the balance should be set to
+     * @param set
+     *         the amount the balance should be set to
+     *
      * @return the new account balance
-     * @throws AccountingException if an Accounting Exception occurs
+     *
+     * @throws AccountingException
+     *         if an Accounting Exception occurs
      */
     public double setBalance(String set) throws AccountingException {
         return setBalance(testArgumentString(set));
@@ -177,15 +210,19 @@ public abstract class Account {
     /**
      * Tests a String for a double value
      *
-     * @param value the value to test
+     * @param value
+     *         the value to test
+     *
      * @return double value of the String
+     *
      * @throws AccountingException
      */
     protected final double testArgumentString(String value) throws AccountingException {
         double testNum = 0;
         try {
             testNum = Double.parseDouble(value);
-        } catch (NumberFormatException nfe) {
+        }
+        catch (NumberFormatException nfe) {
             throw new AccountingException("error.nan");
         }
         return testNum;
@@ -194,8 +231,11 @@ public abstract class Account {
     /**
      * Tests a double for negative value and rounds it to 2 decimal places
      *
-     * @param value the value to test
+     * @param value
+     *         the value to test
+     *
      * @return the dConomy rounded value
+     *
      * @throws AccountingException
      */
     protected final double testArgumentDouble(double value) throws AccountingException {
@@ -205,14 +245,10 @@ public abstract class Account {
         return Math.round(value * 100) / 100.0f; // Even out the number to a 0.## form
     }
 
-    /**
-     * Override and insert Account saving code here
-     */
+    /** Override and insert Account saving code here */
     protected abstract void save();
 
-    /**
-     * Override and insert Account reload code here
-     */
+    /** Override and insert Account reload code here */
     public abstract boolean reload();
 
     /**

@@ -42,7 +42,8 @@ public final class WalletSQLiteSource extends WalletSQLSource {
             st = conn.createStatement();
             st.execute("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` (`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             st.close();
-        } catch (SQLException sqlex) {
+        }
+        catch (SQLException sqlex) {
             dCoBase.severe("SQL Exception while parsing Wallets table...");
             dCoBase.stacktrace(sqlex);
             return false;
@@ -53,7 +54,8 @@ public final class WalletSQLiteSource extends WalletSQLSource {
     public static void cleanUp() {
         try {
             $.conn.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
         }
         $ = null;
     }

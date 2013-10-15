@@ -33,7 +33,8 @@ public abstract class AccountTransactionEvent extends Event {
     /**
      * Constructs a new Account Transaction Event
      *
-     * @param action the AccountTransaction done
+     * @param action
+     *         the AccountTransaction done
      */
     public AccountTransactionEvent(AccountTransaction action) {
         this.action = action;

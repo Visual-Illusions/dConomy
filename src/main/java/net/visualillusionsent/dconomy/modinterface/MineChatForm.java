@@ -19,114 +19,70 @@ package net.visualillusionsent.dconomy.modinterface;
 
 public enum MineChatForm {
 
-    /**
-     * <b>MARKER §</b>
-     */
+    /** <b>MARKER §</b> */
     MARKER('\u00A7'),
 
-    /**
-     * <FONT COLOR=000000><b>BLACK</b></FONT>
-     */
+    /** <FONT COLOR=000000><b>BLACK</b></FONT> */
     BLACK('0'),
 
-    /**
-     * <font color="000066"><b>DARK_BLUE</b></font>
-     */
+    /** <font color="000066"><b>DARK_BLUE</b></font> */
     DARK_BLUE('1'),
 
-    /**
-     * <font color="006600"><b>GREEN</b></font>
-     */
+    /** <font color="006600"><b>GREEN</b></font> */
     GREEN('2'),
 
-    /**
-     * <font color="006666"><b>TURQUOISE</b></font>
-     */
+    /** <font color="006666"><b>TURQUOISE</b></font> */
     TURQUOISE('3'),
 
-    /**
-     * <font color="990000"><b>RED</b></font>
-     */
+    /** <font color="990000"><b>RED</b></font> */
     RED('4'),
 
-    /**
-     * <font color="540054"><b>PURPLE</b></font>
-     */
+    /** <font color="540054"><b>PURPLE</b></font> */
     PURPLE('5'),
 
-    /**
-     * <font color="FF9933"><b>ORANGE</b></font>
-     */
+    /** <font color="FF9933"><b>ORANGE</b></font> */
     ORANGE('6'),
 
-    /**
-     * <font color="CCCCCC"><b>LIGHT_GRAY</b></font>
-     */
+    /** <font color="CCCCCC"><b>LIGHT_GRAY</b></font> */
     LIGHT_GRAY('7'),
 
-    /**
-     * <font color="333333"><b>GRAY</b></font>
-     */
+    /** <font color="333333"><b>GRAY</b></font> */
     GRAY('8'),
 
-    /**
-     * <font color="2A2A7F"><b>BLUE</b></font>
-     */
+    /** <font color="2A2A7F"><b>BLUE</b></font> */
     BLUE('9'),
 
-    /**
-     * <font color="33FF33"><b>LIGHT_GREEN</b></font>
-     */
+    /** <font color="33FF33"><b>LIGHT_GREEN</b></font> */
     LIGHT_GREEN('A'),
 
-    /**
-     * <font color="00FFFF"><b>CYAN</b></font>
-     */
+    /** <font color="00FFFF"><b>CYAN</b></font> */
     CYAN('B'),
 
-    /**
-     * <font color="FF0022"><b>LIGHT_RED</b></font>
-     */
+    /** <font color="FF0022"><b>LIGHT_RED</b></font> */
     LIGHT_RED('C'),
 
-    /**
-     * <font color="FF00FF"><b>PINK</b></font>
-     */
+    /** <font color="FF00FF"><b>PINK</b></font> */
     PINK('D'),
 
-    /**
-     * <font color="FFFF00"><b>YELLOW</b></font>
-     */
+    /** <font color="FFFF00"><b>YELLOW</b></font> */
     YELLOW('E'),
 
-    /**
-     * <font color="000000"><b>WHITE</b></font>
-     */
+    /** <font color="000000"><b>WHITE</b></font> */
     WHITE('F'),
 
-    /**
-     * <b>BOLD</b>
-     */
+    /** <b>BOLD</b> */
     BOLD('L'),
 
-    /**
-     * <s>STRIKED</s>
-     */
+    /** <s>STRIKED</s> */
     STRIKED('M'),
 
-    /**
-     * <u>UNDERLINED</u>
-     */
+    /** <u>UNDERLINED</u> */
     UNDERLINED('N'),
 
-    /**
-     * <i>ITALIC</i>
-     */
+    /** <i>ITALIC</i> */
     ITALIC('O'),
 
-    /**
-     * RESET
-     */
+    /** RESET */
     RESET('R');
 
     private final char charCode;
@@ -138,7 +94,8 @@ public enum MineChatForm {
     public final String concat(String str) {
         if (this == MARKER) {
             return stringValue().concat(str);
-        } else {
+        }
+        else {
             return MARKER.concat(stringValue().concat(str));
         }
     }
@@ -170,18 +127,20 @@ public enum MineChatForm {
     public final String toString() {
         if (this == MARKER) {
             return stringValue();
-        } else {
+        }
+        else {
             return MARKER.concat(stringValue());
         }
     }
 
     /**
-     * removes all color formating from a line
+     * removes all color formatting from a line
      *
      * @param str
-     * @return str with formating removed
+     *
+     * @return str with formatting removed
      */
-    public static final String removeFormating(String str) {
+    public static final String removeFormatting(String str) {
         return str.replaceAll(MARKER.concat("[A-FL-NRa-fl-nr0-9]"), "");
     }
 }

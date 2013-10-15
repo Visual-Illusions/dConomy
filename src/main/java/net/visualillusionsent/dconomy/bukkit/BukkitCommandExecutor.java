@@ -36,10 +36,17 @@ package net.visualillusionsent.dconomy.bukkit;
 
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.dconomy.commands.wallet.*;
+import net.visualillusionsent.dconomy.commands.wallet.WalletAddCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletBaseCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletLockCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletPayCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletReloadCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPluginInformationCommand;
 import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPluginInformationCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -77,42 +84,51 @@ public class BukkitCommandExecutor extends VisualIllusionsBukkitPluginInformatio
         if (label.equals("dconomy")) {
 
             return true;
-        } else if (label.equals("wallet")) {
+        }
+        else if (label.equals("wallet")) {
             if (args.length == 0) {
                 if (!walletbase.parseCommand(user, args, false)) {
                     sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
                 }
-            } else {
+            }
+            else {
                 String subcmd = args[0].toLowerCase();
                 if (subcmd.equals("add")) {
                     if (!walletadd.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet add <amount> <user> [-force]");
                     }
-                } else if (subcmd.equals("pay")) {
+                }
+                else if (subcmd.equals("pay")) {
                     if (!walletpay.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet pay <amount> <user>");
                     }
-                } else if (subcmd.equals("remove")) {
+                }
+                else if (subcmd.equals("remove")) {
                     if (!walletremove.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet remove <amount> <user>");
                     }
-                } else if (subcmd.equals("set")) {
+                }
+                else if (subcmd.equals("set")) {
                     if (!walletset.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet set <amount> <user>");
                     }
-                } else if (subcmd.equals("reset")) {
+                }
+                else if (subcmd.equals("reset")) {
                     if (!walletreset.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet reset <user>");
                     }
-                } else if (subcmd.equals("reload")) {
+                }
+                else if (subcmd.equals("reload")) {
                     if (!walletreload.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet reload <user>");
                     }
-                } else if (subcmd.equals("lock")) {
+                }
+                else if (subcmd.equals("lock")) {
                     if (!walletlock.parseCommand(user, args, true)) {
                         sender.sendMessage(ChatColor.RED + "/wallet lock <yes|no> <user>");
                     }
-                } else {
+                }
+                else {
                     if (!walletbase.parseCommand(user, args, false)) {
                         sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
                     }

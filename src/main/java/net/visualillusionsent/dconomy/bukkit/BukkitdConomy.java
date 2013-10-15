@@ -23,8 +23,8 @@ import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
 import net.visualillusionsent.dconomy.bukkit.api.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
-import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 import net.visualillusionsent.dconomy.modinterface.ModServer;
+import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 
 import java.util.logging.Logger;
 
@@ -66,7 +66,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
     }
 
     @Override
-    public float getReportedVersion(){
+    public float getReportedVersion() {
         return Float.valueOf(getDescription().getVersion());
     }
 

@@ -77,7 +77,8 @@ public final class dCoProperties {
         try {
             CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
             return codeSource.getLocation().toURI().getPath();
-        } catch (URISyntaxException ex) {
+        }
+        catch (URISyntaxException ex) {
         }
         return "plugins/dConomy3.jar";
     }
@@ -91,13 +92,15 @@ public final class dCoProperties {
         if (!propsFile.containsKey("default.balance")) {
             propsFile.setDouble("default.balance", 0, "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");
             missingProp = true;
-        } else if (propsFile.getDouble("default.balance") < 0.01) {
+        }
+        else if (propsFile.getDouble("default.balance") < 0.01) {
             propsFile.setDouble("default.balance", 0);
         }
         if (!propsFile.containsKey("max.account.balance")) {
             propsFile.setDouble("max.account.balance", 999999999999999999D, "Max allow Account balance, should never be set to more than 999999999999999999");
             missingProp = true;
-        } else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
+        }
+        else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
             propsFile.setDouble("max.account.balance", 999999999999999999D);
         }
         if (!propsFile.containsKey("money.name")) {

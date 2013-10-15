@@ -33,7 +33,8 @@ public abstract class AccountTransactionHook extends Hook {
     /**
      * Constructs a new Account Transaction Hook
      *
-     * @param action the AccountTransaction done
+     * @param action
+     *         the AccountTransaction done
      */
     public AccountTransactionHook(AccountTransaction action) {
         this.action = action;
