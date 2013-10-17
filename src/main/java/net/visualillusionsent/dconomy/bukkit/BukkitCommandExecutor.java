@@ -60,19 +60,19 @@ import org.bukkit.entity.Player;
  */
 public class BukkitCommandExecutor extends VisualIllusionsBukkitPluginInformationCommand {
 
-    private dConomyCommand walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
+    private final dConomyCommand[] cmds = new dConomyCommand[8];
 
     BukkitCommandExecutor(BukkitdConomy dCo) {
         super(dCo);
         // Initialize Commands
-        walletbase = new WalletBaseCommand();
-        walletadd = new WalletAddCommand();
-        walletpay = new WalletPayCommand();
-        walletremove = new WalletRemoveCommand();
-        walletset = new WalletSetCommand();
-        walletreset = new WalletResetCommand();
-        walletreload = new WalletReloadCommand();
-        walletlock = new WalletLockCommand();
+        cmds[0] = new WalletBaseCommand();
+        cmds[1] = new WalletAddCommand();
+        cmds[2] = new WalletPayCommand();
+        cmds[3] = new WalletRemoveCommand();
+        cmds[4] = new WalletSetCommand();
+        cmds[5] = new WalletResetCommand();
+        cmds[6] = new WalletReloadCommand();
+        cmds[7] = new WalletLockCommand();
 
         // Register commands
         dCo.getCommand("dconomy").setExecutor(this);
@@ -104,56 +104,42 @@ public class BukkitCommandExecutor extends VisualIllusionsBukkitPluginInformatio
             return true;
         }
         else if (label.equals("wallet")) {
-            if (args.length == 0) {
-                if (!walletbase.parseCommand(user, args, false)) {
-                    sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
-                }
+            if (args.length == 0 && sender.hasPermission("dconomy.wallet.base") && !cmds[0].parseCommand(user, args, false)) {
+                sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
             }
-            else {
+            else if (args.length > 0) {
                 String subcmd = args[0].toLowerCase();
-                if (subcmd.equals("add")) {
-                    if (!walletadd.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet add <amount> <user> [-force]");
-                    }
+                if (subcmd.equals("add") && sender.hasPermission("dconomy.admin.wallet.add") && !cmds[1].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet add <amount> <user> [-force]");
                 }
-                else if (subcmd.equals("pay")) {
-                    if (!walletpay.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet pay <amount> <user>");
-                    }
+                else if (subcmd.equals("pay") && sender.hasPermission("dconomy.wallet.pay") && !cmds[2].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet pay <amount> <user>");
                 }
-                else if (subcmd.equals("remove")) {
-                    if (!walletremove.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet remove <amount> <user>");
-                    }
+                else if (subcmd.equals("remove") && sender.hasPermission("dconomy.admin.wallet.remove") && !cmds[3].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet remove <amount> <user>");
                 }
-                else if (subcmd.equals("set")) {
-                    if (!walletset.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet set <amount> <user>");
-                    }
+                else if (subcmd.equals("set") && sender.hasPermission("dconomy.admin.wallet.set") && !cmds[4].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet set <amount> <user>");
                 }
-                else if (subcmd.equals("reset")) {
-                    if (!walletreset.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet reset <user>");
-                    }
+                else if (subcmd.equals("reset") && sender.hasPermission("dconomy.admin.wallet.reset") && !cmds[5].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet reset <user>");
                 }
-                else if (subcmd.equals("reload")) {
-                    if (!walletreload.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet reload <user>");
-                    }
+                else if (subcmd.equals("reload") && sender.hasPermission("dconomy.admin.wallet.reload") && !cmds[6].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet reload <user>");
                 }
-                else if (subcmd.equals("lock")) {
-                    if (!walletlock.parseCommand(user, args, true)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet lock <yes|no> <user>");
-                    }
+                else if (subcmd.equals("lock") && sender.hasPermission("dconomy.admin.wallet.lock") && !cmds[7].parseCommand(user, args, true)) {
+                    sender.sendMessage(ChatColor.RED + "/wallet lock <yes|no> <user>");
                 }
-                else {
-                    if (!walletbase.parseCommand(user, args, false)) {
-                        sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
-                    }
+                else if (!cmds[0].parseCommand(user, args, false) && sender.hasPermission("dconomy.wallet.base")) {
+                    sender.sendMessage(ChatColor.RED + "/wallet [subcommand|user] [args]");
                 }
             }
             return true;
         }
         return false;
+    }
+
+    private final void getUser(Command command) {
+
     }
 }

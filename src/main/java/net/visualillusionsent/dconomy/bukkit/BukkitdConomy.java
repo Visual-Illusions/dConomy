@@ -44,10 +44,8 @@ import java.util.logging.Logger;
  */
 public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
-    private static final String viutils_version;
-    private static final String jdom_version;
 
-    static {
+    public BukkitdConomy() {
         Manifest mf = null;
         try {
             mf = new JarFile(BukkitdConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
@@ -55,11 +53,8 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
         catch (IOException ex) {
             // NullPointerException will happen anyways
         }
-        viutils_version = mf.getMainAttributes().getValue("VIUtils-Version");
-        jdom_version = mf.getMainAttributes().getValue("JDOM2-Version");
-    }
-
-    public BukkitdConomy() {
+        String viutils_version = mf.getMainAttributes().getValue("VIUtils-Version");
+        String jdom_version = mf.getMainAttributes().getValue("JDOM2-Version");
         // Check for VIUtils/jdom2, download as necessary
         File lib = new File("lib/viutils-" + viutils_version + ".jar");
         if (!lib.exists()) {

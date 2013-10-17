@@ -39,18 +39,18 @@ import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugi
 import net.visualillusionsent.utils.VersionChecker;
 
 public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPluginInformationCommand {
-    private final dConomyCommand walletbase, walletadd, walletremove, walletpay, walletset, walletreset, walletreload, walletlock;
+    private final dConomyCommand[] cmds = new dConomyCommand[8];
 
     CanarydConomyCommandListener(CanarydConomy dCo) throws CommandDependencyException {
         super(dCo);
-        walletbase = new WalletBaseCommand();
-        walletadd = new WalletAddCommand();
-        walletpay = new WalletPayCommand();
-        walletremove = new WalletRemoveCommand();
-        walletset = new WalletSetCommand();
-        walletreset = new WalletResetCommand();
-        walletreload = new WalletReloadCommand();
-        walletlock = new WalletLockCommand();
+        cmds[0] = new WalletBaseCommand();
+        cmds[1] = new WalletAddCommand();
+        cmds[2] = new WalletPayCommand();
+        cmds[3] = new WalletRemoveCommand();
+        cmds[4] = new WalletSetCommand();
+        cmds[5] = new WalletResetCommand();
+        cmds[6] = new WalletReloadCommand();
+        cmds[7] = new WalletLockCommand();
         Canary.commands().registerCommands(this, dCo, false);
     }
 
@@ -84,9 +84,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             permissions = { "dconomy.wallet" },
             toolTip = "/wallet [subcommand] [args]")
     public final void walletBase(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletbase.parseCommand(user, args, true)) {
+        if (!cmds[0].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet [subcommand] [args]");
         }
     }
@@ -97,9 +95,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet add <amount> <user>",
             parent = "wallet")
     public final void walletAdd(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletadd.parseCommand(user, args, true)) {
+        if (!cmds[1].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet add <amount> <user> [-force]");
         }
     }
@@ -110,9 +106,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet pay <amount> <user>",
             parent = "wallet")
     public final void walletPay(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletpay.parseCommand(user, args, true)) {
+        if (!cmds[2].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet pay <amount> <user>");
         }
     }
@@ -123,9 +117,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet remove <user> <amount>",
             parent = "wallet")
     public final void walletRemove(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletremove.parseCommand(user, args, true)) {
+        if (!cmds[3].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet remove <amount> <user>");
         }
     }
@@ -136,9 +128,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet set <amount> <user> [-force]",
             parent = "wallet")
     public final void walletSet(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletset.parseCommand(user, args, true)) {
+        if (!cmds[4].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet set <amount> <user>");
         }
     }
@@ -149,9 +139,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet reset <user>",
             parent = "wallet")
     public final void walletReset(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletreset.parseCommand(user, args, true)) {
+        if (!cmds[5].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet reset <user>");
         }
     }
@@ -162,9 +150,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet reload <user>",
             parent = "wallet")
     public final void walletReload(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletreload.parseCommand(user, args, true)) {
+        if (!cmds[6].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet reload <user>");
         }
     }
@@ -175,10 +161,12 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
             toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
             parent = "wallet")
     public final void walletLock(MessageReceiver msgrec, String[] args) {
-        ModUser user = msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
-
-        if (!walletlock.parseCommand(user, args, true)) {
+        if (!cmds[7].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet lock <yes|no> <user>");
         }
+    }
+
+    private final ModUser getUser(MessageReceiver msgrec) {
+        return msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
     }
 }
