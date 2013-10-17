@@ -48,6 +48,8 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
 
     @Override
     public final boolean enable() {
+        //super.enable();
+
         try {
             base = new dCoBase(this);
             WalletHandler.initialize();

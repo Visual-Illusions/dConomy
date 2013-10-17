@@ -12,6 +12,8 @@
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanarydConomy</canary.main.class>
         <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitdConomy</bukkit.main.class>
         <vimcplugin.version>1.0u1</vimcplugin.version>
+        <viutils.version>1.1.1</viutils.version>
+        <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
         <version.check.url>http://visualillusionsent.net/minecraft/plugins/</version.check.url>
         <devs>darkdiplomat</devs>
@@ -69,6 +71,10 @@
             <snapshots>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
     </repositories>
     <dependencies>
@@ -182,6 +188,10 @@
                             <token>{canary.main.class}</token>
                             <value>${canary.main.class}</value>
                         </replace>
+                        <replace>
+                            <token>{bukkit.main.class}</token>
+                            <value>${bukkit.main.class}</value>
+                        </replace>
                     </replacements>
                     <regex>false</regex>
                 </configuration>
@@ -213,6 +223,10 @@
                             <Vendor>Visual Illusions Entertainment</Vendor>
                             <Built-By>${user.name}</Built-By>
                             <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <VIUtils-Version>${viutils.version}</VIUtils-Version>
+                            <JDOM2-Version>${jdom2.version}</JDOM2-Version>
+                            <Class-Path>../lib/viutils-${viutils.version}.jar ../lib/jdom2-${jdom2.version}.jar
+                            </Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>

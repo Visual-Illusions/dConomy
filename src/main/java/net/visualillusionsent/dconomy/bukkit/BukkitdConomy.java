@@ -26,6 +26,15 @@ import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.dconomy.modinterface.ModServer;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
 /**
@@ -35,6 +44,51 @@ import java.util.logging.Logger;
  */
 public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
+    private static final String viutils_version;
+    private static final String jdom_version;
+
+    static {
+        Manifest mf = null;
+        try {
+            mf = new JarFile(BukkitdConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
+        }
+        catch (IOException ex) {
+            // NullPointerException will happen anyways
+        }
+        viutils_version = mf.getMainAttributes().getValue("VIUtils-Version");
+        jdom_version = mf.getMainAttributes().getValue("JDOM2-Version");
+    }
+
+    public BukkitdConomy() {
+        // Check for VIUtils/jdom2, download as necessary
+        File lib = new File("lib/viutils-" + viutils_version + ".jar");
+        if (!lib.exists()) {
+            try {
+                URL website = new URL("http://repo.visualillusionsent.net/net/visualillusionsent/viutils/" + viutils_version + "/viutils-" + viutils_version + ".jar");
+                URLConnection conn = website.openConnection();
+                ReadableByteChannel rbc = Channels.newChannel(conn.getInputStream());
+                FileOutputStream fos = new FileOutputStream(lib);
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            }
+            catch (Exception ex) {
+                System.out.println("Failed to download VIUtils " + viutils_version);
+            }
+        }
+        lib = new File("lib/jdom2-" + jdom_version + ".jar");
+        if (!lib.exists()) {
+            try {
+                URL website = new URL("http://repo1.maven.org/maven2/org/jdom/jdom2/" + jdom_version + "/jdom2-" + jdom_version + ".jar");
+                URLConnection conn = website.openConnection();
+                ReadableByteChannel rbc = Channels.newChannel(conn.getInputStream());
+                FileOutputStream fos = new FileOutputStream(lib);
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            }
+            catch (Exception ex) {
+                System.out.println("Failed to download jdom2 " + jdom_version);
+            }
+        }
+        //
+    }
 
     @Override
     public final void onDisable() {
@@ -43,6 +97,11 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
 
     @Override
     public final void onEnable() {
+        //super.onEnable(); // Requires VisualIllusionsMinecraftPlugin library 1.0u2
+        initialize();
+        checkVersion();
+        checkStatus();
+
         // Create dCoBase, initializing properties and such
         base = new dCoBase(this);
         // Cause Wallets to load
