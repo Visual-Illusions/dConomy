@@ -17,8 +17,8 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.canarymod.plugin.Plugin;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Wallet Deposit Event<br>

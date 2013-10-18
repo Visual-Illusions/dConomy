@@ -17,10 +17,9 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.canary.api.Canary_Plugin;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Account Deposit Event<br>
@@ -46,7 +45,7 @@ public abstract class AccountDepositEvent extends Event {
      *         the amount to be deposited
      */
     public AccountDepositEvent(Plugin caller, String username, double deposit) {
-        this.caller = new Canary_Plugin(caller);
+        this.caller = new Bukkit_Plugin(caller);
         this.username = username;
         this.deposit = deposit;
     }
