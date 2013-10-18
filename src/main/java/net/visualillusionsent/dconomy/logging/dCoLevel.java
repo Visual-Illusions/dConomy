@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.io.logging;
+package net.visualillusionsent.dconomy.logging;
 
 import java.util.logging.Level;
 

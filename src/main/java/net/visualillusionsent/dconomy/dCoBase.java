@@ -23,7 +23,7 @@ import net.visualillusionsent.dconomy.data.DataSourceType;
 import net.visualillusionsent.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.dconomy.data.dCoProperties;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
-import net.visualillusionsent.dconomy.io.logging.dCoLevel;
+import net.visualillusionsent.dconomy.logging.dCoLevel;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.JarUtils;
 
