@@ -19,7 +19,7 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
 /**
  * Account Deposit Hook<br>
@@ -29,7 +29,7 @@ import net.visualillusionsent.dconomy.modinterface.ModUser;
  */
 public abstract class AccountDepositHook extends Hook {
 
-    private final ModUser caller;
+    private final dConomyUser caller;
     private final String username;
     private final double deposit;
     private String error;
@@ -51,11 +51,11 @@ public abstract class AccountDepositHook extends Hook {
     }
 
     /**
-     * Gets the {@link ModUser}(plugin) asking to take money
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to take money
      *
-     * @return the {@link ModUser}(plugin)
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin)
      */
-    public final ModUser getCaller() {
+    public final dConomyUser getCaller() {
         return caller;
     }
 

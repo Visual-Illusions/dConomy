@@ -41,7 +41,7 @@ public final class dCoDataHandler {
             testSQLiteDriver();
         }
         else {
-            throw new DataSourceException("Invaild DataSourceType...");
+            throw new DataSourceException();
         }
         queue = new OutputQueue();
         outThread = new OutputThread(this);
@@ -60,8 +60,7 @@ public final class dCoDataHandler {
     public void cleanUp() {
         outThread.terminate();
         while (queue.hasNext()) { // Save the rest immediately
-            Account account = null;
-            account = queue.next();
+            Account account = queue.next();
             if (account != null && account.getDataSource() != null) {
                 account.getDataSource().saveAccount(account);
             }
@@ -72,7 +71,7 @@ public final class dCoDataHandler {
         return dataType;
     }
 
-    private final void testJDOM() throws DataSourceException {
+    private void testJDOM() throws DataSourceException {
         try {
             Class.forName("org.jdom2.JDOMException");
         }
@@ -81,19 +80,19 @@ public final class dCoDataHandler {
         }
     }
 
-    private final boolean canFindSQLDriver(String driver) {
+    private boolean cannotFindSQLDriver(String driver) {
         Enumeration<Driver> en = DriverManager.getDrivers();
         while (en.hasMoreElements()) {
             Driver drive = en.nextElement();
             if (drive.getClass().getName().equals(driver)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    private final void testSQLiteDriver() throws DataSourceException {
-        if (!canFindSQLDriver("org.sqlite.JDBC")) {
+    private void testSQLiteDriver() throws DataSourceException {
+        if (cannotFindSQLDriver("org.sqlite.JDBC")) {
             try {
                 Class.forName("org.sqlite.JDBC");
             }
@@ -103,8 +102,8 @@ public final class dCoDataHandler {
         }
     }
 
-    private final void testMySQLDriver() throws DataSourceException {
-        if (!canFindSQLDriver("com.mysql.jdbc.Driver")) {
+    private void testMySQLDriver() throws DataSourceException {
+        if (cannotFindSQLDriver("com.mysql.jdbc.Driver")) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
             }

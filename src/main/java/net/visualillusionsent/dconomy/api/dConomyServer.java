@@ -15,23 +15,22 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.modinterface;
-
-import net.visualillusionsent.dconomy.accounting.AccountTransaction;
+package net.visualillusionsent.dconomy.api;
 
 import java.util.logging.Logger;
 
-public interface ModServer {
+/** dConomy Server interface */
+public interface dConomyServer {
 
     /**
-     * Gets a {@link ModUser} for the specified name
+     * Gets a {@link dConomyUser} for the specified name
      *
      * @param name
-     *         the name of the {@link ModUser}
+     *         the name of the {@link dConomyUser}
      *
-     * @return {@link ModUser} if found; {@code null} otherwise
+     * @return {@link dConomyUser} if found; {@code null} otherwise
      */
-    ModUser getUser(String name);
+    dConomyUser getUser(String name);
 
     /**
      * Gets the Logger for the Server
@@ -39,15 +38,6 @@ public interface ModServer {
      * @return the logger
      */
     Logger getServerLogger();
-
-    /**
-     * Gets the ModType of the Server
-     *
-     * @return the ModType
-     *
-     * @see ModType
-     */
-    ModType getModType();
 
     /**
      * Sends out notification of an AccountTransaction using the hook/event systems
@@ -65,7 +55,7 @@ public interface ModServer {
      * @param transaction
      *         the Class that extends AccountTransaction
      */
-    void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction);
+    void registerTransactionHandler(Class<? extends TransactionHookEvent> clazz, Class<? extends AccountTransaction> transaction);
 
     /**
      * Unregisters a Transaction Hook/Event
@@ -73,5 +63,5 @@ public interface ModServer {
      * @param clazz
      *         the Class of that extends AccountTransaction(Hook/Event)
      */
-    void deregisterTransactionHandler(Class<?> clazz);
+    void unregisterTransactionHandler(Class<? extends TransactionHookEvent> clazz);
 }

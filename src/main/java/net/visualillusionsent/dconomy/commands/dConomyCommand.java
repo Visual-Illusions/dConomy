@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy.commands;
 
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
 public abstract class dConomyCommand {
 
@@ -27,11 +27,11 @@ public abstract class dConomyCommand {
         this.minArgs = minArgs;
     }
 
-    public final boolean parseCommand(ModUser caller, String[] args, boolean adjust) {
+    public final boolean parseCommand(dConomyUser caller, String[] args, boolean adjust) {
         if (args == null || caller == null) {
             return false;
         }
-        String[] cmdArgs = adjust ? adjustedArgs(args, 1) : args;
+        String[] cmdArgs = adjust ? adjustedArgs(args) : args;
 
         if (cmdArgs.length < minArgs) {
             caller.error("error.args");
@@ -43,13 +43,13 @@ public abstract class dConomyCommand {
         }
     }
 
-    private final String[] adjustedArgs(String[] args, int start) {
+    private String[] adjustedArgs(String[] args) {
         if (args.length == 0) {
             return args;
         }
-        String[] toRet = new String[args.length - start];
+        String[] toRet = new String[args.length - 1];
         try {
-            System.arraycopy(args, start, toRet, 0, toRet.length);
+            System.arraycopy(args, 1, toRet, 0, toRet.length);
         }
         catch (IndexOutOfBoundsException ioobe) {
             return new String[0];
@@ -57,5 +57,5 @@ public abstract class dConomyCommand {
         return toRet;
     }
 
-    protected abstract void execute(ModUser caller, String[] args);
+    protected abstract void execute(dConomyUser caller, String[] args);
 }

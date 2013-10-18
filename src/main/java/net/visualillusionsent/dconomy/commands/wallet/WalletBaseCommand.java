@@ -19,9 +19,9 @@ package net.visualillusionsent.dconomy.commands.wallet;
 
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 public final class WalletBaseCommand extends dConomyCommand {
 
@@ -29,10 +29,10 @@ public final class WalletBaseCommand extends dConomyCommand {
         super(0);
     }
 
-    protected final void execute(ModUser user, String[] args) {
+    protected final void execute(dConomyUser user, String[] args) {
         Wallet theWallet;
         if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
-            ModUser theUser = args[0].toUpperCase().equals("SERVER") ? (ModUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[0]);
+            dConomyUser theUser = args[0].toUpperCase().equals("SERVER") ? (dConomyUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[0]);
             if (theUser == null) {
                 user.error("error.404.user", args[1]);
                 return;
@@ -55,7 +55,7 @@ public final class WalletBaseCommand extends dConomyCommand {
                 user.message("error.lock.out", user.getName(), "WALLET");
             }
             else {
-                user.message("account.balance", Double.valueOf(theWallet.getBalance()), "WALLET");
+                user.message("account.balance", theWallet.getBalance(), "WALLET");
             }
         }
     }

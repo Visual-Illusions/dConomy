@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import org.bukkit.event.HandlerList;
 
 /**

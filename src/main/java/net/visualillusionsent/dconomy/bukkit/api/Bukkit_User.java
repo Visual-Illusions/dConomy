@@ -19,18 +19,17 @@ package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.canarymod.api.OfflinePlayer;
 import net.visualillusionsent.dconomy.MessageTranslator;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 /**
- * Bukkit Offline User implementation
+ * Bukkit User implementation
  *
  * @author Jason (darkdiplomat)
  */
-public final class Bukkit_User implements ModUser {
+public final class Bukkit_User implements dConomyUser {
 
     private final Player player;
 
@@ -76,14 +75,8 @@ public final class Bukkit_User implements ModUser {
 
     /** {@inheritDoc} */
     @Override
-    public final ModType getModType() {
-        return ModType.BUKKIT;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String getUserLocale() {
-        return dCoBase.getServerLocale(); //Bukkit doesn't give access to player locale at this time
+        return dCoBase.getServerLocale(); // Bukkit doesn't have access to this field...
     }
 
     /** {@inheritDoc} */

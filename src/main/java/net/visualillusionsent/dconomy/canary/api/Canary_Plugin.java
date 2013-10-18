@@ -18,16 +18,15 @@
 package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Canary Plugin wrapper for Mod_User implementation
  *
  * @author darkdiplomat
  */
-public final class Canary_Plugin implements ModUser {
+public final class Canary_Plugin implements dConomyUser {
 
     private final Plugin plugin;
 
@@ -61,12 +60,6 @@ public final class Canary_Plugin implements ModUser {
     @Override
     public final boolean isConsole() {
         return false;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ModType getModType() {
-        return ModType.CANARY;
     }
 
     /** {@inheritDoc} */

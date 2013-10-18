@@ -20,13 +20,13 @@ package net.visualillusionsent.dconomy.canary;
 import net.canarymod.Canary;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.api.dConomyServer;
+import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.canary.api.Canary_Server;
 import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.dconomy.dConomyInitializationError;
-import net.visualillusionsent.dconomy.modinterface.ModServer;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
 
 import java.util.logging.Level;
@@ -76,7 +76,7 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
     }
 
     @Override
-    public ModServer getModServer() {
+    public dConomyServer getModServer() {
         return new Canary_Server(Canary.getServer(), this);
     }
 

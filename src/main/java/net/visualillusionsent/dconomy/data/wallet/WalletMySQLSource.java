@@ -30,9 +30,8 @@ public final class WalletMySQLSource extends WalletSQLSource {
     public final boolean load() {
         try {
             testConnection();
-            PreparedStatement ps = null;
             dCoBase.debug("Testing Wallet table and creating if needed...");
-            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` " + //
+            PreparedStatement ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + wallet_table + "` " + //
                     "(`owner` VARCHAR(16) NOT NULL, `balance` DOUBLE(18,2) NOT NULL, `lockedOut` TINYINT(1) NOT NULL, PRIMARY KEY (`owner`))");
             ps.execute();
             ps.close();
@@ -71,7 +70,7 @@ public final class WalletMySQLSource extends WalletSQLSource {
         return super.reloadAccount(wallet);
     }
 
-    private final void testConnection() throws SQLException {
+    private void testConnection() throws SQLException {
         if (conn == null || conn.isClosed() || !conn.isValid(2)) {
             conn = DriverManager.getConnection("jdbc:mysql://" + dCoBase.getProperties().getString("sql.database.url"), dCoBase.getProperties().getString("sql.user"), dCoBase.getProperties().getString("sql.password"));
         }

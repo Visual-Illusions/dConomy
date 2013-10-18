@@ -44,58 +44,60 @@ public final class WalletXMLSource implements WalletDataSource {
     @Override
     public final boolean load() {
         dCoBase.info("Loading Wallets...");
-        File walletFile = new File(wallet_Path);
-        Exception ex = null;
-        int load = 0;
-        if (!walletFile.exists()) {
-            dCoBase.info("Wallets file not found. Creating...");
-            Element wallets = new Element("wallets");
-            Document root = new Document(wallets);
-            try {
-                writer = new FileWriter(wallet_Path);
-                outputter.output(root, writer);
-            }
-            catch (IOException e) {
-                ex = e;
-            }
-            finally {
+        synchronized (lock) {
+            File walletFile = new File(wallet_Path);
+            Exception ex = null;
+            int load = 0;
+            if (!walletFile.exists()) {
+                dCoBase.info("Wallets file not found. Creating...");
+                Element wallets = new Element("wallets");
+                Document root = new Document(wallets);
                 try {
-                    if (writer != null) {
-                        writer.close();
-                    }
+                    writer = new FileWriter(wallet_Path);
+                    outputter.output(root, writer);
                 }
                 catch (IOException e) {
+                    ex = e;
                 }
-                writer = null;
-                if (ex != null) {
-                    dCoBase.severe("Failed to create new Wallets file...");
+                finally {
+                    try {
+                        if (writer != null) {
+                            writer.close();
+                        }
+                    }
+                    catch (IOException e) {
+                    }
+                    writer = null;
+                    if (ex != null) {
+                        dCoBase.severe("Failed to create new Wallets file...");
+                        dCoBase.stacktrace(ex);
+                        return false;
+                    }
+                }
+            }
+            else {
+                try {
+                    Document doc = builder.build(walletFile);
+                    Element root = doc.getRootElement();
+                    List<Element> wallets = root.getChildren();
+                    for (Element wallet : wallets) {
+                        new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
+                        load++;
+                    }
+                }
+                catch (JDOMException jdomex) {
+                    dCoBase.severe("JDOM Exception while parsing Wallets file...");
+                    dCoBase.stacktrace(ex);
+                    return false;
+                }
+                catch (IOException e) {
+                    dCoBase.severe("Input/Output Exception while parsing Wallets file...");
                     dCoBase.stacktrace(ex);
                     return false;
                 }
             }
+            dCoBase.info(String.format("Loaded %d Wallets...", load));
         }
-        else {
-            try {
-                Document doc = builder.build(walletFile);
-                Element root = doc.getRootElement();
-                List<Element> wallets = root.getChildren();
-                for (Element wallet : wallets) {
-                    new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
-                    load++;
-                }
-            }
-            catch (JDOMException jdomex) {
-                dCoBase.severe("JDOM Exception while parsing Wallets file...");
-                dCoBase.stacktrace(ex);
-                return false;
-            }
-            catch (IOException e) {
-                dCoBase.severe("Input/Output Exception while parsing Wallets file...");
-                dCoBase.stacktrace(ex);
-                return false;
-            }
-        }
-        dCoBase.info(String.format("Loaded %d Wallets...", load));
         return true;
     }
 
@@ -113,7 +115,7 @@ public final class WalletXMLSource implements WalletDataSource {
                     String name = wallet.getAttributeValue("owner");
                     if (name.equals(account.getOwner())) {
                         wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
-                        wallet.getAttribute("lockedOut").setValue(String.valueOf(((Wallet) account).isLocked()));
+                        wallet.getAttribute("lockedOut").setValue(String.valueOf(account.isLocked()));
                         found = true;
                         break;
                     }
@@ -122,7 +124,7 @@ public final class WalletXMLSource implements WalletDataSource {
                     Element newWallet = new Element("wallet");
                     newWallet.setAttribute("owner", account.getOwner());
                     newWallet.setAttribute("balance", String.format("%.2f", account.getBalance()));
-                    newWallet.setAttribute("lockedOut", String.valueOf(((Wallet) account).isLocked()));
+                    newWallet.setAttribute("lockedOut", String.valueOf(account.isLocked()));
                     root.addContent(newWallet);
                 }
                 try {
@@ -189,8 +191,5 @@ public final class WalletXMLSource implements WalletDataSource {
             }
         }
         return success;
-    }
-
-    public final void cleanUp() {
     }
 }

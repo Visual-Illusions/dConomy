@@ -110,6 +110,6 @@ public abstract class Wallet extends Account {
     /** {@inheritDoc} */
     @Override
     public final String toString() {
-        return String.format("Wallet[Owner: %s Balance: %.2f]", owner, balance);
+        return String.format("Wallet[Owner: %s Balance: %.2f IsLocked: %b]", owner, balance, locked);
     }
 }

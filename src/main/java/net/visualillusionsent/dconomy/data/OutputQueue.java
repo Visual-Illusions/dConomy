@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 
 public final class OutputQueue {
 
-    private LinkedList<Account> queue;
+    private final LinkedList<Account> queue;
 
     public OutputQueue() {
         queue = new LinkedList<Account>();
@@ -33,16 +33,16 @@ public final class OutputQueue {
     public final void add(Account account) {
         synchronized (queue) {
             queue.add(account);
-            queue.notify();
+            queue.notifyAll();
         }
     }
 
     public final Account next() {
-        Account account = null;
+        Account account;
         if (queue.isEmpty()) {
             synchronized (queue) {
                 try {
-                    queue.wait();
+                    queue.wait(0);
                 }
                 catch (InterruptedException ex) {
                     return null;

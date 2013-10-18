@@ -18,16 +18,15 @@
 package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.api.OfflinePlayer;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 /**
  * Canary Offline User implementation
  *
  * @author Jason (darkdiplomat)
  */
-public final class Canary_OfflineUser implements ModUser {
+public final class Canary_OfflineUser implements dConomyUser {
 
     private final OfflinePlayer player;
 
@@ -61,12 +60,6 @@ public final class Canary_OfflineUser implements ModUser {
     @Override
     public final boolean isConsole() {
         return false;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ModType getModType() {
-        return ModType.CANARY;
     }
 
     /** {@inheritDoc} */

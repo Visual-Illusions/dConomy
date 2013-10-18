@@ -23,7 +23,7 @@ import net.canarymod.plugin.PluginListener;
 import net.canarymod.plugin.Priority;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.canary.api.WalletBalanceHook;
 import net.visualillusionsent.dconomy.canary.api.WalletDebitHook;
 import net.visualillusionsent.dconomy.canary.api.WalletDepositHook;

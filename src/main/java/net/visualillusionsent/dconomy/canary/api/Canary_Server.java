@@ -21,17 +21,15 @@ import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.hook.Hook;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.dconomy.accounting.AccountTransaction;
+import net.visualillusionsent.dconomy.api.AccountTransaction;
+import net.visualillusionsent.dconomy.api.TransactionHookEvent;
+import net.visualillusionsent.dconomy.api.dConomyServer;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.CanarydConomy;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.MineChatForm;
-import net.visualillusionsent.dconomy.modinterface.ModServer;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -41,21 +39,21 @@ import java.util.logging.Logger;
  *
  * @author Jason (darkdiplomat)
  */
-public class Canary_Server implements ModServer, ModUser {
+public class Canary_Server implements dConomyServer, dConomyUser {
 
     private final Server serv;
     private final CanarydConomy dCo;
-    private final ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>> transactions;
+    private final ConcurrentHashMap<Class<? extends AccountTransactionHook>, Class<? extends AccountTransaction>> transactions;
 
     public Canary_Server(Server serv, CanarydConomy dCo) {
         this.serv = serv;
         this.dCo = dCo;
-        this.transactions = new ConcurrentHashMap<Class<? extends Hook>, Class<? extends AccountTransaction>>();
+        this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionHook>, Class<? extends AccountTransaction>>();
     }
 
     /** {@inheritDoc} */
     @Override
-    public final ModUser getUser(String name) {
+    public final dConomyUser getUser(String name) {
         Player player = serv.matchPlayer(name);
         if (player != null) {
             return new Canary_User(player);
@@ -73,12 +71,6 @@ public class Canary_Server implements ModServer, ModUser {
     @Override
     public final Logger getServerLogger() {
         return dCo.getLogman();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ModType getModType() {
-        return ModType.CANARY;
     }
 
     /** {@inheritDoc} */
@@ -124,34 +116,31 @@ public class Canary_Server implements ModServer, ModUser {
     /** {@inheritDoc} */
     @Override
     public void newTransaction(AccountTransaction transaction) {
-        for (Class<?> clazz : transactions.keySet()) {
+        for (Class<? extends AccountTransactionHook> clazz : transactions.keySet()) {
             if (transaction.getClass().isAssignableFrom(transactions.get(clazz))) {
                 try {
-                    AccountTransactionHook hook = (AccountTransactionHook) clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
+                    AccountTransactionHook hook = clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Canary.hooks().callHook(hook);
                     break;
                 }
                 catch (Exception ex) {
-                    ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionHook", ex);
+                    ((Logman) getServerLogger()).logStacktrace("Exception occurred while calling AccountTransactionHook", ex);
                 }
             }
         }
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
-    public void registerTransactionHandler(Class<?> clazz, Class<? extends AccountTransaction> transaction) {
+    public void registerTransactionHandler(Class<? extends TransactionHookEvent> clazz, Class<? extends AccountTransaction> transaction) {
         if (AccountTransactionHook.class.isAssignableFrom(clazz)) {
-            if (!transactions.containsKey(clazz)) {
-                transactions.put((Class<? extends AccountTransactionHook>) clazz, transaction);
-            }
+            transactions.putIfAbsent(clazz.asSubclass(AccountTransactionHook.class), transaction);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void deregisterTransactionHandler(Class<?> clazz) {
+    public void unregisterTransactionHandler(Class<? extends TransactionHookEvent> clazz) {
         if (transactions.containsKey(clazz)) {
             transactions.remove(clazz);
         }

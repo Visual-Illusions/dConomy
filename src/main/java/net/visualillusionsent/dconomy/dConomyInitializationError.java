@@ -25,14 +25,9 @@ package net.visualillusionsent.dconomy;
  */
 public final class dConomyInitializationError extends Error {
 
-    /**
-     * Constructs a new Initialization Error with a message
-     *
-     * @param msg
-     *         the message to add
-     */
-    public dConomyInitializationError(String msg) {
-        super(msg);
+    /** Constructs a new Initialization Error with a message */
+    public dConomyInitializationError() {
+        super("Already loaded");
     }
 
     /**

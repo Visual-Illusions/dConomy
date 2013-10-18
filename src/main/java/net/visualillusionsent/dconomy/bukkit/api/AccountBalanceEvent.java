@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
@@ -28,7 +28,7 @@ import org.bukkit.plugin.Plugin;
  * @author Jason (darkdiplomat)
  */
 public abstract class AccountBalanceEvent extends Event {
-    private final ModUser plugin;
+    private final dConomyUser plugin;
     private final String username;
     private double balance = -1;
     private String error;
@@ -47,11 +47,11 @@ public abstract class AccountBalanceEvent extends Event {
     }
 
     /**
-     * Gets the {@link ModUser}(Plugin) requesting Balance information.
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(Plugin) requesting Balance information.
      *
-     * @return the {@link ModUser} requester
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser} requester
      */
-    public final ModUser getCaller() {
+    public final dConomyUser getCaller() {
         return plugin;
     }
 

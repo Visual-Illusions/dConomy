@@ -36,7 +36,7 @@ public final class WalletSQLiteSource extends WalletSQLSource {
 
     @Override
     public final boolean load() {
-        Statement st = null;
+        Statement st;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:".concat(db_Path));
             st = conn.createStatement();
@@ -56,6 +56,7 @@ public final class WalletSQLiteSource extends WalletSQLSource {
             $.conn.close();
         }
         catch (Exception e) {
+            // IGNORED
         }
         $ = null;
     }

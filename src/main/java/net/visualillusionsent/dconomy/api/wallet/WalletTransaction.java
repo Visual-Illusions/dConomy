@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.accounting.wallet;
+package net.visualillusionsent.dconomy.api.wallet;
 
-import net.visualillusionsent.dconomy.accounting.AccountTransaction;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.AccountTransaction;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
 public final class WalletTransaction extends AccountTransaction {
     public enum ActionType {
@@ -33,22 +33,22 @@ public final class WalletTransaction extends AccountTransaction {
         ;
     }
 
-    private final ModUser sender, recipient;
+    private final dConomyUser sender, recipient;
     private final ActionType type;
     private final double amount;
 
-    public WalletTransaction(ModUser sender, ModUser recipient, ActionType type, double amount) {
+    public WalletTransaction(dConomyUser sender, dConomyUser recipient, ActionType type, double amount) {
         this.sender = sender;
         this.recipient = recipient;
         this.type = type;
         this.amount = amount;
     }
 
-    public final ModUser getSender() {
+    public final dConomyUser getSender() {
         return sender;
     }
 
-    public final ModUser getRecipient() {
+    public final dConomyUser getRecipient() {
         return recipient;
     }
 

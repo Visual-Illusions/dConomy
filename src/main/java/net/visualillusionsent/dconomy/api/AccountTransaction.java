@@ -15,18 +15,12 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.modinterface;
+package net.visualillusionsent.dconomy.api;
 
 /**
- * Enumeration of supported/soon to be supported Mods
+ * Extends this class for making call back Hook/Events
  *
  * @author Jason (darkdiplomat)
  */
-public enum ModType {
-
-    BUKKIT, //
-    CANARY, //
-    FORGE, //
-    SPOUT, //
-    ;
+public abstract class AccountTransaction {
 }

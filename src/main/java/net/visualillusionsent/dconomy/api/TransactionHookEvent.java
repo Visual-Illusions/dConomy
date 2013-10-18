@@ -15,12 +15,19 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.accounting;
+package net.visualillusionsent.dconomy.api;
 
 /**
- * Extends this class for making call back Hook/Events
+ * Main Transaction Hook/Event interface
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountTransaction {
+public interface TransactionHookEvent {
+
+    /**
+     * Returns the {@link AccountTransaction} that happen
+     *
+     * @return {@link AccountTransaction}
+     */
+    public AccountTransaction getTransaction();
 }

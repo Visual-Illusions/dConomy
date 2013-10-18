@@ -17,9 +17,8 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -27,7 +26,7 @@ import org.bukkit.plugin.Plugin;
  *
  * @author darkdiplomat
  */
-public final class Bukkit_Plugin implements ModUser {
+public final class Bukkit_Plugin implements dConomyUser {
 
     private final Plugin plugin;
 
@@ -61,12 +60,6 @@ public final class Bukkit_Plugin implements ModUser {
     @Override
     public final boolean isConsole() {
         return false;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ModType getModType() {
-        return ModType.BUKKIT;
     }
 
     /** {@inheritDoc} */

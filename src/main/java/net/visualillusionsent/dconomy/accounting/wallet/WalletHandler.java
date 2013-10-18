@@ -17,13 +17,13 @@
  */
 package net.visualillusionsent.dconomy.accounting.wallet;
 
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.data.DataSourceType;
 import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletMySQLSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletXMLSource;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 
 import java.util.Collections;
 import java.util.Map;
@@ -69,7 +69,7 @@ public final class WalletHandler {
      *
      * @return the {@link Wallet} for the user, creating a new one if nessary
      */
-    public static final Wallet getWalletByName(String username) {
+    public static Wallet getWalletByName(String username) {
         if (username.equals("SERVER")) {
             return $.servwallet;
         }
@@ -80,14 +80,14 @@ public final class WalletHandler {
     }
 
     /**
-     * Gets a {@link Wallet} for a {@link ModUser}
+     * Gets a {@link Wallet} for a {@link net.visualillusionsent.dconomy.api.dConomyUser}
      *
      * @param user
-     *         the {@link ModUser} to get a wallet for
+     *         the {@link net.visualillusionsent.dconomy.api.dConomyUser} to get a wallet for
      *
      * @return the {@link Wallet} for the user if found; {@code null} if not found
      */
-    public static final Wallet getWallet(ModUser user) {
+    public static Wallet getWallet(dConomyUser user) {
         return getWalletByName(user.getName());
     }
 
@@ -97,7 +97,7 @@ public final class WalletHandler {
      * @param wallet
      *         the {@link Wallet} to be added
      */
-    public static final void addWallet(Wallet wallet) {
+    public static void addWallet(Wallet wallet) {
         $.wallets.put(wallet.getOwner(), wallet);
     }
 
@@ -109,7 +109,7 @@ public final class WalletHandler {
      *
      * @return {@code true} if the wallet exists; {@code false} otherwise
      */
-    public static final boolean verifyAccount(String username) {
+    public static boolean verifyAccount(String username) {
         return $.wallets.containsKey(username);
     }
 
@@ -121,7 +121,7 @@ public final class WalletHandler {
      *
      * @return the new {@link Wallet}
      */
-    public static final Wallet newWallet(String username) {
+    public static Wallet newWallet(String username) {
         Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, $.source);
         addWallet(wallet);
         return wallet;
@@ -132,12 +132,12 @@ public final class WalletHandler {
      *
      * @return unmodifiable map of wallets
      */
-    public static final Map<String, Wallet> getWallets() {
+    public static Map<String, Wallet> getWallets() {
         return Collections.unmodifiableMap($.wallets);
     }
 
     /** Initializer method */
-    public static final void initialize() {
+    public static void initialize() {
         if (!init) {
             $.source.load();
             init = true;
@@ -145,7 +145,7 @@ public final class WalletHandler {
     }
 
     /** Cleans up */
-    public static final void cleanUp() {
+    public static void cleanUp() {
         $.wallets.clear();
     }
 }

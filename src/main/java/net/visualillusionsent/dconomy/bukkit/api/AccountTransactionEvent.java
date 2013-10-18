@@ -17,7 +17,8 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.visualillusionsent.dconomy.accounting.AccountTransaction;
+import net.visualillusionsent.dconomy.api.AccountTransaction;
+import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import org.bukkit.event.Event;
 
 /**
@@ -27,7 +28,7 @@ import org.bukkit.event.Event;
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountTransactionEvent extends Event {
+public abstract class AccountTransactionEvent extends Event implements TransactionHookEvent {
     protected final AccountTransaction action;
 
     /**
@@ -39,11 +40,4 @@ public abstract class AccountTransactionEvent extends Event {
     public AccountTransactionEvent(AccountTransaction action) {
         this.action = action;
     }
-
-    /**
-     * Returns the {@link AccountTransaction} that happen
-     *
-     * @return {@link AccountTransaction}
-     */
-    public abstract AccountTransaction getTransaction();
 }

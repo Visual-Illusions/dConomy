@@ -18,11 +18,10 @@
 package net.visualillusionsent.dconomy.data;
 
 import net.visualillusionsent.utils.FileUtils;
+import net.visualillusionsent.utils.JarUtils;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.security.CodeSource;
 
 public final class dCoProperties {
 
@@ -38,7 +37,7 @@ public final class dCoProperties {
         }
         File real = new File(configDir.concat("settings.cfg"));
         if (!real.exists()) {
-            FileUtils.cloneFileFromJar(getJarPath(), "resources/default_config.cfg", configDir.concat("settings.cfg"));
+            FileUtils.cloneFileFromJar(JarUtils.getJarPath(getClass()), "resources/default_config.cfg", configDir.concat("settings.cfg"));
         }
         propsFile = new PropertiesFile(configDir.concat("settings.cfg"));
         testProperties();
@@ -73,21 +72,11 @@ public final class dCoProperties {
         return propsFile;
     }
 
-    private final String getJarPath() { // For when the jar isn't dConomy3.jar
-        try {
-            CodeSource codeSource = this.getClass().getProtectionDomain().getCodeSource();
-            return codeSource.getLocation().toURI().getPath();
-        }
-        catch (URISyntaxException ex) {
-        }
-        return "plugins/dConomy3.jar";
-    }
-
     public final String getConfigurationDirectory() {
         return configDir;
     }
 
-    private final void testProperties() {
+    private void testProperties() {
         boolean missingProp = false;
         if (!propsFile.containsKey("default.balance")) {
             propsFile.setDouble("default.balance", 0, "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");

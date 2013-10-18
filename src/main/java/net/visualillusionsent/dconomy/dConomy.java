@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy;
 
-import net.visualillusionsent.dconomy.modinterface.ModServer;
+import net.visualillusionsent.dconomy.api.dConomyServer;
 
 import java.util.logging.Logger;
 
@@ -25,7 +25,7 @@ public interface dConomy {
 
     Logger getPluginLogger();
 
-    ModServer getModServer();
+    dConomyServer getModServer();
 
     float getReportedVersion();
 

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.modinterface;
+package net.visualillusionsent.dconomy.api;
 
 public enum MineChatForm {
 
@@ -126,10 +126,10 @@ public enum MineChatForm {
      */
     public final String toString() {
         if (this == MARKER) {
-            return stringValue();
+            return String.valueOf(charCode);
         }
         else {
-            return MARKER.concat(stringValue());
+            return MARKER.concat(String.valueOf(charCode));
         }
     }
 
@@ -137,10 +137,11 @@ public enum MineChatForm {
      * removes all color formatting from a line
      *
      * @param str
+     *         the string to remove formatting from
      *
      * @return str with formatting removed
      */
-    public static final String removeFormatting(String str) {
+    public static String removeFormatting(String str) {
         return str.replaceAll(MARKER.concat("[A-FL-NRa-fl-nr0-9]"), "");
     }
 }

@@ -20,5 +20,5 @@ package net.visualillusionsent.dconomy.data;
 public enum DataSourceType {
     XML, //
     MYSQL, //
-    SQLITE; //
+    SQLITE //
 }

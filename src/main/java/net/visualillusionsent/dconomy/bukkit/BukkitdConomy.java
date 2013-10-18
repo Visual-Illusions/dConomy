@@ -18,12 +18,13 @@
 package net.visualillusionsent.dconomy.bukkit;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.api.dConomyServer;
+import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.bukkit.api.AccountTransactionEvent;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
 import net.visualillusionsent.dconomy.bukkit.api.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
-import net.visualillusionsent.dconomy.modinterface.ModServer;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 
 import java.io.File;
@@ -45,7 +46,7 @@ import java.util.logging.Logger;
 public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
 
-    public BukkitdConomy() {
+    public BukkitdConomy() throws NullPointerException {
         Manifest mf = null;
         try {
             mf = new JarFile(BukkitdConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
@@ -66,7 +67,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
             catch (Exception ex) {
-                System.out.println("Failed to download VIUtils " + viutils_version);
+                System.err.println("Failed to download VIUtils " + viutils_version);
             }
         }
         lib = new File("lib/jdom2-" + jdom_version + ".jar");
@@ -79,7 +80,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
             catch (Exception ex) {
-                System.out.println("Failed to download jdom2 " + jdom_version);
+                System.err.println("Failed to download jdom2 " + jdom_version);
             }
         }
         //
@@ -92,7 +93,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
 
     @Override
     public final void onEnable() {
-        //super.onEnable(); // Requires VisualIllusionsMinecraftPlugin library 1.0u2
+        //super.onEnable(); // Requires VisualIllusionsMinecraftPlugin library 1.1u1
         initialize();
         checkVersion();
         checkStatus();
@@ -106,7 +107,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
         // Initialize Command Executor
         new BukkitCommandExecutor(this);
         // Register WalletTransaction
-        dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class, WalletTransaction.class);
+        dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class.asSubclass(AccountTransactionEvent.class), WalletTransaction.class);
     }
 
     @Override
@@ -115,7 +116,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
     }
 
     @Override
-    public ModServer getModServer() {
+    public dConomyServer getModServer() {
         return new Bukkit_Server(getServer(), this);
     }
 

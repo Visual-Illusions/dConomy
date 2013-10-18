@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy;
 
-import net.visualillusionsent.dconomy.modinterface.MineChatForm;
+import net.visualillusionsent.dconomy.api.MineChatForm;
 import net.visualillusionsent.utils.LocaleHelper;
 
 public final class MessageTranslator extends LocaleHelper {
@@ -29,15 +29,15 @@ public final class MessageTranslator extends LocaleHelper {
     }
 
     private MessageTranslator() {
-        super(true, "config/dConomy3/lang/", null);
+        super(true, dCoBase.lang_dir, null);
         reloadLangFiles();
     }
 
-    public static final String translate(String key, String locale) {
+    public static String translate(String key, String locale) {
         return colorForm($.localeTranslate(key, locale));
     }
 
-    public static final String translate(String key, String locale, Object... args) {
+    public static String translate(String key, String locale, Object... args) {
         String toRet = colorForm($.localeTranslate(key, locale, args));
         if (toRet.contains("$m")) {
             toRet = toRet.replace("$m", dCoBase.getProperties().getString("money.name"));
@@ -45,11 +45,11 @@ public final class MessageTranslator extends LocaleHelper {
         return toRet;
     }
 
-    private static final String colorForm(String msg) {
+    private static String colorForm(String msg) {
         return msg.replace("$c", MineChatForm.MARKER.stringValue());
     }
 
-    public static final void reloadMessages() {
+    public static void reloadMessages() {
         $.reloadLangFiles();
     }
 }

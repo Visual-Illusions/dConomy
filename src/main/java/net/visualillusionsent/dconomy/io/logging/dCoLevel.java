@@ -32,7 +32,7 @@ public final class dCoLevel extends Level {
         super(name, intvalue);
     }
 
-    private final static int genLevel() {
+    private static int genLevel() {
         ++baselvl;
         return baselvl;
     }

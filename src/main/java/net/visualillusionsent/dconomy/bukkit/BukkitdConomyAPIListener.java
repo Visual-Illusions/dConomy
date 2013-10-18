@@ -19,7 +19,7 @@ package net.visualillusionsent.dconomy.bukkit;
 
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.bukkit.api.WalletBalanceEvent;
 import net.visualillusionsent.dconomy.bukkit.api.WalletDebitEvent;
 import net.visualillusionsent.dconomy.bukkit.api.WalletDepositEvent;

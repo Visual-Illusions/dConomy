@@ -20,15 +20,14 @@ package net.visualillusionsent.dconomy.canary.api;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.visualillusionsent.dconomy.MessageTranslator;
-import net.visualillusionsent.dconomy.modinterface.ModType;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
 /**
  * Canary User implementation
  *
  * @author Jason (darkdiplomat)
  */
-public final class Canary_User implements ModUser {
+public final class Canary_User implements dConomyUser {
 
     private final Player player;
 
@@ -75,12 +74,6 @@ public final class Canary_User implements ModUser {
     @Override
     public String getUserLocale() {
         return player.getLocale();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ModType getModType() {
-        return ModType.CANARY;
     }
 
     /** {@inheritDoc} */

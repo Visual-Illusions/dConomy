@@ -18,8 +18,8 @@
 package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.api.Canary_Plugin;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 import org.bukkit.event.Event;
 
 /**
@@ -30,7 +30,7 @@ import org.bukkit.event.Event;
  */
 public abstract class AccountDepositEvent extends Event {
 
-    private final ModUser caller;
+    private final dConomyUser caller;
     private final String username;
     private final double deposit;
     private String error;
@@ -52,11 +52,11 @@ public abstract class AccountDepositEvent extends Event {
     }
 
     /**
-     * Gets the {@link ModUser}(plugin) asking to take money
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to take money
      *
-     * @return the {@link ModUser}(plugin)
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin)
      */
-    public final ModUser getCaller() {
+    public final dConomyUser getCaller() {
         return caller;
     }
 

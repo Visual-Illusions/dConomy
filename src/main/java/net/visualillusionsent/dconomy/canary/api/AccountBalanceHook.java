@@ -19,7 +19,7 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
 /**
  * Account Balance request Hook<br>
@@ -28,7 +28,7 @@ import net.visualillusionsent.dconomy.modinterface.ModUser;
  * @author Jason (darkdiplomat)
  */
 public abstract class AccountBalanceHook extends Hook {
-    private final ModUser caller;
+    private final dConomyUser caller;
     private final String username;
     private double balance = -1;
     private String error;
@@ -47,11 +47,11 @@ public abstract class AccountBalanceHook extends Hook {
     }
 
     /**
-     * Gets the {@link ModUser}(Plugin) requesting Balance information.
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(Plugin) requesting Balance information.
      *
-     * @return the {@link ModUser} caller
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser} caller
      */
-    public final ModUser getCaller() {
+    public final dConomyUser getCaller() {
         return caller;
     }
 

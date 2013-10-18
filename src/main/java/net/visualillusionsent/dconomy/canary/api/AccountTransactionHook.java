@@ -18,7 +18,8 @@
 package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.hook.Hook;
-import net.visualillusionsent.dconomy.accounting.AccountTransaction;
+import net.visualillusionsent.dconomy.api.AccountTransaction;
+import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 
 /**
  * Account Transaction Hook <br>
@@ -27,7 +28,7 @@ import net.visualillusionsent.dconomy.accounting.AccountTransaction;
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountTransactionHook extends Hook {
+public abstract class AccountTransactionHook extends Hook implements TransactionHookEvent {
     protected final AccountTransaction action;
 
     /**
@@ -39,12 +40,5 @@ public abstract class AccountTransactionHook extends Hook {
     public AccountTransactionHook(AccountTransaction action) {
         this.action = action;
     }
-
-    /**
-     * Returns the {@link AccountTransaction} that happen
-     *
-     * @return {@link AccountTransaction}
-     */
-    public abstract AccountTransaction getTransaction();
 
 }

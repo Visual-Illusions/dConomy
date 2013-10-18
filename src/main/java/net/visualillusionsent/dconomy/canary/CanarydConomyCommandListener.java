@@ -23,6 +23,7 @@ import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.api.Canary_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletAddCommand;
@@ -34,7 +35,6 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.dconomy.dCoBase;
-import net.visualillusionsent.dconomy.modinterface.ModUser;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 import net.visualillusionsent.utils.VersionChecker;
 
@@ -166,7 +166,7 @@ public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPlu
         }
     }
 
-    private final ModUser getUser(MessageReceiver msgrec) {
-        return msgrec instanceof Player ? new Canary_User((Player) msgrec) : (ModUser) dCoBase.getServer();
+    private dConomyUser getUser(MessageReceiver msgrec) {
+        return msgrec instanceof Player ? new Canary_User((Player) msgrec) : (dConomyUser) dCoBase.getServer();
     }
 }

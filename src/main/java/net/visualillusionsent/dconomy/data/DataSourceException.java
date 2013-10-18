@@ -50,8 +50,8 @@ public class DataSourceException extends Exception {
 
     private static final long serialVersionUID = 101800012013L;
 
-    public DataSourceException(String msg) {
-        super(msg);
+    public DataSourceException() {
+        super("Invalid DataSourceType...");
     }
 
     public DataSourceException(SQLException e) {

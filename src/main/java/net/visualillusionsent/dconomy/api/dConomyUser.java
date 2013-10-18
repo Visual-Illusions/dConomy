@@ -26,16 +26,14 @@
  * See the GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License along with VI-MCMIL.
  * If not, see http://www.gnu.org/licenses/gpl.html */
-package net.visualillusionsent.dconomy.modinterface;
+package net.visualillusionsent.dconomy.api;
 
 /**
- * This file is part of VI-MCMIL.
- * Copyright 2013 Visual Illusions Entertainment.
- * Licensed under the terms of the GNU General Public License Version 3 as published by the Free Software Foundation
+ * dConomy User Interface
  *
  * @author Jason (darkdiplomat)
  */
-public interface ModUser {
+public interface dConomyUser {
 
     /**
      * Gets the name of the {@code Mod_User}
@@ -87,13 +85,4 @@ public interface ModUser {
      * @return the User's Locale Code
      */
     String getUserLocale();
-
-    /**
-     * Gets the ModType of the Server
-     *
-     * @return the ModType
-     *
-     * @see ModType
-     */
-    ModType getModType();
 }

@@ -182,8 +182,7 @@ public abstract class Account {
      *         if an Accounting Exception occurs
      */
     public double setBalance(double set) throws AccountingException {
-        double toSet = testArgumentDouble(set);
-        balance = toSet;
+        balance = testArgumentDouble(set);
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
             balance = max;
@@ -218,14 +217,12 @@ public abstract class Account {
      * @throws AccountingException
      */
     protected final double testArgumentString(String value) throws AccountingException {
-        double testNum = 0;
         try {
-            testNum = Double.parseDouble(value);
+            return Double.parseDouble(value);
         }
         catch (NumberFormatException nfe) {
             throw new AccountingException("error.nan");
         }
-        return testNum;
     }
 
     /**
