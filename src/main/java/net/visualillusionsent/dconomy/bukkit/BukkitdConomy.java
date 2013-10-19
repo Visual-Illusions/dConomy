@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
 
-    public BukkitdConomy() throws NullPointerException {
+    static {
         Manifest mf = null;
         try {
             mf = new JarFile(BukkitdConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
@@ -93,10 +93,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
 
     @Override
     public final void onEnable() {
-        //super.onEnable(); // Requires VisualIllusionsMinecraftPlugin library 1.1u1
-        initialize();
-        checkVersion();
-        checkStatus();
+        super.onEnable();
 
         // Create dCoBase, initializing properties and such
         base = new dCoBase(this);
@@ -123,11 +120,5 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
     @Override
     public float getReportedVersion() {
         return Float.valueOf(getDescription().getVersion());
-    }
-
-    @Override
-    public final void check() {
-        checkStatus();
-        checkVersion();
     }
 }

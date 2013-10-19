@@ -33,13 +33,13 @@ public final class WalletPayCommand extends dConomyCommand {
 
     @Override
     protected final void execute(dConomyUser user, String[] args) {
-        dConomyUser theUser = args[1].toUpperCase().equals("SERVER") ? (dConomyUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        dConomyUser theUser = dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
-            user.error("error.404.user", args[1]);
+            dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.wallet", theUser.getName(), "WALLET");
+            dCoBase.translateErrorMessageFor(user, "error.404.wallet", theUser.getName(), "WALLET");
             return;
         }
         Wallet userWallet = WalletHandler.getWalletByName(user.getName());
@@ -49,7 +49,8 @@ public final class WalletPayCommand extends dConomyCommand {
             payeeWallet.testDeposit(args[0]);
             payeeWallet.deposit(args[0]);
             userWallet.debit(args[0]);
-            user.message("paid.user", theUser.getName(), Double.parseDouble(args[0]));
+            dCoBase.translateMessageFor(user, "paid.user", theUser.getName(), Double.parseDouble(args[0]));
+            dCoBase.translateMessageFor(theUser, "got.paid", user.getName(), Double.parseDouble(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.PAY, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

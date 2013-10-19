@@ -19,15 +19,13 @@ package net.visualillusionsent.dconomy;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.dConomyServer;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.data.DataSourceType;
 import net.visualillusionsent.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.dconomy.data.dCoProperties;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.logging.dCoLevel;
-import net.visualillusionsent.utils.FileUtils;
-import net.visualillusionsent.utils.JarUtils;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,6 +41,7 @@ public final class dCoBase {
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
+    private final MessageTranslator translator;
 
     private static dCoBase $;
     private static dConomyServer server;
@@ -58,37 +57,13 @@ public final class dCoBase {
             server = dconomy.getModServer();
             props = new dCoProperties();
             handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
-            testAndMoveLangFiles();
+            translator = new MessageTranslator();
 
             reported_version = dconomy.getReportedVersion();
         }
         catch (Exception ex) {
-            throw new dConomyInitializationError(ex);
+            throw new dConomyInitializationError("Unexpected Exception occurred", ex);
         }
-    }
-
-    private void testAndMoveLangFiles() {
-        boolean mvLangtxt = false, mven_US = false;
-        if (!new File(lang_dir).exists()) {
-            new File(lang_dir).mkdirs();
-            mvLangtxt = true;
-            mven_US = true;
-        }
-        else {
-            if (!new File(lang_dir.concat("languages.txt")).exists()) {
-                mvLangtxt = true;
-            }
-            if (!new File(lang_dir.concat("en_US.lang")).exists()) {
-                mven_US = true;
-            }
-        }
-        if (mvLangtxt) {
-            FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/languages.txt", lang_dir.concat("languages.txt"));
-        }
-        if (mven_US) {
-            FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/en_US.lang", lang_dir.concat("en_US.lang"));
-        }
-        MessageTranslator.reloadMessages();
     }
 
     /**
@@ -120,6 +95,38 @@ public final class dCoBase {
 
     public static String getServerLocale() {
         return $.props.getString("server.locale");
+    }
+
+    /**
+     * Sends a dConomy Translated message to a user
+     *
+     * @param user
+     *         the {@link dConomyUser} to send the message to
+     * @param key
+     *         the key to look up
+     * @param args
+     *         the arguments to format the message with
+     */
+    public static void translateMessageFor(dConomyUser user, String key, Object... args) {
+        user.message($.translator.translate(key, user.getUserLocale(), args));
+    }
+
+    /**
+     * Sends a dConomy Translated error message to a user
+     *
+     * @param user
+     *         the {@link dConomyUser} to send the message to
+     * @param key
+     *         the key to look up
+     * @param args
+     *         the arguments to format the message with
+     */
+    public static void translateErrorMessageFor(dConomyUser user, String key, Object... args) {
+        user.error($.translator.translate(key, user.getUserLocale(), args));
+    }
+
+    public static String translateMessage(String key, String locale, Object... args) {
+        return $.translator.translate(key, locale, args);
     }
 
     public static void info(String msg) {

@@ -11,8 +11,8 @@
         <build.number>0-dev</build.number>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanarydConomy</canary.main.class>
         <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitdConomy</bukkit.main.class>
-        <vimcplugin.version>1.0u1</vimcplugin.version>
-        <viutils.version>1.1.1</viutils.version>
+        <vimcplugin.version>1.1u1</vimcplugin.version>
+        <viutils.version>1.2.0</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
         <version.check.url>http://visualillusionsent.net/minecraft/plugins/</version.check.url>
@@ -94,9 +94,9 @@
                     <footer>
                         <![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
                     <links>
-                        <link>http://docs.visualillusionsent.net/VIUtils/</link>
+                        <link>http://docs.visualillusionsent.net/VIUtils/1.2.0/</link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0-RC-2/</link>
                         <link>http://jd.bukkit.org/rb/apidocs/</link>
                     </links>
                 </configuration>
@@ -227,10 +227,11 @@
                     </archive>
                 </configuration>
             </plugin>
+            <!-- License Header -->
             <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.10.b1</version>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.3</version>
                 <executions>
                     <execution>
                         <phase>clean</phase>
@@ -283,10 +284,16 @@
                                 <filter>
                                     <artifact>net.visualillusionsent:vimcplugin</artifact>
                                     <includes>
-                                        <include>net/visualillusionsent/minecraft/plugin/canary/**</include>
-                                        <include>net/visualillusionsent/minecraft/plugin/bukkit/**</include>
+                                        <!-- Always include the license stuff -->
+                                        <include>META-INF/license/**</include>
+                                        <!-- Always include base VIMCPlugin stuff -->
+                                        <include>net/visualillusionsent/minecraft/plugin/**</include>
                                     </includes>
                                     <excludes>
+                                        <!-- Don't Exclude Bukkit/Canary
+                                        <exclude>net/visualillusionsent/minecraft/plugin/canary/**</exclude>
+                                        <exclude>net/visualillusionsent/minecraft/plugin/bukkit/**</exclude>
+                                        -->
                                         <!-- Spout is unused at this time -->
                                         <exclude>net/visualillusionsent/minecraft/plugin/spout/**</exclude>
                                     </excludes>
@@ -294,6 +301,11 @@
                             </filters>
                             <!-- Relocate the classes to appropriate packages -->
                             <relocations>
+                                <!-- Relocate base VIMCPlugin stuff to base of plugin -->
+                                <relocation>
+                                    <pattern>net.visualillusionsent.minecraft.plugin</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                </relocation>
                                 <!-- Canary -->
                                 <relocation>
                                     <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
@@ -320,7 +332,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ftp</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </extension>
         </extensions>
     </build>

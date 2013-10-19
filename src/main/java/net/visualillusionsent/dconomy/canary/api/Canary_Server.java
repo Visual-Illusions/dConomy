@@ -23,7 +23,6 @@ import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.api.AccountTransaction;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.dConomyServer;
@@ -54,6 +53,10 @@ public class Canary_Server implements dConomyServer, dConomyUser {
     /** {@inheritDoc} */
     @Override
     public final dConomyUser getUser(String name) {
+        if (name.equals("SERVER")) {
+            return this;
+        }
+
         Player player = serv.matchPlayer(name);
         if (player != null) {
             return new Canary_User(player);
@@ -87,30 +90,14 @@ public class Canary_Server implements dConomyServer, dConomyUser {
 
     /** {@inheritDoc} */
     @Override
-    public final boolean isConsole() {
-        return true;
+    public void error(String message) {
+        getServerLogger().log(CanaryLevel.SERVERMESSAGE, message);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void error(final String key, final Object... args) {
-        if (args == null || key.trim().isEmpty()) {
-            getServerLogger().log(CanaryLevel.NOTICE, key);
-        }
-        else {
-            getServerLogger().log(CanaryLevel.NOTICE, MessageTranslator.translate(key, getUserLocale(), args));
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void message(final String key, final Object... args) {
-        if (args == null || key.trim().isEmpty()) {
-            getServerLogger().info(key);
-        }
-        else {
-            getServerLogger().info(MessageTranslator.translate(key, getUserLocale(), args));
-        }
+    public void message(String message) {
+        getServerLogger().log(CanaryLevel.NOTICE, message);
     }
 
     /** {@inheritDoc} */

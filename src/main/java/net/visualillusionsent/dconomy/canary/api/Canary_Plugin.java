@@ -48,18 +48,12 @@ public final class Canary_Plugin implements dConomyUser {
 
     /** {@inheritDoc} */
     @Override
-    public final void error(String key, Object... args) {
+    public final void error(String message) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public final void message(String key, Object... args) {
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final boolean isConsole() {
-        return false;
+    public final void message(String message) {
     }
 
     /** {@inheritDoc} */

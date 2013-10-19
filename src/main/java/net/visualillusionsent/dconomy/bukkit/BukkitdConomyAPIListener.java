@@ -106,6 +106,6 @@ public final class BukkitdConomyAPIListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public final void debugTransaction(WalletTransactionEvent event) {
-        dCoBase.debug("WalletTransactionEvent called");
+        dCoBase.debug("WalletTransactionEvent called: " + event.getTransaction());
     }
 }

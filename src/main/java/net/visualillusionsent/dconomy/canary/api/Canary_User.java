@@ -19,7 +19,6 @@ package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 
 /**
@@ -55,20 +54,14 @@ public final class Canary_User implements dConomyUser {
 
     /** {@inheritDoc} */
     @Override
-    public final void error(String key, Object... args) {
-        player.notice(MessageTranslator.translate(key, getUserLocale(), args));
+    public final void error(String message) {
+        player.notice(message);
     }
 
     /** {@inheritDoc} */
     @Override
-    public final void message(String key, Object... args) {
-        player.message(MessageTranslator.translate(key, getUserLocale(), args));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final boolean isConsole() {
-        return false;
+    public final void message(String message) {
+        player.message(message);
     }
 
     @Override

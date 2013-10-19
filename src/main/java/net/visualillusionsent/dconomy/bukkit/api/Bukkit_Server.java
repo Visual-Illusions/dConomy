@@ -18,7 +18,6 @@
 package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.canarymod.logger.Logman;
-import net.visualillusionsent.dconomy.MessageTranslator;
 import net.visualillusionsent.dconomy.api.AccountTransaction;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.dConomyServer;
@@ -54,6 +53,10 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
     /** {@inheritDoc} */
     @Override
     public final dConomyUser getUser(String name) {
+        if (name.equals("SERVER")) {
+            return this;
+        }
+
         Player player = serv.getPlayer(name);
         if (player != null) {
             return new Bukkit_User(player);
@@ -81,20 +84,14 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
 
     /** {@inheritDoc} */
     @Override
-    public final boolean isConsole() {
-        return true;
+    public void error(String message) {
+        getServerLogger().log(Level.WARNING, message);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void error(final String key, final Object... args) {
-        getServerLogger().log(Level.FINE, MessageTranslator.translate(key, getUserLocale(), args));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void message(final String key, final Object... args) {
-        getServerLogger().info(MessageTranslator.translate(key, getUserLocale(), args));
+    public void message(String message) {
+        getServerLogger().log(Level.INFO, message);
     }
 
     /** {@inheritDoc} */
@@ -107,10 +104,8 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
     @Override
     public void newTransaction(AccountTransaction transaction) {
         for (Class<? extends AccountTransactionEvent> clazz : transactions.keySet()) {
-            //noinspection SuspiciousMethodCalls
             if (transaction.getClass().isAssignableFrom(transactions.get(clazz))) {
                 try {
-                    //noinspection SuspiciousMethodCalls
                     AccountTransactionEvent event = clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Bukkit.getPluginManager().callEvent(event);
                     break;
@@ -142,9 +137,7 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
      */
     @Override
     public void unregisterTransactionHandler(Class<? extends TransactionHookEvent> clazz) {
-        //noinspection SuspiciousMethodCalls
         if (transactions.containsKey(clazz)) {
-            //noinspection SuspiciousMethodCalls
             transactions.remove(clazz);
         }
     }

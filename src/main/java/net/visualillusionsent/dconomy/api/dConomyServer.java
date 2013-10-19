@@ -20,7 +20,7 @@ package net.visualillusionsent.dconomy.api;
 import java.util.logging.Logger;
 
 /** dConomy Server interface */
-public interface dConomyServer {
+public interface dConomyServer extends dConomyUser {
 
     /**
      * Gets a {@link dConomyUser} for the specified name

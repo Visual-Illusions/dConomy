@@ -31,18 +31,18 @@ public final class WalletRemoveCommand extends dConomyCommand {
     }
 
     protected final void execute(dConomyUser user, String[] args) {
-        dConomyUser theUser = args[1].toUpperCase().equals("SERVER") ? (dConomyUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[1]);
+        dConomyUser theUser = dCoBase.getServer().getUser(args[1]);
         if (theUser == null) {
-            user.error("error.404.user", args[1]);
+            dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
         if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-            user.error("error.404.account", theUser.getName(), "WALLET");
+            dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
         try {
             WalletHandler.getWalletByName(theUser.getName()).debit(args[0]);
-            user.error("admin.remove.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
+            dCoBase.translateErrorMessageFor(user, "admin.remove.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_REMOVE, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {

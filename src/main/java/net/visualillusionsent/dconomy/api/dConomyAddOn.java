@@ -15,25 +15,14 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.logging;
+package net.visualillusionsent.dconomy.api;
 
-import java.util.logging.Level;
-
-public final class dCoLevel extends Level {
-
-    private static final long serialVersionUID = 210434042012L;
-    private static int baselvl = 15000;
-    private static final String RD = "dConomy-DEBUG-";
-    public static final dCoLevel //
-            STACKTRACE = new dCoLevel(RD.concat("STACKTRACE"), genLevel()), //
-            GENERAL = new dCoLevel(RD.concat("GENERAL"), genLevel()); //
-
-    protected dCoLevel(String name, int intvalue) {
-        super(name, intvalue);
-    }
-
-    private static int genLevel() {
-        ++baselvl;
-        return baselvl;
-    }
+/**
+ * dConomy Add-on Plugin interface
+ * <p/>
+ * Plugins should implement this interface into the base set for their plugin
+ *
+ * @author Jason (darkdiplomat)
+ */
+public interface dConomyAddOn extends dConomyUser {
 }

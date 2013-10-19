@@ -77,59 +77,48 @@ public final class dCoProperties {
     }
 
     private void testProperties() {
-        boolean missingProp = false;
-        if (!propsFile.containsKey("default.balance")) {
-            propsFile.setDouble("default.balance", 0, "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");
-            missingProp = true;
-        }
-        else if (propsFile.getDouble("default.balance") < 0.01) {
+        propsFile.getDouble("default.balance", 0);
+        propsFile.setComments("default.balance", "New Account Starting Balance value in 0.00 format (if set to less than 0.01 will default to 0");
+        if (propsFile.getDouble("default.balance") < 0.01) {
             propsFile.setDouble("default.balance", 0);
         }
-        if (!propsFile.containsKey("max.account.balance")) {
-            propsFile.setDouble("max.account.balance", 999999999999999999D, "Max allow Account balance, should never be set to more than 999999999999999999");
-            missingProp = true;
-        }
-        else if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
+
+        propsFile.getDouble("max.account.balance", 999999999999999999D);
+        propsFile.setComments("max.account.balance", "Max allow Account balance, should never be set to more than 999999999999999999");
+        if (propsFile.getDouble("max.account.balance") > 999999999999999999D) {
             propsFile.setDouble("max.account.balance", 999999999999999999D);
         }
-        if (!propsFile.containsKey("money.name")) {
-            propsFile.setString("money.name", "Coins", "Name to call your currency");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("server.max.always")) {
-            propsFile.setString("server.max.always", "yes", "Server always has maximum currency");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("datasource")) {
-            propsFile.setString("datasource", "xml", "Datasource Setting (case insensitive) - Types: xml (jdom2.jar required for Bukkit), mysql, sqlite (sqlite.jar required for Canary)");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("sql.user")) {
-            propsFile.setString("sql.user", "user", "SQL Username");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("sql.password")) {
-            propsFile.setString("sql.password", "pass", "SQL Password");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("sql.database.url")) {
-            propsFile.setString("sql.database.url", "localhost:3306/minecraft", "SQL Database URL (jdbc:[sql]: not required) Defaults: (SQLite) plugins/dConomy3/dConomy3.db (Others) domain.suffix:port/databasename");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("sql.wallet.table")) {
-            propsFile.setString("sql.wallet.table", "dCoWallet", "SQL Wallet table");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("adminonly.balance.check")) {
-            propsFile.setString("adminonly.balance.check", "no", "Admin Only Check Another Players Balance - Set to false to allow all");
-            missingProp = true;
-        }
-        if (!propsFile.containsKey("debug.enabled")) {
-            propsFile.setString("debug.enabled", "no", "Debugging");
-            missingProp = true;
-        }
-        if (missingProp) {
-            propsFile.save();
-        }
+
+        propsFile.getString("money.name", "Voin$");
+        propsFile.setComments("money.name", "Name to call your currency");
+
+        propsFile.getString("server.max.always", "yes");
+        propsFile.setComments("server.max.always", "Server always has maximum currency");
+
+        propsFile.getString("datasource", "xml");
+        propsFile.setComments("datasource", "Datasource Setting (case insensitive) - Types: xml, mysql, sqlite  (Required libraries not included in Server Mod will auto-download from an appropriate Maven Repository. If you have any concerns with this, please contact Visual Illusions: viadmin@visualillusionsent.net )");
+
+        propsFile.getString("sql.user", "user");
+        propsFile.setComments("sql.user", "MySQL Username");
+
+        propsFile.getString("sql.password", "pass");
+        propsFile.setComments("sql.password", "MySQL Password");
+
+        propsFile.getString("sql.database.url", "localhost:3306/minecraft");
+        propsFile.setComments("sql.database.url", "SQL Database URL (jdbc:[sql]: not required) Defaults: (SQLite) plugins/dConomy3/dConomy3.db (Others) domain.suffix:port/databasename");
+
+        propsFile.getString("sql.wallet.table", "dCoWallet");
+        propsFile.setComments("sql.wallet.table", "SQL Wallet table");
+
+        propsFile.getString("adminonly.balance.check", "no");
+        propsFile.setComments("adminonly.balance.check", "Admin Only Check Another Players Balance - Set to false to allow all");
+
+        propsFile.getString("server.locale", "en_US");
+        propsFile.setComments("server.locale", "The default language (CanaryMod server players will see messages in their locale, this will only effect the console output)");
+
+        propsFile.getString("debug.enabled", "no");
+        propsFile.setComments("debug.enabled", "Toggles debugging messages");
+
+        propsFile.save();
     }
 }

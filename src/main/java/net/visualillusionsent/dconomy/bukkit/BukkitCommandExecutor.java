@@ -47,7 +47,6 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPluginInformationCommand;
-import net.visualillusionsent.utils.VersionChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -83,24 +82,7 @@ public class BukkitCommandExecutor extends VisualIllusionsBukkitPluginInformatio
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         dConomyUser user = sender instanceof Player ? new Bukkit_User((Player) sender) : (dConomyUser) dCoBase.getServer();
         if (label.equals("dconomy")) {
-            for (String msg : about) {
-                if (msg.equals("$VERSION_CHECK$")) {
-                    VersionChecker vc = plugin.getVersionChecker();
-                    Boolean isLatest = vc.isLatest();
-                    if (isLatest == null) {
-                        sender.sendMessage(center(ChatColor.DARK_GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
-                    }
-                    else if (!isLatest) {
-                        sender.sendMessage(center(ChatColor.DARK_GRAY + vc.getUpdateAvailibleMessage()));
-                    }
-                    else {
-                        sender.sendMessage(center(ChatColor.GREEN + "Latest Version Installed"));
-                    }
-                }
-                else {
-                    sender.sendMessage(msg);
-                }
-            }
+            this.sendInformation(sender);
             return true;
         }
         else if (label.equals("wallet")) {

@@ -36,34 +36,30 @@ package net.visualillusionsent.dconomy.api;
 public interface dConomyUser {
 
     /**
-     * Gets the name of the {@code Mod_User}
+     * Gets the name of the {@code dConomyUser}
      *
-     * @return the {@code Mod_User} name
+     * @return the {@code dConomyUser} name
      */
     String getName();
 
     /**
-     * Sends a error message to the {@code Mod_User}
+     * Sends a error message to the {@code dConomyUser}
      *
-     * @param key
-     *         the translation key or plain message to be sent
-     * @param args
-     *         the arguments for translation
+     * @param message
+     *         the message to send
      */
-    void error(String key, Object... args);
+    void error(String message);
 
     /**
-     * Sends a message to the {@code Mod_User}
+     * Sends a message to the {@code dConomyUser}
      *
-     * @param key
-     *         the translation key or plain message to be sent
-     * @param args
-     *         the arguments for translation
+     * @param message
+     *         the message to send
      */
-    void message(String key, Object... args);
+    void message(String message);
 
     /**
-     * Checks the {@code Mod_User} for permissions
+     * Checks the {@code dConomyUser} for permissions
      *
      * @param perm
      *         the permission to check for
@@ -71,13 +67,6 @@ public interface dConomyUser {
      * @return {@code true} if has permission; {@code false} otherwise
      */
     boolean hasPermission(String perm);
-
-    /**
-     * Checks if the {@code Mod_User} is the console/server
-     *
-     * @return {@code true} if console/server; {@code false} otherwise
-     */
-    boolean isConsole();
 
     /**
      * Gets the User's Locale Code

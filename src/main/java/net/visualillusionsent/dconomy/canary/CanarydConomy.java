@@ -48,7 +48,7 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
 
     @Override
     public final boolean enable() {
-        //super.enable();
+        super.enable();
 
         try {
             base = new dCoBase(this);
@@ -59,7 +59,7 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
             return true;
         }
         catch (dConomyInitializationError ierr) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ierr.getCause());
+            getLogman().log(Level.SEVERE, "Failed to initialize dConomy. Reason: " + ierr.getMessage(), ierr.getCause());
         }
         catch (CommandDependencyException cdex) {
             getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex);
@@ -87,11 +87,5 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
     @Override
     public float getReportedVersion() {
         return Float.valueOf(getVersion());
-    }
-
-    @Override
-    public final void check() {
-        checkStatus();
-        checkVersion();
     }
 }

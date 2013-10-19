@@ -18,38 +18,58 @@
 package net.visualillusionsent.dconomy;
 
 import net.visualillusionsent.dconomy.api.MineChatForm;
+import net.visualillusionsent.utils.FileUtils;
+import net.visualillusionsent.utils.JarUtils;
 import net.visualillusionsent.utils.LocaleHelper;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public final class MessageTranslator extends LocaleHelper {
 
-    private final static MessageTranslator $;
-
     static {
-        $ = new MessageTranslator();
+        if (!new File(dCoBase.lang_dir).exists()) {
+            new File(dCoBase.lang_dir).mkdirs();
+        }
+        else {
+            try {
+                if (!new File(dCoBase.lang_dir.concat("languages.txt")).exists()) {
+                    moveLang("languages.txt");
+                }
+                else if (!FileUtils.md5SumMatch(MessageTranslator.class.getResourceAsStream("/resources/lang/languages.txt"), new FileInputStream(dCoBase.lang_dir.concat("languages.txt")))) {
+                    moveLang("languages.txt");
+                }
+                if (!new File(dCoBase.lang_dir.concat("en_US.lang")).exists()) {
+                    moveLang("en_US.lang");
+                }
+                else if (!FileUtils.md5SumMatch(MessageTranslator.class.getResourceAsStream("/resources/lang/en_US.lang"), new FileInputStream(dCoBase.lang_dir.concat("en_US.lang")))) {
+                    moveLang("en_US.lang");
+                }
+            }
+            catch (Exception ex) {
+                throw new dConomyInitializationError("Failed to verify and move lang files", ex);
+            }
+        }
     }
 
-    private MessageTranslator() {
-        super(true, dCoBase.lang_dir, null);
+    MessageTranslator() {
+        super(true, dCoBase.lang_dir, dCoBase.getServerLocale());
         reloadLangFiles();
     }
 
-    public static String translate(String key, String locale) {
-        return colorForm($.localeTranslate(key, locale));
-    }
-
-    public static String translate(String key, String locale, Object... args) {
-        String toRet = colorForm($.localeTranslate(key, locale, args));
+    public final String translate(String key, String locale, Object... args) {
+        String toRet = args != null ? colorForm(localeTranslate(key, locale, args)) : colorForm(localeTranslate(key, locale));
         if (toRet.contains("$m")) {
             toRet = toRet.replace("$m", dCoBase.getProperties().getString("money.name"));
         }
         return toRet;
     }
 
-    private static String colorForm(String msg) {
+    private String colorForm(String msg) {
         return msg.replace("$c", MineChatForm.MARKER.stringValue());
     }
 
-    public static void reloadMessages() {
-        $.reloadLangFiles();
+    private static void moveLang(String locale) {
+        FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/languages.txt", dCoBase.lang_dir.concat("languages.txt"));
     }
 }

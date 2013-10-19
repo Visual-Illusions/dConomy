@@ -32,30 +32,30 @@ public final class WalletBaseCommand extends dConomyCommand {
     protected final void execute(dConomyUser user, String[] args) {
         Wallet theWallet;
         if (args.length == 1 && (user.hasPermission("dconomy.admin.wallet") || !dCoBase.getProperties().getBooleanValue("adminonly.balance.check"))) {
-            dConomyUser theUser = args[0].toUpperCase().equals("SERVER") ? (dConomyUser) dCoBase.getServer() : dCoBase.getServer().getUser(args[0]);
+            dConomyUser theUser = dCoBase.getServer().getUser(args[0]);
             if (theUser == null) {
-                user.error("error.404.user", args[1]);
+                dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
                 return;
             }
             if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
-                user.error("error.404.account", theUser.getName(), "WALLET");
+                dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
                 return;
             }
             theWallet = WalletHandler.getWalletByName(theUser.getName());
             if (theWallet.isLocked()) {
-                user.message("error.lock.out", theUser.getName(), "WALLET");
+                dCoBase.translateErrorMessageFor(user, "error.lock.out", theUser.getName(), "WALLET");
             }
             else {
-                user.message("account.balance.other", theUser.getName(), theWallet.getBalance(), "WALLET");
+                dCoBase.translateMessageFor(user, "account.balance.other", theUser.getName(), theWallet.getBalance(), "WALLET");
             }
         }
         else {
             theWallet = WalletHandler.getWalletByName(user.getName());
             if (theWallet.isLocked()) {
-                user.message("error.lock.out", user.getName(), "WALLET");
+                dCoBase.translateErrorMessageFor(user, "error.lock.out", user.getName(), "WALLET");
             }
             else {
-                user.message("account.balance", theWallet.getBalance(), "WALLET");
+                dCoBase.translateErrorMessageFor(user, "account.balance", theWallet.getBalance(), "WALLET");
             }
         }
     }
