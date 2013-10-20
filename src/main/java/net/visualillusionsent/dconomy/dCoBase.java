@@ -26,6 +26,7 @@ import net.visualillusionsent.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.dconomy.data.dCoProperties;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.logging.dCoLevel;
+import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,9 +49,9 @@ public final class dCoBase {
     private static float reported_version;
     private static long reported_revision;
 
-    public dCoBase(dConomy dconomy) throws dConomyInitializationException, DataSourceException {
+    public dCoBase(dConomy dconomy) throws DataSourceException {
         if ($ != null) {
-            throw new dConomyInitializationException();
+            throw new PluginInitializationException("dConomy's dCoBase is already initialized.");
         }
         $ = this;
         this.plugin = dconomy;

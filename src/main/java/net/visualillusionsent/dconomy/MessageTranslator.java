@@ -18,6 +18,7 @@
 package net.visualillusionsent.dconomy;
 
 import net.visualillusionsent.minecraft.plugin.ChatFormat;
+import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.JarUtils;
 import net.visualillusionsent.utils.LocaleHelper;
@@ -47,7 +48,7 @@ public final class MessageTranslator extends LocaleHelper {
             }
         }
         catch (Exception ex) {
-            throw new dConomyInitializationException("Failed to verify and move lang files", ex);
+            throw new PluginInitializationException("Failed to verify and move lang files", ex);
         }
     }
 
