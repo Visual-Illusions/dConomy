@@ -9,8 +9,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <program.status>BETA</program.status>
         <build.number>0-dev</build.number>
-        <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanarydConomy</canary.main.class>
-        <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitdConomy</bukkit.main.class>
+        <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
+        <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitConomy</bukkit.main.class>
         <vimcplugin.version>1.0.0-SNAPSHOT</vimcplugin.version>
         <viutils.version>1.2.0</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>

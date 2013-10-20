@@ -68,10 +68,6 @@ public final class dCoProperties {
         propsFile.setString("server.account.locked", locked ? "yes" : "no");
     }
 
-    public final PropertiesFile getPropertiesFile() {
-        return propsFile;
-    }
-
     public final String getConfigurationDirectory() {
         return configDir;
     }
@@ -115,9 +111,6 @@ public final class dCoProperties {
 
         propsFile.getString("server.locale", "en_US");
         propsFile.setComments("server.locale", "The default language (CanaryMod server players will see messages in their locale, this will only effect the console output)");
-
-        propsFile.getString("debug.enabled", "no");
-        propsFile.setComments("debug.enabled", "Toggles debugging messages");
 
         propsFile.save();
     }
