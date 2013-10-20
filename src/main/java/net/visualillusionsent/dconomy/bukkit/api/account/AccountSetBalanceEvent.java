@@ -15,42 +15,43 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.bukkit.api.account;
 
-import net.canarymod.hook.Hook;
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Plugin;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 
 /**
- * Account Debit Hook<br>
+ * Account Set Balance Event<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountDebitHook extends Hook {
+public abstract class AccountSetBalanceEvent extends Event {
     private final dConomyUser caller;
     private final String username;
-    private final double debit;
+    private final double toSet;
     private String error;
 
     /**
-     * Constructs a new AccountDebitHook
+     * Constructs a new AccountSetBalanceEvent
      *
      * @param caller
-     *         the {@link Plugin} asking to take money
+     *         the {@link Plugin} setting the balance
      * @param username
-     *         the user's name who is having money taken
-     * @param debit
-     *         the amount to be removed
+     *         the user's name who is having their balance set
+     * @param toSet
+     *         the amount to set the account to
      */
-    public AccountDebitHook(Plugin caller, String username, double debit) {
-        this.caller = new Canary_Plugin(caller);
+    public AccountSetBalanceEvent(Plugin caller, String username, double toSet) {
+        this.caller = new Bukkit_Plugin(caller);
         this.username = username;
-        this.debit = debit;
+        this.toSet = toSet;
     }
 
     /**
-     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to take money
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to set balance
      *
      * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin)
      */
@@ -59,21 +60,21 @@ public abstract class AccountDebitHook extends Hook {
     }
 
     /**
-     * Gets the user's name who is having money taken
+     * Gets the user's name who is having balance set
      *
-     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}
+     * @return the user's name
      */
     public final String getUserName() {
         return username;
     }
 
     /**
-     * Gets the amount being removed
+     * Gets the amount to set balance to
      *
-     * @return the debit amount
+     * @return the set amount
      */
-    public final double getDebit() {
-        return debit;
+    public final double getToSet() {
+        return toSet;
     }
 
     /**

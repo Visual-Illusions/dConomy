@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.bukkit.api.account.wallet;
 
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountSetBalanceEvent;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 

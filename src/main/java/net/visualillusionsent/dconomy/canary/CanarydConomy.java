@@ -19,10 +19,10 @@ package net.visualillusionsent.dconomy.canary;
 
 import net.canarymod.Canary;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
-import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.canary.api.Canary_Server;
-import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
@@ -97,5 +97,10 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
     @Override
     public final long getReportedRevision() {
         return Long.valueOf(getRevision());
+    }
+
+    @Override
+    public final boolean debugEnabled() {
+        return debug;
     }
 }

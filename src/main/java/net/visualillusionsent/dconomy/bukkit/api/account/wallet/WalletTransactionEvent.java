@@ -15,32 +15,35 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.bukkit.api.account.wallet;
 
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountTransactionEvent;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
 
 /**
- * Wallet Debit request Event<br>
- * Plugins should call this Event to debit wallet accounts
+ * Wallet Transaction Hook <br>
+ * Called when a Wallet balance changes
  *
  * @author Jason (darkdiplomat)
  */
-public final class WalletDebitEvent extends AccountDebitEvent {
+public final class WalletTransactionEvent extends AccountTransactionEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
-     * Constructs a new WalletDebitEvent
+     * Constructs a new Wallet Transaction Event
      *
-     * @param caller
-     *         the {@link Plugin} asking to take money
-     * @param username
-     *         the user's name who is having money taken
-     * @param debit
-     *         the amount to be removed
+     * @param action
+     *         the {@link WalletTransaction} done
      */
-    public WalletDebitEvent(Plugin caller, String username, double debit) {
-        super(caller, username, debit);
+    public WalletTransactionEvent(WalletTransaction action) {
+        super(action);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final WalletTransaction getTransaction() {
+        return (WalletTransaction) action;
     }
 
     // Bukkit Event methods
@@ -53,5 +56,4 @@ public final class WalletDebitEvent extends AccountDebitEvent {
         return handlers;
     }
     //
-
 }

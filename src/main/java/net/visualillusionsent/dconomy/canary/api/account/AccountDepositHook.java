@@ -15,42 +15,44 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.canary.api.account;
 
+import net.canarymod.hook.Hook;
+import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import net.visualillusionsent.dconomy.canary.api.Canary_Plugin;
 
 /**
- * Account Set Balance Event<br>
+ * Account Deposit Hook<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountSetBalanceEvent extends Event {
+public abstract class AccountDepositHook extends Hook {
+
     private final dConomyUser caller;
     private final String username;
-    private final double toSet;
+    private final double deposit;
     private String error;
 
     /**
-     * Constructs a new AccountSetBalanceEvent
+     * Constructs a new AccountDepositHook
      *
      * @param caller
-     *         the {@link Plugin} setting the balance
+     *         the {@link Plugin} giving money
      * @param username
-     *         the user's name who is having their balance set
-     * @param toSet
-     *         the amount to set the account to
+     *         the user's name who is having money deposited
+     * @param deposit
+     *         the amount to be deposited
      */
-    public AccountSetBalanceEvent(Plugin caller, String username, double toSet) {
-        this.caller = new Bukkit_Plugin(caller);
+    public AccountDepositHook(Plugin caller, String username, double deposit) {
+        this.caller = new Canary_Plugin(caller);
         this.username = username;
-        this.toSet = toSet;
+        this.deposit = deposit;
     }
 
     /**
-     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to set balance
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to take money
      *
      * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin)
      */
@@ -59,7 +61,7 @@ public abstract class AccountSetBalanceEvent extends Event {
     }
 
     /**
-     * Gets the user's name who is having balance set
+     * Gets the user's name who is having money taken
      *
      * @return the user's name
      */
@@ -68,12 +70,12 @@ public abstract class AccountSetBalanceEvent extends Event {
     }
 
     /**
-     * Gets the amount to set balance to
+     * Gets the amount being deposited
      *
-     * @return the set amount
+     * @return the deposit amount
      */
-    public final double getToSet() {
-        return toSet;
+    public final double getDeposit() {
+        return deposit;
     }
 
     /**

@@ -30,4 +30,6 @@ public interface dConomy {
     float getReportedVersion();
 
     long getReportedRevision();
+
+    boolean debugEnabled();
 }

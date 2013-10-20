@@ -23,11 +23,12 @@ import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
-import net.visualillusionsent.dconomy.api.AccountTransaction;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
+import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.CanarydConomy;
+import net.visualillusionsent.dconomy.canary.api.account.AccountTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 
 import java.util.concurrent.ConcurrentHashMap;

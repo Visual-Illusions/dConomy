@@ -15,30 +15,24 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.api.account.wallet;
 
-import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.api.account.AccountAction;
 
 /**
- * Wallet Set Balance Hook<br>
- * Plugins should call this Hook to set wallet account balances
+ * Wallet Transaction Action type
  *
  * @author Jason (darkdiplomat)
  */
-public final class WalletSetBalanceHook extends AccountSetBalanceHook {
+public enum WalletAction implements AccountAction {
 
-    /**
-     * Constructs a new WalletSetBalanceHook
-     *
-     * @param caller
-     *         the {@link Plugin} setting the balance
-     * @param username
-     *         the user's name who is having their balance set
-     * @param toSet
-     *         the amount to set the account to
-     */
-    public WalletSetBalanceHook(Plugin caller, String username, double toSet) {
-        super(caller, username, toSet);
-    }
-
+    USER_PAY, //
+    ADMIN_ADD, //
+    ADMIN_REMOVE, //
+    ADMIN_SET, //
+    ADMIN_RESET, //
+    PLUGIN_DEBIT, //
+    PLUGIN_DEPOSIT, //
+    PLUGIN_SET, //
+    ;
 }

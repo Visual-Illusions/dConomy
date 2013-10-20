@@ -15,29 +15,22 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.api.wallet;
+package net.visualillusionsent.dconomy.api.account;
 
-import net.visualillusionsent.dconomy.api.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 
-public final class WalletTransaction extends AccountTransaction {
-    public enum ActionType {
-        PAY, //
-        ADMIN_ADD, //
-        ADMIN_REMOVE, //
-        ADMIN_SET, //
-        ADMIN_RESET, //
-        PLUGIN_DEBIT, //
-        PLUGIN_DEPOSIT, //
-        PLUGIN_SET, //
-        ;
-    }
+/**
+ * Extend this class for making call back Hook/Events
+ *
+ * @author Jason (darkdiplomat)
+ */
+public abstract class AccountTransaction {
 
     private final dConomyUser sender, recipient;
-    private final ActionType type;
+    private final AccountAction type;
     private final double amount;
 
-    public WalletTransaction(dConomyUser sender, dConomyUser recipient, ActionType type, double amount) {
+    public AccountTransaction(dConomyUser sender, dConomyUser recipient, AccountAction type, double amount) {
         this.sender = sender;
         this.recipient = recipient;
         this.type = type;
@@ -52,12 +45,11 @@ public final class WalletTransaction extends AccountTransaction {
         return recipient;
     }
 
-    public final ActionType getActionType() {
+    public final AccountAction getAction() {
         return type;
     }
 
     public final double getAmountChange() {
         return amount;
     }
-
 }

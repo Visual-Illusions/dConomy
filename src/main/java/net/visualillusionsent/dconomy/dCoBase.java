@@ -37,6 +37,7 @@ import java.util.logging.Logger;
  * @author Jason (darkdiplomat)
  */
 public final class dCoBase {
+    private final dConomy plugin;
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
@@ -52,6 +53,7 @@ public final class dCoBase {
             throw new dConomyInitializationException();
         }
         $ = this;
+        this.plugin = dconomy;
         this.logger = dconomy.getPluginLogger();
         server = dconomy.getModServer();
         props = new dCoProperties();
@@ -150,13 +152,13 @@ public final class dCoBase {
     }
 
     public static void stacktrace(Throwable thrown) {
-        if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
+        if ($.plugin.debugEnabled()) {
             $.logger.log(dCoLevel.STACKTRACE, "Stacktrace: ", thrown);
         }
     }
 
     public static void debug(String msg) {
-        if (dCoBase.getProperties().getBooleanValue("debug.enabled")) {
+        if ($.plugin.debugEnabled()) {
             $.logger.log(dCoLevel.GENERAL, msg);
         }
     }

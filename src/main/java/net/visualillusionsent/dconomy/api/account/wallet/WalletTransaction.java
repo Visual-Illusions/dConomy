@@ -15,30 +15,14 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.api.account.wallet;
 
-import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.api.account.AccountTransaction;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 
-/**
- * Wallet Debit request Hook<br>
- * Plugins should call this Hook to debit wallet accounts
- *
- * @author Jason (darkdiplomat)
- */
-public final class WalletDebitHook extends AccountDebitHook {
+public final class WalletTransaction extends AccountTransaction {
 
-    /**
-     * Constructs a new WalletDebitHook
-     *
-     * @param caller
-     *         the {@link Plugin} asking to take money
-     * @param username
-     *         the user's name who is having money taken
-     * @param debit
-     *         the amount to be removed
-     */
-    public WalletDebitHook(Plugin caller, String username, double debit) {
-        super(caller, username, debit);
+    public WalletTransaction(dConomyUser sender, dConomyUser recipient, WalletAction type, double amount) {
+        super(sender, recipient, type, amount);
     }
-
 }

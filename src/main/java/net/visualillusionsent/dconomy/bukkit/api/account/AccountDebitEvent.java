@@ -15,39 +15,39 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.bukkit.api.account;
 
-import net.canarymod.hook.Hook;
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Plugin;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 
 /**
- * Account Deposit Hook<br>
+ * Account Debit Event<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountDepositHook extends Hook {
-
+public abstract class AccountDebitEvent extends Event {
     private final dConomyUser caller;
     private final String username;
-    private final double deposit;
+    private final double debit;
     private String error;
 
     /**
-     * Constructs a new AccountDepositHook
+     * Constructs a new AccountDebitEvent
      *
      * @param caller
-     *         the {@link Plugin} giving money
+     *         the {@link Plugin} asking to take money
      * @param username
-     *         the user's name who is having money deposited
-     * @param deposit
-     *         the amount to be deposited
+     *         the user's name who is having money taken
+     * @param debit
+     *         the amount to be removed
      */
-    public AccountDepositHook(Plugin caller, String username, double deposit) {
-        this.caller = new Canary_Plugin(caller);
+    public AccountDebitEvent(Plugin caller, String username, double debit) {
+        this.caller = new Bukkit_Plugin(caller);
         this.username = username;
-        this.deposit = deposit;
+        this.debit = debit;
     }
 
     /**
@@ -69,12 +69,12 @@ public abstract class AccountDepositHook extends Hook {
     }
 
     /**
-     * Gets the amount being deposited
+     * Gets the amount being removed
      *
-     * @return the deposit amount
+     * @return the debit amount
      */
-    public final double getDeposit() {
-        return deposit;
+    public final double getDebit() {
+        return debit;
     }
 
     /**

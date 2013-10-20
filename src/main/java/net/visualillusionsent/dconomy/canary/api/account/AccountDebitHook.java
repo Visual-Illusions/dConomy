@@ -15,72 +15,66 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.canary.api.account;
 
+import net.canarymod.hook.Hook;
+import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
+import net.visualillusionsent.dconomy.canary.api.Canary_Plugin;
 
 /**
- * Account Balance request Event<br>
+ * Account Debit Hook<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountBalanceEvent extends Event {
-    private final dConomyUser plugin;
+public abstract class AccountDebitHook extends Hook {
+    private final dConomyUser caller;
     private final String username;
-    private double balance = -1;
+    private final double debit;
     private String error;
 
     /**
-     * Constructs a new AccountBalanceEvent
+     * Constructs a new AccountDebitHook
      *
      * @param caller
-     *         the {@link Plugin} requesting a balance
+     *         the {@link Plugin} asking to take money
      * @param username
-     *         the user's name to get a balance for
+     *         the user's name who is having money taken
+     * @param debit
+     *         the amount to be removed
      */
-    public AccountBalanceEvent(Plugin caller, String username) {
-        this.plugin = new Bukkit_Plugin(caller);
+    public AccountDebitHook(Plugin caller, String username, double debit) {
+        this.caller = new Canary_Plugin(caller);
         this.username = username;
+        this.debit = debit;
     }
 
     /**
-     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(Plugin) requesting Balance information.
+     * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin) asking to take money
      *
-     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser} requester
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}(plugin)
      */
     public final dConomyUser getCaller() {
-        return plugin;
+        return caller;
     }
 
     /**
-     * Gets the user's name who's balance is being requested for
+     * Gets the user's name who is having money taken
      *
-     * @return the user's name
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser}
      */
     public final String getUserName() {
         return username;
     }
 
     /**
-     * Gets the balance of the user's account
+     * Gets the amount being removed
      *
-     * @return the balance
+     * @return the debit amount
      */
-    public final double getBalance() {
-        return balance;
-    }
-
-    /**
-     * Internal use method to set the balance to be returned to the requester.
-     *
-     * @param balance
-     *         the balance of the account
-     */
-    public final void setBalance(double balance) {
-        this.balance = balance;
+    public final double getDebit() {
+        return debit;
     }
 
     /**
@@ -96,5 +90,4 @@ public abstract class AccountBalanceEvent extends Event {
     public final void setErrorMessage(String error) {
         this.error = error;
     }
-
 }

@@ -15,20 +15,23 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.bukkit.api.account.wallet;
 
-import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountDepositEvent;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 
 /**
- * Wallet Deposit Hook<br>
- * Plugins should call this Hook to deposit into wallet accounts
+ * Wallet Deposit Event<br>
+ * Plugins should call this Event to deposit into wallet accounts
  *
  * @author Jason (darkdiplomat)
  */
-public final class WalletDepositHook extends AccountDepositHook {
+public final class WalletDepositEvent extends AccountDepositEvent {
+    private static final HandlerList handlers = new HandlerList();
 
     /**
-     * Constructs a new WalletDepositHook
+     * Constructs a new WalletDepositEvent
      *
      * @param caller
      *         the {@link Plugin} giving money
@@ -37,8 +40,18 @@ public final class WalletDepositHook extends AccountDepositHook {
      * @param deposit
      *         the amount to be deposited
      */
-    public WalletDepositHook(Plugin caller, String username, double deposit) {
+    public WalletDepositEvent(Plugin caller, String username, double deposit) {
         super(caller, username, deposit);
     }
 
+    // Bukkit Event methods
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+    //
 }

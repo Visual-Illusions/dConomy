@@ -15,21 +15,33 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.api;
+package net.visualillusionsent.dconomy.canary.api.account.wallet;
 
-import net.visualillusionsent.dconomy.api.account.AccountTransaction;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.canary.api.account.AccountTransactionHook;
 
 /**
- * Main Transaction Hook/Event interface
+ * Wallet Transaction Hook <br>
+ * Called when a Wallet balance changes
  *
  * @author Jason (darkdiplomat)
  */
-public interface TransactionHookEvent {
+public final class WalletTransactionHook extends AccountTransactionHook {
 
     /**
-     * Returns the {@link net.visualillusionsent.dconomy.api.account.AccountTransaction} that happen
+     * Constructs a new Wallet Transaction Hook
      *
-     * @return {@link net.visualillusionsent.dconomy.api.account.AccountTransaction}
+     * @param action
+     *         the {@link WalletTransaction} done
      */
-    public AccountTransaction getTransaction();
+    public WalletTransactionHook(WalletTransaction action) {
+        super(action);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final WalletTransaction getTransaction() {
+        return (WalletTransaction) action;
+    }
+
 }

@@ -17,7 +17,7 @@
  */
 package net.visualillusionsent.dconomy;
 
-import net.visualillusionsent.dconomy.api.MineChatForm;
+import net.visualillusionsent.minecraft.plugin.ChatFormat;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.JarUtils;
 import net.visualillusionsent.utils.LocaleHelper;
@@ -56,18 +56,14 @@ public final class MessageTranslator extends LocaleHelper {
     }
 
     public final String translate(String key, String locale, Object... args) {
-        String toRet = args != null ? colorForm(localeTranslate(key, locale, args)) : colorForm(localeTranslate(key, locale));
+        String toRet = ChatFormat.formatString(localeTranslate(key, locale, args), "$c");
         if (toRet.contains("$m")) {
             toRet = toRet.replace("$m", dCoBase.getProperties().getString("money.name"));
         }
         return toRet;
     }
 
-    private String colorForm(String msg) {
-        return msg.replace("$c", MineChatForm.MARKER.stringValue());
-    }
-
     private static void moveLang(String locale) {
-        FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/".concat(locale), lang_dir.concat(locale));
+        FileUtils.cloneFileFromJar(JarUtils.getJarPath(dConomy.class), "resources/lang/".concat(locale), lang_dir.concat(locale));
     }
 }

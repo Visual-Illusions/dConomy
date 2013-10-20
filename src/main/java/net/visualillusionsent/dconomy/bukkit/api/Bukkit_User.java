@@ -18,9 +18,9 @@
 package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.canarymod.api.OfflinePlayer;
-import net.visualillusionsent.dconomy.api.MineChatForm;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.minecraft.plugin.ChatFormat;
 import org.bukkit.entity.Player;
 
 /**
@@ -57,7 +57,7 @@ public final class Bukkit_User implements dConomyUser {
     /** {@inheritDoc} */
     @Override
     public final void error(String message) {
-        player.sendMessage(MineChatForm.LIGHT_RED.concat(message));
+        player.sendMessage(ChatFormat.LIGHT_RED.concat(message));
     }
 
     /** {@inheritDoc} */

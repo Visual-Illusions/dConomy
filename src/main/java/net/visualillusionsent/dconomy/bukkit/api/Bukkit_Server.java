@@ -18,11 +18,12 @@
 package net.visualillusionsent.dconomy.bukkit.api;
 
 import net.canarymod.logger.Logman;
-import net.visualillusionsent.dconomy.api.AccountTransaction;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
+import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.bukkit.BukkitdConomy;
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

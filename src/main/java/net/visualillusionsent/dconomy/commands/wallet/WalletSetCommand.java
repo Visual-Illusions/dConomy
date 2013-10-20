@@ -18,8 +18,9 @@
 package net.visualillusionsent.dconomy.commands.wallet;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
@@ -43,6 +44,6 @@ public final class WalletSetCommand extends dConomyCommand {
         }
         WalletHandler.getWalletByName(theUser.getName()).setBalance(args[0]);
         dCoBase.translateErrorMessageFor(user, "admin.set.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
-        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.ADMIN_SET, Double.parseDouble(args[0])));
+        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_SET, Double.parseDouble(args[0])));
     }
 }

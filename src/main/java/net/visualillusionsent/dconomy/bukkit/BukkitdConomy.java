@@ -18,11 +18,11 @@
 package net.visualillusionsent.dconomy.bukkit;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
-import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
-import net.visualillusionsent.dconomy.bukkit.api.AccountTransactionEvent;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
-import net.visualillusionsent.dconomy.bukkit.api.WalletTransactionEvent;
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountTransactionEvent;
+import net.visualillusionsent.dconomy.bukkit.api.account.wallet.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
@@ -142,5 +142,10 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
     @Override
     public final long getReportedRevision() {
         return Long.valueOf(getRevision());
+    }
+
+    @Override
+    public boolean debugEnabled() {
+        return debug;
     }
 }

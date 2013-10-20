@@ -15,32 +15,33 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.bukkit.api.account.wallet;
 
+import net.visualillusionsent.dconomy.bukkit.api.account.AccountDebitEvent;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Wallet Deposit Event<br>
- * Plugins should call this Event to deposit into wallet accounts
+ * Wallet Debit request Event<br>
+ * Plugins should call this Event to debit wallet accounts
  *
  * @author Jason (darkdiplomat)
  */
-public final class WalletDepositEvent extends AccountDepositEvent {
+public final class WalletDebitEvent extends AccountDebitEvent {
     private static final HandlerList handlers = new HandlerList();
 
     /**
-     * Constructs a new WalletDepositEvent
+     * Constructs a new WalletDebitEvent
      *
      * @param caller
-     *         the {@link Plugin} giving money
+     *         the {@link Plugin} asking to take money
      * @param username
-     *         the user's name who is having money deposited
-     * @param deposit
-     *         the amount to be deposited
+     *         the user's name who is having money taken
+     * @param debit
+     *         the amount to be removed
      */
-    public WalletDepositEvent(Plugin caller, String username, double deposit) {
-        super(caller, username, deposit);
+    public WalletDebitEvent(Plugin caller, String username, double debit) {
+        super(caller, username, debit);
     }
 
     // Bukkit Event methods
@@ -53,4 +54,5 @@ public final class WalletDepositEvent extends AccountDepositEvent {
         return handlers;
     }
     //
+
 }

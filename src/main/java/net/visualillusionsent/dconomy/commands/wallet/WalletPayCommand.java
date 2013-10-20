@@ -20,8 +20,9 @@ package net.visualillusionsent.dconomy.commands.wallet;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
@@ -51,7 +52,7 @@ public final class WalletPayCommand extends dConomyCommand {
             userWallet.debit(args[0]);
             dCoBase.translateMessageFor(user, "paid.user", theUser.getName(), Double.parseDouble(args[0]));
             dCoBase.translateMessageFor(theUser, "got.paid", user.getName(), Double.parseDouble(args[0]));
-            dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletTransaction.ActionType.PAY, Double.parseDouble(args[0])));
+            dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.USER_PAY, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
             user.error(ae.getMessage());

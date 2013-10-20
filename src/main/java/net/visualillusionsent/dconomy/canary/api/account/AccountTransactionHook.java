@@ -15,21 +15,30 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.api;
+package net.visualillusionsent.dconomy.canary.api.account;
 
+import net.canarymod.hook.Hook;
+import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 
 /**
- * Main Transaction Hook/Event interface
+ * Account Transaction Hook <br>
+ * Called when an Account balance changes<br>
+ * dConomy Add-on should extend this class for their own Account instances<br>
  *
  * @author Jason (darkdiplomat)
  */
-public interface TransactionHookEvent {
+public abstract class AccountTransactionHook extends Hook implements TransactionHookEvent {
+    protected final AccountTransaction action;
 
     /**
-     * Returns the {@link net.visualillusionsent.dconomy.api.account.AccountTransaction} that happen
+     * Constructs a new Account Transaction Hook
      *
-     * @return {@link net.visualillusionsent.dconomy.api.account.AccountTransaction}
+     * @param action
+     *         the AccountTransaction done
      */
-    public AccountTransaction getTransaction();
+    public AccountTransactionHook(AccountTransaction action) {
+        this.action = action;
+    }
+
 }

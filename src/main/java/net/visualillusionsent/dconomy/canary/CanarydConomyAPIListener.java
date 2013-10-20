@@ -20,16 +20,20 @@ package net.visualillusionsent.dconomy.canary;
 import net.canarymod.Canary;
 import net.canarymod.hook.HookHandler;
 import net.canarymod.plugin.PluginListener;
-import net.canarymod.plugin.Priority;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
-import net.visualillusionsent.dconomy.canary.api.WalletBalanceHook;
-import net.visualillusionsent.dconomy.canary.api.WalletDebitHook;
-import net.visualillusionsent.dconomy.canary.api.WalletDepositHook;
-import net.visualillusionsent.dconomy.canary.api.WalletSetBalanceHook;
-import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletBalanceHook;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletDebitHook;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletDepositHook;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletSetBalanceHook;
+import net.visualillusionsent.dconomy.canary.api.account.wallet.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
+
+import static net.canarymod.plugin.Priority.CRITICAL;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEBIT;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEPOSIT;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_SET;
 
 public final class CanarydConomyAPIListener implements PluginListener {
 
@@ -37,7 +41,7 @@ public final class CanarydConomyAPIListener implements PluginListener {
         Canary.hooks().registerListener(this, dCo);
     }
 
-    @HookHandler(priority = Priority.CRITICAL)
+    @HookHandler(priority = CRITICAL)
     public final void walletBalance(WalletBalanceHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
@@ -53,12 +57,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
         }
     }
 
-    @HookHandler(priority = Priority.CRITICAL)
+    @HookHandler(priority = CRITICAL)
     public final void walletDeposit(final WalletDepositHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).deposit(hook.getDeposit());
-                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEPOSIT, hook.getDeposit())));
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), PLUGIN_DEPOSIT, hook.getDeposit())));
             }
             else {
                 hook.setErrorMessage("Wallet Not Found");
@@ -70,12 +74,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
         }
     }
 
-    @HookHandler(priority = Priority.CRITICAL)
+    @HookHandler(priority = CRITICAL)
     public final void walletDebit(WalletDebitHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).debit(hook.getDebit());
-                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_DEBIT, hook.getDebit())));
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), PLUGIN_DEBIT, hook.getDebit())));
             }
             else {
                 hook.setErrorMessage("Wallet Not Found");
@@ -87,12 +91,12 @@ public final class CanarydConomyAPIListener implements PluginListener {
         }
     }
 
-    @HookHandler(priority = Priority.CRITICAL)
+    @HookHandler(priority = CRITICAL)
     public final void walletSet(WalletSetBalanceHook hook) {
         try {
             if (WalletHandler.verifyAccount(hook.getUserName())) {
                 WalletHandler.getWalletByName(hook.getUserName()).setBalance(hook.getToSet());
-                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), WalletTransaction.ActionType.PLUGIN_SET, hook.getToSet())));
+                Canary.hooks().callHook(new WalletTransactionHook(new WalletTransaction(hook.getCaller(), dCoBase.getServer().getUser(hook.getUserName()), PLUGIN_SET, hook.getToSet())));
             }
             else {
                 hook.setErrorMessage("Wallet Not Found");
@@ -104,7 +108,7 @@ public final class CanarydConomyAPIListener implements PluginListener {
         }
     }
 
-    @HookHandler(priority = Priority.CRITICAL)
+    @HookHandler(priority = CRITICAL)
     public final void debugTransaction(WalletTransactionHook hook) {
         dCoBase.debug("WalletTransactionHook called");
     }

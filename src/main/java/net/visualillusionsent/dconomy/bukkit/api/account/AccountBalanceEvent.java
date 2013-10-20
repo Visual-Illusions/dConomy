@@ -15,44 +15,45 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api;
+package net.visualillusionsent.dconomy.bukkit.api.account;
 
-import net.canarymod.hook.Hook;
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Plugin;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
 
 /**
- * Account Balance request Hook<br>
+ * Account Balance request Event<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountBalanceHook extends Hook {
-    private final dConomyUser caller;
+public abstract class AccountBalanceEvent extends Event {
+    private final dConomyUser plugin;
     private final String username;
     private double balance = -1;
     private String error;
 
     /**
-     * Constructs a new AccountBalanceHook
+     * Constructs a new AccountBalanceEvent
      *
      * @param caller
      *         the {@link Plugin} requesting a balance
      * @param username
      *         the user's name to get a balance for
      */
-    public AccountBalanceHook(Plugin caller, String username) {
-        this.caller = new Canary_Plugin(caller);
+    public AccountBalanceEvent(Plugin caller, String username) {
+        this.plugin = new Bukkit_Plugin(caller);
         this.username = username;
     }
 
     /**
      * Gets the {@link net.visualillusionsent.dconomy.api.dConomyUser}(Plugin) requesting Balance information.
      *
-     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser} caller
+     * @return the {@link net.visualillusionsent.dconomy.api.dConomyUser} requester
      */
     public final dConomyUser getCaller() {
-        return caller;
+        return plugin;
     }
 
     /**
@@ -96,4 +97,5 @@ public abstract class AccountBalanceHook extends Hook {
     public final void setErrorMessage(String error) {
         this.error = error;
     }
+
 }

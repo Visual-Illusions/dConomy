@@ -15,38 +15,40 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.bukkit.api;
+package net.visualillusionsent.dconomy.bukkit.api.account;
 
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Plugin;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Account Debit Event<br>
+ * Account Deposit Event<br>
  * dConomy Add-on should extend this class for their own Account instances
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class AccountDebitEvent extends Event {
+public abstract class AccountDepositEvent extends Event {
+
     private final dConomyUser caller;
     private final String username;
-    private final double debit;
+    private final double deposit;
     private String error;
 
     /**
-     * Constructs a new AccountDebitEvent
+     * Constructs a new AccountDepositEvent
      *
      * @param caller
-     *         the {@link Plugin} asking to take money
+     *         the {@link Plugin} giving money
      * @param username
-     *         the user's name who is having money taken
-     * @param debit
-     *         the amount to be removed
+     *         the user's name who is having money deposited
+     * @param deposit
+     *         the amount to be deposited
      */
-    public AccountDebitEvent(Plugin caller, String username, double debit) {
+    public AccountDepositEvent(Plugin caller, String username, double deposit) {
         this.caller = new Bukkit_Plugin(caller);
         this.username = username;
-        this.debit = debit;
+        this.deposit = deposit;
     }
 
     /**
@@ -68,12 +70,12 @@ public abstract class AccountDebitEvent extends Event {
     }
 
     /**
-     * Gets the amount being removed
+     * Gets the amount being deposited
      *
-     * @return the debit amount
+     * @return the deposit amount
      */
-    public final double getDebit() {
-        return debit;
+    public final double getDeposit() {
+        return deposit;
     }
 
     /**
@@ -89,4 +91,5 @@ public abstract class AccountDebitEvent extends Event {
     public final void setErrorMessage(String error) {
         this.error = error;
     }
+
 }

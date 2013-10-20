@@ -17,6 +17,8 @@
  */
 package net.visualillusionsent.dconomy.api;
 
+import net.visualillusionsent.dconomy.api.account.AccountTransaction;
+
 import java.util.logging.Logger;
 
 /** dConomy Server interface */
