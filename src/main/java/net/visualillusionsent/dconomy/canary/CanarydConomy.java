@@ -57,6 +57,8 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
             new CanarydConomyAPIListener(this);
             // Initialize Command Listener
             new CanarydConomyCommandListener(this);
+            // Initialize MOTD Listener
+            new CanaryConomyMOTDListener(this);
             // Register WalletTransaction
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
             // Good, return true
