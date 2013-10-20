@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  *
  * @author Jason (darkdiplomat)
  */
-public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements dConomy {
+public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
 
@@ -54,9 +54,9 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
             // Cause Wallets to load
             WalletHandler.initialize();
             // Initialize Listener
-            new CanarydConomyAPIListener(this);
+            new CanaryConomyAPIListener(this);
             // Initialize Command Listener
-            new CanarydConomyCommandListener(this);
+            new CanaryConomyCommandListener(this);
             // Initialize MOTD Listener
             new CanaryConomyMOTDListener(this);
             // Register WalletTransaction

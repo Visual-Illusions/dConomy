@@ -57,11 +57,11 @@ import org.bukkit.entity.Player;
  *
  * @author Jason (darkdiplomat)
  */
-public class BukkitCommandExecutor extends VisualIllusionsBukkitPluginInformationCommand {
+public class BukkitConomyCommandExecutor extends VisualIllusionsBukkitPluginInformationCommand {
 
     private final dConomyCommand[] cmds = new dConomyCommand[8];
 
-    BukkitCommandExecutor(BukkitdConomy dCo) {
+    BukkitConomyCommandExecutor(BukkitConomy dCo) {
         super(dCo);
         // Initialize Commands
         cmds[0] = new WalletBaseCommand();

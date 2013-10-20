@@ -45,13 +45,13 @@ import java.util.logging.Logger;
  *
  * @author Jason (darkdiplomat)
  */
-public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements dConomy {
+public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
 
     static {
         Manifest mf = null;
         try {
-            mf = new JarFile(BukkitdConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
+            mf = new JarFile(BukkitConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
         }
         catch (IOException ex) {
             // NullPointerException will happen anyways
@@ -105,9 +105,9 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
             // Cause Wallets to load
             WalletHandler.initialize();
             // Initialize Listener
-            new BukkitdConomyAPIListener(this);
+            new BukkitConomyAPIListener(this);
             // Initialize Command Executor
-            new BukkitCommandExecutor(this);
+            new BukkitConomyCommandExecutor(this);
             // Register WalletTransaction
             dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class.asSubclass(AccountTransactionEvent.class), WalletTransaction.class);
         }

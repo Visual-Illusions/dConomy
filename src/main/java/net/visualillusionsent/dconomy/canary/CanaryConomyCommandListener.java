@@ -36,10 +36,10 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 
-public final class CanarydConomyCommandListener extends VisualIllusionsCanaryPluginInformationCommand {
+public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPluginInformationCommand {
     private final dConomyCommand[] cmds = new dConomyCommand[8];
 
-    CanarydConomyCommandListener(CanarydConomy dCo) throws CommandDependencyException {
+    CanaryConomyCommandListener(CanaryConomy dCo) throws CommandDependencyException {
         super(dCo);
         cmds[0] = new WalletBaseCommand();
         cmds[1] = new WalletAddCommand();

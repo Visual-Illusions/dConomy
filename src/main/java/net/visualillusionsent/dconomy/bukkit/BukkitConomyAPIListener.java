@@ -35,9 +35,9 @@ import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLU
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_SET;
 import static org.bukkit.event.EventPriority.HIGHEST;
 
-public final class BukkitdConomyAPIListener implements Listener {
+public final class BukkitConomyAPIListener implements Listener {
 
-    BukkitdConomyAPIListener(BukkitdConomy plugin) {
+    BukkitConomyAPIListener(BukkitConomy plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

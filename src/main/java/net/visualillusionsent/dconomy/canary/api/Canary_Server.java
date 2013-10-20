@@ -27,7 +27,7 @@ import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.canary.CanarydConomy;
+import net.visualillusionsent.dconomy.canary.CanaryConomy;
 import net.visualillusionsent.dconomy.canary.api.account.AccountTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 
@@ -42,10 +42,10 @@ import java.util.logging.Logger;
 public class Canary_Server implements dConomyServer, dConomyUser {
 
     private final Server serv;
-    private final CanarydConomy dCo;
+    private final CanaryConomy dCo;
     private final ConcurrentHashMap<Class<? extends AccountTransactionHook>, Class<? extends AccountTransaction>> transactions;
 
-    public Canary_Server(Server serv, CanarydConomy dCo) {
+    public Canary_Server(Server serv, CanaryConomy dCo) {
         this.serv = serv;
         this.dCo = dCo;
         this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionHook>, Class<? extends AccountTransaction>>();

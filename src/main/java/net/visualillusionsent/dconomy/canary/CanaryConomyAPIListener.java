@@ -35,9 +35,9 @@ import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLU
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEPOSIT;
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_SET;
 
-public final class CanarydConomyAPIListener implements PluginListener {
+public final class CanaryConomyAPIListener implements PluginListener {
 
-    CanarydConomyAPIListener(CanarydConomy dCo) {
+    CanaryConomyAPIListener(CanaryConomy dCo) {
         Canary.hooks().registerListener(this, dCo);
     }
 

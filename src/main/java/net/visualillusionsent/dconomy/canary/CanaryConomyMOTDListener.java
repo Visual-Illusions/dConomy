@@ -17,7 +17,7 @@ import net.visualillusionsent.dconomy.dCoBase;
  */
 public final class CanaryConomyMOTDListener implements MessageOfTheDayListener {
 
-    public CanaryConomyMOTDListener(CanarydConomy cdConomy) {
+    public CanaryConomyMOTDListener(CanaryConomy cdConomy) {
         Canary.motd().registerMOTDListener(this, cdConomy, false);
     }
 

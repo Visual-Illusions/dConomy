@@ -22,7 +22,7 @@ import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.bukkit.BukkitdConomy;
+import net.visualillusionsent.dconomy.bukkit.BukkitConomy;
 import net.visualillusionsent.dconomy.bukkit.api.account.AccountTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import org.bukkit.Bukkit;
@@ -42,10 +42,10 @@ import java.util.logging.Logger;
 public final class Bukkit_Server implements dConomyServer, dConomyUser {
 
     private final Server serv;
-    private final BukkitdConomy dCo;
+    private final BukkitConomy dCo;
     private final ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>> transactions;
 
-    public Bukkit_Server(Server serv, BukkitdConomy dCo) {
+    public Bukkit_Server(Server serv, BukkitConomy dCo) {
         this.serv = serv;
         this.dCo = dCo;
         this.transactions = new ConcurrentHashMap<Class<? extends AccountTransactionEvent>, Class<? extends AccountTransaction>>();
