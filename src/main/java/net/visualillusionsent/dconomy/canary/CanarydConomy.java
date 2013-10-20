@@ -18,7 +18,6 @@
 package net.visualillusionsent.dconomy.canary;
 
 import net.canarymod.Canary;
-import net.canarymod.commandsys.CommandDependencyException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.wallet.WalletTransaction;
@@ -26,7 +25,6 @@ import net.visualillusionsent.dconomy.canary.api.Canary_Server;
 import net.visualillusionsent.dconomy.canary.api.WalletTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
-import net.visualillusionsent.dconomy.dConomyInitializationError;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
 
 import java.util.logging.Level;
@@ -51,22 +49,29 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
         super.enable();
 
         try {
+            // Create dCoBase, initializing properties and such
             base = new dCoBase(this);
+            // Cause Wallets to load
             WalletHandler.initialize();
+            // Initialize Listener
             new CanarydConomyAPIListener(this);
+            // Initialize Command Listener
             new CanarydConomyCommandListener(this);
+            // Register WalletTransaction
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
+            // Good, return true
             return true;
         }
-        catch (dConomyInitializationError ierr) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy. Reason: " + ierr.getMessage(), ierr.getCause());
-        }
-        catch (CommandDependencyException cdex) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", cdex);
-        }
         catch (Exception ex) {
-            getLogman().log(Level.SEVERE, "Failed to initialize dConomy", ex);
+            String reason = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();
+            if (debug) { // Only stack trace if debugging
+                getLogman().log(Level.SEVERE, "dConomy failed to start. Reason: ".concat(reason), ex);
+            }
+            else {
+                getLogman().severe("dConomy failed to start. Reason: ".concat(reason));
+            }
         }
+        // And its a failure!
         return false;
     }
 
@@ -85,7 +90,12 @@ public final class CanarydConomy extends VisualIllusionsCanaryPlugin implements 
     }
 
     @Override
-    public float getReportedVersion() {
-        return Float.valueOf(getVersion());
+    public final float getReportedVersion() {
+        return Float.valueOf(getMajorMinor());
+    }
+
+    @Override
+    public final long getReportedRevision() {
+        return Long.valueOf(getRevision());
     }
 }

@@ -20,6 +20,7 @@ package net.visualillusionsent.dconomy;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.data.DataSourceException;
 import net.visualillusionsent.dconomy.data.DataSourceType;
 import net.visualillusionsent.dconomy.data.dCoDataHandler;
 import net.visualillusionsent.dconomy.data.dCoProperties;
@@ -36,8 +37,6 @@ import java.util.logging.Logger;
  * @author Jason (darkdiplomat)
  */
 public final class dCoBase {
-    final static String lang_dir = "lang/dConomy3/";
-
     private final dCoDataHandler handler;
     private final dCoProperties props;
     private final Logger logger;
@@ -46,24 +45,21 @@ public final class dCoBase {
     private static dCoBase $;
     private static dConomyServer server;
     private static float reported_version;
+    private static long reported_revision;
 
-    public dCoBase(dConomy dconomy) {
+    public dCoBase(dConomy dconomy) throws dConomyInitializationException, DataSourceException {
         if ($ != null) {
-            throw new dConomyInitializationError();
+            throw new dConomyInitializationException();
         }
-        try {
-            $ = this;
-            this.logger = dconomy.getPluginLogger();
-            server = dconomy.getModServer();
-            props = new dCoProperties();
-            handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
-            translator = new MessageTranslator();
+        $ = this;
+        this.logger = dconomy.getPluginLogger();
+        server = dconomy.getModServer();
+        props = new dCoProperties();
+        handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
+        translator = new MessageTranslator();
 
-            reported_version = dconomy.getReportedVersion();
-        }
-        catch (Exception ex) {
-            throw new dConomyInitializationError("Unexpected Exception occurred", ex);
-        }
+        reported_version = dconomy.getReportedVersion();
+        reported_revision = dconomy.getReportedRevision();
     }
 
     /**
@@ -176,5 +172,9 @@ public final class dCoBase {
 
     public static float getVersion() {
         return reported_version;
+    }
+
+    public static long getRevision() {
+        return reported_revision;
     }
 }

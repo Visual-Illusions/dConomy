@@ -23,10 +23,10 @@ package net.visualillusionsent.dconomy;
  *
  * @author Jason (darkdiplomat)
  */
-public final class dConomyInitializationError extends Error {
+public final class dConomyInitializationException extends RuntimeException {
 
     /** Constructs a new Initialization Error with a message */
-    public dConomyInitializationError() {
+    public dConomyInitializationException() {
         super("Already loaded");
     }
 
@@ -38,7 +38,7 @@ public final class dConomyInitializationError extends Error {
      * @param cause
      *         the {@link Throwable} cause for the error
      */
-    public dConomyInitializationError(String msg, Throwable cause) {
+    public dConomyInitializationException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
@@ -48,7 +48,7 @@ public final class dConomyInitializationError extends Error {
      * @param cause
      *         the {@link Throwable} cause for the error
      */
-    public dConomyInitializationError(Throwable cause) {
+    public dConomyInitializationException(Throwable cause) {
         super(cause);
     }
 

@@ -26,6 +26,7 @@ import net.visualillusionsent.dconomy.bukkit.api.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,6 +37,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -67,7 +69,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
             catch (Exception ex) {
-                System.err.println("Failed to download VIUtils " + viutils_version);
+                Bukkit.getLogger().severe("[dConomy] Failed to download VIUtils " + viutils_version);
             }
         }
         lib = new File("lib/jdom2-" + jdom_version + ".jar");
@@ -80,7 +82,7 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
             catch (Exception ex) {
-                System.err.println("Failed to download jdom2 " + jdom_version);
+                Bukkit.getLogger().severe("[dConomy] Failed to download jdom2 " + jdom_version);
             }
         }
         //
@@ -88,23 +90,38 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
 
     @Override
     public final void onDisable() {
-        base.cleanUp(); // Clean Up
+        if (base != null) {
+            base.cleanUp(); // Clean Up
+        }
     }
 
     @Override
     public final void onEnable() {
         super.onEnable();
 
-        // Create dCoBase, initializing properties and such
-        base = new dCoBase(this);
-        // Cause Wallets to load
-        WalletHandler.initialize();
-        // Initialize Listener
-        new BukkitdConomyAPIListener(this);
-        // Initialize Command Executor
-        new BukkitCommandExecutor(this);
-        // Register WalletTransaction
-        dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class.asSubclass(AccountTransactionEvent.class), WalletTransaction.class);
+        try {
+            // Create dCoBase, initializing properties and such
+            this.base = new dCoBase(this);
+            // Cause Wallets to load
+            WalletHandler.initialize();
+            // Initialize Listener
+            new BukkitdConomyAPIListener(this);
+            // Initialize Command Executor
+            new BukkitCommandExecutor(this);
+            // Register WalletTransaction
+            dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class.asSubclass(AccountTransactionEvent.class), WalletTransaction.class);
+        }
+        catch (Exception ex) {
+            String reason = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();
+            if (debug) { // Only stack trace if debugging
+                getLogger().log(Level.SEVERE, "dConomy failed to start. Reason: ".concat(reason), ex);
+            }
+            else {
+                getLogger().severe("dConomy failed to start. Reason: ".concat(reason));
+            }
+            // And its a failure!
+            die();
+        }
     }
 
     @Override
@@ -119,6 +136,11 @@ public final class BukkitdConomy extends VisualIllusionsBukkitPlugin implements 
 
     @Override
     public float getReportedVersion() {
-        return Float.valueOf(getDescription().getVersion());
+        return Float.valueOf(getMajorMinor());
+    }
+
+    @Override
+    public final long getReportedRevision() {
+        return Long.valueOf(getRevision());
     }
 }

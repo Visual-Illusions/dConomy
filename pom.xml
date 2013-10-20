@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>dconomy</artifactId>
-    <version>3.0</version>
+    <version>3.0.0</version>
     <name>dConomy</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -11,7 +11,7 @@
         <build.number>0-dev</build.number>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanarydConomy</canary.main.class>
         <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitdConomy</bukkit.main.class>
-        <vimcplugin.version>1.1u1</vimcplugin.version>
+        <vimcplugin.version>1.0.0-SNAPSHOT</vimcplugin.version>
         <viutils.version>1.2.0</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
@@ -81,7 +81,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>${project.name}-${project.version}-${program.status}-b${build.number}</finalName>
+        <finalName>${project.name}-${project.version}-b${build.number}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -134,6 +134,11 @@
                 </executions>
                 <configuration>
                     <includes>
+                        <!-- Other files -->
+                        <include>target/**/*.cfg</include>
+                        <include>target/**/*.txt</include>
+                        <include>target/**/*.lang</include>
+                        <include>target/**/*.readme</include>
                         <!-- CanaryMod -->
                         <include>target/**/*.inf</include>
                         <!-- Bukkit -->
@@ -244,7 +249,7 @@
                     <quiet>false</quiet>
                     <encoding>UTF-8</encoding>
                     <strictCheck>true</strictCheck>
-                    <header>${basedir}/HEADER_GPL.txt</header>
+                    <header>${basedir}/HEADER.txt</header>
                     <keywords>
                         <keyword>${project.name}</keyword>
                         <keyword>license</keyword>
@@ -254,8 +259,9 @@
                     </mapping>
                     <properties>
                         <name>${project.name}</name>
-                        <copyright>Copyright © ${project.inceptionYear}-${current.year} Visual Illusions Entertainment
-                        </copyright>
+                        <years>${project.inceptionYear}-${current.year}</years>
+                        <gpl.type>GNU General Public License</gpl.type>
+                        <license.url>http://www.gnu.org/licenses/gpl.html</license.url>
                     </properties>
                     <includes>
                         <include>src/main/java/**</include>

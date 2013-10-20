@@ -1,20 +1,13 @@
-dConomy 3 Core
+dConomy
 ====================
 Multi-Mod Economy Base plugin
 ---------
 
-dConomy3 being designed for Bukkit and CanaryMod.
-
-(C) 2011-2013 Visual Illusions Entertainment
-
-Licensed under the GNU General Public License v3
+dConomy is designed for Bukkit and CanaryMod.
 
 License
 ---------
-dConomy v3.x
-Copyright (C) 2011-2013 Visual Illusions Entertainment
-
-Author: Jason Jones (darkdiplomat) <darkdiplomat@visualillusionsent.net>
+Copyright &copy; 2011-2013 Visual Illusions Entertainment
 
 dConomy is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

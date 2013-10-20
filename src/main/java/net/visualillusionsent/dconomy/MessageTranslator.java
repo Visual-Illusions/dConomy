@@ -26,35 +26,33 @@ import java.io.File;
 import java.io.FileInputStream;
 
 public final class MessageTranslator extends LocaleHelper {
+    private static final String lang_dir = "lang/dConomy3/";
 
     static {
-        if (!new File(dCoBase.lang_dir).exists()) {
-            new File(dCoBase.lang_dir).mkdirs();
+        if (!new File(lang_dir).exists()) {
+            new File(lang_dir).mkdirs();
         }
-        else {
-            try {
-                if (!new File(dCoBase.lang_dir.concat("languages.txt")).exists()) {
-                    moveLang("languages.txt");
-                }
-                else if (!FileUtils.md5SumMatch(MessageTranslator.class.getResourceAsStream("/resources/lang/languages.txt"), new FileInputStream(dCoBase.lang_dir.concat("languages.txt")))) {
-                    moveLang("languages.txt");
-                }
-                if (!new File(dCoBase.lang_dir.concat("en_US.lang")).exists()) {
-                    moveLang("en_US.lang");
-                }
-                else if (!FileUtils.md5SumMatch(MessageTranslator.class.getResourceAsStream("/resources/lang/en_US.lang"), new FileInputStream(dCoBase.lang_dir.concat("en_US.lang")))) {
-                    moveLang("en_US.lang");
-                }
+        try {
+            if (!new File(lang_dir.concat("languages.txt")).exists()) {
+                moveLang("languages.txt");
             }
-            catch (Exception ex) {
-                throw new dConomyInitializationError("Failed to verify and move lang files", ex);
+            else if (!FileUtils.md5SumMatch(dConomy.class.getResourceAsStream("/resources/lang/languages.txt"), new FileInputStream(lang_dir.concat("languages.txt")))) {
+                moveLang("languages.txt");
             }
+            if (!new File(lang_dir.concat("en_US.lang")).exists()) {
+                moveLang("en_US.lang");
+            }
+            else if (!FileUtils.md5SumMatch(dConomy.class.getResourceAsStream("/resources/lang/en_US.lang"), new FileInputStream(lang_dir.concat("en_US.lang")))) {
+                moveLang("en_US.lang");
+            }
+        }
+        catch (Exception ex) {
+            throw new dConomyInitializationException("Failed to verify and move lang files", ex);
         }
     }
 
     MessageTranslator() {
-        super(true, dCoBase.lang_dir, dCoBase.getServerLocale());
-        reloadLangFiles();
+        super(true, lang_dir, dCoBase.getServerLocale());
     }
 
     public final String translate(String key, String locale, Object... args) {
@@ -70,6 +68,6 @@ public final class MessageTranslator extends LocaleHelper {
     }
 
     private static void moveLang(String locale) {
-        FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/languages.txt", dCoBase.lang_dir.concat("languages.txt"));
+        FileUtils.cloneFileFromJar(JarUtils.getJarPath(dCoBase.class), "resources/lang/".concat(locale), lang_dir.concat(locale));
     }
 }

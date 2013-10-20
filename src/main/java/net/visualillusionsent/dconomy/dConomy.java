@@ -28,4 +28,6 @@ public interface dConomy {
     dConomyServer getModServer();
 
     float getReportedVersion();
+
+    long getReportedRevision();
 }
