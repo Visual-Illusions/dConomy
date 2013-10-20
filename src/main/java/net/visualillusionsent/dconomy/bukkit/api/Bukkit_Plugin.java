@@ -22,7 +22,7 @@ import net.visualillusionsent.dconomy.dCoBase;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Bukkit Plugin wrapper for Mod_User implementation
+ * Bukkit Plugin wrapper for {@link dConomyUser} implementation
  *
  * @author darkdiplomat
  */

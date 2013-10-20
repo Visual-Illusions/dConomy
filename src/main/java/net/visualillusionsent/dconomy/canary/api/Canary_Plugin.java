@@ -22,7 +22,7 @@ import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
 
 /**
- * Canary Plugin wrapper for Mod_User implementation
+ * Canary Plugin wrapper for {@link dConomyUser} implementation
  *
  * @author darkdiplomat
  */
