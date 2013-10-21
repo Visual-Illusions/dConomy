@@ -122,7 +122,7 @@ public class Economy_dConomy implements Economy {
     @Override
     public double getBalance(String playerName) {
         try {
-            return WalletAPIListener.getBalance(playerName, true);
+            return WalletAPIListener.walletBalance(playerName, true);
         }
         catch (Exception ex) {
             return -1; // This probably won't happen
@@ -218,7 +218,7 @@ public class Economy_dConomy implements Economy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         try {
-            WalletAPIListener.getBalance(playerName, true);
+            WalletAPIListener.walletBalance(playerName, true);
             return true;
         }
         catch (Exception ex) {

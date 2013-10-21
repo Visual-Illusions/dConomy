@@ -43,13 +43,37 @@ import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLU
  */
 public final class WalletAPIListener {
 
-    public static double getBalance(String userName, boolean forceWallet) throws AccountingException, AccountNotFoundException {
+    /**
+     * Gets the balance of a user's Wallet
+     *
+     * @param userName
+     *         the name of the user
+     * @param forceWallet
+     *         {@code true} to create a new wallet; {@code false} otherwise
+     *
+     * @return wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     *         if the account is non-existant
+     */
+    public static double walletBalance(String userName, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
             return WalletHandler.getWalletByName(userName).getBalance();
         }
         throw new AccountNotFoundException("Wallet", userName);
     }
 
+    /**
+     * Checks if a wallet is locked out
+     *
+     * @param userName
+     *         the name of the user
+     *
+     * @return {@code true} if locked; {@code false} if not
+     *
+     * @throws AccountNotFoundException
+     */
     public static boolean isLocked(String userName) throws AccountNotFoundException {
         if (WalletHandler.verifyAccount(userName)) {
             return WalletHandler.getWalletByName(userName).isLocked();
@@ -57,8 +81,47 @@ public final class WalletAPIListener {
         throw new AccountNotFoundException("Wallet", userName);
     }
 
+    /**
+     * Deposits money into a user's wallet
+     *
+     * @param pluginName
+     *         the name of the plugin making the deposit
+     * @param userName
+     *         the name of the user
+     * @param deposit
+     *         the amount to deposit
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return the new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
     public static double walletDeposit(String pluginName, String userName, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
-        dConomyAddOn addOn = pluginNameToAddOn(pluginName);
+        return walletDeposit(pluginNameToAddOn(pluginName), userName, deposit, forceWallet);
+    }
+
+    /**
+     * Deposits money into a user's wallet
+     *
+     * @param addOn
+     *         the dConomyAddOn instance
+     * @param userName
+     *         the name of the user
+     * @param deposit
+     *         the amount to deposit
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return the new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
+    public static double walletDeposit(dConomyAddOn addOn, String userName, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
             double newBalance = WalletHandler.getWalletByName(userName).deposit(deposit);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_DEPOSIT, deposit));
@@ -67,8 +130,47 @@ public final class WalletAPIListener {
         throw new AccountNotFoundException("Wallet", userName);
     }
 
+    /**
+     * Debits money from a user's wallet
+     *
+     * @param pluginName
+     *         the name of the plugin making the deposit
+     * @param userName
+     *         the name of the user
+     * @param debit
+     *         the amount to debit
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return the new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
     public static double walletDebit(String pluginName, String userName, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
-        dConomyAddOn addOn = pluginNameToAddOn(pluginName);
+        return walletDebit(pluginNameToAddOn(pluginName), userName, debit, forceWallet);
+    }
+
+    /**
+     * Debits money from a user's wallet
+     *
+     * @param addOn
+     *         the dConomyAddOn instance
+     * @param userName
+     *         the name of the user
+     * @param debit
+     *         the amount to debit
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return the new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
+    public static double walletDebit(dConomyAddOn addOn, String userName, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
             double newBalance = WalletHandler.getWalletByName(userName).debit(debit);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_DEBIT, debit));
@@ -77,8 +179,47 @@ public final class WalletAPIListener {
         throw new AccountNotFoundException("Wallet", userName);
     }
 
+    /**
+     * Sets the balance of a user's wallet
+     *
+     * @param pluginName
+     *         the name of the plugin doing the setting
+     * @param userName
+     *         the name of the user
+     * @param set
+     *         the amount to be set
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
     public static double walletSet(String pluginName, String userName, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
-        dConomyAddOn addOn = pluginNameToAddOn(pluginName);
+        return walletSet(pluginNameToAddOn(pluginName), userName, set, forceWallet);
+    }
+
+    /**
+     * Sets the balance of a user's wallet
+     *
+     * @param addOn
+     *         the dConomyAddOn instance
+     * @param userName
+     *         the name of the user
+     * @param set
+     *         the amount to be set
+     * @param forceWallet
+     *         {@code true} to force a new wallet; {@code false} otherwise
+     *
+     * @return new wallet balance
+     *
+     * @throws AccountingException
+     * @throws AccountNotFoundException
+     * @throws InvalidPluginException
+     */
+    public static double walletSet(dConomyAddOn addOn, String userName, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
             double newBalance = WalletHandler.getWalletByName(userName).setBalance(set);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_SET, set));
@@ -87,18 +228,43 @@ public final class WalletAPIListener {
         throw new AccountNotFoundException("Wallet", userName);
     }
 
+    /**
+     * Tests a wallet debit before doing any modifications
+     *
+     * @param userName
+     *         the name of the user who's wallet to test
+     * @param debit
+     *         the amount to test debit
+     *
+     * @throws AccountingException
+     */
     public static void testWalletDebit(String userName, double debit) throws AccountingException {
         if (WalletHandler.verifyAccount(userName)) {
             WalletHandler.getWalletByName(userName).testDebit(debit);
         }
     }
 
-    public static void testWalletDeposit(String userName, double debit) throws AccountingException {
+    /**
+     * Tests a wallet deposit before doing any modifications
+     *
+     * @param userName
+     *         the name of the user who's wallet to test
+     * @param deposit
+     *         the amount to test deposit
+     *
+     * @throws AccountingException
+     */
+    public static void testWalletDeposit(String userName, double deposit) throws AccountingException {
         if (WalletHandler.verifyAccount(userName)) {
-            WalletHandler.getWalletByName(userName).testDeposit(debit);
+            WalletHandler.getWalletByName(userName).testDeposit(deposit);
         }
     }
 
+    /**
+     * Gets the names of known wallet owners
+     *
+     * @return set of owner names
+     */
     public static Set<String> getWalletOwners() {
         return WalletHandler.getWallets().keySet();
     }

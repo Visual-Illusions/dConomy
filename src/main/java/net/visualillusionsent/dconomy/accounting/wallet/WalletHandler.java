@@ -40,7 +40,6 @@ public final class WalletHandler {
     private final ConcurrentHashMap<String, Wallet> wallets;
     private final ServerWallet servwallet;
     private final WalletDataSource source;
-    private static boolean init;
 
     /* Lazy Holder */
     private static class WHLH {
