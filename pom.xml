@@ -79,6 +79,12 @@
             <artifactId>vimcplugin</artifactId>
             <version>${vimcplugin.version}</version>
         </dependency>
+        <!-- For Bukkit Users, We add support for Vault directly (at this time anyways) -->
+        <dependency>
+            <groupId>net.milkbowl</groupId>
+            <artifactId>vault</artifactId>
+            <version>1.2.27</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.name}-${project.version}-b${build.number}</finalName>

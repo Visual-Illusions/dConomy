@@ -17,16 +17,20 @@
  */
 package net.visualillusionsent.dconomy.bukkit;
 
+import net.milkbowl.vault.economy.Economy;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
+import net.visualillusionsent.dconomy.bukkit.api.Economy_dConomy;
 import net.visualillusionsent.dconomy.bukkit.api.account.wallet.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.minecraft.plugin.VisualIllusionsMinecraftPlugin;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -44,6 +48,8 @@ import java.util.logging.Logger;
  */
 public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements dConomy {
     private dCoBase base;
+    private boolean vault_linked = false;
+    private Economy_dConomy eco_dco;
 
     static {
         // Check for VIUtils/JDOM2, download as necessary
@@ -73,6 +79,9 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
         if (base != null) {
             base.cleanUp(); // Clean Up
         }
+        if (vault_linked) {
+            Bukkit.getServicesManager().unregister(Economy.class, eco_dco);
+        }
     }
 
     @Override
@@ -90,6 +99,14 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
             new BukkitConomyCommandExecutor(this);
             // Register WalletTransaction
             dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class, WalletTransaction.class);
+
+            // And try to link Vault
+            if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+                Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
+                eco_dco = new Economy_dConomy(vault);
+                Bukkit.getServicesManager().register(Economy.class, eco_dco, vault, ServicePriority.Normal);
+                vault_linked = true;
+            }
         }
         catch (Exception ex) {
             String reason = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();

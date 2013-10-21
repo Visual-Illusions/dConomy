@@ -19,10 +19,13 @@ package net.visualillusionsent.dconomy.api.account.wallet;
 
 import net.visualillusionsent.dconomy.accounting.AccountNotFoundException;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
+import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.InvalidPluginException;
 import net.visualillusionsent.dconomy.api.dConomyAddOn;
 import net.visualillusionsent.dconomy.dCoBase;
+
+import java.util.Collection;
 
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEBIT;
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEPOSIT;
@@ -55,34 +58,50 @@ public final class WalletAPIListener {
         throw new AccountNotFoundException("Wallet", userName);
     }
 
-    public static void walletDeposit(String pluginName, String userName, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
+    public static double walletDeposit(String pluginName, String userName, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
         dConomyAddOn addOn = pluginNameToAddOn(pluginName);
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
-            WalletHandler.getWalletByName(userName).deposit(deposit);
+            double newBalance = WalletHandler.getWalletByName(userName).deposit(deposit);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_DEPOSIT, deposit));
-            return;
+            return newBalance;
         }
         throw new AccountNotFoundException("Wallet", userName);
     }
 
-    public static void walletDebit(String pluginName, String userName, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
+    public static double walletDebit(String pluginName, String userName, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
         dConomyAddOn addOn = pluginNameToAddOn(pluginName);
         if (WalletHandler.verifyAccount(userName) || forceWallet) {
-            WalletHandler.getWalletByName(userName).debit(debit);
+            double newBalance = WalletHandler.getWalletByName(userName).debit(debit);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_DEBIT, debit));
-            return;
+            return newBalance;
         }
         throw new AccountNotFoundException("Wallet", userName);
     }
 
-    public static void walletSet(String pluginName, String userName, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
+    public static double walletSet(String pluginName, String userName, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException, InvalidPluginException {
         dConomyAddOn addOn = pluginNameToAddOn(pluginName);
-        if (WalletHandler.verifyAccount(pluginName) || forceWallet) {
-            WalletHandler.getWalletByName(userName).setBalance(set);
+        if (WalletHandler.verifyAccount(userName) || forceWallet) {
+            double newBalance = WalletHandler.getWalletByName(userName).setBalance(set);
             dCoBase.getServer().newTransaction(new WalletTransaction(addOn, dCoBase.getServer().getUser(userName), PLUGIN_SET, set));
-            return;
+            return newBalance;
         }
         throw new AccountNotFoundException("Wallet", userName);
+    }
+
+    public static void testWalletDebit(String userName, double debit) throws AccountingException {
+        if (WalletHandler.verifyAccount(userName)) {
+            WalletHandler.getWalletByName(userName).testDebit(debit);
+        }
+    }
+
+    public static void testWalletDeposit(String userName, double debit) throws AccountingException {
+        if (WalletHandler.verifyAccount(userName)) {
+            WalletHandler.getWalletByName(userName).testDeposit(debit);
+        }
+    }
+
+    public static Collection<Wallet> getWallets() {
+        return WalletHandler.getWallets().values();
     }
 
     private static dConomyAddOn pluginNameToAddOn(String pluginName) throws InvalidPluginException {
