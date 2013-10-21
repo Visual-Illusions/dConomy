@@ -15,31 +15,18 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api.account.wallet;
-
-import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.canary.api.account.AccountDepositHook;
+package net.visualillusionsent.dconomy.accounting;
 
 /**
- * Wallet Deposit Hook<br>
- * Plugins should call this Hook to deposit into wallet accounts
+ * Thrown when an Account is not found
  *
  * @author Jason (darkdiplomat)
  */
-public final class WalletDepositHook extends AccountDepositHook {
+public final class AccountNotFoundException extends Exception {
+    private static final long serialVersionUID = 210106102013L;
 
-    /**
-     * Constructs a new WalletDepositHook
-     *
-     * @param caller
-     *         the {@link Plugin} giving money
-     * @param username
-     *         the user's name who is having money deposited
-     * @param deposit
-     *         the amount to be deposited
-     */
-    public WalletDepositHook(Plugin caller, String username, double deposit) {
-        super(caller, username, deposit);
+    public AccountNotFoundException(String accountType, String userName) {
+        super(String.format("'%s' for User: '%s' was not found", accountType, userName));
     }
 
 }

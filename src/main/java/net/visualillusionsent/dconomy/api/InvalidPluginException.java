@@ -15,29 +15,12 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.canary.api.account.wallet;
+package net.visualillusionsent.dconomy.api;
 
-import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.canary.api.account.AccountBalanceHook;
+/** Thrown if a invalid Plugin name was passed to the API and/or a Plugin instance could not be retrieved */
+public final class InvalidPluginException extends Exception {
 
-/**
- * Wallet Balance request Hook<br>
- * Plugins should call this Hook for WalletBalance details
- *
- * @author Jason (darkdiplomat)
- */
-public final class WalletBalanceHook extends AccountBalanceHook {
-
-    /**
-     * Constructs a new WalletBalaceHook
-     *
-     * @param plugin
-     *         the {@link Plugin} requesting balance information
-     * @param username
-     *         the user's name to get balance for
-     */
-    public WalletBalanceHook(Plugin plugin, String username) {
-        super(plugin, username);
+    public InvalidPluginException(String msg) {
+        super(msg);
     }
-
 }

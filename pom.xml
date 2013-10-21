@@ -12,7 +12,7 @@
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
         <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitConomy</bukkit.main.class>
         <vimcplugin.version>1.0.0-SNAPSHOT</vimcplugin.version>
-        <viutils.version>1.2.0</viutils.version>
+        <viutils.version>1.2.1</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
         <version.check.url>http://visualillusionsent.net/minecraft/plugins/</version.check.url>

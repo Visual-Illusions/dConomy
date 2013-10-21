@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
+import net.visualillusionsent.dconomy.api.dConomyAddOn;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.dCoBase;
 import org.bukkit.plugin.Plugin;
@@ -26,7 +27,7 @@ import org.bukkit.plugin.Plugin;
  *
  * @author darkdiplomat
  */
-public final class Bukkit_Plugin implements dConomyUser {
+public final class Bukkit_Plugin implements dConomyAddOn {
 
     private final Plugin plugin;
 

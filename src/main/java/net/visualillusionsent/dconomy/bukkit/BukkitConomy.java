@@ -21,20 +21,17 @@ import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
-import net.visualillusionsent.dconomy.bukkit.api.account.AccountTransactionEvent;
 import net.visualillusionsent.dconomy.bukkit.api.account.wallet.WalletTransactionEvent;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
+import net.visualillusionsent.minecraft.plugin.VisualIllusionsMinecraftPlugin;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPlugin;
 import org.bukkit.Bukkit;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.text.MessageFormat;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
@@ -49,6 +46,7 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
     private dCoBase base;
 
     static {
+        // Check for VIUtils/JDOM2, download as necessary
         Manifest mf = null;
         try {
             mf = new JarFile(BukkitConomy.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getManifest();
@@ -57,33 +55,15 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
             // NullPointerException will happen anyways
         }
         String viutils_version = mf.getMainAttributes().getValue("VIUtils-Version");
+        String vi_url = MessageFormat.format("http://repo.visualillusionsent.net/net/visualillusionsent/viutils/{0}/viutils-{0}.jar", viutils_version);
         String jdom_version = mf.getMainAttributes().getValue("JDOM2-Version");
-        // Check for VIUtils/jdom2, download as necessary
-        File lib = new File("lib/viutils-" + viutils_version + ".jar");
-        if (!lib.exists()) {
-            try {
-                URL website = new URL("http://repo.visualillusionsent.net/net/visualillusionsent/viutils/" + viutils_version + "/viutils-" + viutils_version + ".jar");
-                URLConnection conn = website.openConnection();
-                ReadableByteChannel rbc = Channels.newChannel(conn.getInputStream());
-                FileOutputStream fos = new FileOutputStream(lib);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            }
-            catch (Exception ex) {
-                Bukkit.getLogger().severe("[dConomy] Failed to download VIUtils " + viutils_version);
-            }
+        String jdom_url = MessageFormat.format("http://repo1.maven.org/maven2/org/jdom/jdom2/{0}/jdom2-{0}.jar", jdom_version);
+        try {
+            VisualIllusionsMinecraftPlugin.getLibrary("dConomy", "viutils", viutils_version, new URL(vi_url), Bukkit.getLogger());
+            VisualIllusionsMinecraftPlugin.getLibrary("dConomy", "jdom2", jdom_version, new URL(jdom_url), Bukkit.getLogger());
         }
-        lib = new File("lib/jdom2-" + jdom_version + ".jar");
-        if (!lib.exists()) {
-            try {
-                URL website = new URL("http://repo1.maven.org/maven2/org/jdom/jdom2/" + jdom_version + "/jdom2-" + jdom_version + ".jar");
-                URLConnection conn = website.openConnection();
-                ReadableByteChannel rbc = Channels.newChannel(conn.getInputStream());
-                FileOutputStream fos = new FileOutputStream(lib);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            }
-            catch (Exception ex) {
-                Bukkit.getLogger().severe("[dConomy] Failed to download jdom2 " + jdom_version);
-            }
+        catch (MalformedURLException e) {
+            // the URLs are correct
         }
         //
     }
@@ -109,7 +89,7 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
             // Initialize Command Executor
             new BukkitConomyCommandExecutor(this);
             // Register WalletTransaction
-            dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class.asSubclass(AccountTransactionEvent.class), WalletTransaction.class);
+            dCoBase.getServer().registerTransactionHandler(WalletTransactionEvent.class, WalletTransaction.class);
         }
         catch (Exception ex) {
             String reason = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();

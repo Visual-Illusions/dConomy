@@ -25,7 +25,6 @@ import net.visualillusionsent.dconomy.data.dCoDataSource;
  *
  * @author Jason (darkdiplomat)
  */
-@SuppressWarnings("rawtypes")
 public abstract class Account {
 
     protected final String owner;

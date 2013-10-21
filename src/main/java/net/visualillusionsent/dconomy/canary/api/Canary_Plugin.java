@@ -18,15 +18,15 @@
 package net.visualillusionsent.dconomy.canary.api;
 
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.api.dConomyAddOn;
 import net.visualillusionsent.dconomy.dCoBase;
 
 /**
- * Canary Plugin wrapper for {@link dConomyUser} implementation
+ * Canary Plugin wrapper for {@link dConomyAddOn} implementation
  *
  * @author darkdiplomat
  */
-public final class Canary_Plugin implements dConomyUser {
+public final class Canary_Plugin implements dConomyAddOn {
 
     private final Plugin plugin;
 

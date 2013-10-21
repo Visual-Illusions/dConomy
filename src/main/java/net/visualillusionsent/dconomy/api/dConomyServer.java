@@ -66,4 +66,6 @@ public interface dConomyServer extends dConomyUser {
      *         the Class of that extends AccountTransaction(Hook/Event)
      */
     void unregisterTransactionHandler(Class<? extends TransactionHookEvent> clazz);
+
+    dConomyAddOn getPluginAsAddOn(String pluginName) throws InvalidPluginException;
 }

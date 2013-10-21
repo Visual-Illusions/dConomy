@@ -23,8 +23,11 @@ import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
+import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.dconomy.api.InvalidPluginException;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
+import net.visualillusionsent.dconomy.api.dConomyAddOn;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.CanaryConomy;
@@ -132,6 +135,15 @@ public class Canary_Server implements dConomyServer, dConomyUser {
         if (transactions.containsKey(clazz)) {
             transactions.remove(clazz);
         }
+    }
+
+    @Override
+    public dConomyAddOn getPluginAsAddOn(String pluginName) throws InvalidPluginException {
+        Plugin plugin = Canary.loader().getPlugin(pluginName);
+        if (plugin == null) {
+            throw new InvalidPluginException("Plugin not found");
+        }
+        return new Canary_Plugin(plugin);
     }
 
     /** {@inheritDoc} */

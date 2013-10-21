@@ -143,6 +143,11 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
         }
     }
 
+    @Override
+    public Bukkit_Plugin getPluginAsAddOn(String pluginName) {
+        return new Bukkit_Plugin(Bukkit.getPluginManager().getPlugin(pluginName));
+    }
+
     /** {@inheritDoc} */
     @Override
     public String getUserLocale() {

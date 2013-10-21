@@ -57,11 +57,7 @@ public final class MessageTranslator extends LocaleHelper {
     }
 
     public final String translate(String key, String locale, Object... args) {
-        String toRet = ChatFormat.formatString(localeTranslate(key, locale, args), "$c");
-        if (toRet.contains("$m")) {
-            toRet = toRet.replace("$m", dCoBase.getProperties().getString("money.name"));
-        }
-        return toRet;
+        return ChatFormat.formatString(localeTranslate(key, locale, args), "$c").replace("$m", dCoBase.getMoneyName());
     }
 
     private static void moveLang(String locale) {
