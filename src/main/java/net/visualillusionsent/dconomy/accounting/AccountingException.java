@@ -25,7 +25,7 @@ import net.visualillusionsent.dconomy.dCoBase;
  *
  * @author Jason (darkdiplomat)
  */
-public final class AccountingException extends RuntimeException {
+public final class AccountingException extends Exception {
 
     private final Object[] args;
 

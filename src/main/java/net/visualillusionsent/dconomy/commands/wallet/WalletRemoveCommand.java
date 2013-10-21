@@ -47,7 +47,7 @@ public final class WalletRemoveCommand extends dConomyCommand {
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_REMOVE, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
-            user.error(ae.getMessage());
+            user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }
 }

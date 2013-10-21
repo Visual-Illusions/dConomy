@@ -51,7 +51,7 @@ public final class BukkitConomyAPIListener implements Listener {
                 event.setErrorMessage("Wallet Not Found");
             }
         }
-        catch (AccountingException aex) {
+        catch (Exception aex) {
             dCoBase.warning("Failed to handle Event: '" + event.getEventName() + "' called from Plugin: '" + event.getCaller().getName() + "'. Reason: " + aex.getMessage());
             event.setErrorMessage(aex.getMessage());
         }

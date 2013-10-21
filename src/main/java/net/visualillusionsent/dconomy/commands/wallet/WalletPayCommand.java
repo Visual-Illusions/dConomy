@@ -55,7 +55,7 @@ public final class WalletPayCommand extends dConomyCommand {
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.USER_PAY, Double.parseDouble(args[0])));
         }
         catch (AccountingException ae) {
-            user.error(ae.getMessage());
+            user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }
 }

@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.dCoBase;
@@ -187,6 +188,11 @@ public final class WalletXMLSource implements WalletDataSource {
             catch (IOException ioex) {
                 dCoBase.severe("Input/Output Exception while trying to reload wallet for User:" + account.getOwner());
                 dCoBase.stacktrace(ioex);
+                success = false;
+            }
+            catch (AccountingException aex) {
+                dCoBase.severe("Accounting Exception while trying to reload wallet for User:" + account.getOwner());
+                dCoBase.stacktrace(aex);
                 success = false;
             }
         }

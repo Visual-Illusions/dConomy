@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.accounting.wallet;
 
+import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.dCoBase;
 
 /**
@@ -47,7 +48,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double deposit(double add) {
+    public final double deposit(double add) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
@@ -56,7 +57,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double deposit(String add) {
+    public final double deposit(String add) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.deposit(add);
     }
 
@@ -65,7 +66,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double debit(double remove) {
+    public final double debit(double remove) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
@@ -74,7 +75,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double debit(String remove) {
+    public final double debit(String remove) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.debit(remove);
     }
 
@@ -83,7 +84,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double setBalance(double set) {
+    public final double setBalance(double set) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.setBalance(set);
     }
 
@@ -92,7 +93,7 @@ public final class ServerWallet extends Wallet {
      * Preforms checks on if the SERVER has MAX MONEY ALWAYS
      */
     @Override
-    public final double setBalance(String set) {
+    public final double setBalance(String set) throws AccountingException {
         return maxAlways ? 999999999999999999D : super.setBalance(set);
     }
 

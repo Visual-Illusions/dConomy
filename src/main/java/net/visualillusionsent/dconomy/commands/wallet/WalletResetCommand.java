@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.commands.wallet;
 
+import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
@@ -40,8 +41,13 @@ public final class WalletResetCommand extends dConomyCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        WalletHandler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
-        dCoBase.translateErrorMessageFor(user, "admin.reset.balance", theUser.getName(), "WALLET");
-        dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_RESET, dCoBase.getProperties().getDouble("default.balance")));
+        try {
+            WalletHandler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
+            dCoBase.translateErrorMessageFor(user, "admin.reset.balance", theUser.getName(), "WALLET");
+            dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_RESET, dCoBase.getProperties().getDouble("default.balance")));
+        }
+        catch (AccountingException ae) {
+            user.error(ae.getLocalizedMessage(user.getUserLocale()));
+        }
     }
 }

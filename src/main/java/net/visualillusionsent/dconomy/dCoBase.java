@@ -180,4 +180,8 @@ public final class dCoBase {
     public static long getRevision() {
         return reported_revision;
     }
+
+    public static String getMoneyName() {
+        return $.props.getString("money.name");
+    }
 }

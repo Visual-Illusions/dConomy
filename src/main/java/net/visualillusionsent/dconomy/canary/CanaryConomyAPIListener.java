@@ -51,9 +51,9 @@ public final class CanaryConomyAPIListener implements PluginListener {
                 hook.setErrorMessage("Wallet Not Found");
             }
         }
-        catch (AccountingException aex) {
-            dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + aex.getMessage());
-            hook.setErrorMessage(aex.getMessage());
+        catch (Exception ex) {
+            dCoBase.warning("Failed to handle Hook: '" + hook.getName() + "' called from Plugin: '" + hook.getCaller().getName() + "'. Reason: " + ex.getMessage());
+            hook.setErrorMessage(ex.getMessage());
         }
     }
 

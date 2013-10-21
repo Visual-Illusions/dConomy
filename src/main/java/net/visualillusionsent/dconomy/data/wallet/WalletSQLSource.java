@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.dCoBase;
@@ -56,15 +57,15 @@ public abstract class WalletSQLSource implements WalletDataSource {
             }
             finally {
                 try {
-                    if (rs != null && !rs.isClosed()) {
-                        rs.close();
-                    }
-                    if (ps != null && !ps.isClosed()) {
-                        ps.close();
+                    if (!WalletSQLiteSource.class.isInstance(this)) {
+                        if (rs != null && !rs.isClosed()) {
+                            rs.close();
+                        }
+                        if (ps != null && !ps.isClosed()) {
+                            ps.close();
+                        }
                     }
                 }
-                catch (AbstractMethodError e) {
-                } // SQLite weird stuff
                 catch (Exception e) {
                 }
             }
@@ -147,17 +148,22 @@ public abstract class WalletSQLSource implements WalletDataSource {
                 dCoBase.stacktrace(sqlex);
                 success = false;
             }
+            catch (AccountingException aex) {
+                dCoBase.severe("Accounting Exception while reloading Wallet for: " + wallet.getOwner());
+                dCoBase.stacktrace(aex);
+                success = false;
+            }
             finally {
                 try {
-                    if (rs != null && !rs.isClosed()) {
-                        rs.close();
-                    }
-                    if (ps != null && !ps.isClosed()) {
-                        ps.close();
+                    if (!WalletSQLiteSource.class.isInstance(this)) {
+                        if (rs != null && !rs.isClosed()) {
+                            rs.close();
+                        }
+                        if (ps != null && !ps.isClosed()) {
+                            ps.close();
+                        }
                     }
                 }
-                catch (AbstractMethodError e) {
-                } // SQLite weird stuff
                 catch (Exception e) {
                 }
             }
