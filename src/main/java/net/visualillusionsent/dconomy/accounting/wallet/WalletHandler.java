@@ -38,13 +38,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class WalletHandler {
 
     private final ConcurrentHashMap<String, Wallet> wallets;
-    private static final WalletHandler $;
     private final ServerWallet servwallet;
     private final WalletDataSource source;
     private static boolean init;
 
-    static {
-        $ = new WalletHandler(dCoBase.getDataHandler().getDataSourceType());
+    /* Lazy Holder */
+    private static class WHLH {
+        private static WalletHandler $ = new WalletHandler(dCoBase.getDataHandler().getDataSourceType());
     }
 
     private WalletHandler(DataSourceType type) {
@@ -59,6 +59,7 @@ public final class WalletHandler {
         else {
             source = new WalletXMLSource();
         }
+        source.load();
     }
 
     /**
@@ -71,10 +72,10 @@ public final class WalletHandler {
      */
     public static Wallet getWalletByName(String username) {
         if (username.equals("SERVER")) {
-            return $.servwallet;
+            return WHLH.$.servwallet;
         }
         else if (verifyAccount(username)) {
-            return $.wallets.get(username);
+            return WHLH.$.wallets.get(username);
         }
         return newWallet(username);
     }
@@ -98,7 +99,7 @@ public final class WalletHandler {
      *         the {@link Wallet} to be added
      */
     public static void addWallet(Wallet wallet) {
-        $.wallets.put(wallet.getOwner(), wallet);
+        WHLH.$.wallets.put(wallet.getOwner(), wallet);
     }
 
     /**
@@ -110,7 +111,7 @@ public final class WalletHandler {
      * @return {@code true} if the wallet exists; {@code false} otherwise
      */
     public static boolean verifyAccount(String username) {
-        return $.wallets.containsKey(username);
+        return WHLH.$.wallets.containsKey(username);
     }
 
     /**
@@ -122,7 +123,7 @@ public final class WalletHandler {
      * @return the new {@link Wallet}
      */
     public static Wallet newWallet(String username) {
-        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, $.source);
+        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, WHLH.$.source);
         addWallet(wallet);
         return wallet;
     }
@@ -133,19 +134,15 @@ public final class WalletHandler {
      * @return unmodifiable map of wallets
      */
     public static Map<String, Wallet> getWallets() {
-        return Collections.unmodifiableMap($.wallets);
+        return Collections.unmodifiableMap(WHLH.$.wallets);
     }
 
     /** Initializer method */
     public static void initialize() {
-        if (!init) {
-            $.source.load();
-            init = true;
-        }
     }
 
     /** Cleans up */
     public static void cleanUp() {
-        $.wallets.clear();
+        WHLH.$.wallets.clear();
     }
 }

@@ -19,13 +19,12 @@ package net.visualillusionsent.dconomy.api.account.wallet;
 
 import net.visualillusionsent.dconomy.accounting.AccountNotFoundException;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
-import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.InvalidPluginException;
 import net.visualillusionsent.dconomy.api.dConomyAddOn;
 import net.visualillusionsent.dconomy.dCoBase;
 
-import java.util.Collection;
+import java.util.Set;
 
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEBIT;
 import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEPOSIT;
@@ -100,8 +99,8 @@ public final class WalletAPIListener {
         }
     }
 
-    public static Collection<Wallet> getWallets() {
-        return WalletHandler.getWallets().values();
+    public static Set<String> getWalletOwners() {
+        return WalletHandler.getWallets().keySet();
     }
 
     private static dConomyAddOn pluginNameToAddOn(String pluginName) throws InvalidPluginException {
