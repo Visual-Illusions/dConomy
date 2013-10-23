@@ -18,6 +18,7 @@
 package net.visualillusionsent.dconomy;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
+import net.visualillusionsent.dconomy.api.account.wallet.WalletAPIListener;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.data.DataSourceException;
@@ -61,6 +62,7 @@ public final class dCoBase {
         props = new dCoProperties();
         dat = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
         wh = new WalletHandler(dat.getDataSourceType());
+        WalletAPIListener.setHandler(wh);
         translator = new MessageTranslator();
 
         reported_version = dconomy.getReportedVersion();
