@@ -11,7 +11,7 @@
         <build.number>0-dev</build.number>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
         <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitConomy</bukkit.main.class>
-        <vimcplugin.version>1.0.0-SNAPSHOT</vimcplugin.version>
+        <vimcplugin.version>1.0.0</vimcplugin.version>
         <viutils.version>1.2.1</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
@@ -72,6 +72,11 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
+        <!-- Vault Repository -->
+        <repository>
+            <id>vault-repo</id>
+            <url>http://ci.herocraftonline.com/plugin/repository/everything/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -100,9 +105,9 @@
                     <footer>
                         <![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
                     <links>
-                        <link>http://docs.visualillusionsent.net/VIUtils/1.2.0/</link>
+                        <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0-RC-2/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0-RC-3/</link>
                         <link>http://jd.bukkit.org/rb/apidocs/</link>
                     </links>
                 </configuration>
