@@ -18,7 +18,6 @@
 package net.visualillusionsent.dconomy.canary;
 
 import net.canarymod.Canary;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.canary.api.Canary_Server;
@@ -38,12 +37,12 @@ import java.util.logging.Logger;
 public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
-    private WalletHandler wh;
 
     @Override
     public final void disable() {
-        wh.cleanUp();
-        base.cleanUp();
+        if (base != null) {
+            base.cleanUp();
+        }
     }
 
     @Override
