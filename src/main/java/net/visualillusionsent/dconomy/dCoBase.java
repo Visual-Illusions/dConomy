@@ -173,7 +173,7 @@ public final class dCoBase {
         $ = null;
     }
 
-    public final boolean isNewerThan(float version, long revision) {
+    public static boolean isNewerThan(float version, long revision) {
         if (reported_version > version) {
             return true;
         }
