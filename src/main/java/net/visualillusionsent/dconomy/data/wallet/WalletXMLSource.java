@@ -87,7 +87,7 @@ public final class WalletXMLSource extends WalletDataSource {
                     Element root = doc.getRootElement();
                     List<Element> wallets = root.getChildren();
                     for (Element wallet : wallets) {
-                        new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this);
+                        wallet_handler.addWallet(new UserWallet(wallet.getAttributeValue("owner"), wallet.getAttribute("balance").getDoubleValue(), wallet.getAttribute("lockedOut").getBooleanValue(), this));
                         load++;
                     }
                 }

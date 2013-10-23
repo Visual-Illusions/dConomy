@@ -50,7 +50,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     String name = rs.getString("owner");
                     double balance = rs.getDouble("balance");
                     boolean locked = rs.getBoolean("lockedOut");
-                    new UserWallet(name, balance, locked, this);
+                    wallet_handler.addWallet(new UserWallet(name, balance, locked, this));
                     load++;
                 }
                 dCoBase.info(String.format("Loaded %d Wallets...", load));
