@@ -20,6 +20,7 @@ package net.visualillusionsent.dconomy.data.wallet;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.utils.SystemUtils;
 import org.jdom2.Document;
@@ -34,13 +35,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public final class WalletXMLSource implements WalletDataSource {
+public final class WalletXMLSource extends WalletDataSource {
 
     private final Format xmlform = Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator(SystemUtils.LINE_SEP);
     private final XMLOutputter outputter = new XMLOutputter(xmlform);
     private final SAXBuilder builder = new SAXBuilder();
     private final String wallet_Path = dCoBase.getProperties().getConfigurationDirectory().concat("wallets.xml");
     private FileWriter writer;
+
+    public WalletXMLSource(WalletHandler wallet_handler) {
+        super(wallet_handler);
+    }
 
     @Override
     public final boolean load() {

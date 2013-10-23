@@ -20,6 +20,7 @@ package net.visualillusionsent.dconomy.data.wallet;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
 
 import java.sql.Connection;
@@ -27,9 +28,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class WalletSQLSource implements WalletDataSource {
+public abstract class WalletSQLSource extends WalletDataSource {
     protected Connection conn;
     protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
+
+    public WalletSQLSource(WalletHandler wallet_handler) {
+        super(wallet_handler);
+    }
 
     @Override
     public boolean load() {

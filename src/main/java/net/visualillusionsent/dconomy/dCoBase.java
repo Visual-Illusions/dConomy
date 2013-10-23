@@ -39,10 +39,11 @@ import java.util.logging.Logger;
  */
 public final class dCoBase {
     private final dConomy plugin;
-    private final dCoDataHandler handler;
+    private final dCoDataHandler dat;
     private final dCoProperties props;
     private final Logger logger;
     private final MessageTranslator translator;
+    private final WalletHandler wh;
 
     private static dCoBase $;
     private static dConomyServer server;
@@ -58,7 +59,8 @@ public final class dCoBase {
         this.logger = dconomy.getPluginLogger();
         server = dconomy.getModServer();
         props = new dCoProperties();
-        handler = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
+        dat = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
+        wh = new WalletHandler(dat.getDataSourceType());
         translator = new MessageTranslator();
 
         reported_version = dconomy.getReportedVersion();
@@ -71,7 +73,7 @@ public final class dCoBase {
      * @return {@link dCoDataHandler}
      */
     public static dCoDataHandler getDataHandler() {
-        return $.handler;
+        return $.dat;
     }
 
     /**
@@ -165,8 +167,8 @@ public final class dCoBase {
     }
 
     public final void cleanUp() {
-        WalletHandler.cleanUp();
-        $.handler.cleanUp();
+        $.wh.cleanUp();
+        $.dat.cleanUp();
         if (getDataHandler().getDataSourceType() == DataSourceType.SQLITE) {
             WalletSQLiteSource.cleanUp();
         }
@@ -177,7 +179,7 @@ public final class dCoBase {
         if (reported_version > version) {
             return true;
         }
-        else if (reported_revision > revision) {
+        else if (reported_version == version && reported_revision > revision) {
             return true;
         }
         return false;
@@ -193,5 +195,9 @@ public final class dCoBase {
 
     public static String getMoneyName() {
         return $.props.getString("money.name");
+    }
+
+    public final WalletHandler getWalletHandler() {
+        return wh;
     }
 }

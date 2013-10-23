@@ -24,6 +24,7 @@ import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletMySQLSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.data.wallet.WalletXMLSource;
+import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 
 import java.util.Collections;
 import java.util.Map;
@@ -40,25 +41,26 @@ public final class WalletHandler {
     private final ConcurrentHashMap<String, Wallet> wallets;
     private final ServerWallet servwallet;
     private final WalletDataSource source;
+    private static boolean loaded;
 
-    /* Lazy Holder */
-    private static class WHLH {
-        private static WalletHandler $ = new WalletHandler(dCoBase.getDataHandler().getDataSourceType());
-    }
+    public WalletHandler(DataSourceType type) {
+        if (loaded) {
+            throw new PluginInitializationException("WalletHandler already running");
+        }
 
-    private WalletHandler(DataSourceType type) {
         wallets = new ConcurrentHashMap<String, Wallet>();
         servwallet = new ServerWallet(dCoBase.getProperties().getBooleanValue("server.max.always"));
         if (type == DataSourceType.MYSQL) {
-            source = new WalletMySQLSource();
+            source = new WalletMySQLSource(this);
         }
         else if (type == DataSourceType.SQLITE) {
-            source = new WalletSQLiteSource();
+            source = new WalletSQLiteSource(this);
         }
         else {
-            source = new WalletXMLSource();
+            source = new WalletXMLSource(this);
         }
         source.load();
+        loaded = true;
     }
 
     /**
@@ -69,12 +71,12 @@ public final class WalletHandler {
      *
      * @return the {@link Wallet} for the user, creating a new one if nessary
      */
-    public static Wallet getWalletByName(String username) {
+    public final Wallet getWalletByName(String username) {
         if (username.equals("SERVER")) {
-            return WHLH.$.servwallet;
+            return servwallet;
         }
         else if (verifyAccount(username)) {
-            return WHLH.$.wallets.get(username);
+            return wallets.get(username);
         }
         return newWallet(username);
     }
@@ -87,7 +89,7 @@ public final class WalletHandler {
      *
      * @return the {@link Wallet} for the user if found; {@code null} if not found
      */
-    public static Wallet getWallet(dConomyUser user) {
+    public final Wallet getWallet(dConomyUser user) {
         return getWalletByName(user.getName());
     }
 
@@ -97,8 +99,8 @@ public final class WalletHandler {
      * @param wallet
      *         the {@link Wallet} to be added
      */
-    public static void addWallet(Wallet wallet) {
-        WHLH.$.wallets.put(wallet.getOwner(), wallet);
+    public final void addWallet(Wallet wallet) {
+        wallets.put(wallet.getOwner(), wallet);
     }
 
     /**
@@ -109,8 +111,8 @@ public final class WalletHandler {
      *
      * @return {@code true} if the wallet exists; {@code false} otherwise
      */
-    public static boolean verifyAccount(String username) {
-        return WHLH.$.wallets.containsKey(username);
+    public final boolean verifyAccount(String username) {
+        return wallets.containsKey(username);
     }
 
     /**
@@ -121,8 +123,8 @@ public final class WalletHandler {
      *
      * @return the new {@link Wallet}
      */
-    public static Wallet newWallet(String username) {
-        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, WHLH.$.source);
+    public final Wallet newWallet(String username) {
+        Wallet wallet = new UserWallet(username, dCoBase.getProperties().getDouble("default.balance"), false, source);
         addWallet(wallet);
         return wallet;
     }
@@ -132,16 +134,13 @@ public final class WalletHandler {
      *
      * @return unmodifiable map of wallets
      */
-    public static Map<String, Wallet> getWallets() {
-        return Collections.unmodifiableMap(WHLH.$.wallets);
-    }
-
-    /** Initializer method */
-    public static void initialize() {
+    public final Map<String, Wallet> getWallets() {
+        return Collections.unmodifiableMap(wallets);
     }
 
     /** Cleans up */
-    public static void cleanUp() {
-        WHLH.$.wallets.clear();
+    public final void cleanUp() {
+        wallets.clear();
+        loaded = false;
     }
 }

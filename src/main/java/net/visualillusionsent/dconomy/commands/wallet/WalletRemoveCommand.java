@@ -22,13 +22,12 @@ import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletRemoveCommand extends dConomyCommand {
+public final class WalletRemoveCommand extends WalletCommand {
 
-    public WalletRemoveCommand() {
-        super(2);
+    public WalletRemoveCommand(WalletHandler handler) {
+        super(2, handler);
     }
 
     protected final void execute(dConomyUser user, String[] args) {
@@ -37,12 +36,12 @@ public final class WalletRemoveCommand extends dConomyCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
+        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
         try {
-            WalletHandler.getWalletByName(theUser.getName()).debit(args[0]);
+            handler.getWalletByName(theUser.getName()).debit(args[0]);
             dCoBase.translateErrorMessageFor(user, "admin.remove.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_REMOVE, Double.parseDouble(args[0])));
         }

@@ -38,9 +38,11 @@ import java.util.logging.Logger;
 public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
+    private WalletHandler wh;
 
     @Override
     public final void disable() {
+        wh.cleanUp();
         base.cleanUp();
     }
 
@@ -51,8 +53,6 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
         try {
             // Create dCoBase, initializing properties and such
             base = new dCoBase(this);
-            // Cause Wallets to load
-            WalletHandler.initialize();
             // Initialize Listener
             new CanaryConomyAPIListener(this);
             // Initialize Command Listener
@@ -104,5 +104,9 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
     @Override
     public final boolean debugEnabled() {
         return debug;
+    }
+
+    final dCoBase getBaseInstance() {
+        return base;
     }
 }

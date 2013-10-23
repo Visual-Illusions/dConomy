@@ -18,7 +18,6 @@
 package net.visualillusionsent.dconomy.bukkit;
 
 import net.milkbowl.vault.economy.Economy;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_Server;
@@ -91,8 +90,6 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
         try {
             // Create dCoBase, initializing properties and such
             this.base = new dCoBase(this);
-            // Cause Wallets to load
-            WalletHandler.initialize();
             // Initialize Listener
             new BukkitConomyAPIListener(this);
             // Initialize Command Executor
@@ -144,5 +141,9 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
     @Override
     public boolean debugEnabled() {
         return debug;
+    }
+
+    final dCoBase getBaseInstance() {
+        return base;
     }
 }

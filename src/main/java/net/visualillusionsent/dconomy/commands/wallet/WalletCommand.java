@@ -15,17 +15,21 @@
  * You should have received a copy of the GNU General Public License along with dConomy.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy.data.wallet;
+package net.visualillusionsent.dconomy.commands.wallet;
 
-import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
-import net.visualillusionsent.dconomy.data.dCoDataSource;
+import net.visualillusionsent.dconomy.commands.dConomyCommand;
 
-public abstract class WalletDataSource implements dCoDataSource<Wallet> {
-    final WalletHandler wallet_handler;
+/**
+ * Wallet Command base
+ *
+ * @author Jason (darkdiplomat)
+ */
+abstract class WalletCommand extends dConomyCommand {
+    protected final WalletHandler handler;
 
-    public WalletDataSource(WalletHandler wallet_handler) {
-        this.wallet_handler = wallet_handler;
+    public WalletCommand(int minArgs, WalletHandler handler) {
+        super(minArgs);
+        this.handler = handler;
     }
-
 }

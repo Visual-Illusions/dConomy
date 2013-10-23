@@ -22,13 +22,12 @@ import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletResetCommand extends dConomyCommand {
+public final class WalletResetCommand extends WalletCommand {
 
-    public WalletResetCommand() {
-        super(1);
+    public WalletResetCommand(WalletHandler handler) {
+        super(1, handler);
     }
 
     protected final void execute(dConomyUser user, String[] args) {
@@ -37,12 +36,12 @@ public final class WalletResetCommand extends dConomyCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
+        if (!args[0].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
         try {
-            WalletHandler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
+            handler.getWalletByName(theUser.getName()).setBalance(dCoBase.getProperties().getDouble("default.balance"));
             dCoBase.translateErrorMessageFor(user, "admin.reset.balance", theUser.getName(), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_RESET, dCoBase.getProperties().getDouble("default.balance")));
         }

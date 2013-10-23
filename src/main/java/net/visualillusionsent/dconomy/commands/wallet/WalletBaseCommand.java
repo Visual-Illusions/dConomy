@@ -20,13 +20,12 @@ package net.visualillusionsent.dconomy.commands.wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletBaseCommand extends dConomyCommand {
+public final class WalletBaseCommand extends WalletCommand {
 
-    public WalletBaseCommand() {
-        super(0);
+    public WalletBaseCommand(WalletHandler handler) {
+        super(0, handler);
     }
 
     protected final void execute(dConomyUser user, String[] args) {
@@ -37,11 +36,11 @@ public final class WalletBaseCommand extends dConomyCommand {
                 dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
                 return;
             }
-            if (!args[0].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
+            if (!args[0].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
                 dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
                 return;
             }
-            theWallet = WalletHandler.getWalletByName(theUser.getName());
+            theWallet = handler.getWalletByName(theUser.getName());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", theUser.getName(), "WALLET");
             }
@@ -50,7 +49,7 @@ public final class WalletBaseCommand extends dConomyCommand {
             }
         }
         else {
-            theWallet = WalletHandler.getWalletByName(user.getName());
+            theWallet = handler.getWalletByName(user.getName());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", user.getName(), "WALLET");
             }

@@ -23,13 +23,12 @@ import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAction;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletTransaction;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletPayCommand extends dConomyCommand {
+public final class WalletPayCommand extends WalletCommand {
 
-    public WalletPayCommand() {
-        super(2);
+    public WalletPayCommand(WalletHandler handler) {
+        super(2, handler);
     }
 
     @Override
@@ -39,12 +38,12 @@ public final class WalletPayCommand extends dConomyCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
+        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
             dCoBase.translateErrorMessageFor(user, "error.404.wallet", theUser.getName(), "WALLET");
             return;
         }
-        Wallet userWallet = WalletHandler.getWalletByName(user.getName());
-        Wallet payeeWallet = WalletHandler.getWalletByName(theUser.getName());
+        Wallet userWallet = handler.getWalletByName(user.getName());
+        Wallet payeeWallet = handler.getWalletByName(theUser.getName());
         try {
             userWallet.testDebit(args[0]);
             payeeWallet.testDeposit(args[0]);

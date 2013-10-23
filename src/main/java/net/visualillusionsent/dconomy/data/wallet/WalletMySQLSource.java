@@ -18,6 +18,7 @@
 package net.visualillusionsent.dconomy.data.wallet;
 
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
 
 import java.sql.DriverManager;
@@ -25,6 +26,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public final class WalletMySQLSource extends WalletSQLSource {
+
+    public WalletMySQLSource(WalletHandler wallet_handler) {
+        super(wallet_handler);
+    }
 
     @Override
     public final boolean load() {

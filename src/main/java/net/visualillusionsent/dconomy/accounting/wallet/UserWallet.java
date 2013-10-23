@@ -41,7 +41,6 @@ public final class UserWallet extends Wallet {
      */
     public UserWallet(String owner, double balance, boolean locked, WalletDataSource source) {
         super(owner, balance, locked, source);
-        WalletHandler.addWallet(this);
     }
 
     /** {@inheritDoc} */

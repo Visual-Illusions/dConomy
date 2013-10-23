@@ -17,6 +17,7 @@
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
+import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
 
 import java.sql.DriverManager;
@@ -27,7 +28,8 @@ public final class WalletSQLiteSource extends WalletSQLSource {
     private static WalletSQLiteSource $;
     private final String db_Path = dCoBase.getProperties().getString("sql.database.url");
 
-    public WalletSQLiteSource() {
+    public WalletSQLiteSource(WalletHandler wallet_handler) {
+        super(wallet_handler);
         if ($ == null) {
             $ = this;
         }

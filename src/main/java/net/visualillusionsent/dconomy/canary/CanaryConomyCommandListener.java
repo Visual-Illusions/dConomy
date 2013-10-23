@@ -41,14 +41,14 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
 
     CanaryConomyCommandListener(CanaryConomy dCo) throws CommandDependencyException {
         super(dCo);
-        cmds[0] = new WalletBaseCommand();
-        cmds[1] = new WalletAddCommand();
-        cmds[2] = new WalletPayCommand();
-        cmds[3] = new WalletRemoveCommand();
-        cmds[4] = new WalletSetCommand();
-        cmds[5] = new WalletResetCommand();
-        cmds[6] = new WalletReloadCommand();
-        cmds[7] = new WalletLockCommand();
+        cmds[0] = new WalletBaseCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[1] = new WalletAddCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[2] = new WalletPayCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[3] = new WalletRemoveCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[4] = new WalletSetCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[5] = new WalletResetCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[6] = new WalletReloadCommand(dCo.getBaseInstance().getWalletHandler());
+        cmds[7] = new WalletLockCommand(dCo.getBaseInstance().getWalletHandler());
         Canary.commands().registerCommands(this, dCo, false);
     }
 

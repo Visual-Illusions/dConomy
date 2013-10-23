@@ -20,8 +20,8 @@ package net.visualillusionsent.dconomy.bukkit.api;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
+import net.visualillusionsent.dconomy.accounting.AccountNotFoundException;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
-import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAPIListener;
 import net.visualillusionsent.dconomy.bukkit.BukkitConomy;
 import net.visualillusionsent.dconomy.dCoBase;
@@ -212,7 +212,13 @@ public class Economy_dConomy implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return WalletHandler.verifyAccount(playerName);
+        try {
+            WalletAPIListener.isLocked(playerName);
+            return true;
+        }
+        catch (AccountNotFoundException e) {
+            return false;
+        }
     }
 
     @Override

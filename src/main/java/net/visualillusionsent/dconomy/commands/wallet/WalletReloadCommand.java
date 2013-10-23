@@ -19,13 +19,12 @@ package net.visualillusionsent.dconomy.commands.wallet;
 
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.api.dConomyUser;
-import net.visualillusionsent.dconomy.commands.dConomyCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 
-public final class WalletReloadCommand extends dConomyCommand {
+public final class WalletReloadCommand extends WalletCommand {
 
-    public WalletReloadCommand() {
-        super(1);
+    public WalletReloadCommand(WalletHandler handler) {
+        super(1, handler);
     }
 
     protected final void execute(dConomyUser user, String[] args) {
@@ -34,11 +33,11 @@ public final class WalletReloadCommand extends dConomyCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !WalletHandler.verifyAccount(theUser.getName())) {
+        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        if (WalletHandler.getWalletByName(theUser.getName()).reload()) {
+        if (handler.getWalletByName(theUser.getName()).reload()) {
             dCoBase.translateErrorMessageFor(user, "admin.reload.account.success", theUser.getName(), "WALLET");
         }
         else {
