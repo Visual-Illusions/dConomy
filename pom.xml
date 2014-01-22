@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.visualillusionsent</groupId>
@@ -9,13 +10,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <program.status>BETA</program.status>
         <build.number>0-dev</build.number>
-        <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
-        <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitConomy</bukkit.main.class>
-        <vimcplugin.version>1.0.0</vimcplugin.version>
-        <viutils.version>1.2.1</viutils.version>
+        <canary.main.class>
+            ${project.groupId}.${project.artifactId}.canary.CanaryConomy
+        </canary.main.class>
+        <bukkit.main.class>
+            ${project.groupId}.${project.artifactId}.bukkit.BukkitConomy
+        </bukkit.main.class>
+        <vimcplugin.version>1.1.0-SNAPSHOT</vimcplugin.version>
+        <viutils.version>1.3.0-SNAPSHOT</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <build.number>0-dev</build.number>
-        <version.check.url>http://visualillusionsent.net/minecraft/plugins/</version.check.url>
+        <version.check.url>http://status.visualillusionsent.net/
+        </version.check.url>
         <devs>darkdiplomat</devs>
     </properties>
     <description>Economy base plugin for CanaryMod and Bukkit</description>
@@ -25,17 +31,21 @@
             <url>http://www.gnu.org/licenses/gpl.html</url>
             <comments>
                 dConomy is free software: you can redistribute it and/or modify
-                it under the terms of the GNU General Public License as published by
-                the Free Software Foundation, either version 3 of the License, or
+                it under the terms of the GNU General Public License as
+                published by
+                the Free Software Foundation, either version 3 of the License,
+                or
                 (at your option) any later version.
 
-                dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-                without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                dConomy is distributed in the hope that it will be useful, but
+                WITHOUT ANY WARRANTY;
+                without even the implied warranty of MERCHANTABILITY or FITNESS
+                FOR A PARTICULAR PURPOSE.
                 See the GNU General Public License for more details.
             </comments>
         </license>
     </licenses>
-    <url>http://wiki.visualillusionsent.net/dConomy</url>
+    <url>http://wiki.visualillusionsent.net/view/dConomy</url>
     <inceptionYear>2011</inceptionYear>
     <organization>
         <name>Visual Illusions Entertainment</name>
@@ -44,7 +54,9 @@
     <scm>
         <url>https://github.com/Visual-Illusions/dConomy</url>
         <connection>GitHub</connection>
-        <developerConnection>scm:git:git@github.com:Visual-Illusions/dConomy.git</developerConnection>
+        <developerConnection>
+            scm:git:git@github.com:Visual-Illusions/dConomy.git
+        </developerConnection>
     </scm>
     <issueManagement>
         <url>http://github.com/Visual-Illusions/dConomy/issues</url>
@@ -56,26 +68,21 @@
     </ciManagement>
     <distributionManagement>
         <repository>
-            <id>vi-repo</id>
-            <url>ftp://repo.visualillusionsent.net/</url>
+            <id>vi-repo2</id>
+            <url>http://repo2.visualillusionsent.net/repository/public/</url>
         </repository>
     </distributionManagement>
     <repositories>
         <repository>
-            <id>vi-repo</id>
+            <id>vi-repo2</id>
             <name>Visual Illusions Repository</name>
-            <url>http://repo.visualillusionsent.net/</url>
-            <releases>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <url>http://repo2.visualillusionsent.net/</url>
         </repository>
         <!-- Vault Repository -->
         <repository>
             <id>vault-repo</id>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything/</url>
+            <url>http://ci.herocraftonline.com/plugin/repository/everything/
+            </url>
         </repository>
     </repositories>
     <dependencies>
@@ -92,7 +99,8 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>${project.name}-${project.version}-b${build.number}</finalName>
+        <finalName>${project.name}-${project.version}-b${build.number}
+        </finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -105,9 +113,13 @@
                     <footer>
                         <![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
                     <links>
-                        <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
+                        <link>
+                            http://docs.visualillusionsent.net/VIUtils/${viutils.version}/
+                        </link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0-RC-3/</link>
+                        <link>
+                            http://docs.visualillusionsent.net/CanaryLib/1.0-RC-3/
+                        </link>
                         <link>http://jd.bukkit.org/rb/apidocs/</link>
                     </links>
                 </configuration>
@@ -190,7 +202,8 @@
                         </replace>
                         <replace>
                             <token>{copyright.years}</token>
-                            <value>${project.inceptionYear}-${current.year}</value>
+                            <value>${project.inceptionYear}-${current.year}
+                            </value>
                         </replace>
                         <replace>
                             <token>{name}</token>
@@ -235,9 +248,12 @@
                             <Vendor>Visual Illusions Entertainment</Vendor>
                             <Built-By>${user.name}</Built-By>
                             <Build-Time>${maven.build.timestamp}</Build-Time>
-                            <VIUtils-Version>${viutils.version}</VIUtils-Version>
+                            <VIUtils-Version>${viutils.version}
+                            </VIUtils-Version>
                             <JDOM2-Version>${jdom2.version}</JDOM2-Version>
-                            <Class-Path>../lib/viutils-${viutils.version}.jar ../lib/jdom2-${jdom2.version}.jar
+                            <Class-Path>
+                                ../lib/viutils-${viutils.version}.jar
+                                ../lib/jdom2-${jdom2.version}.jar
                             </Class-Path>
                         </manifestEntries>
                     </archive>
@@ -272,7 +288,8 @@
                         <name>${project.name}</name>
                         <years>${project.inceptionYear}-${current.year}</years>
                         <gpl.type>GNU General Public License</gpl.type>
-                        <license.url>http://www.gnu.org/licenses/gpl.html</license.url>
+                        <license.url>http://www.gnu.org/licenses/gpl.html
+                        </license.url>
                     </properties>
                     <includes>
                         <include>src/main/java/**</include>
@@ -294,17 +311,22 @@
                             <artifactSet>
                                 <includes>
                                     <!-- Only need to shade the VIMCPlugin stuff -->
-                                    <include>net.visualillusionsent:vimcplugin</include>
+                                    <include>net.visualillusionsent:vimcplugin
+                                    </include>
                                 </includes>
                             </artifactSet>
                             <filters>
                                 <filter>
-                                    <artifact>net.visualillusionsent:vimcplugin</artifact>
+                                    <artifact>
+                                        net.visualillusionsent:vimcplugin
+                                    </artifact>
                                     <includes>
                                         <!-- Always include the license stuff -->
                                         <include>META-INF/license/**</include>
                                         <!-- Always include base VIMCPlugin stuff -->
-                                        <include>net/visualillusionsent/minecraft/plugin/**</include>
+                                        <include>
+                                            net/visualillusionsent/minecraft/plugin/**
+                                        </include>
                                     </includes>
                                     <excludes>
                                         <!-- Don't Exclude Bukkit/Canary
@@ -312,7 +334,9 @@
                                         <exclude>net/visualillusionsent/minecraft/plugin/bukkit/**</exclude>
                                         -->
                                         <!-- Spout is unused at this time -->
-                                        <exclude>net/visualillusionsent/minecraft/plugin/spout/**</exclude>
+                                        <exclude>
+                                            net/visualillusionsent/minecraft/plugin/spout/**
+                                        </exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -320,17 +344,29 @@
                             <relocations>
                                 <!-- Relocate base VIMCPlugin stuff to base of plugin -->
                                 <relocation>
-                                    <pattern>net.visualillusionsent.minecraft.plugin</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                    <pattern>
+                                        net.visualillusionsent.minecraft.plugin
+                                    </pattern>
+                                    <shadedPattern>
+                                        ${project.groupId}.${project.artifactId}
+                                    </shadedPattern>
                                 </relocation>
                                 <!-- Canary -->
                                 <relocation>
-                                    <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.canary</shadedPattern>
+                                    <pattern>
+                                        net.visualillusionsent.minecraft.plugin.canary
+                                    </pattern>
+                                    <shadedPattern>
+                                        ${project.groupId}.${project.artifactId}.canary
+                                    </shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>net.visualillusionsent.minecraft.plugin.bukkit</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.bukkit</shadedPattern>
+                                    <pattern>
+                                        net.visualillusionsent.minecraft.plugin.bukkit
+                                    </pattern>
+                                    <shadedPattern>
+                                        ${project.groupId}.${project.artifactId}.bukkit
+                                    </shadedPattern>
                                 </relocation>
                                 <!-- don't need Spout at this time
                                 <relocation>
@@ -344,13 +380,5 @@
                 </executions>
             </plugin>
         </plugins>
-        <extensions>
-            <!-- FTP Extension to upload to repo.visualillusionsent.net -->
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>2.5</version>
-            </extension>
-        </extensions>
     </build>
 </project>

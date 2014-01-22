@@ -1,7 +1,7 @@
 /*
  * This file is part of dConomy.
  *
- * Copyright © 2011-2013 Visual Illusions Entertainment
+ * Copyright © 2011-2014 Visual Illusions Entertainment
  *
  * dConomy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.dConomy;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -66,10 +65,10 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
         catch (Exception ex) {
             String reason = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();
             if (debug) { // Only stack trace if debugging
-                getLogman().log(Level.SEVERE, "dConomy failed to start. Reason: ".concat(reason), ex);
+                getLogman().error("dConomy failed to start. Reason: ".concat(reason), ex);
             }
             else {
-                getLogman().severe("dConomy failed to start. Reason: ".concat(reason));
+                getLogman().error("dConomy failed to start. Reason: ".concat(reason));
             }
         }
         // And its a failure!
@@ -78,7 +77,7 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
 
     @Override
     public Logger getPluginLogger() {
-        return this.getLogman();
+        return logger;
     }
 
     @Override
@@ -86,18 +85,18 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
         return new Canary_Server(Canary.getServer(), this);
     }
 
+    @Override
+    public float getReportedVersion() {
+        return Float.valueOf(getVersion().substring(0, getVersion().lastIndexOf('.')));
+    }
+
+    @Override
+    public long getReportedRevision() {
+        return Long.valueOf(getVersion().substring(getVersion().lastIndexOf('.') + 1, getVersion().length()));
+    }
+
     public static dCoBase getdCoBase() {
         return base;
-    }
-
-    @Override
-    public final float getReportedVersion() {
-        return Float.valueOf(getMajorMinor());
-    }
-
-    @Override
-    public final long getReportedRevision() {
-        return Long.valueOf(getRevision());
     }
 
     @Override

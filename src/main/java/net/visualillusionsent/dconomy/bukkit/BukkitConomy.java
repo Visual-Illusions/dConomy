@@ -1,7 +1,7 @@
 /*
  * This file is part of dConomy.
  *
- * Copyright © 2011-2013 Visual Illusions Entertainment
+ * Copyright © 2011-2014 Visual Illusions Entertainment
  *
  * dConomy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,12 +130,12 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
 
     @Override
     public float getReportedVersion() {
-        return Float.valueOf(getMajorMinor());
+        return Float.valueOf(getVersion().substring(0, getVersion().lastIndexOf('.')));
     }
 
     @Override
-    public final long getReportedRevision() {
-        return Long.valueOf(getRevision());
+    public long getReportedRevision() {
+        return Long.valueOf(getVersion().substring(getVersion().lastIndexOf('.') + 1, getVersion().length()));
     }
 
     @Override

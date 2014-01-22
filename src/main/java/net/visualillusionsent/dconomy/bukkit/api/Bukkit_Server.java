@@ -1,7 +1,7 @@
 /*
  * This file is part of dConomy.
  *
- * Copyright © 2011-2013 Visual Illusions Entertainment
+ * Copyright © 2011-2014 Visual Illusions Entertainment
  *
  * dConomy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
  */
 package net.visualillusionsent.dconomy.bukkit.api;
 
-import net.canarymod.logger.Logman;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
 import net.visualillusionsent.dconomy.api.dConomyServer;
@@ -112,7 +111,7 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
                     break;
                 }
                 catch (Exception ex) {
-                    ((Logman) getServerLogger()).logStacktrace("Exception occured while calling AccountTransactionEvent", ex);
+                    getServerLogger().log(Level.WARNING, "Exception occured while calling AccountTransactionEvent", ex);
                 }
             }
         }

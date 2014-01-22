@@ -1,7 +1,7 @@
 /*
  * This file is part of dConomy.
  *
- * Copyright © 2011-2013 Visual Illusions Entertainment
+ * Copyright © 2011-2014 Visual Illusions Entertainment
  *
  * dConomy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@ import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.logger.CanaryLevel;
-import net.canarymod.logger.Logman;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.dconomy.api.InvalidPluginException;
 import net.visualillusionsent.dconomy.api.TransactionHookEvent;
@@ -77,7 +75,8 @@ public class Canary_Server implements dConomyServer, dConomyUser {
     /** {@inheritDoc} */
     @Override
     public final Logger getServerLogger() {
-        return dCo.getLogman();
+        //return dCo.getLogman();
+        return null;
     }
 
     /** {@inheritDoc} */
@@ -95,13 +94,13 @@ public class Canary_Server implements dConomyServer, dConomyUser {
     /** {@inheritDoc} */
     @Override
     public void error(String message) {
-        getServerLogger().log(CanaryLevel.SERVERMESSAGE, message);
+        Canary.getServer().message(message);
     }
 
     /** {@inheritDoc} */
     @Override
     public void message(String message) {
-        getServerLogger().log(CanaryLevel.NOTICE, message);
+        Canary.getServer().notice(message);
     }
 
     /** {@inheritDoc} */
@@ -115,7 +114,7 @@ public class Canary_Server implements dConomyServer, dConomyUser {
                     break;
                 }
                 catch (Exception ex) {
-                    ((Logman) getServerLogger()).logStacktrace("Exception occurred while calling AccountTransactionHook", ex);
+                    //getServerLogger().error("Exception occurred while calling AccountTransactionHook", ex);
                 }
             }
         }
