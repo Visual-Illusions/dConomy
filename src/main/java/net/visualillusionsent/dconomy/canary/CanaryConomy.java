@@ -92,7 +92,7 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
 
     @Override
     public long getReportedRevision() {
-        return Long.valueOf(getVersion().substring(getVersion().lastIndexOf('.') + 1, getVersion().length()));
+        return Long.valueOf(getVersion().replace("-SNAPSHOT", "").substring(getVersion().lastIndexOf('.') + 1, getVersion().length()));
     }
 
     public static dCoBase getdCoBase() {

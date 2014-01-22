@@ -4,24 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>dconomy</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0-SNAPSHOT</version>
     <name>dConomy</name>
+    <url>http://wiki.visualillusionsent.net/view/dConomy</url>
+    <inceptionYear>2011</inceptionYear>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <program.status>BETA</program.status>
-        <build.number>0-dev</build.number>
-        <canary.main.class>
-            ${project.groupId}.${project.artifactId}.canary.CanaryConomy
-        </canary.main.class>
-        <bukkit.main.class>
-            ${project.groupId}.${project.artifactId}.bukkit.BukkitConomy
-        </bukkit.main.class>
+        <build.number>0</build.number>
+        <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
+        <bukkit.main.class>${project.groupId}.${project.artifactId}.bukkit.BukkitConomy</bukkit.main.class>
         <vimcplugin.version>1.1.0-SNAPSHOT</vimcplugin.version>
-        <viutils.version>1.3.0-SNAPSHOT</viutils.version>
+        <viutils.version>1.3.0</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
-        <build.number>0-dev</build.number>
-        <version.check.url>http://status.visualillusionsent.net/
-        </version.check.url>
+        <vault.version>1.2.30</vault.version>
+        <build.number>0</build.number>
+        <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
     </properties>
     <description>Economy base plugin for CanaryMod and Bukkit</description>
@@ -45,8 +42,6 @@
             </comments>
         </license>
     </licenses>
-    <url>http://wiki.visualillusionsent.net/view/dConomy</url>
-    <inceptionYear>2011</inceptionYear>
     <organization>
         <name>Visual Illusions Entertainment</name>
         <url>http://visualillusionsent.net</url>
@@ -81,8 +76,7 @@
         <!-- Vault Repository -->
         <repository>
             <id>vault-repo</id>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything/
-            </url>
+            <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
         </repository>
     </repositories>
     <dependencies>
@@ -93,14 +87,13 @@
         </dependency>
         <!-- For Bukkit Users, We add support for Vault directly (at this time anyways) -->
         <dependency>
-            <groupId>net.milkbowl</groupId>
-            <artifactId>vault</artifactId>
-            <version>1.2.27</version>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>${vault.version}</version>
         </dependency>
     </dependencies>
     <build>
-        <finalName>${project.name}-${project.version}-b${build.number}
-        </finalName>
+        <finalName>${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -181,12 +174,8 @@
                             <value>${project.issueManagement.url}</value>
                         </replacement>
                         <replace>
-                            <token>{version.check.url}</token>
-                            <value>${version.check.url}</value>
-                        </replace>
-                        <replace>
-                            <token>{program.status}</token>
-                            <value>${program.status}</value>
+                            <token>{status.url}</token>
+                            <value>${status.url}</value>
                         </replace>
                         <replace>
                             <token>{build}</token>
@@ -202,8 +191,7 @@
                         </replace>
                         <replace>
                             <token>{copyright.years}</token>
-                            <value>${project.inceptionYear}-${current.year}
-                            </value>
+                            <value>${project.inceptionYear}-${current.year}</value>
                         </replace>
                         <replace>
                             <token>{name}</token>
