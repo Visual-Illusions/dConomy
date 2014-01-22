@@ -135,7 +135,8 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
 
     @Override
     public long getReportedRevision() {
-        return Long.valueOf(getVersion().substring(getVersion().lastIndexOf('.') + 1, getVersion().length()));
+        String temp = getVersion().replace("-SNAPSHOT", "");
+        return Long.valueOf(temp.substring(temp.lastIndexOf('.') + 1, temp.length()));
     }
 
     @Override
