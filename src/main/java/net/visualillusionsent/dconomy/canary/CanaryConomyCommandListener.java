@@ -8,11 +8,11 @@
  * the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
- * dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with dConomy.
+ * You should have received a copy of the GNU General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
 package net.visualillusionsent.dconomy.canary;
@@ -22,6 +22,8 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
+import net.canarymod.commandsys.TabComplete;
+import net.visualillusionsent.dconomy.TabCompleter;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.api.Canary_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
@@ -35,6 +37,8 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
+
+import java.util.List;
 
 public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPluginInformationCommand {
     private final dConomyCommand[] cmds = new dConomyCommand[8];
@@ -63,7 +67,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
     @Command(aliases = { "wallet" },
             description = "Wallet Base",
             permissions = { "dconomy.wallet" },
-            toolTip = "/wallet [subcommand] [args]")
+            toolTip = "/wallet [subcommand] [args]",
+            tabCompleteMethod = "walletTabComplete"
+    )
     public final void walletBase(MessageReceiver msgrec, String[] args) {
         if (!cmds[0].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet [subcommand] [args]");
@@ -145,6 +151,11 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         if (!cmds[7].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet lock <yes|no> <user>");
         }
+    }
+
+    @TabComplete
+    public final List<String> walletTabComplete(MessageReceiver msgrec, String[] args) {
+        return TabCompleter.match(getUser(msgrec), args);
     }
 
     private dConomyUser getUser(MessageReceiver msgrec) {

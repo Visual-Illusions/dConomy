@@ -8,11 +8,11 @@
  * the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
- * dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with dConomy.
+ * You should have received a copy of the GNU General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
 package net.visualillusionsent.dconomy.bukkit;
@@ -60,7 +60,7 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
             // NullPointerException will happen anyways
         }
         String viutils_version = mf.getMainAttributes().getValue("VIUtils-Version");
-        String vi_url = MessageFormat.format("http://repo.visualillusionsent.net/net/visualillusionsent/viutils/{0}/viutils-{0}.jar", viutils_version);
+        String vi_url = MessageFormat.format("http://repo2.visualillusionsent.net/repository/public/net/visualillusionsent/viutils/{0}/viutils-{0}.jar", viutils_version);
         String jdom_version = mf.getMainAttributes().getValue("JDOM2-Version");
         String jdom_url = MessageFormat.format("http://repo1.maven.org/maven2/org/jdom/jdom2/{0}/jdom2-{0}.jar", jdom_version);
         try {
@@ -86,7 +86,6 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
     @Override
     public final void onEnable() {
         super.onEnable();
-
         try {
             // Create dCoBase, initializing properties and such
             this.base = new dCoBase(this);
@@ -130,12 +129,12 @@ public final class BukkitConomy extends VisualIllusionsBukkitPlugin implements d
 
     @Override
     public float getReportedVersion() {
-        return Float.valueOf(getVersion().substring(0, getVersion().lastIndexOf('.')));
+        return Float.valueOf(getPluginVersion().substring(0, getPluginVersion().lastIndexOf('.')));
     }
 
     @Override
     public long getReportedRevision() {
-        String temp = getVersion().replace("-SNAPSHOT", "");
+        String temp = getPluginVersion().replace("-SNAPSHOT", "");
         return Long.valueOf(temp.substring(temp.lastIndexOf('.') + 1, temp.length()));
     }
 

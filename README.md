@@ -7,7 +7,7 @@ dConomy is designed for Bukkit and CanaryMod.
 
 License
 ---------
-Copyright &copy; 2011-2013 Visual Illusions Entertainment
+Copyright &copy; 2011-2014 Visual Illusions Entertainment
 
 dConomy is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -8,11 +8,11 @@
  * the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
- * dConomy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with dConomy.
+ * You should have received a copy of the GNU General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
 package net.visualillusionsent.dconomy.bukkit.api;
@@ -29,6 +29,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +69,18 @@ public final class Bukkit_Server implements dConomyServer, dConomyUser {
             }
         }
         return null;
+    }
+
+    @Override
+    public final String[] getUserNames() {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Player player : serv.getOnlinePlayers()) {
+            names.add(player.getName());
+        }
+        for (OfflinePlayer off : serv.getOfflinePlayers()) {
+            names.add(off.getName());
+        }
+        return names.toArray(new String[names.size()]);
     }
 
     /** {@inheritDoc} */
