@@ -43,7 +43,7 @@ public final class dCoBase {
     private final dCoDataHandler dat;
     private final dCoProperties props;
     private final Logger logger;
-    private final MessageTranslator translator;
+    private final dConomyTranslator translator;
     private final WalletHandler wh;
 
     private static dCoBase $;
@@ -63,7 +63,7 @@ public final class dCoBase {
         dat = new dCoDataHandler(DataSourceType.valueOf(getProperties().getString("datasource").toUpperCase()));
         wh = new WalletHandler(dat.getDataSourceType());
         WalletAPIListener.setHandler(wh);
-        translator = new MessageTranslator();
+        translator = new dConomyTranslator(dconomy);
 
         reported_version = dconomy.getReportedVersion();
         reported_revision = dconomy.getReportedRevision();
@@ -98,6 +98,10 @@ public final class dCoBase {
 
     public static String getServerLocale() {
         return $.props.getString("server.locale");
+    }
+
+    static boolean updateLang() {
+        return $.props.getBooleanValue("update.lang");
     }
 
     /**
