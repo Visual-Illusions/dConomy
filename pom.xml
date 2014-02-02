@@ -25,6 +25,20 @@
         <name>Visual Illusions Entertainment</name>
         <url>http://visualillusionsent.net</url>
     </organization>
+    <developers>
+        <developer>
+            <id>darkdiplomat</id>
+            <name>Jason</name>
+            <email>darkdiplomat@visualillusionsent.net</email>
+            <url>http://wiki.visualillusionsent.net/view/Darkdiplomat</url>
+            <organization>Visual Illusions Entertainment</organization>
+            <organizationUrl>http://visualillusionsent.net</organizationUrl>
+            <roles>
+                <role>project manager</role>
+                <role>lead developer</role>
+            </roles>
+        </developer>
+    </developers>
     <licenses>
         <license>
             <name>GNU General Public License v3</name>
@@ -280,7 +294,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>jnks${build.number}-universal</shadedClassifierName>
+                                    <shadedClassifierName>${build.number}-universal</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -374,7 +388,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>jnks${build.number}-bukkit</shadedClassifierName>
+                                    <shadedClassifierName>${build.number}-bukkit</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -473,7 +487,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>jnks${build.number}-canary</shadedClassifierName>
+                                    <shadedClassifierName>${build.number}-canary</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
