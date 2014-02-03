@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU General Public License along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.dconomy;
+package net.visualillusionsent.dconomy.commands.wallet;
 
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.CommandTabCompleteUtil;
 
 import java.util.Iterator;
@@ -28,10 +29,11 @@ import java.util.regex.Pattern;
 /**
  * @author Jason (darkdiplomat)
  */
-public class TabCompleter extends CommandTabCompleteUtil {
+public class WalletTabComplete extends CommandTabCompleteUtil {
     private static final String[] walletSubsA = new String[]{ "pay", "add", "remove", "set", "reload", "reset", "lock" };
-    private static final Matcher matchA = Pattern.compile("(reload|reset)").matcher(""),
-            matchB = Pattern.compile("(pay|add|remove|set|lock)").matcher("");
+    private static final Matcher subUser1 = Pattern.compile("(reload|reset)").matcher(""),
+            matchA = Pattern.compile("(add|remove|set|reload|reset|lock)").matcher(""),
+            subUser2 = Pattern.compile("(pay|add|remove|set|lock)").matcher("");
 
     public static List<String> match(dConomyUser user, String[] args) {
         if (args.length == 1) {
@@ -42,14 +44,14 @@ public class TabCompleter extends CommandTabCompleteUtil {
                 if (ret.equals("pay") && !user.hasPermission("dconomy.wallet.pay")) {
                     preRetItr.remove();
                 }
-                else if (!user.hasPermission("dconomy.admin.wallet.".concat(ret))) {
+                else if (matchA.reset(ret).matches() && !user.hasPermission("dconomy.admin.wallet.".concat(ret))) {
                     preRetItr.remove();
                 }
             }
             return preRet;
         }
-        else if ((args.length == 2 && matchA.reset(args[0]).matches())
-                || (args.length == 3 && matchB.reset(args[0]).matches())) {
+        else if ((args.length == 2 && subUser1.reset(args[0]).matches())
+                || (args.length == 3 && subUser2.reset(args[0]).matches())) {
             return matchTo(args, dCoBase.getServer().getUserNames());
         }
         return null;

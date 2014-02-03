@@ -28,6 +28,6 @@ public final class dConomyTranslator extends MessageTranslator {
     }
 
     public final String translate(String key, String locale, Object... args) {
-        return ChatFormat.formatString(localeTranslate(key, locale, args), "$c").replace("$m", dCoBase.getMoneyName());
+        return ChatFormat.formatString(localeTranslate(key, locale, args), "~").replace("$m", dCoBase.getMoneyName());
     }
 }

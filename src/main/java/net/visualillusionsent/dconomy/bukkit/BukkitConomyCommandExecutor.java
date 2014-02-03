@@ -34,7 +34,6 @@
  */
 package net.visualillusionsent.dconomy.bukkit;
 
-import net.visualillusionsent.dconomy.TabCompleter;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.bukkit.api.Bukkit_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
@@ -46,6 +45,7 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletReloadCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletTabComplete;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.bukkit.VisualIllusionsBukkitPluginInformationCommand;
 import org.bukkit.ChatColor;
@@ -132,6 +132,6 @@ public class BukkitConomyCommandExecutor extends VisualIllusionsBukkitPluginInfo
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
         dConomyUser user = sender instanceof Player ? new Bukkit_User((Player) sender) : (dConomyUser) dCoBase.getServer();
-        return TabCompleter.match(user, args);
+        return WalletTabComplete.match(user, args);
     }
 }

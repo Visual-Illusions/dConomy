@@ -23,7 +23,6 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.TabComplete;
-import net.visualillusionsent.dconomy.TabCompleter;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.api.Canary_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
@@ -35,6 +34,7 @@ import net.visualillusionsent.dconomy.commands.wallet.WalletReloadCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
 import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
+import net.visualillusionsent.dconomy.commands.wallet.WalletTabComplete;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 
@@ -155,7 +155,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
 
     @TabComplete
     public final List<String> walletTabComplete(MessageReceiver msgrec, String[] args) {
-        return TabCompleter.match(getUser(msgrec), args);
+        return WalletTabComplete.match(getUser(msgrec), args);
     }
 
     private dConomyUser getUser(MessageReceiver msgrec) {
