@@ -33,7 +33,7 @@ public class WalletTabComplete extends CommandTabCompleteUtil {
     private static final String[] walletSubsA = new String[]{ "pay", "add", "remove", "set", "reload", "reset", "lock" };
     private static final Matcher subUser1 = Pattern.compile("(reload|reset)").matcher(""),
             matchA = Pattern.compile("(add|remove|set|reload|reset|lock)").matcher(""),
-            subUser2 = Pattern.compile("(pay|add|remove|set|lock)").matcher("");
+            subUser2 = Pattern.compile("(add|remove|set|lock)").matcher("");
 
     public static List<String> match(dConomyUser user, String[] args) {
         if (args.length == 1) {
@@ -50,8 +50,9 @@ public class WalletTabComplete extends CommandTabCompleteUtil {
             }
             return preRet;
         }
-        else if ((args.length == 2 && subUser1.reset(args[0]).matches())
-                || (args.length == 3 && subUser2.reset(args[0]).matches())) {
+        else if ((args.length == 2 && subUser1.reset(args[0]).matches() && user.hasPermission("dconomy.admin.wallet.".concat(args[0])))
+                || (args.length == 3 && ((subUser2.reset(args[0]).matches() && user.hasPermission("dconom.admin.wallet.".concat(args[0])))
+                || (args[0].equals("pay") && user.hasPermission("dconomy.wallet.pay"))))) {
             return matchTo(args, dCoBase.getServer().getUserNames());
         }
         return null;
