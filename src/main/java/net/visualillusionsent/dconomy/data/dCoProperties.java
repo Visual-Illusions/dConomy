@@ -112,6 +112,9 @@ public final class dCoProperties {
         propsFile.getString("server.locale", "en_US");
         propsFile.setComments("server.locale", "The default language (CanaryMod server players will see messages in their locale, this will only effect the console output)");
 
+        propsFile.getBoolean("update.lang", true);
+        propsFile.setComments("update.lang", "Whether to auto-update lang files");
+        
         propsFile.save();
     }
 }
