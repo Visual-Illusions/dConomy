@@ -41,11 +41,11 @@ import java.util.logging.Logger;
 public class Economy_dConomy implements Economy {
     private static final Logger log = Logger.getLogger("Minecraft");
     private final String name = "dConomy ";
-    private Plugin plugin; // The Vault plugin reference
+    private Plugin vault; // The Vault plugin reference
     protected BukkitConomy economy; // The dConomy reference
 
     public Economy_dConomy(Plugin plugin) {
-        this.plugin = plugin;
+        this.vault = plugin;
         //Bukkit.getServer().getPluginManager().registerEvents(new EconomyServerListener(this), plugin); // This would most likely fail if we tried implementing it inside of dConomy itself
 
         if (economy == null) {

@@ -401,7 +401,7 @@
                         <configuration>
                             <!-- Don't include Canary specific things in a Bukkit Jar -->
                             <excludes>
-                                <exclude>net/visualillusionsent/realms/canary/</exclude>
+                                <exclude>net/visualillusionsent/dconomy/canary/</exclude>
                                 <exclude>Canary.inf</exclude>
                             </excludes>
                             <archive>
@@ -500,7 +500,7 @@
                         <configuration>
                             <!-- Don't include Bukkit specific things in a Canary Jar -->
                             <excludes>
-                                <exclude>net/visualillusionsent/realms/bukkit/</exclude>
+                                <exclude>net/visualillusionsent/dconomy/bukkit/</exclude>
                                 <exclude>plugin.yml</exclude>
                             </excludes>
                             <archive>
