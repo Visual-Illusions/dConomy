@@ -282,16 +282,6 @@
                                             <pattern>net.visualillusionsent.minecraft.plugin</pattern>
                                             <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
                                         </relocation>
-                                        <!-- Canary -->
-                                        <relocation>
-                                            <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}.canary</shadedPattern>
-                                        </relocation>
-                                        <!-- Bukkit -->
-                                        <relocation>
-                                            <pattern>net.visualillusionsent.minecraft.plugin.bukkit</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}.bukkit</shadedPattern>
-                                        </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
                                     <shadedClassifierName>${build.number}-universal</shadedClassifierName>
@@ -381,10 +371,6 @@
                                         <relocation>
                                             <pattern>net.visualillusionsent.minecraft.plugin</pattern>
                                             <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
-                                        </relocation>
-                                        <relocation>
-                                            <pattern>net.visualillusionsent.minecraft.plugin.bukkit</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}.bukkit</shadedPattern>
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
@@ -480,10 +466,6 @@
                                         <relocation>
                                             <pattern>net.visualillusionsent.minecraft.plugin</pattern>
                                             <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
-                                        </relocation>
-                                        <relocation>
-                                            <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}.canary</shadedPattern>
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
