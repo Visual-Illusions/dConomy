@@ -2,18 +2,28 @@
  * This file is part of dConomy.
  *
  * Copyright © 2011-2014 Visual Illusions Entertainment
+ * All rights reserved.
  *
- * dConomy is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ *     1. Redistributions of source code must retain the above copyright notice,
+ *        this list of conditions and the following disclaimer.
  *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see http://www.gnu.org/licenses/gpl.html.
+ *     2. Redistributions in binary form must reproduce the above copyright notice,
+ *        this list of conditions and the following disclaimer in the documentation
+ *        and/or other materials provided with the distribution.
+ *
+ *     3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse
+ *        or promote products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.visualillusionsent.dconomy.data.wallet;
 
@@ -48,6 +58,9 @@ public abstract class WalletSQLSource extends WalletDataSource {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     String name = rs.getString("owner");
+
+                    //TODO UUID
+
                     double balance = rs.getDouble("balance");
                     boolean locked = rs.getBoolean("lockedOut");
                     wallet_handler.addWallet(new UserWallet(name, balance, locked, this));
@@ -82,12 +95,12 @@ public abstract class WalletSQLSource extends WalletDataSource {
     public boolean saveAccount(Wallet wallet) {
         boolean success = true;
         synchronized (lock) {
-            dCoBase.debug("Saving Wallet for: ".concat(wallet.getOwner()));
+            dCoBase.debug("Saving Wallet for: ".concat(wallet.getOwner().toString()));
             PreparedStatement ps = null;
             ResultSet rs = null;
             try {
                 ps = conn.prepareStatement("SELECT * FROM `" + wallet_table + "` WHERE `owner`=?");
-                ps.setString(1, wallet.getOwner());
+                ps.setString(1, wallet.getOwner().toString());
                 rs = ps.executeQuery();
                 boolean found = rs.next();
                 if (found) {
@@ -95,13 +108,13 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     ps = conn.prepareStatement("UPDATE `" + wallet_table + "` SET `balance`=?, `lockedOut`=? WHERE `owner`=?");
                     ps.setDouble(1, wallet.getBalance());
                     ps.setInt(2, wallet.isLocked() ? 1 : 0);
-                    ps.setString(3, wallet.getOwner());
+                    ps.setString(3, wallet.getOwner().toString());
                     ps.execute();
                 }
                 else {
                     ps.close();
                     ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`,`lockedOut`) VALUES(?,?,?)");
-                    ps.setString(1, wallet.getOwner());
+                    ps.setString(1, wallet.getOwner().toString());
                     ps.setInt(2, wallet.isLocked() ? 1 : 0);
                     ps.setDouble(3, wallet.getBalance());
                     ps.execute();
@@ -135,18 +148,18 @@ public abstract class WalletSQLSource extends WalletDataSource {
     public boolean reloadAccount(Wallet wallet) {
         synchronized (lock) {
             boolean success = true;
-            dCoBase.debug("Reloading Wallet for: ".concat(wallet.getOwner()));
+            dCoBase.debug("Reloading Wallet for: ".concat(wallet.getOwner().toString()));
             PreparedStatement ps = null;
             ResultSet rs = null;
             try {
                 ps = conn.prepareStatement("SELECT * FROM `" + wallet_table + "` WHERE `owner`=?");
-                ps.setString(1, wallet.getOwner());
+                ps.setString(1, wallet.getOwner().toString());
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     wallet.setBalance(rs.getDouble("balance"));
                     wallet.setLockOut(rs.getBoolean("lockedOut"));
                 }
-                dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner()));
+                dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner().toString()));
             }
             catch (SQLException sqlex) {
                 dCoBase.severe("SQL Exception while reloading Wallet for: " + wallet.getOwner());

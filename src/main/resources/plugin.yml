@@ -1,6 +1,6 @@
 ﻿# {name} - Bukkit Plugin configuration file
 # Copyright © {copyright.years} Visual Illusions Entertainment
-# Licensed under the {gpl.type}
+# Licensed under the {license}
 name: {name}
 version: {plugin.version}
 main: {bukkit.main.class}

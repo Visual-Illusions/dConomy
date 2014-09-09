@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <name>dConomy</name>
-    <description>Economy base plugin for CanaryMod and Bukkit</description>
+    <description>Economy base plugin for Canary and Bukkit</description>
     <url>http://wiki.visualillusionsent.net/view/dConomy</url>
     <inceptionYear>2011</inceptionYear>
     <groupId>net.visualillusionsent</groupId>
@@ -41,17 +41,10 @@
     </developers>
     <licenses>
         <license>
-            <name>GNU General Public License v3</name>
-            <url>http://www.gnu.org/licenses/gpl.html</url>
+            <name>BSD 3-Clause License</name>
+            <url>http://opensource.org/licenses/BSD-3-Clause</url>
             <comments>
-                dConomy is free software: you can redistribute it and/or modify
-                it under the terms of the GNU General Public License as published by
-                the Free Software Foundation, either version 3 of the License, or
-                (at your option) any later version.
 
-                This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-                without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-                See the GNU General Public License for more details.
             </comments>
         </license>
     </licenses>
@@ -116,7 +109,7 @@
                     <links>
                         <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0-RC-4-SNAPSHOT/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0.0/</link>
                         <link>http://jd.bukkit.org/rb/apidocs/</link>
                     </links>
                 </configuration>
@@ -217,8 +210,7 @@
                     <properties>
                         <name>${project.name}</name>
                         <years>${project.inceptionYear}-${current.year}</years>
-                        <gpl.type>GNU General Public License</gpl.type>
-                        <license.url>http://www.gnu.org/licenses/gpl.html</license.url>
+                        <license>BSD 3-Clause License</license>
                     </properties>
                     <includes>
                         <include>src/main/java/**</include>

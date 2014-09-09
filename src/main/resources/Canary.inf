@@ -1,6 +1,6 @@
 ;# {name} - Canary Plugin Configuration File
 ;# Copyright © {copyright.years} Visual Illusions Entertainment
-;# Licensed under the {gpl.type}
+;# Licensed under the  {license}
 
 name={name}
 main-class={canary.main.class}
