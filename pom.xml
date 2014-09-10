@@ -122,7 +122,7 @@
             <plugin>
                 <groupId>com.google.code.maven-replacer-plugin</groupId>
                 <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
+                <version>1.5.1</version>
                 <executions>
                     <execution>
                         <phase>prepare-package</phase>
@@ -157,6 +157,10 @@
                         <replace>
                             <token>{canary.main.class}</token>
                             <value>${canary.main.class}</value>
+                        </replace>
+                        <replace>
+                            <token>{license}</token>
+                            <value>BSD 3-Clause License</value>
                         </replace>
                     </replacements>
                     <regex>false</regex>
