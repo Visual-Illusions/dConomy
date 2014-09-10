@@ -32,11 +32,13 @@ import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.minecraft.plugin.util.Tools;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public abstract class WalletSQLSource extends WalletDataSource {
     protected Connection conn;
@@ -57,23 +59,28 @@ public abstract class WalletSQLSource extends WalletDataSource {
                 ps = conn.prepareStatement("SELECT * FROM `" + wallet_table + "`");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    String name = rs.getString("owner");
-
-                    //TODO UUID
+                    String owner = rs.getString("owner");
+                    UUID ownerUUID;
+                    if (Tools.isUserName(owner)) {
+                        ownerUUID = dCoBase.getServer().getUUIDFromName(owner);
+                        if (ownerUUID == null) {
+                            ownerUUID = UUID.nameUUIDFromBytes("OfflinePlayer:".concat(owner).getBytes());
+                        }
+                    } else {
+                        ownerUUID = UUID.fromString(owner);
+                    }
 
                     double balance = rs.getDouble("balance");
                     boolean locked = rs.getBoolean("lockedOut");
-                    wallet_handler.addWallet(new UserWallet(name, balance, locked, this));
+                    wallet_handler.addWallet(new UserWallet(ownerUUID, balance, locked, this));
                     load++;
                 }
                 dCoBase.info(String.format("Loaded %d Wallets...", load));
-            }
-            catch (SQLException sqlex) {
+            } catch (SQLException sqlex) {
                 dCoBase.severe("SQL Exception while parsing Wallets table...");
                 dCoBase.stacktrace(sqlex);
                 success = false;
-            }
-            finally {
+            } finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -83,8 +90,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
         }
@@ -110,8 +116,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     ps.setInt(2, wallet.isLocked() ? 1 : 0);
                     ps.setString(3, wallet.getOwner().toString());
                     ps.execute();
-                }
-                else {
+                } else {
                     ps.close();
                     ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`,`lockedOut`) VALUES(?,?,?)");
                     ps.setString(1, wallet.getOwner().toString());
@@ -120,12 +125,10 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     ps.execute();
                 }
                 dCoBase.debug("Wallet saved!");
-            }
-            catch (SQLException sqlex) {
+            } catch (SQLException sqlex) {
                 dCoBase.severe("Failed to save Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(sqlex);
-            }
-            finally {
+            } finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -135,8 +138,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // Not worried about exception with closing
                 }
             }
@@ -160,18 +162,15 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     wallet.setLockOut(rs.getBoolean("lockedOut"));
                 }
                 dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner().toString()));
-            }
-            catch (SQLException sqlex) {
+            } catch (SQLException sqlex) {
                 dCoBase.severe("SQL Exception while reloading Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(sqlex);
                 success = false;
-            }
-            catch (AccountingException aex) {
+            } catch (AccountingException aex) {
                 dCoBase.severe("Accounting Exception while reloading Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(aex);
                 success = false;
-            }
-            finally {
+            } finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -181,8 +180,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
             return success;

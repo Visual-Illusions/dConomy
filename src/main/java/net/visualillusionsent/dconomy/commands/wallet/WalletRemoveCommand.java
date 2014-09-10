@@ -46,16 +46,15 @@ public final class WalletRemoveCommand extends WalletCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+        if (!handler.verifyAccount(theUser.getUUID())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
         try {
-            handler.getWalletByName(theUser.getName()).debit(args[0]);
+            handler.getWalletByUUID(theUser.getUUID()).debit(args[0]);
             dCoBase.translateErrorMessageFor(user, "admin.remove.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_REMOVE, Double.parseDouble(args[0])));
-        }
-        catch (AccountingException ae) {
+        } catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

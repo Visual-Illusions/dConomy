@@ -45,44 +45,59 @@ public final class Canary_Plugin implements dConomyAddOn {
     /**
      * Constructs a new Canary_Plugin wrapper
      *
-     * @param plugin
-     *         the {@link Plugin} to wrap
+     * @param plugin the {@link Plugin} to wrap
      */
     public Canary_Plugin(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getName() {
         return plugin.getName();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final UUID getUUID() {
         return UUID.nameUUIDFromBytes("DCONOMY_ADDON_PLUGIN:".concat(getName()).getBytes());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void error(String message) {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void message(String message) {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasPermission(String perm) {
         return true;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUserLocale() {
         return dCoBase.getServerLocale();
+    }
+
+    public final boolean isOnline() {
+        return false;
     }
 }

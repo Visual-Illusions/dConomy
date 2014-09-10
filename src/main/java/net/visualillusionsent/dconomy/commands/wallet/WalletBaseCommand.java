@@ -46,24 +46,21 @@ public final class WalletBaseCommand extends WalletCommand {
                 dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
                 return;
             }
-            if (!args[0].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+            if (!handler.verifyAccount(theUser.getUUID())) {
                 dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
                 return;
             }
-            theWallet = handler.getWalletByName(theUser.getName());
+            theWallet = handler.getWalletByUUID(theUser.getUUID());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", theUser.getName(), "WALLET");
-            }
-            else {
+            } else {
                 dCoBase.translateMessageFor(user, "account.balance.other", theUser.getName(), theWallet.getBalance(), "WALLET");
             }
-        }
-        else {
-            theWallet = handler.getWalletByName(user.getName());
+        } else {
+            theWallet = handler.getWalletByUUID(user.getUUID());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", user.getName(), "WALLET");
-            }
-            else {
+            } else {
                 dCoBase.translateErrorMessageFor(user, "account.balance", theWallet.getBalance(), "WALLET");
             }
         }

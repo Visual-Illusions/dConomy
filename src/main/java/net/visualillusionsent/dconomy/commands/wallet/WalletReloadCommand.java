@@ -43,14 +43,13 @@ public final class WalletReloadCommand extends WalletCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+        if (!handler.verifyAccount(theUser.getUUID())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
-        if (handler.getWalletByName(theUser.getName()).reload()) {
+        if (handler.getWalletByUUID(theUser.getUUID()).reload()) {
             dCoBase.translateErrorMessageFor(user, "admin.reload.account.success", theUser.getName(), "WALLET");
-        }
-        else {
+        } else {
             dCoBase.translateErrorMessageFor(user, "admin.reload.account.fail", theUser.getName(), "WALLET");
         }
     }

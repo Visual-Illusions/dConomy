@@ -48,12 +48,12 @@ public final class WalletPayCommand extends WalletCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+        if (!handler.verifyAccount(theUser.getUUID())) {
             dCoBase.translateErrorMessageFor(user, "error.404.wallet", theUser.getName(), "WALLET");
             return;
         }
-        Wallet userWallet = handler.getWalletByName(user.getName());
-        Wallet payeeWallet = handler.getWalletByName(theUser.getName());
+        Wallet userWallet = handler.getWalletByUUID(user.getUUID());
+        Wallet payeeWallet = handler.getWalletByUUID(theUser.getUUID());
         try {
             userWallet.testDebit(args[0]);
             payeeWallet.testDeposit(args[0]);
@@ -62,8 +62,7 @@ public final class WalletPayCommand extends WalletCommand {
             dCoBase.translateMessageFor(user, "paid.user", theUser.getName(), Double.parseDouble(args[0]));
             dCoBase.translateMessageFor(theUser, "got.paid", user.getName(), Double.parseDouble(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.USER_PAY, Double.parseDouble(args[0])));
-        }
-        catch (AccountingException ae) {
+        } catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

@@ -44,16 +44,15 @@ public final class WalletLockCommand extends WalletCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+        if (!handler.verifyAccount(theUser.getUUID())) {
             dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
             return;
         }
         boolean locked = BooleanUtils.parseBoolean(args[0]);
-        handler.getWalletByName(theUser.getName()).setLockOut(locked);
+        handler.getWalletByUUID(theUser.getUUID()).setLockOut(locked);
         if (locked) {
             dCoBase.translateMessageFor(user, "admin.account.locked", theUser.getName(), "WALLET");
-        }
-        else {
+        } else {
             dCoBase.translateMessageFor(user, "admin.account.unlocked", theUser.getName(), "WALLET");
         }
     }

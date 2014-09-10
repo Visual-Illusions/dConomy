@@ -45,56 +45,68 @@ public final class Canary_User implements dConomyUser {
     /**
      * Constructs a new Canary_User
      *
-     * @param player
-     *         the {@link PlayerReference} to wrap
+     * @param player the {@link PlayerReference} to wrap
      */
     public Canary_User(PlayerReference player) {
         this.player = player;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getName() {
         return player.getName();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public final UUID getUUID() { return player.getUUID(); }
+    public final UUID getUUID() {
+        return player.getUUID();
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean hasPermission(String perm) {
         return player.hasPermission(perm);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void error(String message) {
-        if(player.isOnline()) {
-            ((Player)player).notice(message);
+        if (player.isOnline()) {
+            ((Player) player).notice(message);
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void message(String message) {
-        if(player.isOnline()) {
+        if (player.isOnline()) {
             ((Player) player).message(message);
         }
     }
 
     @Override
     public String getUserLocale() {
-        if(player.isOnline()) {
+        if (player.isOnline()) {
             return ((Player) player).getLocale();
-        }
-        else {
+        } else {
             return "en_US";
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Canary_User) {
@@ -103,9 +115,15 @@ public final class Canary_User implements dConomyUser {
         return obj == player;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int hashCode() {
         return player.hashCode();
+    }
+
+    public final boolean isOnline() {
+        return player.isOnline();
     }
 }

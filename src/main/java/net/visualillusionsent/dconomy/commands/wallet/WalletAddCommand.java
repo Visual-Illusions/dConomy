@@ -46,18 +46,17 @@ public final class WalletAddCommand extends WalletCommand {
             dCoBase.translateErrorMessageFor(user, "error.404.user", args[1]);
             return;
         }
-        if (!args[1].toUpperCase().equals("SERVER") && !handler.verifyAccount(theUser.getName())) {
+        if (!handler.verifyAccount(theUser.getUUID())) {
             if (!(args.length > 2) || !args[2].equals("-force")) {
                 dCoBase.translateErrorMessageFor(user, "error.404.account", theUser.getName(), "WALLET");
                 return;
             }
         }
         try {
-            handler.getWalletByName(theUser.getName()).deposit(args[0]);
+            handler.getWalletByUUID(theUser.getUUID()).deposit(args[0]);
             dCoBase.translateErrorMessageFor(user, "admin.add.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_ADD, Double.parseDouble(args[0])));
-        }
-        catch (AccountingException ae) {
+        } catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

@@ -28,12 +28,14 @@
 package net.visualillusionsent.dconomy.canary;
 
 import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.motd.MOTDKey;
 import net.canarymod.motd.MessageOfTheDayListener;
 import net.visualillusionsent.dconomy.accounting.AccountNotFoundException;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.api.account.wallet.WalletAPIListener;
+import net.visualillusionsent.dconomy.api.dConomyServer;
 
 import java.text.MessageFormat;
 
@@ -51,12 +53,13 @@ public final class CanaryConomyMOTDListener implements MessageOfTheDayListener {
     @MOTDKey(key = "{wallet.balance}")
     public String wallet_balance(MessageReceiver msgrec) {
         try {
-            return MessageFormat.format("{0,number,0.00}", WalletAPIListener.walletBalance(msgrec.getName(), msgrec.hasPermission("dconomy.wallet.base")));
-        }
-        catch (AccountingException e) {
+            if (msgrec instanceof Player) {
+                return MessageFormat.format("{0,number,0.00}", WalletAPIListener.walletBalance(((Player) msgrec).getUUID(), msgrec.hasPermission("dconomy.wallet.base")));
+            }
+            return MessageFormat.format("{0,number,0.00}", WalletAPIListener.walletBalance(dConomyServer.SERVERUUID, msgrec.hasPermission("dconomy.wallet.base")));
+        } catch (AccountingException e) {
             return "no wallet access";
-        }
-        catch (AccountNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             return "no wallet access";
         }
     }
