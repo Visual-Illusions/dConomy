@@ -246,7 +246,7 @@
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
                                     <shadedArtifactId>dConomy</shadedArtifactId>
-                                    <shadedClassifierName>universal</shadedClassifierName>
+                                    <shadedClassifierName>universal${build.number}</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -339,7 +339,7 @@
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
                                     <shadedArtifactId>dConomy</shadedArtifactId>
-                                    <shadedClassifierName>canary</shadedClassifierName>
+                                    <shadedClassifierName>canary${build.number}</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
