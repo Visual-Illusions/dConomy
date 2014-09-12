@@ -17,7 +17,15 @@
         <jdom2.version>2.0.5</jdom2.version>
         <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
+        <license>BSD 3-Clause License</license>
+        <plugin.version>${project.version}</plugin.version>
+        <copyright.years>${project.inceptionYear}-${current.year}</copyright.years>
         <build.number/>
+        <!-- Jar Signing -->
+        <keystore.path/>
+        <keystore.alias/>
+        <keystore.pass/>
+        <keystore.key.pass/>
     </properties>
     <organization>
         <name>Visual Illusions Entertainment</name>
@@ -54,11 +62,11 @@
         </developerConnection>
     </scm>
     <issueManagement>
-        <url>http://github.com/Visual-Illusions/dConomy/issues</url>
+        <url>https://github.com/Visual-Illusions/dConomy/issues</url>
         <system>GitHub Issues Tracker</system>
     </issueManagement>
     <ciManagement>
-        <url>http://ci.visualillusionsent.net/job/dConomy</url>
+        <url>https://ci.visualillusionsent.net/job/dConomy</url>
         <system>Jenkins</system>
     </ciManagement>
     <distributionManagement>
@@ -82,6 +90,19 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>dConomy-${project.version}${build.number}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <!-- CanaryMod -->
+                    <include>*.inf</include>
+                    <!-- All other files -->
+                    <include>resources/**</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -117,54 +138,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- Update Plugin/Mod Description Files -->
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <!-- CanaryMod -->
-                        <include>target/**/*.inf</include>
-                        <!-- Other files -->
-                        <include>target/**/*.cfg</include>
-                        <include>target/**/*.txt</include>
-                        <include>target/**/*.lang</include>
-                        <include>target/**/*.readme</include>
-                    </includes>
-                    <replacements>
-                        <replacement>
-                            <token>{plugin.version}</token>
-                            <value>${project.version}</value>
-                        </replacement>
-                        <replace>
-                            <token>{copyright.years}</token>
-                            <value>${project.inceptionYear}-${current.year}</value>
-                        </replace>
-                        <replace>
-                            <token>{name}</token>
-                            <value>${project.name}</value>
-                        </replace>
-                        <replace>
-                            <token>{canary.main.class}</token>
-                            <value>${canary.main.class}</value>
-                        </replace>
-                        <replace>
-                            <token>{license}</token>
-                            <value>BSD 3-Clause License</value>
-                        </replace>
-                    </replacements>
-                    <regex>false</regex>
-                </configuration>
             </plugin>
             <!-- License Header -->
             <plugin>
@@ -242,13 +215,12 @@
                                             <includes>
                                                 <!-- Always include the license stuff -->
                                                 <include>META-INF/license/**</include>
+                                                <!-- Always include the Root certificate -->
+                                                <include>META-INF/certificates/**</include>
                                                 <!-- Always include base VIMCPlugin stuff -->
                                                 <include>net/visualillusionsent/minecraft/plugin/**</include>
                                             </includes>
-                                            <excludes>
-                                                <!-- Spout is unused in this artifact -->
-                                                <exclude>net/visualillusionsent/minecraft/plugin/bukkit/**</exclude>
-                                            </excludes>
+                                            <!-- Not excluding anything as it may be used at a later time -->
                                         </filter>
                                     </filters>
                                     <!-- Relocate the classes to appropriate packages -->
@@ -260,7 +232,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>${build.number}-universal</shadedClassifierName>
+                                    <shadedClassifierName>universal</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -331,6 +303,8 @@
                                             <includes>
                                                 <!-- Always include the license stuff -->
                                                 <include>META-INF/license/**</include>
+                                                <!-- Always include the Root certificate -->
+                                                <include>META-INF/certificates/**</include>
                                                 <!-- Always include base VIMCPlugin stuff -->
                                                 <include>net/visualillusionsent/minecraft/plugin/**</include>
                                             </includes>
@@ -350,7 +324,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>${build.number}-canary</shadedClassifierName>
+                                    <shadedClassifierName>canary</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -392,6 +366,49 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>sign-jar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jarsigner-plugin</artifactId>
+                        <version>1.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign</id>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>verify</id>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <keystore>${keystore.path}</keystore>
+                            <alias>${keystore.alias}</alias>
+                            <storepass>${keystore.pass}</storepass>
+                            <keypass>${keystore.key.pass}</keypass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>-jnks${BUILD_NUMBER}</build.number>
+            </properties>
         </profile>
     </profiles>
 </project>
