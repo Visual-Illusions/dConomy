@@ -45,7 +45,8 @@ public final class Canary_User implements dConomyUser {
     /**
      * Constructs a new Canary_User
      *
-     * @param player the {@link PlayerReference} to wrap
+     * @param player
+     *         the {@link PlayerReference} to wrap
      */
     public Canary_User(PlayerReference player) {
         this.player = player;
@@ -99,7 +100,8 @@ public final class Canary_User implements dConomyUser {
     public String getUserLocale() {
         if (player.isOnline()) {
             return ((Player) player).getLocale();
-        } else {
+        }
+        else {
             return "en_US";
         }
     }

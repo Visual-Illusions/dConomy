@@ -140,7 +140,8 @@ public class Canary_Server implements dConomyServer, dConomyUser {
                     AccountTransactionHook hook = clazz.getConstructor(transactions.get(clazz)).newInstance(transaction);
                     Canary.hooks().callHook(hook);
                     break;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     //getServerLogger().error("Exception occurred while calling AccountTransactionHook", ex);
                 }
             }

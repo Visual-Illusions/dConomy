@@ -46,20 +46,22 @@ public abstract class dConomyCommand {
         if (cmdArgs.length < minArgs) {
             caller.error("error.args");
             return false;
-        } else {
+        }
+        else {
             execute(caller, cmdArgs);
             return true;
         }
     }
 
     private String[] adjustedArgs(String[] args) {
-        if (args.length == 0 || (args.length == 1 && !args[0].toLowerCase().equals("dconomy"))) {
-            return args;
+        if (args.length <= 1) {
+            return new String[0];
         }
         String[] toRet = new String[args.length - 1];
         try {
             System.arraycopy(args, 1, toRet, 0, toRet.length);
-        } catch (IndexOutOfBoundsException ioobe) {
+        }
+        catch (IndexOutOfBoundsException ioobe) {
             return new String[0];
         }
         return toRet;

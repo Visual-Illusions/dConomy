@@ -124,7 +124,7 @@ public final class dCoProperties {
 
         propsFile.getBoolean("update.lang", true);
         propsFile.setComments("update.lang", "Whether to auto-update lang files");
-        
+
         propsFile.save();
     }
 }

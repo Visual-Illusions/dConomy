@@ -31,8 +31,6 @@ import net.visualillusionsent.dconomy.accounting.AccountingException;
 import net.visualillusionsent.dconomy.api.dConomyServer;
 import net.visualillusionsent.dconomy.dCoBase;
 
-import java.util.UUID;
-
 /**
  * Server Wallet container
  *
@@ -122,7 +120,9 @@ public final class ServerWallet extends Wallet {
         dCoBase.getProperties().setServerAccountLock(locked);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean reload() {
         this.balance = dCoBase.getProperties().getDouble("server.balance");

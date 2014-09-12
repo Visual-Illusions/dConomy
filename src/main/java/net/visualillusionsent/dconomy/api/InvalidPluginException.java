@@ -27,7 +27,9 @@
  */
 package net.visualillusionsent.dconomy.api;
 
-/** Thrown if a invalid Plugin name was passed to the API and/or a Plugin instance could not be retrieved */
+/**
+ * Thrown if a invalid Plugin name was passed to the API and/or a Plugin instance could not be retrieved
+ */
 public final class InvalidPluginException extends Exception {
 
     public InvalidPluginException(String msg) {

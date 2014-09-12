@@ -78,7 +78,9 @@ public abstract class Wallet extends Account {
         testDebit(this.testArgumentString(remove));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void testDeposit(double add) throws AccountingException {
         if (locked) {
@@ -98,7 +100,9 @@ public abstract class Wallet extends Account {
         return locked;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Wallet) {
@@ -110,7 +114,9 @@ public abstract class Wallet extends Account {
         return false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int hashCode() {
         int hash = 7;
@@ -119,7 +125,9 @@ public abstract class Wallet extends Account {
         return hash;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
         return String.format("Wallet[Owner: %s Balance: %.2f IsLocked: %b]", owner, balance, locked);

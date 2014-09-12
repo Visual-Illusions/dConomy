@@ -48,7 +48,9 @@ public final class WalletTransactionHook extends AccountTransactionHook {
         super(action);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final WalletTransaction getTransaction() {
         return (WalletTransaction) action;

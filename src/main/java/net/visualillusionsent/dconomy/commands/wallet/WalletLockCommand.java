@@ -52,7 +52,8 @@ public final class WalletLockCommand extends WalletCommand {
         handler.getWalletByUUID(theUser.getUUID()).setLockOut(locked);
         if (locked) {
             dCoBase.translateMessageFor(user, "admin.account.locked", theUser.getName(), "WALLET");
-        } else {
+        }
+        else {
             dCoBase.translateMessageFor(user, "admin.account.unlocked", theUser.getName(), "WALLET");
         }
     }

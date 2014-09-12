@@ -54,7 +54,8 @@ public final class WalletRemoveCommand extends WalletCommand {
             handler.getWalletByUUID(theUser.getUUID()).debit(args[0]);
             dCoBase.translateErrorMessageFor(user, "admin.remove.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_REMOVE, Double.parseDouble(args[0])));
-        } catch (AccountingException ae) {
+        }
+        catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

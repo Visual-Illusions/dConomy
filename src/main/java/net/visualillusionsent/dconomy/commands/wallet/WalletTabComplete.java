@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * @author Jason (darkdiplomat)
  */
 public class WalletTabComplete extends CommandTabCompleteUtil {
-    private static final String[] walletSubsA = new String[]{ "pay", "add", "remove", "set", "reload", "reset", "lock" };
+    private static final String[] walletSubsA = new String[]{"pay", "add", "remove", "set", "reload", "reset", "lock"};
     private static final Matcher subUser1 = Pattern.compile("(reload|reset)").matcher(""),
             matchA = Pattern.compile("(add|remove|set|reload|reset|lock)").matcher(""),
             subUser2 = Pattern.compile("(add|remove|set|lock)").matcher("");

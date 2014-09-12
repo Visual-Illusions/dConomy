@@ -66,7 +66,8 @@ public abstract class WalletSQLSource extends WalletDataSource {
                         if (ownerUUID == null) {
                             ownerUUID = UUID.nameUUIDFromBytes("OfflinePlayer:".concat(owner).getBytes());
                         }
-                    } else {
+                    }
+                    else {
                         ownerUUID = UUID.fromString(owner);
                     }
 
@@ -76,11 +77,13 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     load++;
                 }
                 dCoBase.info(String.format("Loaded %d Wallets...", load));
-            } catch (SQLException sqlex) {
+            }
+            catch (SQLException sqlex) {
                 dCoBase.severe("SQL Exception while parsing Wallets table...");
                 dCoBase.stacktrace(sqlex);
                 success = false;
-            } finally {
+            }
+            finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -90,7 +93,8 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                 }
             }
         }
@@ -116,7 +120,8 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     ps.setInt(2, wallet.isLocked() ? 1 : 0);
                     ps.setString(3, wallet.getOwner().toString());
                     ps.execute();
-                } else {
+                }
+                else {
                     ps.close();
                     ps = conn.prepareStatement("INSERT INTO `" + wallet_table + "` (`owner`,`balance`,`lockedOut`) VALUES(?,?,?)");
                     ps.setString(1, wallet.getOwner().toString());
@@ -125,10 +130,12 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     ps.execute();
                 }
                 dCoBase.debug("Wallet saved!");
-            } catch (SQLException sqlex) {
+            }
+            catch (SQLException sqlex) {
                 dCoBase.severe("Failed to save Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(sqlex);
-            } finally {
+            }
+            finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -138,7 +145,8 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     // Not worried about exception with closing
                 }
             }
@@ -162,15 +170,18 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     wallet.setLockOut(rs.getBoolean("lockedOut"));
                 }
                 dCoBase.debug("Reloaded Wallet for: ".concat(wallet.getOwner().toString()));
-            } catch (SQLException sqlex) {
+            }
+            catch (SQLException sqlex) {
                 dCoBase.severe("SQL Exception while reloading Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(sqlex);
                 success = false;
-            } catch (AccountingException aex) {
+            }
+            catch (AccountingException aex) {
                 dCoBase.severe("Accounting Exception while reloading Wallet for: " + wallet.getOwner());
                 dCoBase.stacktrace(aex);
                 success = false;
-            } finally {
+            }
+            finally {
                 try {
                     if (!WalletSQLiteSource.class.isInstance(this)) {
                         if (rs != null && !rs.isClosed()) {
@@ -180,7 +191,8 @@ public abstract class WalletSQLSource extends WalletDataSource {
                             ps.close();
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                 }
             }
             return success;

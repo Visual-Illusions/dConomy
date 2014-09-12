@@ -49,7 +49,8 @@ public final class WalletReloadCommand extends WalletCommand {
         }
         if (handler.getWalletByUUID(theUser.getUUID()).reload()) {
             dCoBase.translateErrorMessageFor(user, "admin.reload.account.success", theUser.getName(), "WALLET");
-        } else {
+        }
+        else {
             dCoBase.translateErrorMessageFor(user, "admin.reload.account.fail", theUser.getName(), "WALLET");
         }
     }

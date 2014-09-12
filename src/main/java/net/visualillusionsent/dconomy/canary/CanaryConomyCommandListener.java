@@ -36,15 +36,7 @@ import net.canarymod.commandsys.TabComplete;
 import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.api.Canary_User;
 import net.visualillusionsent.dconomy.commands.dConomyCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletAddCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletBaseCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletLockCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletPayCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletReloadCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletRemoveCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletResetCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletSetCommand;
-import net.visualillusionsent.dconomy.commands.wallet.WalletTabComplete;
+import net.visualillusionsent.dconomy.commands.wallet.*;
 import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 
@@ -66,17 +58,17 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         Canary.commands().registerCommands(this, dCo, false);
     }
 
-    @Command(aliases = { "dconomy" },
+    @Command(aliases = {"dconomy"},
             description = "dConomy Information Command",
-            permissions = { "" },
+            permissions = {""},
             toolTip = "/dconomy")
     public final void information(MessageReceiver msgrec, String[] args) {
         this.sendInformation(msgrec);
     }
 
-    @Command(aliases = { "wallet" },
+    @Command(aliases = {"wallet"},
             description = "Wallet Base",
-            permissions = { "dconomy.wallet" },
+            permissions = {"dconomy.wallet"},
             toolTip = "/wallet [subcommand] [args]",
             tabCompleteMethod = "walletTabComplete"
     )
@@ -86,9 +78,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "add" },
+    @Command(aliases = {"add"},
             description = "Adds money to user's wallet, use -force to create an account",
-            permissions = { "dconomy.admin.wallet.add" },
+            permissions = {"dconomy.admin.wallet.add"},
             toolTip = "/wallet add <amount> <user>",
             parent = "wallet")
     public final void walletAdd(MessageReceiver msgrec, String[] args) {
@@ -97,9 +89,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "pay" },
+    @Command(aliases = {"pay"},
             description = "Used to pay another user",
-            permissions = { "dconomy.wallet.pay" },
+            permissions = {"dconomy.wallet.pay"},
             toolTip = "/wallet pay <amount> <user>",
             parent = "wallet")
     public final void walletPay(MessageReceiver msgrec, String[] args) {
@@ -108,9 +100,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "remove" },
+    @Command(aliases = {"remove"},
             description = "Used to remove money from a user's wallet",
-            permissions = { "dconomy.admin.wallet.remove" },
+            permissions = {"dconomy.admin.wallet.remove"},
             toolTip = "/wallet remove <user> <amount>",
             parent = "wallet")
     public final void walletRemove(MessageReceiver msgrec, String[] args) {
@@ -119,9 +111,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "set" },
+    @Command(aliases = {"set"},
             description = "Used to set the money of a user's wallet, use -force to create an account",
-            permissions = { "dconomy.admin.wallet.set" },
+            permissions = {"dconomy.admin.wallet.set"},
             toolTip = "/wallet set <amount> <user> [-force]",
             parent = "wallet")
     public final void walletSet(MessageReceiver msgrec, String[] args) {
@@ -130,9 +122,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "reset" },
+    @Command(aliases = {"reset"},
             description = "Used to reset the money of a user's wallet",
-            permissions = { "dconomy.admin.wallet.reset" },
+            permissions = {"dconomy.admin.wallet.reset"},
             toolTip = "/wallet reset <user>",
             parent = "wallet")
     public final void walletReset(MessageReceiver msgrec, String[] args) {
@@ -141,9 +133,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "reload" },
+    @Command(aliases = {"reload"},
             description = "Used to reload a user's wallet from the datasource",
-            permissions = { "dconomy.admin.wallet.reload" },
+            permissions = {"dconomy.admin.wallet.reload"},
             toolTip = "/wallet reload <user>",
             parent = "wallet")
     public final void walletReload(MessageReceiver msgrec, String[] args) {
@@ -152,9 +144,9 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @Command(aliases = { "lock" },
+    @Command(aliases = {"lock"},
             description = "Used to lock/unlock a user's wallet from the datasource",
-            permissions = { "dconomy.admin.wallet.lock" },
+            permissions = {"dconomy.admin.wallet.lock"},
             toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
             parent = "wallet")
     public final void walletLock(MessageReceiver msgrec, String[] args) {

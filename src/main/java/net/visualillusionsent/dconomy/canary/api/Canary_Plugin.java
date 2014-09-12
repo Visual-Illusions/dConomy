@@ -45,7 +45,8 @@ public final class Canary_Plugin implements dConomyAddOn {
     /**
      * Constructs a new Canary_Plugin wrapper
      *
-     * @param plugin the {@link Plugin} to wrap
+     * @param plugin
+     *         the {@link Plugin} to wrap
      */
     public Canary_Plugin(Plugin plugin) {
         this.plugin = plugin;

@@ -62,7 +62,8 @@ public final class WalletPayCommand extends WalletCommand {
             dCoBase.translateMessageFor(user, "paid.user", theUser.getName(), Double.parseDouble(args[0]));
             dCoBase.translateMessageFor(theUser, "got.paid", user.getName(), Double.parseDouble(args[0]));
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.USER_PAY, Double.parseDouble(args[0])));
-        } catch (AccountingException ae) {
+        }
+        catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

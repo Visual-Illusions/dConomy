@@ -53,21 +53,25 @@ public interface dConomyUser {
     /**
      * Sends a error message to the {@code dConomyUser}
      *
-     * @param message the message to send
+     * @param message
+     *         the message to send
      */
     void error(String message);
 
     /**
      * Sends a message to the {@code dConomyUser}
      *
-     * @param message the message to send
+     * @param message
+     *         the message to send
      */
     void message(String message);
 
     /**
      * Checks the {@code dConomyUser} for permissions
      *
-     * @param perm the permission to check for
+     * @param perm
+     *         the permission to check for
+     *
      * @return {@code true} if has permission; {@code false} otherwise
      */
     boolean hasPermission(String perm);

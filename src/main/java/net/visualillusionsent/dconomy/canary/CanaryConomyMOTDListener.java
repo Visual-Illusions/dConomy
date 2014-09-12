@@ -57,9 +57,11 @@ public final class CanaryConomyMOTDListener implements MessageOfTheDayListener {
                 return MessageFormat.format("{0,number,0.00}", WalletAPIListener.walletBalance(((Player) msgrec).getUUID(), msgrec.hasPermission("dconomy.wallet.base")));
             }
             return MessageFormat.format("{0,number,0.00}", WalletAPIListener.walletBalance(dConomyServer.SERVERUUID, msgrec.hasPermission("dconomy.wallet.base")));
-        } catch (AccountingException e) {
+        }
+        catch (AccountingException e) {
             return "no wallet access";
-        } catch (AccountNotFoundException e) {
+        }
+        catch (AccountNotFoundException e) {
             return "no wallet access";
         }
     }

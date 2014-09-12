@@ -64,9 +64,11 @@ public final class WalletHandler {
         servwallet = new ServerWallet(dCoBase.getProperties().getBooleanValue("server.max.always"));
         if (type == DataSourceType.MYSQL) {
             source = new WalletMySQLSource(this);
-        } else if (type == DataSourceType.SQLITE) {
+        }
+        else if (type == DataSourceType.SQLITE) {
             source = new WalletSQLiteSource(this);
-        } else {
+        }
+        else {
             source = new WalletXMLSource(this);
         }
         source.load();
@@ -76,13 +78,16 @@ public final class WalletHandler {
     /**
      * Gets a {@link Wallet} by a user's {@link UUID}
      *
-     * @param userUUID the user's UUID to get a wallet for
+     * @param userUUID
+     *         the user's UUID to get a wallet for
+     *
      * @return the {@link Wallet} for the user, creating a new one if necessary
      */
     public final Wallet getWalletByUUID(UUID userUUID) {
         if (userUUID.equals(dConomyServer.SERVERUUID)) {
             return servwallet;
-        } else if (verifyAccount(userUUID)) {
+        }
+        else if (verifyAccount(userUUID)) {
             return wallets.get(userUUID);
         }
         return newWallet(userUUID);
@@ -91,7 +96,9 @@ public final class WalletHandler {
     /**
      * Gets a {@link Wallet} for a {@link net.visualillusionsent.dconomy.api.dConomyUser}
      *
-     * @param user the {@link net.visualillusionsent.dconomy.api.dConomyUser} to get a wallet for
+     * @param user
+     *         the {@link net.visualillusionsent.dconomy.api.dConomyUser} to get a wallet for
+     *
      * @return the {@link Wallet} for the user if found; {@code null} if not found
      */
     public final Wallet getWallet(dConomyUser user) {
@@ -101,7 +108,8 @@ public final class WalletHandler {
     /**
      * Adds a {@link Wallet} to the manager
      *
-     * @param wallet the {@link Wallet} to be added
+     * @param wallet
+     *         the {@link Wallet} to be added
      */
     public final void addWallet(Wallet wallet) {
         wallets.put(wallet.getOwner(), wallet);
@@ -110,7 +118,9 @@ public final class WalletHandler {
     /**
      * Checks if a {@link Wallet} exists
      *
-     * @param uuid the user's {@link UUID} to check Wallet for
+     * @param uuid
+     *         the user's {@link UUID} to check Wallet for
+     *
      * @return {@code true} if the wallet exists; {@code false} otherwise
      */
     public final boolean verifyAccount(UUID uuid) {
@@ -120,7 +130,9 @@ public final class WalletHandler {
     /**
      * Creates a new {@link Wallet} with default balance
      *
-     * @param uuid the user's {@link UUID} to create a wallet for
+     * @param uuid
+     *         the user's {@link UUID} to create a wallet for
+     *
      * @return the new {@link Wallet}
      */
     public final Wallet newWallet(UUID uuid) {

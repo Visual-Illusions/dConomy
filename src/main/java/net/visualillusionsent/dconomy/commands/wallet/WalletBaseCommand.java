@@ -53,14 +53,17 @@ public final class WalletBaseCommand extends WalletCommand {
             theWallet = handler.getWalletByUUID(theUser.getUUID());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", theUser.getName(), "WALLET");
-            } else {
+            }
+            else {
                 dCoBase.translateMessageFor(user, "account.balance.other", theUser.getName(), theWallet.getBalance(), "WALLET");
             }
-        } else {
+        }
+        else {
             theWallet = handler.getWalletByUUID(user.getUUID());
             if (theWallet.isLocked()) {
                 dCoBase.translateErrorMessageFor(user, "error.lock.out", user.getName(), "WALLET");
-            } else {
+            }
+            else {
                 dCoBase.translateErrorMessageFor(user, "account.balance", theWallet.getBalance(), "WALLET");
             }
         }

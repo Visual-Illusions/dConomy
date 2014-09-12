@@ -55,13 +55,17 @@ public final class UserWallet extends Wallet {
         super(owner, balance, locked, source);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void save() {
         dCoBase.getDataHandler().addToQueue(this);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean reload() {
         return datasource.reloadAccount(this);

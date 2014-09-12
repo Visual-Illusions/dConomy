@@ -56,7 +56,8 @@ public final class WalletSetCommand extends WalletCommand {
             handler.getWalletByUUID(theUser.getUUID()).setBalance(args[0]);
             dCoBase.translateErrorMessageFor(user, "admin.set.balance", theUser.getName(), Double.valueOf(args[0]), "WALLET");
             dCoBase.getServer().newTransaction(new WalletTransaction(user, theUser, WalletAction.ADMIN_SET, Double.parseDouble(args[0])));
-        } catch (AccountingException ae) {
+        }
+        catch (AccountingException ae) {
             user.error(ae.getLocalizedMessage(user.getUserLocale()));
         }
     }

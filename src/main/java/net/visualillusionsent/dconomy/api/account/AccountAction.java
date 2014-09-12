@@ -27,6 +27,8 @@
  */
 package net.visualillusionsent.dconomy.api.account;
 
-/** @author Jason (darkdiplomat) */
+/**
+ * @author Jason (darkdiplomat)
+ */
 public interface AccountAction {
 }
