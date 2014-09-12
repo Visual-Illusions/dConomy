@@ -216,6 +216,7 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
+                                    <finalName>${project.name}-${project.version}${build.number}-universal</finalName>
                                     <artifactSet>
                                         <includes>
                                             <!-- Only need to shade the VIMCPlugin stuff -->
@@ -245,8 +246,6 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedArtifactId>dConomy</shadedArtifactId>
-                                    <shadedClassifierName>universal${build.number}</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -305,6 +304,7 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
+                                    <finalName>${project.name}-${project.version}${build.number}-canary</finalName>
                                     <artifactSet>
                                         <includes>
                                             <!-- Only need to shade the VIMCPlugin stuff -->
@@ -338,8 +338,6 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedArtifactId>dConomy</shadedArtifactId>
-                                    <shadedClassifierName>canary${build.number}</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -382,6 +380,7 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Should remain last profile -->
         <profile>
             <id>sign-jar</id>
             <build>
@@ -389,7 +388,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jarsigner-plugin</artifactId>
-                        <version>1.3.1</version>
+                        <version>1.3.2</version>
                         <executions>
                             <execution>
                                 <id>sign</id>
@@ -405,6 +404,13 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <archiveDirectory>target/</archiveDirectory>
+                            <excludes>
+                                <exclude>**/dummyload.jar</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/*.jar</include>
+                            </includes>
                             <keystore>${keystore.path}</keystore>
                             <alias>${keystore.alias}</alias>
                             <storepass>${keystore.pass}</storepass>
