@@ -232,7 +232,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>universal</shadedClassifierName>
+                                    <shadedClassifierName>${build.number}-universal</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -324,7 +324,7 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>canary</shadedClassifierName>
+                                    <shadedClassifierName>${build.number}-canary</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
