@@ -31,8 +31,6 @@ import net.visualillusionsent.dconomy.accounting.Account;
 
 public interface dCoDataSource<T extends Account> {
 
-    final Object lock = new Object();
-
     boolean load();
 
     boolean saveAccount(T account);

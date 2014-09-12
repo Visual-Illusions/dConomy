@@ -32,6 +32,7 @@ import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.data.DataLock;
 import net.visualillusionsent.minecraft.plugin.util.Tools;
 
 import java.sql.Connection;
@@ -41,6 +42,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public abstract class WalletSQLSource extends WalletDataSource {
+    private final DataLock lock = new DataLock();
     protected Connection conn;
     protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
 
@@ -95,6 +97,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     }
                 }
                 catch (Exception e) {
+                    //
                 }
             }
         }

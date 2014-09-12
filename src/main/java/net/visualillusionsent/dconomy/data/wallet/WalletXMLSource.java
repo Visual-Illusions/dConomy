@@ -32,6 +32,7 @@ import net.visualillusionsent.dconomy.accounting.wallet.UserWallet;
 import net.visualillusionsent.dconomy.accounting.wallet.Wallet;
 import net.visualillusionsent.dconomy.accounting.wallet.WalletHandler;
 import net.visualillusionsent.dconomy.dCoBase;
+import net.visualillusionsent.dconomy.data.DataLock;
 import net.visualillusionsent.minecraft.plugin.util.Tools;
 import net.visualillusionsent.utils.SystemUtils;
 import org.jdom2.Document;
@@ -49,6 +50,7 @@ import java.util.UUID;
 
 public final class WalletXMLSource extends WalletDataSource {
 
+    private final DataLock lock = new DataLock();
     private final Format xmlform = Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator(SystemUtils.LINE_SEP);
     private final XMLOutputter outputter = new XMLOutputter(xmlform);
     private final SAXBuilder builder = new SAXBuilder();
@@ -84,13 +86,15 @@ public final class WalletXMLSource extends WalletDataSource {
                         }
                     }
                     catch (IOException e) {
+                        dCoBase.warning("Failure closing Wallets writer...");
                     }
-                    writer = null;
                     if (ex != null) {
                         dCoBase.severe("Failed to create new Wallets file...");
                         dCoBase.stacktrace(ex);
-                        return false;
                     }
+                }
+                if (ex != null) {
+                    return false;
                 }
             }
             else {
@@ -116,12 +120,12 @@ public final class WalletXMLSource extends WalletDataSource {
                 }
                 catch (JDOMException jdomex) {
                     dCoBase.severe("JDOM Exception while parsing Wallets file...");
-                    dCoBase.stacktrace(ex);
+                    dCoBase.stacktrace(jdomex);
                     return false;
                 }
-                catch (IOException e) {
+                catch (IOException ioex) {
                     dCoBase.severe("Input/Output Exception while parsing Wallets file...");
-                    dCoBase.stacktrace(ex);
+                    dCoBase.stacktrace(ioex);
                     return false;
                 }
             }
@@ -142,7 +146,7 @@ public final class WalletXMLSource extends WalletDataSource {
                 boolean found = false;
                 for (Element wallet : wallets) {
                     String name = wallet.getAttributeValue("owner");
-                    if (name.equals(account.getOwner())) {
+                    if (name.equals(account.getOwner().toString())) {
                         wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
                         wallet.getAttribute("lockedOut").setValue(String.valueOf(account.isLocked()));
                         found = true;
@@ -172,8 +176,8 @@ public final class WalletXMLSource extends WalletDataSource {
                         }
                     }
                     catch (IOException e) {
+                        //
                     }
-                    writer = null;
                 }
             }
             catch (JDOMException jdomex) {
@@ -201,7 +205,7 @@ public final class WalletXMLSource extends WalletDataSource {
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {
                     String name = wallet.getAttributeValue("owner");
-                    if (name.equals(account.getOwner())) {
+                    if (name.equals(account.getOwner().toString())) {
                         account.setBalance(wallet.getAttribute("balance").getDoubleValue());
                         account.setLockOut(wallet.getAttribute("lockedOut").getBooleanValue());
                         break;
