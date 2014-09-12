@@ -188,8 +188,21 @@
     </build>
     <profiles>
         <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>-jnks${BUILD_NUMBER}</build.number>
+            </properties>
+        </profile>
+        <profile>
             <id>universal</id>
             <build>
+                <!-- need a throw away jar for shading multiple times -->
+                <finalName>dummyload</finalName>
                 <plugins>
                     <!-- Need to shade in the needed classes from Visual Illusions Minecraft Plugin -->
                     <plugin>
@@ -232,7 +245,8 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>${build.number}-universal</shadedClassifierName>
+                                    <shadedArtifactId>dConomy</shadedArtifactId>
+                                    <shadedClassifierName>universal</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -276,7 +290,7 @@
         <profile>
             <id>canary</id>
             <build>
-                <!-- throw away artifact name -->
+                <!-- need a throw away jar for shading multiple times -->
                 <finalName>dummyload</finalName>
                 <plugins>
                     <!-- Need to shade in the needed classes from Visual Illusions Minecraft Plugin -->
@@ -324,7 +338,8 @@
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>${build.number}-canary</shadedClassifierName>
+                                    <shadedArtifactId>dConomy</shadedArtifactId>
+                                    <shadedClassifierName>canary</shadedClassifierName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -398,17 +413,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>jenkins</id>
-            <activation>
-                <property>
-                    <name>BUILD_NUMBER</name>
-                </property>
-            </activation>
-            <properties>
-                <build.number>-jnks${BUILD_NUMBER}</build.number>
-            </properties>
         </profile>
     </profiles>
 </project>
