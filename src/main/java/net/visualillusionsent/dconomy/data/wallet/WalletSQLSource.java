@@ -45,8 +45,8 @@ import java.util.UUID;
 
 public abstract class WalletSQLSource extends WalletDataSource {
     private final DataLock lock = new DataLock();
+    protected final String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
     protected Connection conn;
-    protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
 
     public WalletSQLSource(WalletHandler wallet_handler) {
         super(wallet_handler);
@@ -101,7 +101,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     //
                 }
             }
-            // I have no clue if this will work...
+
             if (!queuedUpdate.isEmpty()) {
                 try {
                     ps = conn.prepareStatement("UPDATE `" + wallet_table + "` SET `owner`=? WHERE `owner`=?");
@@ -110,10 +110,20 @@ public abstract class WalletSQLSource extends WalletDataSource {
                         ps.setString(2, entry.getKey());
                         ps.addBatch();
                     }
-                    ps.execute();
+                    ps.executeBatch();
                 }
                 catch (SQLException sqlex) {
                     dCoBase.severe("Failed to update owners of Wallets... Old data and duplicates are likely to have occured...");
+                }
+                finally {
+                    try {
+                        if (ps != null) {
+                            ps.close();
+                        }
+                    }
+                    catch (SQLException sqlex) {
+                        //
+                    }
                 }
             }
         }
