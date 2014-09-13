@@ -45,7 +45,7 @@ import java.util.UUID;
 
 public abstract class WalletSQLSource extends WalletDataSource {
     private final DataLock lock = new DataLock();
-    protected final String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
+    protected String wallet_table = dCoBase.getProperties().getString("sql.wallet.table");
     protected Connection conn;
 
     public WalletSQLSource(WalletHandler wallet_handler) {
