@@ -56,6 +56,7 @@ public final class WalletXMLSource extends WalletDataSource {
     private final SAXBuilder builder = new SAXBuilder();
     private final String wallet_Path = dCoBase.getProperties().getConfigurationDirectory().concat("wallets.xml");
     private FileWriter writer;
+    private Document doc;
 
     public WalletXMLSource(WalletHandler wallet_handler) {
         super(wallet_handler);
@@ -71,10 +72,10 @@ public final class WalletXMLSource extends WalletDataSource {
             if (!walletFile.exists()) {
                 dCoBase.info("Wallets file not found. Creating...");
                 Element wallets = new Element("wallets");
-                Document root = new Document(wallets);
+                doc = new Document(wallets);
                 try {
                     writer = new FileWriter(wallet_Path);
-                    outputter.output(root, writer);
+                    outputter.output(doc, writer);
                 }
                 catch (IOException e) {
                     ex = e;
@@ -99,7 +100,9 @@ public final class WalletXMLSource extends WalletDataSource {
             }
             else {
                 try {
-                    Document doc = builder.build(walletFile);
+                    if (doc == null) {
+                        doc = builder.build(walletFile);
+                    }
                     Element root = doc.getRootElement();
                     List<Element> wallets = root.getChildren();
                     for (Element wallet : wallets) {
@@ -107,9 +110,7 @@ public final class WalletXMLSource extends WalletDataSource {
                         UUID ownerUUID;
                         if (Tools.isUserName(owner)) {
                             ownerUUID = dCoBase.getServer().getUUIDFromName(owner);
-                            if (ownerUUID == null) {
-                                ownerUUID = UUID.nameUUIDFromBytes("OfflinePlayer:".concat(owner).getBytes());
-                            }
+                            wallet.detach(); // Remove the old account
                         }
                         else {
                             ownerUUID = UUID.fromString(owner);
@@ -140,7 +141,9 @@ public final class WalletXMLSource extends WalletDataSource {
         synchronized (lock) {
             File walletFile = new File(wallet_Path);
             try {
-                Document doc = builder.build(walletFile);
+                if (doc == null) {
+                    doc = builder.build(walletFile);
+                }
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 boolean found = false;
@@ -200,7 +203,7 @@ public final class WalletXMLSource extends WalletDataSource {
         synchronized (lock) {
             File walletFile = new File(wallet_Path);
             try {
-                Document doc = builder.build(walletFile);
+                doc = builder.build(walletFile);
                 Element root = doc.getRootElement();
                 List<Element> wallets = root.getChildren();
                 for (Element wallet : wallets) {

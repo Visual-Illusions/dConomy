@@ -51,6 +51,13 @@ public interface dConomyUser {
     UUID getUUID();
 
     /**
+     * Gets the offline {@link UUID} of the {@code dConomyUser}
+     *
+     * @return the {@code dConomyUser} offline {@link UUID}
+     */
+    UUID getOfflineUUID();
+
+    /**
      * Sends a error message to the {@code dConomyUser}
      *
      * @param message

@@ -27,6 +27,7 @@
  */
 package net.visualillusionsent.dconomy.canary.api;
 
+import com.google.common.base.Charsets;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.visualillusionsent.dconomy.api.dConomyUser;
@@ -66,6 +67,13 @@ public final class Canary_User implements dConomyUser {
     @Override
     public final UUID getUUID() {
         return player.getUUID();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public final UUID getOfflineUUID() {
+        return UUID.nameUUIDFromBytes("OfflinePlayer:".concat(player.getName()).getBytes(Charsets.UTF_8));
     }
 
     /**

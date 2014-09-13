@@ -72,6 +72,14 @@ public final class Canary_Plugin implements dConomyAddOn {
      * {@inheritDoc}
      */
     @Override
+    public final UUID getOfflineUUID() {
+        return getUUID();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final void error(String message) {
     }
 

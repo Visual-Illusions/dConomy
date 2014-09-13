@@ -49,6 +49,16 @@ public interface dConomyServer extends dConomyUser {
     dConomyUser getUser(String name);
 
     /**
+     * Gets a {@link dConomyUser} for the specified {@link UUID}
+     *
+     * @param uuid
+     *         the {@link UUID} of the {@link dConomyUser}
+     *
+     * @return {@link dConomyUser} if found; {@code null} otherwise
+     */
+    dConomyUser getUserFromUUID(UUID uuid);
+
+    /**
      * Gets the names of players known to the server
      *
      * @return user names

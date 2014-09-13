@@ -40,6 +40,7 @@ import net.visualillusionsent.dconomy.dCoBase;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -75,6 +76,22 @@ public class Canary_Server implements dConomyServer, dConomyUser {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final dConomyUser getUserFromUUID(UUID uuid) {
+        if (uuid.equals(SERVERUUID)) {
+            return this;
+        }
+
+        PlayerReference player = serv.getPlayerFromUUID(uuid);
+        if (player != null) {
+            return new Canary_User(player);
+        }
+        return null;
+    }
+
     @Override
     public final String[] getUserNames() {
         return Canary.getServer().getKnownPlayerNames();
@@ -85,8 +102,7 @@ public class Canary_Server implements dConomyServer, dConomyUser {
      */
     @Override
     public final Logger getServerLogger() {
-        //return dCo.getLogman();
-        return null;
+        return dCo.getPluginLogger();
     }
 
     /**
@@ -102,6 +118,14 @@ public class Canary_Server implements dConomyServer, dConomyUser {
      */
     @Override
     public final UUID getUUID() {
+        return SERVERUUID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final UUID getOfflineUUID() {
         return SERVERUUID;
     }
 
@@ -142,7 +166,7 @@ public class Canary_Server implements dConomyServer, dConomyUser {
                     break;
                 }
                 catch (Exception ex) {
-                    //getServerLogger().error("Exception occurred while calling AccountTransactionHook", ex);
+                    getServerLogger().log(Level.SEVERE, "Exception occurred while calling AccountTransactionHook", ex);
                 }
             }
         }

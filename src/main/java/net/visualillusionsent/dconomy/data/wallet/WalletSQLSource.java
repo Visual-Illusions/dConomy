@@ -39,6 +39,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class WalletSQLSource extends WalletDataSource {
@@ -54,6 +56,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
     public boolean load() {
         boolean success = true;
         synchronized (lock) {
+            HashMap<String, UUID> queuedUpdate = new HashMap<String, UUID>();
             PreparedStatement ps = null;
             ResultSet rs = null;
             int load = 0;
@@ -65,9 +68,7 @@ public abstract class WalletSQLSource extends WalletDataSource {
                     UUID ownerUUID;
                     if (Tools.isUserName(owner)) {
                         ownerUUID = dCoBase.getServer().getUUIDFromName(owner);
-                        if (ownerUUID == null) {
-                            ownerUUID = UUID.nameUUIDFromBytes("OfflinePlayer:".concat(owner).getBytes());
-                        }
+                        queuedUpdate.put(owner, ownerUUID);
                     }
                     else {
                         ownerUUID = UUID.fromString(owner);
@@ -98,6 +99,21 @@ public abstract class WalletSQLSource extends WalletDataSource {
                 }
                 catch (Exception e) {
                     //
+                }
+            }
+            // I have no clue if this will work...
+            if (!queuedUpdate.isEmpty()) {
+                try {
+                    ps = conn.prepareStatement("UPDATE `" + wallet_table + "` SET `owner`=? WHERE `owner`=?");
+                    for (Map.Entry<String, UUID> entry : queuedUpdate.entrySet()) {
+                        ps.setString(1, entry.getValue().toString());
+                        ps.setString(2, entry.getKey());
+                        ps.addBatch();
+                    }
+                    ps.execute();
+                }
+                catch (SQLException sqlex) {
+                    dCoBase.severe("Failed to update owners of Wallets... Old data and duplicates are likely to have occured...");
                 }
             }
         }
