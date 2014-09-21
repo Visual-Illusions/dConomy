@@ -288,7 +288,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDebit(dConomyAddOn addOn, String userName, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         return walletDebit(addOn, dCoBase.getServer().getUser(userName), debit, forceWallet);
@@ -310,7 +309,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDebit(dConomyAddOn addOn, dConomyUser dCoUser, String debit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         try {
@@ -337,7 +335,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDebit(dConomyAddOn addOn, dConomyUser dCoUser, double debit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (handler.verifyAccount(dCoUser.getUUID()) || forceWallet) {

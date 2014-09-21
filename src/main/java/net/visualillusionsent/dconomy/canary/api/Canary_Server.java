@@ -85,7 +85,7 @@ public class Canary_Server implements dConomyServer, dConomyUser {
             return this;
         }
 
-        PlayerReference player = serv.getPlayerFromUUID(uuid);
+        PlayerReference player = serv.matchKnownPlayer(uuid);
         if (player != null) {
             return new Canary_User(player);
         }

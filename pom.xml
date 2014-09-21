@@ -19,12 +19,11 @@
         <devs>darkdiplomat</devs>
         <license>BSD 3-Clause License</license>
         <plugin.version>${project.version}</plugin.version>
-        <copyright.years>${project.inceptionYear}-${current.year}</copyright.years>
         <build.number/>
         <!-- Jar Signing -->
         <keystore.path/>
-        <keystore.alias/>
         <keystore.pass/>
+        <keystore.alias/>
         <keystore.key.pass/>
     </properties>
     <organization>
@@ -96,31 +95,13 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <!-- CanaryMod -->
                     <include>*.inf</include>
-                    <!-- All other files -->
+                    <include>META-INF/**</include>
                     <include>resources/**</include>
                 </includes>
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <linksource>true</linksource>
-                    <doctitle>${project.name} ${project.version}</doctitle>
-                    <header>Generated: ${maven.build.timestamp}</header>
-                    <footer>
-                        <![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
-                    <links>
-                        <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
-                        <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0.0/</link>
-                    </links>
-                </configuration>
-            </plugin>
             <!-- Timestamp for year -->
             <plugin>
                 <groupId>com.keyboardsamurais.maven</groupId>
@@ -182,6 +163,23 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <linksource>true</linksource>
+                    <doctitle>${project.name} ${project.version}</doctitle>
+                    <header>Generated: ${maven.build.timestamp}</header>
+                    <footer>
+                        <![CDATA[Licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a>]]></footer>
+                    <links>
+                        <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
+                        <link>http://www.jdom.org/docs/apidocs/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0.0/</link>
+                    </links>
                 </configuration>
             </plugin>
         </plugins>
@@ -278,7 +276,9 @@
                                     <Copyright>${project.inceptionYear}-${current.year}</Copyright>
                                     <VIUtils-Version>${viutils.version}</VIUtils-Version>
                                     <JDOM2-Version>${jdom2.version}</JDOM2-Version>
-                                    <Class-Path>../lib/viutils-${viutils.version}.jar ../lib/jdom2-${jdom2.version}.jar</Class-Path>
+                                    <Class-Path>../lib/viutils-${viutils.version}.jar
+                                        ../lib/jdom2-${jdom2.version}.jar
+                                    </Class-Path>
                                 </manifestEntries>
                             </archive>
                         </configuration>
