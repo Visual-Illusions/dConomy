@@ -69,8 +69,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
     @Command(aliases = {"wallet"},
             description = "Wallet Base",
             permissions = {"dconomy.wallet"},
-            toolTip = "/wallet [subcommand] [args]",
-            tabCompleteMethod = "walletTabComplete"
+            toolTip = "/wallet [subcommand] [args]"
     )
     public final void walletBase(MessageReceiver msgrec, String[] args) {
         if (!cmds[0].parseCommand(getUser(msgrec), args, true)) {
@@ -155,7 +154,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         }
     }
 
-    @TabComplete
+    @TabComplete(commands = {"wallet"})
     public final List<String> walletTabComplete(MessageReceiver msgrec, String[] args) {
         return WalletTabComplete.match(getUser(msgrec), args);
     }
