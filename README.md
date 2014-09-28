@@ -1,7 +1,7 @@
 # dConomy #
 ### Economy Base ###
 #### Copyright &copy; 2011-2014 Visual Illusions Entertainment ####
-#### Licensed under the GNU General Public License v3 (See License below) ####
+#### Licensed under the BSD 3-Clause License (See License below) ####
 
 ## About ##
 dConomy is a plugin for the Canary and Bukkit Minecraft Server Modifications.
