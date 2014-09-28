@@ -27,11 +27,13 @@
  */
 package net.visualillusionsent.dconomy.data;
 
+import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.JarUtils;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
+import java.io.IOException;
 
 public final class dCoProperties {
 
@@ -43,11 +45,18 @@ public final class dCoProperties {
 
         File dir = new File(configDir);
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                throw new PluginInitializationException("Unable to create directories for the dConomy configuration");
+            }
         }
         File real = new File(configDir.concat("settings.cfg"));
         if (!real.exists()) {
-            FileUtils.cloneFileFromJar(JarUtils.getJarPath(getClass()), "resources/default_config.cfg", configDir.concat("settings.cfg"));
+            try {
+                FileUtils.cloneFileFromJar(JarUtils.getJarPath(getClass()), "resources/default_config.cfg", configDir.concat("settings.cfg"));
+            }
+            catch (IOException e) {
+                // Well that didnt work...
+            }
         }
         propsFile = new PropertiesFile(configDir.concat("settings.cfg"));
         testProperties();
