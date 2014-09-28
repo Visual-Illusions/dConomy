@@ -1,5 +1,5 @@
 ;# ${name} - Canary Plugin Configuration File
-;# Copyright © ${copyright.years} Visual Illusions Entertainment
+;# Copyright © ${project.inceptionYear}-${current.year} Visual Illusions Entertainment
 ;# Licensed under the  ${license}
 
 name=${name}

@@ -42,6 +42,8 @@ import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugi
 
 import java.util.List;
 
+import static net.visualillusionsent.dconomy.commands.wallet.WalletPermissions.*;
+
 public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPluginInformationCommand {
     private final dConomyCommand[] cmds = new dConomyCommand[8];
 
@@ -58,99 +60,116 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
         Canary.commands().registerCommands(this, dCo, false);
     }
 
-    @Command(aliases = {"dconomy"},
+    @Command(
+            aliases = {"dconomy"},
             description = "dConomy Information Command",
-            permissions = {""},
-            toolTip = "/dconomy")
+            permissions = {"dconomy.info"},
+            toolTip = "/dconomy"
+    )
     public final void information(MessageReceiver msgrec, String[] args) {
         this.sendInformation(msgrec);
     }
 
-    @Command(aliases = {"wallet"},
-            description = "Wallet Base",
-            permissions = {"dconomy.wallet"},
-            toolTip = "/wallet [subcommand] [args]"
+    @Command(
+            aliases = {"wallet"},
+            helpLookup = "wallet",
+            description = "Wallet balance view and base command",
+            permissions = {WALLET},
+            toolTip = "/wallet [subcommand] [args]",
+            version = 2
     )
     public final void walletBase(MessageReceiver msgrec, String[] args) {
-        if (!cmds[0].parseCommand(getUser(msgrec), args, true)) {
+        if (!cmds[0].parseCommand(getUser(msgrec), args, false)) {
             msgrec.notice("/wallet [subcommand] [args]");
         }
     }
 
-    @Command(aliases = {"add"},
-            description = "Adds money to user's wallet, use -force to create an account",
-            permissions = {"dconomy.admin.wallet.add"},
-            toolTip = "/wallet add <amount> <user>",
-            parent = "wallet")
-    public final void walletAdd(MessageReceiver msgrec, String[] args) {
-        if (!cmds[1].parseCommand(getUser(msgrec), args, true)) {
-            msgrec.notice("/wallet add <amount> <user> [-force]");
-        }
-    }
-
-    @Command(aliases = {"pay"},
+    @Command(
+            aliases = {"pay"},
             description = "Used to pay another user",
-            permissions = {"dconomy.wallet.pay"},
+            permissions = {WALLET$PAY},
             toolTip = "/wallet pay <amount> <user>",
-            parent = "wallet")
+            parent = "wallet"
+    )
     public final void walletPay(MessageReceiver msgrec, String[] args) {
-        if (!cmds[2].parseCommand(getUser(msgrec), args, true)) {
+        if (!cmds[2].parseCommand(getUser(msgrec), args, false)) {
             msgrec.notice("/wallet pay <amount> <user>");
         }
     }
 
-    @Command(aliases = {"remove"},
-            description = "Used to remove money from a user's wallet",
-            permissions = {"dconomy.admin.wallet.remove"},
-            toolTip = "/wallet remove <user> <amount>",
-            parent = "wallet")
-    public final void walletRemove(MessageReceiver msgrec, String[] args) {
-        if (!cmds[3].parseCommand(getUser(msgrec), args, true)) {
-            msgrec.notice("/wallet remove <amount> <user>");
+    @Command(
+            aliases = {"add"},
+            description = "Adds money to user's wallet, use -force to create an account",
+            permissions = {WALLET$ADMIN$ADD},
+            toolTip = "/wallet add <amount> <user>",
+            parent = "wallet"
+    )
+    public final void walletAdd(MessageReceiver msgrec, String[] args) {
+        if (!cmds[1].parseCommand(getUser(msgrec), args, false)) {
+            msgrec.notice("/wallet add <amount> <user> [-force]");
         }
     }
 
-    @Command(aliases = {"set"},
-            description = "Used to set the money of a user's wallet, use -force to create an account",
-            permissions = {"dconomy.admin.wallet.set"},
-            toolTip = "/wallet set <amount> <user> [-force]",
+    @Command(aliases = {"lock"},
+            description = "Used to lock/unlock a user's wallet from the datasource",
+            permissions = {WALLET$ADMIN$LOCK},
+            toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
             parent = "wallet")
-    public final void walletSet(MessageReceiver msgrec, String[] args) {
-        if (!cmds[4].parseCommand(getUser(msgrec), args, true)) {
-            msgrec.notice("/wallet set <amount> <user>");
+    public final void walletLock(MessageReceiver msgrec, String[] args) {
+        if (!cmds[7].parseCommand(getUser(msgrec), args, true)) {
+            msgrec.notice("/wallet lock <yes|no> <user>");
         }
     }
 
-    @Command(aliases = {"reset"},
-            description = "Used to reset the money of a user's wallet",
-            permissions = {"dconomy.admin.wallet.reset"},
-            toolTip = "/wallet reset <user>",
-            parent = "wallet")
-    public final void walletReset(MessageReceiver msgrec, String[] args) {
-        if (!cmds[5].parseCommand(getUser(msgrec), args, true)) {
-            msgrec.notice("/wallet reset <user>");
-        }
-    }
-
-    @Command(aliases = {"reload"},
+    @Command(
+            aliases = {"reload"},
             description = "Used to reload a user's wallet from the datasource",
-            permissions = {"dconomy.admin.wallet.reload"},
+            permissions = {WALLET$ADMIN$RELOAD},
             toolTip = "/wallet reload <user>",
-            parent = "wallet")
+            parent = "wallet"
+    )
     public final void walletReload(MessageReceiver msgrec, String[] args) {
         if (!cmds[6].parseCommand(getUser(msgrec), args, true)) {
             msgrec.notice("/wallet reload <user>");
         }
     }
 
-    @Command(aliases = {"lock"},
-            description = "Used to lock/unlock a user's wallet from the datasource",
-            permissions = {"dconomy.admin.wallet.lock"},
-            toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
-            parent = "wallet")
-    public final void walletLock(MessageReceiver msgrec, String[] args) {
-        if (!cmds[7].parseCommand(getUser(msgrec), args, true)) {
-            msgrec.notice("/wallet lock <yes|no> <user>");
+    @Command(
+            aliases = {"remove"},
+            description = "Used to remove money from a user's wallet",
+            permissions = {WALLET$ADMIN$REMOVE},
+            toolTip = "/wallet remove <user> <amount>",
+            parent = "wallet"
+    )
+    public final void walletRemove(MessageReceiver msgrec, String[] args) {
+        if (!cmds[3].parseCommand(getUser(msgrec), args, false)) {
+            msgrec.notice("/wallet remove <amount> <user>");
+        }
+    }
+
+    @Command(
+            aliases = {"reset"},
+            description = "Used to reset the money of a user's wallet",
+            permissions = {WALLET$ADMIN$RESET},
+            toolTip = "/wallet reset <user>",
+            parent = "wallet"
+    )
+    public final void walletReset(MessageReceiver msgrec, String[] args) {
+        if (!cmds[5].parseCommand(getUser(msgrec), args, true)) {
+            msgrec.notice("/wallet reset <user>");
+        }
+    }
+
+    @Command(
+            aliases = {"set"},
+            description = "Used to set the money of a user's wallet, use -force to create an account",
+            permissions = {WALLET$ADMIN$SET},
+            toolTip = "/wallet set <amount> <user> [-force]",
+            parent = "wallet"
+    )
+    public final void walletSet(MessageReceiver msgrec, String[] args) {
+        if (!cmds[4].parseCommand(getUser(msgrec), args, false)) {
+            msgrec.notice("/wallet set <amount> <user>");
         }
     }
 

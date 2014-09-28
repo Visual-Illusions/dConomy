@@ -36,34 +36,44 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.visualillusionsent.dconomy.commands.wallet.WalletPermissions.WALLET$ADMIN;
+import static net.visualillusionsent.dconomy.commands.wallet.WalletPermissions.WALLET$PAY;
+
 /**
  * @author Jason (darkdiplomat)
  */
-public class WalletTabComplete extends CommandTabCompleteUtil {
-    private static final String[] walletSubsA = new String[]{"pay", "add", "remove", "set", "reload", "reset", "lock"};
-    private static final Matcher subUser1 = Pattern.compile("(reload|reset)").matcher(""),
+public final class WalletTabComplete extends CommandTabCompleteUtil {
+    private static final String[] walletSubs = new String[]{"pay", "add", "remove", "set", "reload", "reset", "lock"};
+    private static final Matcher // Wallet sub Matching
             matchA = Pattern.compile("(add|remove|set|reload|reset|lock)").matcher(""),
+            subUser1 = Pattern.compile("(reload|reset)").matcher(""),
             subUser2 = Pattern.compile("(add|remove|set|lock)").matcher("");
 
     public static List<String> match(dConomyUser user, String[] args) {
-        if (args.length == 1) {
-            List<String> preRet = matchTo(args, walletSubsA);
-            Iterator<String> preRetItr = preRet.iterator();
-            while (preRetItr.hasNext()) {
-                String ret = preRetItr.next();
-                if (ret.equals("pay") && !user.hasPermission("dconomy.wallet.pay")) {
-                    preRetItr.remove();
+        switch (args.length) {
+            case 1:
+                List<String> preRet = matchTo(args, walletSubs);
+                Iterator<String> preRetItr = preRet.iterator();
+                while (preRetItr.hasNext()) {
+                    String ret = preRetItr.next();
+                    if (ret.equals("pay") && !user.hasPermission(WALLET$PAY)) {
+                        preRetItr.remove();
+                    }
+                    else if (matchA.reset(ret).matches() && !user.hasPermission(WALLET$ADMIN.concat(".").concat(ret))) {
+                        preRetItr.remove();
+                    }
                 }
-                else if (matchA.reset(ret).matches() && !user.hasPermission("dconomy.admin.wallet.".concat(ret))) {
-                    preRetItr.remove();
+                return preRet;
+            case 2:
+                if ((args[0].equals("pay") && user.hasPermission(WALLET$PAY)) || (subUser1.reset(args[0]).matches() && user.hasPermission(WALLET$ADMIN.concat(".").concat(args[0])))) {
+                    return matchTo(args, dCoBase.getServer().getUserNames());
                 }
-            }
-            return preRet;
-        }
-        else if ((args.length == 2 && subUser1.reset(args[0]).matches() && user.hasPermission("dconomy.admin.wallet.".concat(args[0])))
-                || (args.length == 3 && ((subUser2.reset(args[0]).matches() && user.hasPermission("dconom.admin.wallet.".concat(args[0])))
-                || (args[0].equals("pay") && user.hasPermission("dconomy.wallet.pay"))))) {
-            return matchTo(args, dCoBase.getServer().getUserNames());
+                break;
+            case 3:
+                if (subUser2.reset(args[0]).matches() && user.hasPermission(WALLET$ADMIN.concat(".").concat(args[0]))) {
+                    return matchTo(args, dCoBase.getServer().getUserNames());
+                }
+                break;
         }
         return null;
     }

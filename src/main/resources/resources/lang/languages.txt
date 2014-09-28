@@ -1,5 +1,5 @@
 ;# ${name} - Language Configuration File
-;# Copyright © ${copyright.years} Visual Illusions Entertainment
+;# Copyright © ${project.inceptionYear}-${current.year} Visual Illusions Entertainment
 ;# Licensed under the ${license}
 ;# This file NEEDS to be in UTF-8 format!
 ;# This file tells VIUtils which languages are supported
