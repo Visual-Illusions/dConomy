@@ -58,8 +58,6 @@ public final class dCoBase {
 
     private static dCoBase $;
     private static dConomyServer server;
-    private static float reported_version;
-    private static long reported_revision;
 
     public dCoBase(dConomy dconomy) throws DataSourceException {
         if ($ != null) {
@@ -74,9 +72,6 @@ public final class dCoBase {
         wh = new WalletHandler(dat.getDataSourceType());
         WalletAPIListener.setHandler(wh);
         translator = new dConomyTranslator(dconomy);
-
-        reported_version = dconomy.getReportedVersion();
-        reported_revision = dconomy.getReportedRevision();
     }
 
     /**
@@ -192,21 +187,25 @@ public final class dCoBase {
     }
 
     public static boolean isNewerThan(float version, long revision) {
-        if (reported_version > version) {
+        return isNewerThan(version, revision, true);
+    }
+
+    public static boolean isNewerThan(float version, long revision, boolean checkRevision) {
+        if ($.plugin.getReportedVersion() > version) {
             return true;
         }
-        else if (reported_version == version && reported_revision > revision) {
+        else if (checkRevision && $.plugin.getReportedVersion() == version && $.plugin.getReportedRevision() > revision) {
             return true;
         }
         return false;
     }
 
     public static float getVersion() {
-        return reported_version;
+        return $.plugin.getReportedVersion();
     }
 
     public static long getRevision() {
-        return reported_revision;
+        return $.plugin.getReportedRevision();
     }
 
     public static String getMoneyName() {

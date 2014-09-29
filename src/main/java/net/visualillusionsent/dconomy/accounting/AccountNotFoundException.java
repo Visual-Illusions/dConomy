@@ -27,6 +27,9 @@
  */
 package net.visualillusionsent.dconomy.accounting;
 
+import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.dCoBase;
+
 import java.util.UUID;
 
 /**
@@ -38,7 +41,16 @@ public final class AccountNotFoundException extends Exception {
     private static final long serialVersionUID = 210106102013L;
 
     public AccountNotFoundException(String accountType, UUID uuid) {
-        super(String.format("'%s' for User: '%s' was not found", accountType, uuid));
+        super(String.format("'%s' for User: '%s' was not found", accountType, translateUUIDToName(uuid)));
+    }
+
+    // Need to pass a readable name if we can find one
+    private static String translateUUIDToName(UUID uuid) {
+        dConomyUser dcouser = dCoBase.getServer().getUserFromUUID(uuid);
+        if (dcouser != null) {
+            return dcouser.getName();
+        }
+        return uuid.toString();
     }
 
 }
