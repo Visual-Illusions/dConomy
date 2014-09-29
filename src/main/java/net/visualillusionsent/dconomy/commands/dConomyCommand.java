@@ -28,6 +28,7 @@
 package net.visualillusionsent.dconomy.commands;
 
 import net.visualillusionsent.dconomy.api.dConomyUser;
+import net.visualillusionsent.dconomy.dCoBase;
 
 public abstract class dConomyCommand {
 
@@ -44,7 +45,7 @@ public abstract class dConomyCommand {
         String[] cmdArgs = adjust ? adjustedArgs(args) : args;
 
         if (cmdArgs.length < minArgs) {
-            caller.error("error.args");
+            dCoBase.translateErrorMessageFor(caller, "error.args");
             return false;
         }
         else {
