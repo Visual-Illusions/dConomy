@@ -144,7 +144,7 @@ public abstract class Account {
         double max = dCoBase.getProperties().getDouble("max.account.balance");
         if (balance > max) {
             if (!this.owner.equals(dConomyServer.SERVERUUID)) {
-                throw new AccountingException("error.money.max", this.owner, this.getClass().getSimpleName().toUpperCase());
+                throw new AccountingException("error.money.max", dCoBase.translateUUIDToName(owner), this.getClass().getSimpleName().toUpperCase());
             }
         }
     }

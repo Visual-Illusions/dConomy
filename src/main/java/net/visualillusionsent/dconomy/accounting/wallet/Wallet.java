@@ -29,6 +29,7 @@ package net.visualillusionsent.dconomy.accounting.wallet;
 
 import net.visualillusionsent.dconomy.accounting.Account;
 import net.visualillusionsent.dconomy.accounting.AccountingException;
+import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.dconomy.data.wallet.WalletDataSource;
 
 import java.util.UUID;
@@ -58,7 +59,7 @@ public abstract class Wallet extends Account {
      */
     public final void testDebit(double remove) throws AccountingException {
         if (locked) {
-            throw new AccountingException("error.account.lock", this.owner, "WALLET");
+            throw new AccountingException("error.account.lock", dCoBase.translateUUIDToName(owner), "WALLET");
         }
         if (balance - remove < 0) {
             throw new AccountingException("error.no.money");
@@ -84,7 +85,7 @@ public abstract class Wallet extends Account {
     @Override
     public void testDeposit(double add) throws AccountingException {
         if (locked) {
-            throw new AccountingException("error.account.lock", this.owner, "WALLET");
+            throw new AccountingException("error.account.lock", dCoBase.translateUUIDToName(owner), "WALLET");
         }
         super.testDeposit(add);
     }
@@ -130,6 +131,6 @@ public abstract class Wallet extends Account {
      */
     @Override
     public final String toString() {
-        return String.format("Wallet[Owner: %s Balance: %.2f IsLocked: %b]", owner, balance, locked);
+        return String.format("Wallet[Owner: %s Balance: %.2f IsLocked: %b]", dCoBase.translateUUIDToName(owner), balance, locked);
     }
 }

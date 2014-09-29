@@ -39,6 +39,7 @@ import net.visualillusionsent.dconomy.data.wallet.WalletSQLiteSource;
 import net.visualillusionsent.dconomy.logging.dCoLevel;
 import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -215,4 +216,13 @@ public final class dCoBase {
     public final WalletHandler getWalletHandler() {
         return wh;
     }
+
+    public static String translateUUIDToName(UUID uuid) {
+        dConomyUser dcouser = getServer().getUserFromUUID(uuid);
+        if (dcouser != null) {
+            return dcouser.getName();
+        }
+        return uuid.toString();
+    }
+
 }
