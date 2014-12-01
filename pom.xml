@@ -180,6 +180,9 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
+                    <excludes>
+                        <exclude>src/main/java/net/visualillusionsent/dconomy/canary/Metrics.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <!-- Compile plugin -->

@@ -1,31 +1,4 @@
 /*
- * This file is part of dConomy.
- *
- * Copyright © 2011-2014 Visual Illusions Entertainment
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- *     1. Redistributions of source code must retain the above copyright notice,
- *        this list of conditions and the following disclaimer.
- *
- *     2. Redistributions in binary form must reproduce the above copyright notice,
- *        this list of conditions and the following disclaimer in the documentation
- *        and/or other materials provided with the distribution.
- *
- *     3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse
- *        or promote products derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-/*
  * Copyright 2011-2013 Tyler Blair. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
@@ -150,8 +123,8 @@ public class Metrics {
 
         // Do we need to create the file?
         if (!configuration.containsKey("guid")) {
-            // configuration.options().header("http://mcstats.org").copyDefaults(true); Not real sure what this is...
             // add some defaults
+            configuration.addHeaderLines("http://mcstats.org");
             configuration.getBoolean("opt-out", false);
             configuration.getString("guid", UUID.randomUUID().toString());
             configuration.getBoolean("debug", false);
@@ -186,7 +159,7 @@ public class Metrics {
     }
 
     /**
-     * Add a Graph object to BukkitMetrics that represents data for the plugin that should be sent to the backend
+     * Add a Graph object to CanaryMetrics that represents data for the plugin that should be sent to the backend
      *
      * @param graph The name of the graph
      */
@@ -218,41 +191,42 @@ public class Metrics {
             }
 
             // Begin hitting the server with glorious data
-            task = TaskManager.scheduleContinuedTaskInMillis(new Runnable() {
+            task = TaskManager.scheduleContinuedTaskInMinutes(new Runnable() {
 
-                                                                 private boolean firstPost = true;
+                                                                  private boolean firstPost = true;
 
-                                                                 public void run() {
-                                                                     try {
-                                                                         // This has to be synchronized or it can collide with the disable method.
-                                                                         synchronized (optOutLock) {
-                                                                             // Disable Task, if it is running and the server owner decided to opt-out
-                                                                             if (isOptOut() && task != null) {
-                                                                                 task.cancel(true);
-                                                                                 task = null;
-                                                                                 // Tell all plotters to stop gathering information.
-                                                                                 for (Graph graph : graphs) {
-                                                                                     graph.onOptOut();
-                                                                                 }
-                                                                             }
-                                                                         }
+                                                                  public void run() {
+                                                                      try {
+                                                                          // This has to be synchronized or it can collide with the disable method.
+                                                                          synchronized (optOutLock) {
+                                                                              // Disable Task, if it is running and the server owner decided to opt-out
+                                                                              if (isOptOut() && task != null) {
+                                                                                  task.cancel(true);
+                                                                                  task = null;
+                                                                                  // Tell all plotters to stop gathering information.
+                                                                                  for (Graph graph : graphs) {
+                                                                                      graph.onOptOut();
+                                                                                  }
+                                                                              }
+                                                                          }
 
-                                                                         // We use the inverse of firstPost because if it is the first time we are posting,
-                                                                         // it is not a interval ping, so it evaluates to FALSE
-                                                                         // Each time thereafter it will evaluate to TRUE, i.e PING!
-                                                                         postPlugin(!firstPost);
+                                                                          // We use the inverse of firstPost because if it is the first time we are posting,
+                                                                          // it is not a interval ping, so it evaluates to FALSE
+                                                                          // Each time thereafter it will evaluate to TRUE, i.e PING!
+                                                                          postPlugin(!firstPost);
 
-                                                                         // After the first post we set firstPost to false
-                                                                         // Each post thereafter will be a ping
-                                                                         firstPost = false;
-                                                                     }
-                                                                     catch (IOException e) {
-                                                                         if (debug) {
-                                                                             Canary.log.info("[Metrics] " + e.getMessage());
-                                                                         }
-                                                                     }
-                                                                 }
-                                                             }, 1, PING_INTERVAL * 1200);
+                                                                          // After the first post we set firstPost to false
+                                                                          // Each post thereafter will be a ping
+                                                                          firstPost = false;
+                                                                      }
+                                                                      catch (IOException e) {
+                                                                          if (debug) {
+                                                                              Canary.log.info("[Metrics] " + e.getMessage());
+                                                                          }
+                                                                      }
+                                                                  }
+                                                              }, 1, PING_INTERVAL * 1200
+                                                             );
 
             return true;
         }
@@ -265,6 +239,7 @@ public class Metrics {
         synchronized (optOutLock) {
             if(task != null){
                 task.cancel(true);
+                task = null;
             }
         }
     }
@@ -695,7 +670,7 @@ public class Metrics {
         }
 
         /**
-         * Called when the server owner decides to opt-out of BukkitMetrics while the server is running.
+         * Called when the server owner decides to opt-out of CanaryMetrics while the server is running.
          */
         protected void onOptOut() {
         }
