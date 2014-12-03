@@ -32,8 +32,12 @@ import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.Server;
 import net.canarymod.plugin.Plugin;
-import net.visualillusionsent.dconomy.api.*;
+import net.visualillusionsent.dconomy.api.InvalidPluginException;
+import net.visualillusionsent.dconomy.api.TransactionHookEvent;
 import net.visualillusionsent.dconomy.api.account.AccountTransaction;
+import net.visualillusionsent.dconomy.api.dConomyAddOn;
+import net.visualillusionsent.dconomy.api.dConomyServer;
+import net.visualillusionsent.dconomy.api.dConomyUser;
 import net.visualillusionsent.dconomy.canary.CanaryConomy;
 import net.visualillusionsent.dconomy.canary.api.account.AccountTransactionHook;
 import net.visualillusionsent.dconomy.dCoBase;
@@ -194,7 +198,7 @@ public class Canary_Server implements dConomyServer, dConomyUser {
 
     @Override
     public dConomyAddOn getPluginAsAddOn(String pluginName) throws InvalidPluginException {
-        Plugin plugin = Canary.loader().getPlugin(pluginName);
+        Plugin plugin = Canary.pluginManager().getPlugin(pluginName);
         if (plugin == null) {
             throw new InvalidPluginException("Plugin not found");
         }

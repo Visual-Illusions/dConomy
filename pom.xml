@@ -12,8 +12,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
-        <vimcplugin.version>1.1.0</vimcplugin.version>
-        <viutils.version>1.3.0</viutils.version>
+        <mcpluginlib.version>1.2.0-SNAPSHOT</mcpluginlib.version>
+        <viutils.version>1.4.1-SNAPSHOT</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
         <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
@@ -111,8 +111,8 @@
     <dependencies>
         <dependency>
             <groupId>net.visualillusionsent</groupId>
-            <artifactId>vimcplugin</artifactId>
-            <version>${vimcplugin.version}</version>
+            <artifactId>mcpluginlib</artifactId>
+            <version>${mcpluginlib.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -180,9 +180,6 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
-                    <excludes>
-                        <exclude>src/main/java/net/visualillusionsent/dconomy/canary/Metrics.java</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
             <!-- Compile plugin -->
@@ -208,7 +205,7 @@
                     <links>
                         <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.0.0/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.1.2/</link>
                     </links>
                 </configuration>
             </plugin>
@@ -247,13 +244,13 @@
                                     <finalName>${project.name}-${project.version}${build.number}-universal</finalName>
                                     <artifactSet>
                                         <includes>
-                                            <!-- Only need to shade the VIMCPlugin stuff -->
-                                            <include>net.visualillusionsent:vimcplugin</include>
+                                            <!-- VI Minecraft Plugin Library -->
+                                            <include>net.visualillusionsent:mcpluginlib</include>
                                         </includes>
                                     </artifactSet>
                                     <filters>
                                         <filter>
-                                            <artifact>net.visualillusionsent:vimcplugin</artifact>
+                                            <artifact>net.visualillusionsent:mcpluginlib</artifact>
                                             <includes>
                                                 <!-- Always include the license stuff -->
                                                 <include>META-INF/license/**</include>
@@ -270,7 +267,7 @@
                                         <!-- Relocate base VIMCPlugin stuff to base of plugin -->
                                         <relocation>
                                             <pattern>net.visualillusionsent.minecraft.plugin</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                            <shadedPattern>${project.groupId}.${project.artifactId}.lib</shadedPattern>
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
@@ -337,13 +334,13 @@
                                     <finalName>${project.name}-${project.version}${build.number}-canary</finalName>
                                     <artifactSet>
                                         <includes>
-                                            <!-- Only need to shade the VIMCPlugin stuff -->
-                                            <include>net.visualillusionsent:vimcplugin</include>
+                                            <!-- VI Minecraft Plugin Library -->
+                                            <include>net.visualillusionsent:mcpluginlib</include>
                                         </includes>
                                     </artifactSet>
                                     <filters>
                                         <filter>
-                                            <artifact>net.visualillusionsent:vimcplugin</artifact>
+                                            <artifact>net.visualillusionsent:mcpluginlib</artifact>
                                             <includes>
                                                 <!-- Always include the license stuff -->
                                                 <include>META-INF/license/**</include>
@@ -353,9 +350,8 @@
                                                 <include>net/visualillusionsent/minecraft/plugin/**</include>
                                             </includes>
                                             <excludes>
-                                                <!-- Bukkit and Spout are not used in this artifact -->
-                                                <exclude>net/visualillusionsent/minecraft/plugin/bukkit/**</exclude>
-                                                <exclude>net/visualillusionsent/minecraft/plugin/spout/**</exclude>
+                                                <!-- Sponge not yet implemented -->
+                                                <exclude>net/visualillusionsent/minecraft/plugin/sponge/**</exclude>
                                             </excludes>
                                         </filter>
                                     </filters>
@@ -364,7 +360,7 @@
                                         <!-- Relocate base VIMCPlugin stuff to base of plugin -->
                                         <relocation>
                                             <pattern>net.visualillusionsent.minecraft.plugin</pattern>
-                                            <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                            <shadedPattern>${project.groupId}.${project.artifactId}.lib</shadedPattern>
                                         </relocation>
                                     </relocations>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>

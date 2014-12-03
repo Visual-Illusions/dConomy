@@ -46,15 +46,12 @@ import java.util.logging.Logger;
 public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements dConomy {
 
     private static dCoBase base;
-    private Metrics metrics;
 
     @Override
     public final void disable() {
+        super.disable();
         if (base != null) {
             base.cleanUp();
-        }
-        if(metrics != null){
-            metrics.stop();
         }
     }
 
@@ -73,9 +70,6 @@ public final class CanaryConomy extends VisualIllusionsCanaryPlugin implements d
             new CanaryConomyMOTDListener(this);
             // Register WalletTransaction
             dCoBase.getServer().registerTransactionHandler(WalletTransactionHook.class, WalletTransaction.class);
-            // Boot up metrics
-            metrics = new Metrics(this);
-            metrics.start();
 
             // Good, return true
             return true;
