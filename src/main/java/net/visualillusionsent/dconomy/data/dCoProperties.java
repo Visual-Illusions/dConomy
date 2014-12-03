@@ -27,6 +27,7 @@
  */
 package net.visualillusionsent.dconomy.data;
 
+import net.visualillusionsent.dconomy.dCoBase;
 import net.visualillusionsent.minecraft.plugin.PluginInitializationException;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.JarUtils;
@@ -38,27 +39,45 @@ import java.io.IOException;
 public final class dCoProperties {
 
     private final PropertiesFile propsFile;
-    private final String configDir;
 
     public dCoProperties() {
-        configDir = "config/dConomy3/";
+        String configDirOld = "config/dConomy3/";
 
-        File dir = new File(configDir);
+        File dir = new File(getConfigurationDirectory());
+
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
                 throw new PluginInitializationException("Unable to create directories for the dConomy configuration");
             }
         }
-        File real = new File(configDir.concat("settings.cfg"));
+
+        File real = new File(dir, "settings.cfg");
+        File dirOld = new File(configDirOld);
         if (!real.exists()) {
-            try {
-                FileUtils.cloneFileFromJar(JarUtils.getJarPath(getClass()), "resources/default_config.cfg", configDir.concat("settings.cfg"));
+            if (dirOld.exists()) {
+                File set = new File(dirOld, "settings.cfg");
+                if (!set.renameTo(real)) {
+                    dCoBase.warning("Failed to migrate old settings file.");
+                }
+                File wallets = new File(dir, "wallets.xml");
+                if (!wallets.exists()) {
+                    File oldWallets = new File(dirOld, "wallets.xml");
+                    if (!oldWallets.renameTo(wallets)) {
+                        dCoBase.warning("Failed to migrate old wallets file");
+                    }
+                }
             }
-            catch (IOException e) {
-                // Well that didnt work...
+            else {
+                try {
+                    FileUtils.cloneFileFromJar(JarUtils.getJarPath(getClass()), "resources/default_config.cfg", getConfigurationDirectory().concat("settings.cfg"));
+                }
+                catch (IOException e) {
+                    // Well that didnt work...
+                }
             }
         }
-        propsFile = new PropertiesFile(configDir.concat("settings.cfg"));
+
+        propsFile = new PropertiesFile(getConfigurationDirectory().concat("settings.cfg"));
         testProperties();
     }
 
@@ -88,7 +107,7 @@ public final class dCoProperties {
     }
 
     public final String getConfigurationDirectory() {
-        return configDir;
+        return "config/dConomy/";
     }
 
     private void testProperties() {
