@@ -41,7 +41,7 @@ public final class ServerWallet extends Wallet {
     private final boolean maxAlways;
 
     public ServerWallet(boolean maxAlways) {
-        super(dConomyServer.SERVERUUID, maxAlways ? 999999999999999999D : dCoBase.getProperties().getDouble("server.balance"), dCoBase.getProperties().getBooleanValue("server.account.locked"), null);
+        super(dConomyServer.SERVERUUID, maxAlways ? 999999999999999999.99D : dCoBase.getProperties().getDouble("server.balance"), dCoBase.getProperties().getBooleanValue("server.account.locked"), null);
         this.maxAlways = maxAlways;
     }
 
@@ -51,7 +51,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double getBalance() {
-        return maxAlways ? 999999999999999999D : super.getBalance();
+        return maxAlways ? 999999999999999999.99D : super.getBalance();
     }
 
     /**
@@ -60,7 +60,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double deposit(double add) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.deposit(add);
+        return maxAlways ? 999999999999999999.99D : super.deposit(add);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double deposit(String add) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.deposit(add);
+        return maxAlways ? 999999999999999999.99D : super.deposit(add);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double debit(double remove) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.debit(remove);
+        return maxAlways ? 999999999999999999.99D : super.debit(remove);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double debit(String remove) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.debit(remove);
+        return maxAlways ? 999999999999999999.99D : super.debit(remove);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double setBalance(double set) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.setBalance(set);
+        return maxAlways ? 999999999999999999.99D : super.setBalance(set);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class ServerWallet extends Wallet {
      */
     @Override
     public final double setBalance(String set) throws AccountingException {
-        return maxAlways ? 999999999999999999D : super.setBalance(set);
+        return maxAlways ? 999999999999999999.99D : super.setBalance(set);
     }
 
     /**

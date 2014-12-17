@@ -38,7 +38,9 @@ import net.visualillusionsent.dconomy.dCoBase;
 import java.util.Set;
 import java.util.UUID;
 
-import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.*;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEBIT;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_DEPOSIT;
+import static net.visualillusionsent.dconomy.api.account.wallet.WalletAction.PLUGIN_SET;
 
 /**
  * Wallet API Listener
@@ -163,7 +165,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDeposit(dConomyAddOn addOn, String userName, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         return walletDeposit(addOn, dCoBase.getServer().getUser(userName), deposit, forceWallet);
@@ -185,7 +186,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDeposit(dConomyAddOn addOn, dConomyUser dCoUser, String deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         try {
@@ -212,7 +212,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletDeposit(dConomyAddOn addOn, dConomyUser dCoUser, double deposit, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (handler.verifyAccount(dCoUser.getUUID()) || forceWallet) {
@@ -410,7 +409,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletSet(dConomyAddOn addOn, String userName, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         try {
@@ -437,7 +435,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletSet(dConomyAddOn addOn, dConomyUser dCoUser, String set, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         try {
@@ -464,7 +461,6 @@ public final class WalletAPIListener {
      *
      * @throws AccountingException
      * @throws AccountNotFoundException
-     * @throws InvalidPluginException
      */
     public static double walletSet(dConomyAddOn addOn, dConomyUser dCoUser, double set, boolean forceWallet) throws AccountingException, AccountNotFoundException {
         if (handler.verifyAccount(dCoUser.getUUID()) || forceWallet) {
