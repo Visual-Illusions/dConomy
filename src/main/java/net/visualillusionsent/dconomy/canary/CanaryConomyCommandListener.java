@@ -63,7 +63,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
     @Command(
             aliases = {"dconomy"},
             description = "dConomy Information Command",
-            permissions = {"dconomy.info"},
+            permissions = {""},
             toolTip = "/dconomy"
     )
     public final void information(MessageReceiver msgrec, String[] args) {
@@ -89,6 +89,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to pay another user",
             permissions = {WALLET$PAY},
             toolTip = "/wallet pay <amount> <user>",
+            helpLookup = "wallet pay",
             parent = "wallet"
     )
     public final void walletPay(MessageReceiver msgrec, String[] args) {
@@ -102,6 +103,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Adds money to user's wallet, use -force to create an account",
             permissions = {WALLET$ADMIN$ADD},
             toolTip = "/wallet add <amount> <user>",
+            helpLookup = "wallet add",
             parent = "wallet"
     )
     public final void walletAdd(MessageReceiver msgrec, String[] args) {
@@ -114,6 +116,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to lock/unlock a user's wallet from the datasource",
             permissions = {WALLET$ADMIN$LOCK},
             toolTip = "/wallet lock <yes|no (Or other boolean values)> <user>",
+            helpLookup = "wallet lock",
             parent = "wallet")
     public final void walletLock(MessageReceiver msgrec, String[] args) {
         if (!cmds[7].parseCommand(getUser(msgrec), args, true)) {
@@ -126,6 +129,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to reload a user's wallet from the datasource",
             permissions = {WALLET$ADMIN$RELOAD},
             toolTip = "/wallet reload <user>",
+            helpLookup = "wallet reload",
             parent = "wallet"
     )
     public final void walletReload(MessageReceiver msgrec, String[] args) {
@@ -139,6 +143,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to remove money from a user's wallet",
             permissions = {WALLET$ADMIN$REMOVE},
             toolTip = "/wallet remove <user> <amount>",
+            helpLookup = "wallet remove",
             parent = "wallet"
     )
     public final void walletRemove(MessageReceiver msgrec, String[] args) {
@@ -152,6 +157,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to reset the money of a user's wallet",
             permissions = {WALLET$ADMIN$RESET},
             toolTip = "/wallet reset <user>",
+            helpLookup = "wallet reset",
             parent = "wallet"
     )
     public final void walletReset(MessageReceiver msgrec, String[] args) {
@@ -165,6 +171,7 @@ public final class CanaryConomyCommandListener extends VisualIllusionsCanaryPlug
             description = "Used to set the money of a user's wallet, use -force to create an account",
             permissions = {WALLET$ADMIN$SET},
             toolTip = "/wallet set <amount> <user> [-force]",
+            helpLookup = "wallet set",
             parent = "wallet"
     )
     public final void walletSet(MessageReceiver msgrec, String[] args) {
