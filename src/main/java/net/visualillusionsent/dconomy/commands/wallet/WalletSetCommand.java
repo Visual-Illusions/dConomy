@@ -1,7 +1,7 @@
 /*
  * This file is part of dConomy.
  *
- * Copyright © 2011-2014 Visual Illusions Entertainment
+ * Copyright © 2011-2015 Visual Illusions Entertainment
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,

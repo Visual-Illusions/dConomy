@@ -1,6 +1,6 @@
 # dConomy #
 ### Economy Base ###
-#### Copyright &copy; 2011-2014 Visual Illusions Entertainment ####
+#### Copyright &copy; 2011-2015 Visual Illusions Entertainment ####
 #### Licensed under the BSD 3-Clause License (See License below) ####
 
 ## About ##
@@ -22,7 +22,7 @@ run from command line: mvn clean install<br/>
 License
 ---------
 
-Copyright &copy; 2011-2014 Visual Illusions Entertainment  
+Copyright &copy; 2011-2015 Visual Illusions Entertainment  
 All rights reserved.  
   
 Redistribution and use in source and binary forms, with or without modification,  

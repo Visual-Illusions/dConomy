@@ -1,3 +1,7 @@
+<!--
+dConomy Maven POM File
+Copyright © 2011-2015 Visual Illusions Entertainment
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -12,9 +16,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
-        <mcpluginlib.version>1.2.0-SNAPSHOT</mcpluginlib.version>
-        <viutils.version>1.4.1-SNAPSHOT</viutils.version>
+        <mcpluginlib.version>1.2.0</mcpluginlib.version>
+        <viutils.version>1.4.1</viutils.version>
         <jdom2.version>2.0.5</jdom2.version>
+        <metrics.version>R8-SNAPSHOT</metrics.version>
         <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
         <license>BSD 3-Clause License</license>
@@ -49,7 +54,7 @@
             <name>BSD 3-Clause License</name>
             <url>http://opensource.org/licenses/BSD-3-Clause</url>
             <comments>
-                Copyright © 2012-2014 Visual Illusions Entertainment
+                Copyright © 2012-2015 Visual Illusions Entertainment
                 All rights reserved.
 
                 Redistribution and use in source and binary forms, with or without modification,
@@ -107,12 +112,26 @@
             <name>Visual Illusions Repository</name>
             <url>http://repo.visualillusionsent.net/repository/public/</url>
         </repository>
+        <repository>
+            <id>mcstats.releases</id>
+            <url>http://repo.mcstats.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>mcstats.snapshots</id>
+            <url>http://repo.mcstats.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>net.visualillusionsent</groupId>
             <artifactId>mcpluginlib</artifactId>
             <version>${mcpluginlib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mcstats.canary</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${metrics.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -205,7 +224,7 @@
                     <links>
                         <link>http://docs.visualillusionsent.net/VIUtils/${viutils.version}/</link>
                         <link>http://www.jdom.org/docs/apidocs/</link>
-                        <link>http://docs.visualillusionsent.net/CanaryLib/1.1.2/</link>
+                        <link>http://docs.visualillusionsent.net/CanaryLib/1.2.0/</link>
                     </links>
                 </configuration>
             </plugin>
