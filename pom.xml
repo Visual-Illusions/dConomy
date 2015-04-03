@@ -12,7 +12,7 @@ Copyright © 2011-2015 Visual Illusions Entertainment
     <inceptionYear>2011</inceptionYear>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>dconomy</artifactId>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.0.2</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <canary.main.class>${project.groupId}.${project.artifactId}.canary.CanaryConomy</canary.main.class>
