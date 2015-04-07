@@ -45,6 +45,7 @@ import org.jdom2.output.XMLOutputter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,7 +151,7 @@ public final class WalletXMLSource extends WalletDataSource {
                 for (Element wallet : wallets) {
                     String name = wallet.getAttributeValue("owner");
                     if (name.equals(account.getOwner().toString())) {
-                        wallet.getAttribute("balance").setValue(String.format("%.2f", account.getBalance()));
+                        wallet.getAttribute("balance").setValue(MessageFormat.format("{0,number,#.00}", account.getBalance()));
                         wallet.getAttribute("lockedOut").setValue(String.valueOf(account.isLocked()));
                         found = true;
                         break;
@@ -159,7 +160,7 @@ public final class WalletXMLSource extends WalletDataSource {
                 if (!found) {
                     Element newWallet = new Element("wallet");
                     newWallet.setAttribute("owner", account.getOwner().toString());
-                    newWallet.setAttribute("balance", String.format("%.2f", account.getBalance()));
+                    newWallet.setAttribute("balance", MessageFormat.format("{0,number,#.00}", account.getBalance()));
                     newWallet.setAttribute("lockedOut", String.valueOf(account.isLocked()));
                     root.addContent(newWallet);
                 }
